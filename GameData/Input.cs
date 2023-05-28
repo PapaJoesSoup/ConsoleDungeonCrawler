@@ -15,24 +15,11 @@ namespace ConsoleDungeonCrawler.GameData
           Game.IsGameOver = true;
           break;
         case ConsoleKey.W:
-          Game.Messages.Add($"You pressed W");
-          if (Map.CanMoveTo(Map.Player.x, Map.Player.y - 1))
-            Map.OverlayObjects['P'][0].y--;
-          break;
         case ConsoleKey.A:
-          Game.Messages.Add($"You pressed A");
-          if (Map.CanMoveTo(Map.Player.x - 1, Map.Player.y))
-            Map.OverlayObjects['P'][0].x--;
-          break;
         case ConsoleKey.S:
-          Game.Messages.Add($"You pressed S");
-          if (Map.CanMoveTo(Map.Player.x, Map.Player.y + 1))
-            Map.OverlayObjects['P'][0].y++;
-          break;
         case ConsoleKey.D:
-          Game.Messages.Add($"You pressed D");
-          if (Map.CanMoveTo(Map.Player.x + 1, Map.Player.y))
-            Map.OverlayObjects['P'][0].x++;
+          Game.Messages.Add($"You pressed {keyInfo.Key.ToString()}");
+          MovePlayer(keyInfo.Key);
           break;
         case ConsoleKey.PageUp:
           Game.Messages.Add($"You pressed Page Up");
@@ -41,29 +28,76 @@ namespace ConsoleDungeonCrawler.GameData
           Game.Messages.Add($"You pressed Page Down");
           break;
         case ConsoleKey.O:
-          Game.Messages.Add($"You pressed O");
-          if (Map.IsPlayerNextTo('+', out MapObject doorC))
-          {
-            ObjectType? type = Map.MapTypes.Find(t => t.Symbol == '-');
-            if (type != null)
-            {
-              Map.MapGrid[doorC.x][doorC.y].Type = type;
-              doorC.Type = type;
-            }
-          }
+          if (Map.IsPlayerNextToMap('+', out MapObject doorC)) OpenDoor(doorC);
           break;
         case ConsoleKey.C:
-          Game.Messages.Add($"You pressed C");
-          if (Map.IsPlayerNextTo('-', out MapObject doorO))
-          {
-            ObjectType? type = Map.MapTypes.Find(t => t.Symbol == '+');
-            Map.MapGrid[doorO.x][doorO.y].Type = type;
-            if (type != null) doorO.Type = type;
-          }
+          if (Map.IsPlayerNextToMap('-', out MapObject doorO)) CloseDoor(doorO);
+          break;
+        case ConsoleKey.Enter:
+          Game.Messages.Add($"You pressed Enter");
+          PickUpOverlayItem();
           break;
       }
     }
 
+    private static void PickUpOverlayItem()
+    {
+      // TODO: Add logic to pick up items
+      if (Map.IsPlayerNextToOverlay(out MapObject item) == ' ') return;
+      Game.Messages.Add($"Picking up {item.Type.Name}...");
+      switch (item.Type.Symbol)
+      {
+        case 'i':
+          Player.Inventory.Add(0, item.Loot);
+          break;
+        case 'm':
+          Player.Gold += item.Loot.Value;
+          break;
+        default:
+          break;
+      }
+      Map.OverlayGrid[item.x][item.y].Type = new ObjectType();
+    }
 
+    private static void OpenDoor(MapObject door)
+    {
+      ObjectType? type = Map.MapTypes.Find(t => t.Symbol == '-');
+      if (type == null) return;
+      Game.Messages.Add($"Opening Door...");
+      Map.MapGrid[door.x][door.y].Type = type;
+      door.Type = type;
+    }
+
+    private static void CloseDoor(MapObject door)
+    {
+      ObjectType? type = Map.MapTypes.Find(t => t.Symbol == '+');
+      if (type == null) return;
+      Game.Messages.Add($"Closing Door...");
+      Map.MapGrid[door.x][door.y].Type = type;
+      door.Type = type;
+    }
+
+    private static void MovePlayer(ConsoleKey key)
+    {
+      int x = 0;
+      int y = 0;
+      if (key == ConsoleKey.W) { x = 0; y = -1; }
+      if (key == ConsoleKey.A) { x = -1; y = 0; }
+      if (key == ConsoleKey.S) { x = 0; y = 1; }
+      if (key == ConsoleKey.D) { x = 1; y = 0; }
+
+      if (!Map.CanMoveTo(Map.Player.x + x, Map.Player.y + y)) return;
+        Map.OverlayObjects['P'][0].x += x;
+        Map.OverlayObjects['P'][0].y += y;
+    }
+
+    private static void PickupItem()
+    {
+      if (Map.IsPlayerNextToMap('i', out MapObject item))
+      {
+        Game.Messages.Add($"Picking up {item.Type.Name}...");
+        Map.OverlayGrid[item.x][item.y].Type = new ObjectType();
+      }
+    }
   }
 }

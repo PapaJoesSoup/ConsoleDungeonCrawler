@@ -47,7 +47,7 @@ namespace ConsoleDungeonCrawler.GameData
       MapTypes = new List<ObjectType>
       {
         //new() { Symbol = '#', Name = "Wall", ForegroundColor = Color.White, BackgroundColor = Color.FromArgb(255,30,30,30), IsPassable = false },
-        new() { Symbol = '#', Name = "Wall", ForegroundColor = Color.FromArgb(255,30,30,30), BackgroundColor = Color.FromArgb(255,30,30,30), IsPassable = false },
+        new() { Symbol = '#', Name = "Wall", ForegroundColor = Color.FromArgb(255,40,40,40), BackgroundColor = Color.FromArgb(255,40,40,40), IsPassable = false },
         new() { Symbol = '.', Name = "Floor", ForegroundColor = Color.Gray, BackgroundColor = Color.DimGray, IsPassable = true },
         new() { Symbol = '+', Name = "DoorC", ForegroundColor = Color.Yellow, BackgroundColor = Color.DimGray, IsPassable = false },
         new() { Symbol = '-', Name = "DoorO", ForegroundColor = Color.Yellow, BackgroundColor = Color.DimGray, IsPassable = true },
@@ -63,17 +63,19 @@ namespace ConsoleDungeonCrawler.GameData
       // These are for placing objects on the map.
       OverlayTypes = new List<ObjectType>
       {
-        new() { Symbol = 'X', Name = "Exit", ForegroundColor = Color.MidnightBlue, BackgroundColor = Color.Gold, IsPassable = true },
         new() { Symbol = 'S', Name = "Start", ForegroundColor = Color.Black, BackgroundColor = Color.White, IsPassable = true },
-        new() { Symbol = 'U', Name = "Chest", ForegroundColor = Color.Silver, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true},
+        new() { Symbol = 'X', Name = "Exit", ForegroundColor = Color.MidnightBlue, BackgroundColor = Color.Gold, IsPassable = true },
         new() { Symbol = 'P', Name = "Player", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = true, IsAttackable = true },
         new() { Symbol = 'O', Name = "Ogre", ForegroundColor = Color.Chocolate, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
         new() { Symbol = 'k', Name = "Kobald", ForegroundColor = Color.BlueViolet, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
         new() { Symbol = 'z', Name = "Ooze", ForegroundColor = Color.GreenYellow, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
         new() { Symbol = 'g', Name = "Goblin", ForegroundColor = Color.CadetBlue, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 'M', Name = "Boss", ForegroundColor = Color.Maroon, BackgroundColor = Color.Yellow, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 't', Name = "Item", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true },
+        new() { Symbol = 'B', Name = "Boss", ForegroundColor = Color.Maroon, BackgroundColor = Color.Yellow, IsPassable = false, IsAttackable = true },
+        new() { Symbol = 'm', Name = "Chest", ForegroundColor = Color.Silver, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true},
+        new() { Symbol = 'i', Name = "Item", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true },
         new() { Symbol = '$', Name = "Gold", ForegroundColor = Color.Gold, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true },
+        new() { Symbol = 'T', Name = "Teleporter", ForegroundColor = Color.Gold, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true },
+        new() { Symbol = 't', Name = "TeleportDest", ForegroundColor = Color.Gold, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true },
         new() { Symbol = 'x', Name = "Trap", ForegroundColor = Color.LightSalmon, BackgroundColor = Color.DimGray, IsPassable = false }
       };
     }
@@ -104,32 +106,6 @@ namespace ConsoleDungeonCrawler.GameData
       foreach (ObjectType objectType in OverlayTypes)
         OverlayObjects.Add(objectType.Symbol, new List<MapObject>());
 
-    }
-
-    internal void DrawMap()
-    {
-      foreach (int x in MapGrid.Keys)
-      {
-        foreach (int y in MapGrid[x].Keys)
-        {
-          MapObject obj = MapGrid[x][y];
-          if (!obj.Visible || obj.Type.Symbol == ' ') continue;
-          ConsoleEx.WriteAt(obj.Type.Symbol, obj.x + Left, obj.y + Top, obj.Type.ForegroundColor, obj.Type.BackgroundColor);
-        }
-      }
-    }
-
-    internal void DrawOverlay()
-    {
-      foreach (int x in OverlayGrid.Keys)
-      {
-        foreach (int y in OverlayGrid[x].Keys)
-        {
-          MapObject obj = OverlayGrid[x][y];
-          if (!obj.Visible || obj.Type.Symbol == ' ') continue;
-          ConsoleEx.WriteAt(obj.Type.Symbol, obj.x + Left, obj.y + Top, obj.Type.ForegroundColor, obj.Type.BackgroundColor);
-        }
-      }
     }
 
     internal static void LoadMapGridFromFile(string filename)
@@ -173,15 +149,41 @@ namespace ConsoleDungeonCrawler.GameData
       }
     }
 
-    // Utilities
+    internal void DrawMap()
+    {
+      foreach (int x in MapGrid.Keys)
+      {
+        foreach (int y in MapGrid[x].Keys)
+        {
+          MapObject obj = MapGrid[x][y];
+          if (!obj.Visible || obj.Type.Symbol == ' ') continue;
+          ConsoleEx.WriteAt(obj.Type.Symbol, obj.x + Left, obj.y + Top, obj.Type.ForegroundColor, obj.Type.BackgroundColor);
+        }
+      }
+    }
 
+    internal void DrawOverlay()
+    {
+      foreach (int x in OverlayGrid.Keys)
+      {
+        foreach (int y in OverlayGrid[x].Keys)
+        {
+          MapObject obj = OverlayGrid[x][y];
+          if (!obj.Visible || obj.Type.Symbol == ' ') continue;
+          ConsoleEx.WriteAt(obj.Type.Symbol, obj.x + Left, obj.y + Top, obj.Type.ForegroundColor, obj.Type.BackgroundColor);
+        }
+      }
+    }
+
+
+    // Utilities
     internal static bool CanMoveTo(int x, int y)
     {
       // check to see if there is an object there that is not passable
       return MapGrid[x][y].Type.IsPassable || OverlayGrid[x][y].Type.IsAttackable;
     }
 
-    internal static bool IsPlayerNextTo(char symbol, out MapObject obj)
+    internal static bool IsPlayerNextToMap(char symbol, out MapObject obj)
     {
       // look left
       if (Player.x > 0 && MapGrid[Player.x - 1][Player.y].Type.Symbol == symbol)
@@ -208,7 +210,69 @@ namespace ConsoleDungeonCrawler.GameData
         return true;
       }
       // not found
-      obj = null;
+      obj = new MapObject();
+      return false;
+    }
+
+    internal static char IsPlayerNextToOverlay(out MapObject obj)
+    {
+      // look left
+      if (Player.x > 0 && OverlayGrid[Player.x - 1][Player.y].Type.Symbol != ' ')
+      {
+        obj = OverlayGrid[Player.x - 1][Player.y];
+        return obj.Type.Symbol;
+      }
+      // look right
+      if (Player.x < Game.MapBox.Width && OverlayGrid[Player.x + 1][Player.y].Type.Symbol != ' ')
+      {
+        obj = OverlayGrid[Player.x + 1][Player.y];
+        return obj.Type.Symbol;
+      }
+      // look up
+      if (Player.y > 0 && OverlayGrid[Player.x][Player.y - 1].Type.Symbol != ' ')
+      {
+        obj = OverlayGrid[Player.x][Player.y - 1];
+        return obj.Type.Symbol;
+      }
+      // look down
+      if (Player.y >= Game.MapBox.Height || OverlayGrid[Player.x][Player.y + 1].Type.Symbol != ' ')
+      {
+        obj = OverlayGrid[Player.x][Player.y + 1];
+        return obj.Type.Symbol;
+      }
+      // not found
+      obj = new MapObject();
+      return ' ';
+    }
+
+    internal static bool IsPlayerNextToOverlay(char symbol, out MapObject obj)
+    {
+      // look left
+      if (Player.x > 0 && OverlayGrid[Player.x - 1][Player.y].Type.Symbol == symbol)
+      {
+        obj = OverlayGrid[Player.x - 1][Player.y];
+        return true;
+      }
+      // look right
+      if (Player.x < Game.MapBox.Width && OverlayGrid[Player.x + 1][Player.y].Type.Symbol == symbol)
+      {
+        obj = OverlayGrid[Player.x + 1][Player.y];
+        return true;
+      }
+      // look up
+      if (Player.y > 0 && OverlayGrid[Player.x][Player.y - 1].Type.Symbol == symbol)
+      {
+        obj = OverlayGrid[Player.x][Player.y - 1];
+        return true;
+      }
+      // look down
+      if (Player.y >= Game.MapBox.Height || OverlayGrid[Player.x][Player.y + 1].Type.Symbol == symbol)
+      {
+        obj = OverlayGrid[Player.x][Player.y + 1];
+        return true;
+      }
+      // not found
+      obj = new MapObject();
       return false;
     }
 
@@ -224,6 +288,32 @@ namespace ConsoleDungeonCrawler.GameData
       return OverlayGrid[x][y].Type.IsLootable;
     }
 
+    private static void SetVisibleYObjects(int x, int y, ref int yLimit)
+    {
+      if (MapGrid[x][y].Type.IsPassable)
+        MapGrid[x][y].Visible = true;
+      else
+      {
+        MapGrid[x][y].Visible = true;
+        yLimit = y;
+      }
+      if (OverlayGrid[x][y].Type.Symbol != ' ')
+        OverlayGrid[x][y].Visible = true;
+    }
+
+    private static void SetVisibleXObjects(int x, int y, ref int xLimit)
+    {
+      if (MapGrid[x][y].Type.IsPassable)
+        MapGrid[x][y].Visible = true;
+      else
+      {
+        MapGrid[x][y].Visible = true;
+        xLimit = x;
+      }
+      if (OverlayGrid[x][y].Type.Symbol != ' ')
+        OverlayGrid[x][y].Visible = true;
+    }
+
     internal static void SetVisibleArea(int range)
     {
       // up and left
@@ -232,28 +322,11 @@ namespace ConsoleDungeonCrawler.GameData
       for (int y = Player.y; y > Player.y - range; y--)
       {
         if (y < yLimit) break;
-        if (MapGrid[Player.x][y].Type.IsPassable)
-          MapGrid[Player.x][y].Visible = true;
-        else
-        {
-          MapGrid[Player.x][y].Visible = true;
-          yLimit = y;
-        }
-        if (OverlayGrid[Player.x][y].Type.Symbol != ' ')
-          OverlayGrid[Player.x][y].Visible = true;
-
+        SetVisibleYObjects(Player.x, y, ref yLimit);
         for (int x = Player.x - 1; x > Player.x - range; x--)
         {
           if (x < xLimit) break;
-          if (MapGrid[x][y].Type.IsPassable)
-            MapGrid[x][y].Visible = true;
-          else
-          {
-            MapGrid[x][y].Visible = true;
-            xLimit = x;
-          }
-          if (OverlayGrid[x][y].Type.Symbol != ' ')
-            OverlayGrid[x][y].Visible = true;
+          SetVisibleXObjects(x, y, ref xLimit);
         }
       }
       // left and up
@@ -262,28 +335,11 @@ namespace ConsoleDungeonCrawler.GameData
       for (int x = Player.x; x > Player.x - range; x--)
       {
         if (x < xLimit) break;
-        if (MapGrid[x][Player.y].Type.IsPassable)
-          MapGrid[x][Player.y].Visible = true;
-        else
-        {
-          MapGrid[x][Player.y].Visible = true;
-          xLimit = x;
-        }
-        if (OverlayGrid[x][Player.y].Type.Symbol != ' ')
-          OverlayGrid[x][Player.y].Visible = true;
-
+        SetVisibleXObjects(x, Player.y, ref xLimit);
         for (int y = Player.y - 1; y > Player.y - range; y--)
         {
           if (y < yLimit) break;
-          if (MapGrid[x][y].Type.IsPassable)
-            MapGrid[x][y].Visible = true;
-          else
-          {
-            MapGrid[x][y].Visible = true;
-            yLimit = y;
-          }
-          if (OverlayGrid[x][y].Type.Symbol != ' ')
-            OverlayGrid[x][y].Visible = true;
+          SetVisibleYObjects(x, y, ref yLimit);
         }
       }
       // up and right
@@ -292,28 +348,11 @@ namespace ConsoleDungeonCrawler.GameData
       for (int y = Player.y; y > Player.y - range; y--)
       {
         if (y < yLimit) break;
-        if (MapGrid[Player.x][y].Type.IsPassable)
-          MapGrid[Player.x][y].Visible = true;
-        else
-        {
-          MapGrid[Player.x][y].Visible = true;
-          yLimit = y;
-        }
-        if (OverlayGrid[Player.x][y].Type.Symbol != ' ')
-          OverlayGrid[Player.x][y].Visible = true;
-
+        SetVisibleYObjects(Player.x, y, ref yLimit);
         for (int x = Player.x + 1; x < Player.x + range; x++)
         {
           if (x > xLimit) break;
-          if (MapGrid[x][y].Type.IsPassable)
-            MapGrid[x][y].Visible = true;
-          else
-          {
-            MapGrid[x][y].Visible = true;
-            xLimit = x;
-          }
-          if (OverlayGrid[x][y].Type.Symbol != ' ')
-            OverlayGrid[x][y].Visible = true;
+          SetVisibleXObjects(x, y, ref xLimit);
         }
       }
       // right and up
@@ -322,28 +361,11 @@ namespace ConsoleDungeonCrawler.GameData
       for (int x = Player.x; x < Player.x + range; x++)
       {
         if (x > xLimit) break;
-        if (MapGrid[x][Player.y].Type.IsPassable)
-          MapGrid[x][Player.y].Visible = true;
-        else
-        {
-          MapGrid[x][Player.y].Visible = true;
-          xLimit = x;
-        }
-        if (OverlayGrid[x][Player.y].Type.Symbol != ' ')
-          OverlayGrid[x][Player.y].Visible = true;
-
+        SetVisibleXObjects(x, Player.y, ref xLimit);
         for (int y = Player.y - 1; y > Player.y - range; y--)
         {
           if (y < yLimit) break;
-          if (MapGrid[x][y].Type.IsPassable)
-            MapGrid[x][y].Visible = true;
-          else
-          {
-            MapGrid[x][y].Visible = true;
-            yLimit = y;
-          }
-          if (OverlayGrid[x][y].Type.Symbol != ' ')
-            OverlayGrid[x][y].Visible = true;
+          SetVisibleYObjects(x, y, ref yLimit);
         }
       }
       // down and left
@@ -352,28 +374,11 @@ namespace ConsoleDungeonCrawler.GameData
       for (int y = Player.y; y < Player.y + range; y++)
       {
         if (y > yLimit) break;
-        if (MapGrid[Player.x][y].Type.IsPassable)
-          MapGrid[Player.x][y].Visible = true;
-        else
-        {
-          MapGrid[Player.x][y].Visible = true;
-          yLimit = y;
-        }
-        if (OverlayGrid[Player.x][y].Type.Symbol != ' ')
-          OverlayGrid[Player.x][y].Visible = true;
-
+        SetVisibleYObjects(Player.x, y, ref yLimit);
         for (int x = Player.x - 1; x > Player.x - range; x--)
         {
           if (x < xLimit) break;
-          if (MapGrid[x][y].Type.IsPassable)
-            MapGrid[x][y].Visible = true;
-          else
-          {
-            MapGrid[x][y].Visible = true;
-            xLimit = x;
-          }
-          if (OverlayGrid[x][y].Type.Symbol != ' ')
-            OverlayGrid[x][y].Visible = true;
+          SetVisibleXObjects(x, y, ref xLimit);
         }
       }
       // left and down
@@ -382,28 +387,11 @@ namespace ConsoleDungeonCrawler.GameData
       for (int x = Player.x; x > Player.x - range; x--)
       {
         if (x < xLimit) break;
-        if (MapGrid[x][Player.y].Type.IsPassable)
-          MapGrid[x][Player.y].Visible = true;
-        else
-        {
-          MapGrid[x][Player.y].Visible = true;
-          xLimit = x;
-        }
-        if (OverlayGrid[x][Player.y].Type.Symbol != ' ')
-          OverlayGrid[x][Player.y].Visible = true;
-
+        SetVisibleXObjects(x, Player.y, ref xLimit);
         for (int y = Player.y + 1; y < Player.y + range; y++)
         {
           if (y > yLimit) break;
-          if (MapGrid[x][y].Type.IsPassable)
-            MapGrid[x][y].Visible = true;
-          else
-          {
-            MapGrid[x][y].Visible = true;
-            yLimit = y;
-          }
-          if (OverlayGrid[x][y].Type.Symbol != ' ')
-            OverlayGrid[x][y].Visible = true;
+          SetVisibleYObjects(x, y, ref yLimit);
         }
       }
       // down and right
@@ -412,28 +400,11 @@ namespace ConsoleDungeonCrawler.GameData
       for (int y = Player.y; y < Player.y + range; y++)
       {
         if (y > yLimit) break;
-        if (MapGrid[Player.x][y].Type.IsPassable)
-          MapGrid[Player.x][y].Visible = true;
-        else
-        {
-          MapGrid[Player.x][y].Visible = true;
-          yLimit = y;
-        }
-        if (OverlayGrid[Player.x][y].Type.Symbol != ' ')
-          OverlayGrid[Player.x][y].Visible = true;
-
+        SetVisibleYObjects(Player.x, y, ref yLimit);
         for (int x = Player.x + 1; x < Player.x + range; x++)
         {
           if (x > xLimit) break;
-          if (MapGrid[x][y].Type.IsPassable)
-            MapGrid[x][y].Visible = true;
-          else
-          {
-            MapGrid[x][y].Visible = true;
-            xLimit = x;
-          }
-          if (OverlayGrid[x][y].Type.Symbol != ' ')
-            OverlayGrid[x][y].Visible = true;
+          SetVisibleXObjects(x, y, ref xLimit);
         }
       }
       // right and down
@@ -442,28 +413,11 @@ namespace ConsoleDungeonCrawler.GameData
       for (int x = Player.x; x < Player.x + range; x++)
       {
         if (x > xLimit) break;
-        if (MapGrid[x][Player.y].Type.IsPassable)
-          MapGrid[x][Player.y].Visible = true;
-        else
-        {
-          MapGrid[x][Player.y].Visible = true;
-          xLimit = x;
-        }
-        if (OverlayGrid[x][Player.y].Type.Symbol != ' ')
-          OverlayGrid[x][Player.y].Visible = true;
-
+        SetVisibleXObjects(x, Player.y, ref xLimit);
         for (int y = Player.y + 1; y < Player.y + range; y++)
         {
           if (y > yLimit) break;
-          if (MapGrid[x][y].Type.IsPassable)
-            MapGrid[x][y].Visible = true;
-          else
-          {
-            MapGrid[x][y].Visible = true;
-            yLimit = y;
-          }
-          if (OverlayGrid[x][y].Type.Symbol != ' ')
-            OverlayGrid[x][y].Visible = true;
+          SetVisibleYObjects(x, y, ref yLimit);
         }
       }
     }
@@ -489,6 +443,8 @@ namespace ConsoleDungeonCrawler.GameData
     internal ObjectType Type = new ObjectType();
 
     internal bool Visible = true;
+
+    internal Item Loot = new Item();
 
 
     internal MapObject()

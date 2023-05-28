@@ -7,6 +7,9 @@
     internal static PlayerClass Class = PlayerClass.Rogue;
     internal static int Health = 100;
     internal static int MaxHealth = 100;
+    internal static int Mana = 100;
+    internal static int MaxMana = 100;
+    internal static int Gold = 0;
     internal static List<Armor> ArmorSet;
     internal static Weapon Weapon = new Weapon();
     internal static Dictionary<int, Spell> Spells;
