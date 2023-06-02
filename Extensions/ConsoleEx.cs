@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Globalization;
-using ConsoleDungeonCrawler.GameData;
-using ConsoleDungeonCrawler.Extensions;
+using ConsoleDungeonCrawler.Game;
 
 namespace ConsoleDungeonCrawler.Extensions
 {
@@ -35,7 +34,7 @@ namespace ConsoleDungeonCrawler.Extensions
     internal static void InitializeConsole()
     {
       Console.CursorVisible = false;
-      Console.Title = Game.Title;
+      Console.Title = Game.Game.Title;
     }
 
     internal static void WriteLegendItem(MapObject mapObject, int col, int row, int width)
@@ -365,6 +364,71 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y, color);
     }
 
+    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign, Color color,
+      Color backgroundColor, int xOffset, int yOffset)
+    {
+      int x = 0;
+      int y = 0;
+      switch (hAlign)
+      {
+        case HAlign.Left:
+          x = 0;
+          break;
+        case HAlign.Center:
+          x = (Console.WindowWidth / 2) - (s.Length / 2);
+          break;
+        case HAlign.Right:
+          x = Console.WindowWidth - s.Length;
+          break;
+      }
+
+      switch (vAlign)
+      {
+        case VAlign.Top:
+          y = 0;
+          break;
+        case VAlign.Middle:
+          y = (Console.WindowHeight / 2) - 1;
+          break;
+        case VAlign.Bottom:
+          y = Console.WindowHeight - 1;
+          break;
+      }
+      WriteAt(s, x + xOffset, y + yOffset, color, backgroundColor);
+    }
+
+    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign, Color color,
+      Color backgroundColor)
+    {
+      int x = 0;
+      int y = 0;
+      switch (hAlign)
+      {
+        case HAlign.Left:
+          x = 0;
+          break;
+        case HAlign.Center:
+          x = (Console.WindowWidth / 2) - (s.Length / 2);
+          break;
+        case HAlign.Right:
+          x = Console.WindowWidth - s.Length;
+          break;
+      }
+
+      switch (vAlign)
+      {
+        case VAlign.Top:
+          y = 0;
+          break;
+        case VAlign.Middle:
+          y = (Console.WindowHeight / 2) - 1;
+          break;
+        case VAlign.Bottom:
+          y = Console.WindowHeight - 1;
+          break;
+      }
+      WriteAt(s, x, y, color, backgroundColor);
+    }
 
 
     // WriteAt string methods

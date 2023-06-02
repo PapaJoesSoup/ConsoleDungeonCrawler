@@ -24,6 +24,7 @@
     None,
     Head,
     Body,
+    Hands,
     Legs,
     Feet
   }

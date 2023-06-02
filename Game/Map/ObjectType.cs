@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 
-namespace ConsoleDungeonCrawler.GameData
+namespace ConsoleDungeonCrawler.Game
 {
   internal class ObjectType
   {

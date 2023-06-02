@@ -1,6 +1,6 @@
 ﻿using ConsoleDungeonCrawler.Extensions;
 
-namespace ConsoleDungeonCrawler.GameData
+namespace ConsoleDungeonCrawler.Game
 {
   internal class MapObject
   {
@@ -51,6 +51,7 @@ namespace ConsoleDungeonCrawler.GameData
 
     internal void Draw()
     {
+      if (!this.Visible || this.Type.Symbol == ' ') return;
       ConsoleEx.WriteAt(this.Type.Symbol, this.X + Map.Left, this.Y + Map.Top, this.Type.ForegroundColor, this.Type.BackgroundColor);
     }
   }

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using ConsoleDungeonCrawler.Extensions;
-using ConsoleDungeonCrawler.GameData;
+using ConsoleDungeonCrawler.Game;
 
 namespace ConsoleDungeonCrawler
 {
@@ -26,7 +26,7 @@ namespace ConsoleDungeonCrawler
       ConsoleEx.ScreenWidth = 200;
 
       map = new Map();
-      Game.Run();
+      Game.Game.Run();
     }
 
     private static void EnableExtendedColors()

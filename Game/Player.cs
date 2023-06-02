@@ -1,4 +1,4 @@
-﻿namespace ConsoleDungeonCrawler.GameData
+﻿namespace ConsoleDungeonCrawler.Game
 {
     internal static class Player
   {
@@ -15,7 +15,7 @@
     internal static Weapon Weapon = new Weapon();
     internal static Dictionary<int, Spell> Spells;
     internal static Dictionary<int, Item> Inventory;
-
+    internal static MapObject OnMap = new MapObject();
 
     static Player()
     {
@@ -23,6 +23,7 @@
       ArmorSet = new List<Armor>();
       ArmorSet.Add(new Armor(ArmorType.Head));
       ArmorSet.Add(new Armor(ArmorType.Body));
+      ArmorSet.Add(new Armor(ArmorType.Hands));
       ArmorSet.Add(new Armor(ArmorType.Legs));
       ArmorSet.Add(new Armor(ArmorType.Feet));
 
@@ -130,58 +131,5 @@
         }
       }
     }
-  }
-
-
-  internal class Armor
-  {
-    internal ArmorType Type = ArmorType.None;
-    internal ArmorName Name = ArmorName.None;
-    internal ItemRarity Rarity = ItemRarity.Common;
-    internal int ArmorValue = 0;
-    internal int ArmorBonus = 0;
-    internal int Durability = 0;
-    internal int MaxDurability = 0;
-
-    internal Armor()
-    {
-    }
-
-    internal Armor(ArmorType type)
-    {
-      Type = type;
-    }
-
-    internal Armor(ArmorType type, ArmorName name, ItemRarity rarity, int armorValue, int durability)
-    {
-      Type = type;
-      Name = name;
-      Rarity = rarity;
-      ArmorValue = armorValue;
-      Durability = durability;
-      MaxDurability = durability;
-    }
-  }
-
-  internal class Weapon
-  {
-    internal WeaponName Name = WeaponName.Fists;
-    internal DamageType DamageType = DamageType.Physical;
-    internal DamageEffectAmount DamageAmount = DamageEffectAmount.One;
-    internal List<DamageEffect> DamageEffects = new List<DamageEffect>();
-    internal int Durability = 0;
-    internal int MaxDurability = 0;
-  }
-
-  internal class Spell
-  {
-    internal int id = 0;
-    internal SpellName Name = SpellName.None;
-    internal string Description = "";
-    internal DamageType DamageType = DamageType.Magical;
-    internal DamageEffectAmount DamageAmount = DamageEffectAmount.One;
-    internal List<DamageEffect> DamageEffects = new List<DamageEffect>();
-    internal int ManaCost = 0;
-    internal int MaxManaCost = 0;
   }
 }
