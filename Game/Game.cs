@@ -4,7 +4,7 @@ using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game
 {
-    internal static class Game
+  internal static class Game
   {
     internal static string Title = "Console Dungeon Crawler";
     internal static bool IsGameOver { get; set; }
@@ -17,9 +17,9 @@ namespace ConsoleDungeonCrawler.Game
       Map.Instance = new Map(GamePlayScreen.MapBox);
 
       TitleScreen.Draw();
-        PlayGame();
+      PlayGame();
     }
-    
+
     private static void PlayGame()
     {
       ConsoleEx.Clear();

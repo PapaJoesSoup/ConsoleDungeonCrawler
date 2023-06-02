@@ -2,7 +2,7 @@
 
 namespace ConsoleDungeonCrawler.Game
 {
-    internal static class PlayerInput
+  internal static class PlayerInput
   {
     internal static void Process()
     {

@@ -4,7 +4,7 @@ using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler.Extensions
 {
-    internal static class ConsoleEx
+  internal static class ConsoleEx
   {
     internal static int ScreenHeight;
     internal static int ScreenWidth;
@@ -16,7 +16,7 @@ namespace ConsoleDungeonCrawler.Extensions
       set
       {
         foregroundColor = value;
-        Console.Write(ConsoleColorEx.ToFgHiColor(value) );
+        Console.Write(ConsoleColorEx.ToFgHiColor(value));
       }
     }
 
@@ -41,10 +41,10 @@ namespace ConsoleDungeonCrawler.Extensions
     {
       // create a formatted line containing the symbol and the name of the map object
       int padding = width - mapObject.Type.Name.Length - 5;
-      int paddingStart = col + mapObject.Type.Name.Length + 3 ;
+      int paddingStart = col + mapObject.Type.Name.Length + 3;
       WriteAt(' ', col, row, Color.White, Color.DimGray);
-      WriteAt(mapObject.Type.Symbol.ToString(), col + 1, row, mapObject.Type.ForegroundColor, mapObject.Type.BackgroundColor );
-      WriteAt(':', col + 2,row,Color.White, Color.DimGray);
+      WriteAt(mapObject.Type.Symbol.ToString(), col + 1, row, mapObject.Type.ForegroundColor, mapObject.Type.BackgroundColor);
+      WriteAt(':', col + 2, row, Color.White, Color.DimGray);
       WriteAt(mapObject.Type.Name, col + 3, row, mapObject.Type.ForegroundColor, Color.DimGray);
       WriteAt(new string(' ', padding), paddingStart, row, Color.White, Color.DimGray);
     }
@@ -1019,7 +1019,7 @@ namespace ConsoleDungeonCrawler.Extensions
           }
           else
           {
-            ConsoleEx.WriteAt(v,box.Left, box.Top + i, color);
+            ConsoleEx.WriteAt(v, box.Left, box.Top + i, color);
             ConsoleEx.WriteAt(v, box.Left + box.Width - 1, box.Top + i, color);
           }
         }

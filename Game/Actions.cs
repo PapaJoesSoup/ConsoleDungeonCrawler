@@ -4,7 +4,7 @@ using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game
 {
-    internal static class Actions
+  internal static class Actions
   {
     public static void PickupOverlayItem()
     {
