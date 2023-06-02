@@ -1,10 +1,10 @@
 ﻿using System.Runtime.InteropServices;
 using ConsoleDungeonCrawler.Extensions;
-using ConsoleDungeonCrawler.Game;
+using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler
 {
-  public static class Program
+    public static class Program
   {
     internal static Map? map;
     private struct Rect

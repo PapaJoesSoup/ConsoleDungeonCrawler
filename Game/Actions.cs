@@ -1,4 +1,6 @@
-﻿using ConsoleDungeonCrawler.Game.Screens;
+﻿using ConsoleDungeonCrawler.Game.Entities;
+using ConsoleDungeonCrawler.Game.Maps;
+using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game
 {

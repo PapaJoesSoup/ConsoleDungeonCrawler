@@ -1,4 +1,5 @@
 ﻿using ConsoleDungeonCrawler.Extensions;
+using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game
