@@ -1,6 +1,6 @@
 ﻿namespace ConsoleDungeonCrawler.Game.Entities
 {
-  internal class Spell
+    internal class Spell
   {
     internal int id = 0;
     internal SpellName Name = SpellName.None;

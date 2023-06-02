@@ -6,15 +6,15 @@ namespace ConsoleDungeonCrawler.Game.Screens
 {
   internal static class GamePlayScreen
   {
-    internal static Box StatusBox = new Box(0, 0, 200, 8);
-    internal static Box MapBox = new Box(0, 7, 170, 35);
-    internal static Box LegendBox = new Box(169, 7, 31, 35);
-    internal static Box MessageBox = new Box(0, 41, 200, 10);
+    internal static Box StatusBox = new Box(1, 0, 208, 8);
+    internal static Box MapBox = new Box(1, 7, 178, 35);
+    internal static Box LegendBox = new Box(178, 7, 31, 35);
+    internal static Box MessageBox = new Box(1, 41, 208, 10);
     internal static List<string> Messages = new List<string>();
 
-    private static BoxCharsEx boxCharsEx = new BoxCharsEx("\xe2948d", "\xe29491", "\\xd59f", "\xe29499", "\xe295bc", "\xe29482");
-    private static char HBorderChar = '~';
-    private static char VBorderChar = '|';
+    internal static BoxCharsEx boxCharsEx = new BoxCharsEx("\xe2948d", "\xe29491", "\\xd59f", "\xe29499", "\xe295bc", "\xe29482");
+    internal static char HBorderChar = '=';
+    internal static char VBorderChar = '|';
 
 
     internal static void Draw()
@@ -26,13 +26,12 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
     internal static void Update()
     {
+      Map.SetVisibleArea(10);
       StatusSection();
       LegendSection();
       MessageSection();
-      Map.SetVisibleArea(10);
       // we add this last so that the player is always on top
       Player.OnMap.Draw();
-
     }
 
     internal static void Borders()
@@ -90,7 +89,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       }
 
       //Player Stats
-      col = StatusBox.Left + 180;
+      col = StatusBox.Left + 178;
       row = StatusBox.Top + 1;
       ConsoleEx.WriteAt("Player", col, row, ConsoleColor.Yellow);
       row++;

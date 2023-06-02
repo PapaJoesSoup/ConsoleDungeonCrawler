@@ -2,7 +2,7 @@
 
 namespace ConsoleDungeonCrawler.Game.Entities
 {
-  internal static class Player
+    internal static class Player
   {
     internal static int Level = 1;
     internal static int Experience = 0;
@@ -72,7 +72,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static void TakeDamage(int damage)
     {
       Health -= damage;
-      if (Health <= 0) Game.IsGameOver = true;
+      if (Health <= 0) Game.IsOver = true;
     }
 
     internal static void Heal(int amount)

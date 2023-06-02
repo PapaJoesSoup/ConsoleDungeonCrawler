@@ -22,8 +22,8 @@ namespace ConsoleDungeonCrawler
       // Enable extended colors
       EnableExtendedColors();
 
-      ConsoleEx.ScreenHeight = 70;
-      ConsoleEx.ScreenWidth = 200;
+      ConsoleEx.ScreenHeight = Console.WindowHeight;
+      ConsoleEx.ScreenWidth = Console.WindowWidth;
 
       map = new Map();
       Game.Game.Run();

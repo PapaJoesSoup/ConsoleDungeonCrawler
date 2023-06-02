@@ -1,8 +1,9 @@
 ﻿using ConsoleDungeonCrawler.Extensions;
+using ConsoleDungeonCrawler.Game.Entities;
 
 namespace ConsoleDungeonCrawler.Game.Screens
 {
-  internal static class GameOverScreen
+    internal static class GameOverScreen
   {
     // Create a method that displays the game over screen in ascii art
     internal static void Draw()

@@ -1,6 +1,6 @@
 ﻿namespace ConsoleDungeonCrawler.Game.Entities
 {
-  internal class Weapon
+    internal class Weapon
   {
     internal WeaponName Name = WeaponName.Fists;
     internal DamageType DamageType = DamageType.Physical;

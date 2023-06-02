@@ -1,10 +1,11 @@
 ﻿using System.Drawing;
 using System.Globalization;
+using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler.Extensions
 {
-  internal static class ConsoleEx
+    internal static class ConsoleEx
   {
     internal static int ScreenHeight;
     internal static int ScreenWidth;
@@ -1001,6 +1002,32 @@ namespace ConsoleDungeonCrawler.Extensions
       catch (ArgumentOutOfRangeException e)
       {
         ConsoleEx.Clear();
+        Console.WriteLine(e.Message);
+      }
+    }
+
+    internal static void WriteAt(string s, int x, int y, Color color, Color backgroundColor, int delay,
+      int repeat)
+    {
+      try
+      {
+        Console.SetCursorPosition(x, y);
+        ConsoleEx.ForegroundColor = color;
+        ConsoleEx.BackgroundColor = backgroundColor;
+        for (int i = 0; i < repeat; i++)
+        {
+          foreach (char c in s)
+          {
+            Console.Write(c);
+            if (delay > 0) Thread.Sleep(delay);
+          }
+        }
+
+        Console.ResetColor();
+      }
+      catch (ArgumentOutOfRangeException e)
+      {
+        Console.Clear();
         Console.WriteLine(e.Message);
       }
     }

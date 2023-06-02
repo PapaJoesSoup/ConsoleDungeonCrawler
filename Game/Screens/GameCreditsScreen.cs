@@ -1,9 +1,10 @@
 ﻿using System.Drawing;
 using ConsoleDungeonCrawler.Extensions;
+using ConsoleDungeonCrawler.Game.Entities;
 
 namespace ConsoleDungeonCrawler.Game.Screens
 {
-  internal static class GameCreditsScreen
+    internal static class GameCreditsScreen
   {
     internal static void Draw()
     {

@@ -7,8 +7,9 @@ namespace ConsoleDungeonCrawler.Game
   internal static class Game
   {
     internal static string Title = "Console Dungeon Crawler";
-    internal static bool IsGameOver { get; set; }
-    internal static bool IsGameWon { get; set; }
+    internal static bool IsOver { get; set; }
+    internal static bool IsWon { get; set; }
+    internal static bool IsPaused { get; set; }
 
     public static void Run()
     {
@@ -25,16 +26,23 @@ namespace ConsoleDungeonCrawler.Game
       ConsoleEx.Clear();
       //Console.SetCursorPosition(0, 0);
       GamePlayScreen.Draw();
-      while (!IsGameOver && !IsGameWon)
+      while (!IsOver && !IsWon)
       {
-        PlayerInput.Process();
-        GamePlayScreen.Update();
+        if (IsPaused)
+        {
+          GamePausedScreen.Draw();
+        }
+        else
+        {
+          PlayerInput.Process();
+          GamePlayScreen.Update();
+        }
       }
-      if (IsGameOver)
+      if (IsOver)
       {
         GameOverScreen.Draw();
       }
-      else if (IsGameWon)
+      else if (IsWon)
       {
         GameWonScreen.Draw();
       }

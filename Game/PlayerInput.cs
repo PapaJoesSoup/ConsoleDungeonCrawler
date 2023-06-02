@@ -17,8 +17,11 @@ namespace ConsoleDungeonCrawler.Game
           GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}");
           Actions.MovePlayer(keyInfo.Key);
           break;
+        case ConsoleKey.End:
+          Game.IsOver = true;
+          break;
         case ConsoleKey.Escape:
-          Game.IsGameOver = true;
+          Game.IsPaused = true;
           break;
         case ConsoleKey.PageUp:
           GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}");
@@ -32,8 +35,11 @@ namespace ConsoleDungeonCrawler.Game
         case ConsoleKey.C:
           Actions.CloseDoor();
           break;
-        case ConsoleKey.P:
+        case ConsoleKey.Enter:
           Actions.PickupOverlayItem();
+          break;
+        default:
+          GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}, which does nothing.");
           break;
       }
     }

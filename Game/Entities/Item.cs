@@ -1,6 +1,6 @@
 ﻿namespace ConsoleDungeonCrawler.Game.Entities
 {
-  internal class Item
+    internal class Item
   {
     public int id;
     public ItemName name;

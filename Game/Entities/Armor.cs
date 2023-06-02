@@ -1,6 +1,6 @@
 ﻿namespace ConsoleDungeonCrawler.Game.Entities
 {
-  internal class Armor
+    internal class Armor
   {
     internal ArmorType Type = ArmorType.None;
     internal ArmorName Name = ArmorName.None;

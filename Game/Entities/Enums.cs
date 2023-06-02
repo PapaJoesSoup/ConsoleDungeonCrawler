@@ -1,4 +1,4 @@
-﻿namespace ConsoleDungeonCrawler
+﻿namespace ConsoleDungeonCrawler.Game.Entities
 {
   // enums for the game
 
