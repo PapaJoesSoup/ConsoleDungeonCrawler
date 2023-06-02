@@ -148,13 +148,15 @@ namespace ConsoleDungeonCrawler.GameData
       row = StatusBox.Top + 1;
       ConsoleEx.WriteAt("Player", col, row, ConsoleColor.Yellow);
       row++;
-      ConsoleEx.WriteAt($"Name: {Player.Name}", col, row, ConsoleColor.White);
-      row++;
       ConsoleEx.WriteAt($"Class: {Player.Class}", col, row, ConsoleColor.White);
       row++;
       ConsoleEx.WriteAt($"Level: {Player.Level}", col, row, ConsoleColor.White);
       row++;
       ConsoleEx.WriteAt($"Health: {Player.Health}/{Player.MaxHealth}", col, row, ConsoleColor.White);
+      row++;
+      ConsoleEx.WriteAt($"Mana: {Player.Mana}/{Player.MaxMana}", col, row, ConsoleColor.White);
+      row++;
+      ConsoleEx.WriteAt($"Gold: {Player.Gold}g", col, row, ConsoleColor.White);
 
 
     }
@@ -165,6 +167,9 @@ namespace ConsoleDungeonCrawler.GameData
 
       Map.Instance.DrawMap();
       Map.Instance.DrawOverlay();
+
+      // we add this last so that the player is always on top
+      Map.Player.Draw();
     }
 
     private static void DrawLegendSection()
@@ -175,7 +180,7 @@ namespace ConsoleDungeonCrawler.GameData
       {
         foreach (MapObject mapObject in Map.OverlayObjects[type])
         {
-          if (!mapObject.Visible) continue;
+          if (!mapObject.Visible || mapObject.Type.Symbol == ' ') continue;
           ConsoleEx.WriteLegendItem(mapObject, col, row, LegendBox.Width - 2);
           row++;
         }
@@ -195,6 +200,14 @@ namespace ConsoleDungeonCrawler.GameData
           ConsoleEx.WriteAt(message, col, row, ConsoleColor.White);
           row++;
         }
+      }
+    }
+
+    internal static void ClearLegendSection()
+    {
+      for (int i = LegendBox.Top + 1; i < LegendBox.Top + LegendBox.Height -1; i++)
+      {
+        ConsoleEx.WriteAt(" ", LegendBox.Left + 1, i, ConsoleColor.Black, ConsoleColor.Black, 0, LegendBox.Width - 2);
       }
     }
   }

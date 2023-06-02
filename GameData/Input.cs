@@ -11,15 +11,15 @@ namespace ConsoleDungeonCrawler.GameData
       ConsoleKeyInfo keyInfo = Console.ReadKey(true);
       switch (keyInfo.Key)
       {
-        case ConsoleKey.Escape:
-          Game.IsGameOver = true;
-          break;
         case ConsoleKey.W:
         case ConsoleKey.A:
         case ConsoleKey.S:
         case ConsoleKey.D:
           Game.Messages.Add($"You pressed {keyInfo.Key.ToString()}");
           MovePlayer(keyInfo.Key);
+          break;
+        case ConsoleKey.Escape:
+          Game.IsGameOver = true;
           break;
         case ConsoleKey.PageUp:
           Game.Messages.Add($"You pressed Page Up");
@@ -33,22 +33,24 @@ namespace ConsoleDungeonCrawler.GameData
         case ConsoleKey.C:
           if (Map.IsPlayerNextToMap('-', out MapObject doorO)) CloseDoor(doorO);
           break;
-        case ConsoleKey.Enter:
-          Game.Messages.Add($"You pressed Enter");
-          PickUpOverlayItem();
+        case ConsoleKey.P:
+          PickupItem();
           break;
       }
     }
 
-    private static void PickUpOverlayItem()
+    private static void PickupOverlayItem()
     {
       // TODO: Add logic to pick up items
+      // Items can buff the player, or be added to the inventory
+      // Items can be gold, potions, weapons, armor, etc.
+      
       if (Map.IsPlayerNextToOverlay(out MapObject item) == ' ') return;
       Game.Messages.Add($"Picking up {item.Type.Name}...");
       switch (item.Type.Symbol)
       {
         case 'i':
-          Player.Inventory.Add(0, item.Loot);
+          //Player.Inventory.Add(0, item.Loot);
           break;
         case 'm':
           Player.Gold += item.Loot.Value;
@@ -56,7 +58,18 @@ namespace ConsoleDungeonCrawler.GameData
         default:
           break;
       }
-      Map.OverlayGrid[item.x][item.y].Type = new ObjectType();
+      Map.OverlayGrid[item.X][item.Y] = new MapObject(item.X, item.Y, new ObjectType(), false);
+      Game.ClearLegendSection();
+    }
+
+    private static void PickupItem()
+    {
+      if (!Map.IsPlayerNextToOverlay('i', out MapObject obj)) return;
+      Game.Messages.Add($"Picking up {obj.Type.Name}...");
+      Player.AddToInventory(obj.Loot);
+      Map.OverlayGrid[obj.X][obj.Y] = new MapObject(obj.X, obj.Y, new ObjectType(), false);
+      //Map.OverlayObjects
+      Game.ClearLegendSection();
     }
 
     private static void OpenDoor(MapObject door)
@@ -64,7 +77,7 @@ namespace ConsoleDungeonCrawler.GameData
       ObjectType? type = Map.MapTypes.Find(t => t.Symbol == '-');
       if (type == null) return;
       Game.Messages.Add($"Opening Door...");
-      Map.MapGrid[door.x][door.y].Type = type;
+      Map.MapGrid[door.X][door.Y].Type = type;
       door.Type = type;
     }
 
@@ -73,7 +86,7 @@ namespace ConsoleDungeonCrawler.GameData
       ObjectType? type = Map.MapTypes.Find(t => t.Symbol == '+');
       if (type == null) return;
       Game.Messages.Add($"Closing Door...");
-      Map.MapGrid[door.x][door.y].Type = type;
+      Map.MapGrid[door.X][door.Y].Type = type;
       door.Type = type;
     }
 
@@ -86,18 +99,10 @@ namespace ConsoleDungeonCrawler.GameData
       if (key == ConsoleKey.S) { x = 0; y = 1; }
       if (key == ConsoleKey.D) { x = 1; y = 0; }
 
-      if (!Map.CanMoveTo(Map.Player.x + x, Map.Player.y + y)) return;
-        Map.OverlayObjects['P'][0].x += x;
-        Map.OverlayObjects['P'][0].y += y;
+      if (!Map.CanMoveTo(Map.Player.X + x, Map.Player.Y + y)) return;
+        Map.OverlayObjects['P'][0].X += x;
+        Map.OverlayObjects['P'][0].Y += y;
     }
 
-    private static void PickupItem()
-    {
-      if (Map.IsPlayerNextToMap('i', out MapObject item))
-      {
-        Game.Messages.Add($"Picking up {item.Type.Name}...");
-        Map.OverlayGrid[item.x][item.y].Type = new ObjectType();
-      }
-    }
   }
 }

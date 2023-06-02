@@ -124,14 +124,11 @@
 
   internal enum ItemEffect
   {
-    Health,
+    None,
+    Heal,
     Mana,
-    Strength,
-    Dexterity,
-    Intelligence,
-    Wisdom,
-    Constitution,
-    Charisma
+    Damage,
+    Armor
   }
 
   internal enum ItemEffectType

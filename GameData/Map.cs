@@ -10,10 +10,10 @@ namespace ConsoleDungeonCrawler.GameData
   {
 
     internal static Map Instance = new Map();
-    internal int Top { get; set; }
-    internal int Left { get; set; }
-    internal int Width { get; set; }
-    internal int Height { get; set; }
+    internal static int Top { get; set; }
+    internal static int Left { get; set; }
+    internal static int Width { get; set; }
+    internal static int Height { get; set; }
 
     internal static List<ObjectType> MapTypes = new List<ObjectType>();
     internal static List<ObjectType> OverlayTypes = new List<ObjectType>();
@@ -46,7 +46,6 @@ namespace ConsoleDungeonCrawler.GameData
       // These are for building the map
       MapTypes = new List<ObjectType>
       {
-        //new() { Symbol = '#', Name = "Wall", ForegroundColor = Color.White, BackgroundColor = Color.FromArgb(255,30,30,30), IsPassable = false },
         new() { Symbol = '#', Name = "Wall", ForegroundColor = Color.FromArgb(255,40,40,40), BackgroundColor = Color.FromArgb(255,40,40,40), IsPassable = false },
         new() { Symbol = '.', Name = "Floor", ForegroundColor = Color.Gray, BackgroundColor = Color.DimGray, IsPassable = true },
         new() { Symbol = '+', Name = "DoorC", ForegroundColor = Color.Yellow, BackgroundColor = Color.DimGray, IsPassable = false },
@@ -75,7 +74,6 @@ namespace ConsoleDungeonCrawler.GameData
         new() { Symbol = 'i', Name = "Item", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true },
         new() { Symbol = '$', Name = "Gold", ForegroundColor = Color.Gold, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true },
         new() { Symbol = 'T', Name = "Teleporter", ForegroundColor = Color.Gold, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true },
-        new() { Symbol = 't', Name = "TeleportDest", ForegroundColor = Color.Gold, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true },
         new() { Symbol = 'x', Name = "Trap", ForegroundColor = Color.LightSalmon, BackgroundColor = Color.DimGray, IsPassable = false }
       };
     }
@@ -157,7 +155,7 @@ namespace ConsoleDungeonCrawler.GameData
         {
           MapObject obj = MapGrid[x][y];
           if (!obj.Visible || obj.Type.Symbol == ' ') continue;
-          ConsoleEx.WriteAt(obj.Type.Symbol, obj.x + Left, obj.y + Top, obj.Type.ForegroundColor, obj.Type.BackgroundColor);
+          obj.Draw();
         }
       }
     }
@@ -170,7 +168,7 @@ namespace ConsoleDungeonCrawler.GameData
         {
           MapObject obj = OverlayGrid[x][y];
           if (!obj.Visible || obj.Type.Symbol == ' ') continue;
-          ConsoleEx.WriteAt(obj.Type.Symbol, obj.x + Left, obj.y + Top, obj.Type.ForegroundColor, obj.Type.BackgroundColor);
+          obj.Draw();
         }
       }
     }
@@ -186,27 +184,27 @@ namespace ConsoleDungeonCrawler.GameData
     internal static bool IsPlayerNextToMap(char symbol, out MapObject obj)
     {
       // look left
-      if (Player.x > 0 && MapGrid[Player.x - 1][Player.y].Type.Symbol == symbol)
+      if (Player.X > 0 && MapGrid[Player.X - 1][Player.Y].Type.Symbol == symbol)
       {
-        obj = MapGrid[Player.x - 1][Player.y];
+        obj = MapGrid[Player.X - 1][Player.Y];
         return true;
       }
       // look right
-      if(Player.x < Game.MapBox.Width && MapGrid[Player.x + 1][Player.y].Type.Symbol == symbol)
+      if(Player.X < Game.MapBox.Width && MapGrid[Player.X + 1][Player.Y].Type.Symbol == symbol)
       {
-        obj = MapGrid[Player.x + 1][Player.y];
+        obj = MapGrid[Player.X + 1][Player.Y];
         return true;
       }
       // look up
-      if (Player.y > 0 && MapGrid[Player.x][Player.y - 1].Type.Symbol == symbol)
+      if (Player.Y > 0 && MapGrid[Player.X][Player.Y - 1].Type.Symbol == symbol)
       {
-        obj = MapGrid[Player.x][Player.y - 1];
+        obj = MapGrid[Player.X][Player.Y - 1];
         return true;
       }
       // look down
-      if (Player.y >= Game.MapBox.Height || MapGrid[Player.x][Player.y + 1].Type.Symbol == symbol)
+      if (Player.Y >= Game.MapBox.Height || MapGrid[Player.X][Player.Y + 1].Type.Symbol == symbol)
       {
-        obj = MapGrid[Player.x][Player.y + 1];
+        obj = MapGrid[Player.X][Player.Y + 1];
         return true;
       }
       // not found
@@ -217,27 +215,27 @@ namespace ConsoleDungeonCrawler.GameData
     internal static char IsPlayerNextToOverlay(out MapObject obj)
     {
       // look left
-      if (Player.x > 0 && OverlayGrid[Player.x - 1][Player.y].Type.Symbol != ' ')
+      if (Player.X > 0 && OverlayGrid[Player.X - 1][Player.Y].Type.Symbol != ' ')
       {
-        obj = OverlayGrid[Player.x - 1][Player.y];
+        obj = OverlayGrid[Player.X - 1][Player.Y];
         return obj.Type.Symbol;
       }
       // look right
-      if (Player.x < Game.MapBox.Width && OverlayGrid[Player.x + 1][Player.y].Type.Symbol != ' ')
+      if (Player.X < Game.MapBox.Width && OverlayGrid[Player.X + 1][Player.Y].Type.Symbol != ' ')
       {
-        obj = OverlayGrid[Player.x + 1][Player.y];
+        obj = OverlayGrid[Player.X + 1][Player.Y];
         return obj.Type.Symbol;
       }
       // look up
-      if (Player.y > 0 && OverlayGrid[Player.x][Player.y - 1].Type.Symbol != ' ')
+      if (Player.Y > 0 && OverlayGrid[Player.X][Player.Y - 1].Type.Symbol != ' ')
       {
-        obj = OverlayGrid[Player.x][Player.y - 1];
+        obj = OverlayGrid[Player.X][Player.Y - 1];
         return obj.Type.Symbol;
       }
       // look down
-      if (Player.y >= Game.MapBox.Height || OverlayGrid[Player.x][Player.y + 1].Type.Symbol != ' ')
+      if (Player.Y >= Game.MapBox.Height || OverlayGrid[Player.X][Player.Y + 1].Type.Symbol != ' ')
       {
-        obj = OverlayGrid[Player.x][Player.y + 1];
+        obj = OverlayGrid[Player.X][Player.Y + 1];
         return obj.Type.Symbol;
       }
       // not found
@@ -248,27 +246,27 @@ namespace ConsoleDungeonCrawler.GameData
     internal static bool IsPlayerNextToOverlay(char symbol, out MapObject obj)
     {
       // look left
-      if (Player.x > 0 && OverlayGrid[Player.x - 1][Player.y].Type.Symbol == symbol)
+      if (Player.X > 0 && OverlayGrid[Player.X - 1][Player.Y].Type.Symbol == symbol)
       {
-        obj = OverlayGrid[Player.x - 1][Player.y];
+        obj = OverlayGrid[Player.X - 1][Player.Y];
         return true;
       }
       // look right
-      if (Player.x < Game.MapBox.Width && OverlayGrid[Player.x + 1][Player.y].Type.Symbol == symbol)
+      if (Player.X < Game.MapBox.Width && OverlayGrid[Player.X + 1][Player.Y].Type.Symbol == symbol)
       {
-        obj = OverlayGrid[Player.x + 1][Player.y];
+        obj = OverlayGrid[Player.X + 1][Player.Y];
         return true;
       }
       // look up
-      if (Player.y > 0 && OverlayGrid[Player.x][Player.y - 1].Type.Symbol == symbol)
+      if (Player.Y > 0 && OverlayGrid[Player.X][Player.Y - 1].Type.Symbol == symbol)
       {
-        obj = OverlayGrid[Player.x][Player.y - 1];
+        obj = OverlayGrid[Player.X][Player.Y - 1];
         return true;
       }
       // look down
-      if (Player.y >= Game.MapBox.Height || OverlayGrid[Player.x][Player.y + 1].Type.Symbol == symbol)
+      if (Player.Y >= Game.MapBox.Height || OverlayGrid[Player.X][Player.Y + 1].Type.Symbol == symbol)
       {
-        obj = OverlayGrid[Player.x][Player.y + 1];
+        obj = OverlayGrid[Player.X][Player.Y + 1];
         return true;
       }
       // not found
@@ -317,104 +315,104 @@ namespace ConsoleDungeonCrawler.GameData
     internal static void SetVisibleArea(int range)
     {
       // up and left
-      int xLimit = Player.x - range;
-      int yLimit = Player.y - range;
-      for (int y = Player.y; y > Player.y - range; y--)
+      int xLimit = Player.X - range;
+      int yLimit = Player.Y - range;
+      for (int y = Player.Y; y > Player.Y - range; y--)
       {
         if (y < yLimit) break;
-        SetVisibleYObjects(Player.x, y, ref yLimit);
-        for (int x = Player.x - 1; x > Player.x - range; x--)
+        SetVisibleYObjects(Player.X, y, ref yLimit);
+        for (int x = Player.X - 1; x > Player.X - range; x--)
         {
           if (x < xLimit) break;
           SetVisibleXObjects(x, y, ref xLimit);
         }
       }
       // left and up
-      xLimit = Player.x - range;
-      yLimit = Player.y - range;
-      for (int x = Player.x; x > Player.x - range; x--)
+      xLimit = Player.X - range;
+      yLimit = Player.Y - range;
+      for (int x = Player.X; x > Player.X - range; x--)
       {
         if (x < xLimit) break;
-        SetVisibleXObjects(x, Player.y, ref xLimit);
-        for (int y = Player.y - 1; y > Player.y - range; y--)
+        SetVisibleXObjects(x, Player.Y, ref xLimit);
+        for (int y = Player.Y - 1; y > Player.Y - range; y--)
         {
           if (y < yLimit) break;
           SetVisibleYObjects(x, y, ref yLimit);
         }
       }
       // up and right
-      xLimit = Player.x + range;
-      yLimit = Player.y - range;
-      for (int y = Player.y; y > Player.y - range; y--)
+      xLimit = Player.X + range;
+      yLimit = Player.Y - range;
+      for (int y = Player.Y; y > Player.Y - range; y--)
       {
         if (y < yLimit) break;
-        SetVisibleYObjects(Player.x, y, ref yLimit);
-        for (int x = Player.x + 1; x < Player.x + range; x++)
+        SetVisibleYObjects(Player.X, y, ref yLimit);
+        for (int x = Player.X + 1; x < Player.X + range; x++)
         {
           if (x > xLimit) break;
           SetVisibleXObjects(x, y, ref xLimit);
         }
       }
       // right and up
-      xLimit = Player.x + range;
-      yLimit = Player.y - range;
-      for (int x = Player.x; x < Player.x + range; x++)
+      xLimit = Player.X + range;
+      yLimit = Player.Y - range;
+      for (int x = Player.X; x < Player.X + range; x++)
       {
         if (x > xLimit) break;
-        SetVisibleXObjects(x, Player.y, ref xLimit);
-        for (int y = Player.y - 1; y > Player.y - range; y--)
+        SetVisibleXObjects(x, Player.Y, ref xLimit);
+        for (int y = Player.Y - 1; y > Player.Y - range; y--)
         {
           if (y < yLimit) break;
           SetVisibleYObjects(x, y, ref yLimit);
         }
       }
       // down and left
-      xLimit = Player.x - range;
-      yLimit = Player.y + range;
-      for (int y = Player.y; y < Player.y + range; y++)
+      xLimit = Player.X - range;
+      yLimit = Player.Y + range;
+      for (int y = Player.Y; y < Player.Y + range; y++)
       {
         if (y > yLimit) break;
-        SetVisibleYObjects(Player.x, y, ref yLimit);
-        for (int x = Player.x - 1; x > Player.x - range; x--)
+        SetVisibleYObjects(Player.X, y, ref yLimit);
+        for (int x = Player.X - 1; x > Player.X - range; x--)
         {
           if (x < xLimit) break;
           SetVisibleXObjects(x, y, ref xLimit);
         }
       }
       // left and down
-      xLimit = Player.x - range;
-      yLimit = Player.y + range;
-      for (int x = Player.x; x > Player.x - range; x--)
+      xLimit = Player.X - range;
+      yLimit = Player.Y + range;
+      for (int x = Player.X; x > Player.X - range; x--)
       {
         if (x < xLimit) break;
-        SetVisibleXObjects(x, Player.y, ref xLimit);
-        for (int y = Player.y + 1; y < Player.y + range; y++)
+        SetVisibleXObjects(x, Player.Y, ref xLimit);
+        for (int y = Player.Y + 1; y < Player.Y + range; y++)
         {
           if (y > yLimit) break;
           SetVisibleYObjects(x, y, ref yLimit);
         }
       }
       // down and right
-      xLimit = Player.x + range;
-      yLimit = Player.y + range;
-      for (int y = Player.y; y < Player.y + range; y++)
+      xLimit = Player.X + range;
+      yLimit = Player.Y + range;
+      for (int y = Player.Y; y < Player.Y + range; y++)
       {
         if (y > yLimit) break;
-        SetVisibleYObjects(Player.x, y, ref yLimit);
-        for (int x = Player.x + 1; x < Player.x + range; x++)
+        SetVisibleYObjects(Player.X, y, ref yLimit);
+        for (int x = Player.X + 1; x < Player.X + range; x++)
         {
           if (x > xLimit) break;
           SetVisibleXObjects(x, y, ref xLimit);
         }
       }
       // right and down
-      xLimit = Player.x + range;
-      yLimit = Player.y + range;
-      for (int x = Player.x; x < Player.x + range; x++)
+      xLimit = Player.X + range;
+      yLimit = Player.Y + range;
+      for (int x = Player.X; x < Player.X + range; x++)
       {
         if (x > xLimit) break;
-        SetVisibleXObjects(x, Player.y, ref xLimit);
-        for (int y = Player.y + 1; y < Player.y + range; y++)
+        SetVisibleXObjects(x, Player.Y, ref xLimit);
+        for (int y = Player.Y + 1; y < Player.Y + range; y++)
         {
           if (y > yLimit) break;
           SetVisibleYObjects(x, y, ref yLimit);
@@ -433,12 +431,12 @@ namespace ConsoleDungeonCrawler.GameData
     /// <summary>
     /// the x coordinate within the map area
     /// </summary>
-    internal int x { get; set; }
+    internal int X { get; set; }
 
     /// <summary>
     /// the y coordinate within the map area
     /// </summary>
-    internal int y { get; set; }
+    internal int Y { get; set; }
 
     internal ObjectType Type = new ObjectType();
 
@@ -453,23 +451,28 @@ namespace ConsoleDungeonCrawler.GameData
 
     internal MapObject(int x, int y)
     {
-      this.x = x;
-      this.y = y;
+      this.X = x;
+      this.Y = y;
     }
 
     internal MapObject(int x, int y, ObjectType type)
     {
-      this.x = x;
-      this.y = y;
+      this.X = x;
+      this.Y = y;
       Type = type;
     }
 
     internal MapObject(int x, int y, ObjectType type, bool isVisible)
     {
-      this.x = x;
-      this.y = y;
+      this.X = x;
+      this.Y = y;
       Type = type;
       Visible = isVisible;
+    }
+
+    internal void Draw()
+    {
+      ConsoleEx.WriteAt(this.Type.Symbol, this.X + Map.Left, this.Y + Map.Top, this.Type.ForegroundColor, this.Type.BackgroundColor);
     }
   }
 

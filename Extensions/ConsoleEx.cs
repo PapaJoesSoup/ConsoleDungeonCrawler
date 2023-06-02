@@ -425,7 +425,7 @@ namespace ConsoleDungeonCrawler.Extensions
         foreach (char c in s)
         {
           Console.Write(c);
-          Thread.Sleep(delay);
+          if (delay > 0) Thread.Sleep(delay);
         }
 
         Console.ResetColor();
@@ -446,7 +446,7 @@ namespace ConsoleDungeonCrawler.Extensions
         foreach (char c in s)
         {
           Console.Write(c);
-          Thread.Sleep(delay);
+          if (delay > 0) Thread.Sleep(delay);
         }
 
         Console.ResetColor();
@@ -489,7 +489,7 @@ namespace ConsoleDungeonCrawler.Extensions
           foreach (char c in s)
           {
             Console.Write(c);
-            Thread.Sleep(delay);
+            if (delay > 0) Thread.Sleep(delay);
           }
         }
 
@@ -512,7 +512,7 @@ namespace ConsoleDungeonCrawler.Extensions
           foreach (char c in s)
           {
             Console.Write(c);
-            Thread.Sleep(delay);
+            if (delay > 0) Thread.Sleep(delay);
           }
         }
       }
