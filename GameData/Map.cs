@@ -8,7 +8,6 @@ namespace ConsoleDungeonCrawler.GameData
 {
   internal class Map
   {
-
     internal static Map Instance = new Map();
     internal static int Top { get; set; }
     internal static int Left { get; set; }
@@ -81,20 +80,20 @@ namespace ConsoleDungeonCrawler.GameData
     internal void InitDictionaries()
     {
       MapGrid = new Dictionary<int, Dictionary<int, MapObject>>();
-      for (int x = 0; x < Game.MapBox.Width - 1; x++)
+      for (int x = 0; x <= Map.Width; x++)
       {
         MapGrid.Add(x, new Dictionary<int, MapObject>());
-        for (int y = 0; y < Game.MapBox.Height - 1; y++)
+        for (int y = 0; y <= Map.Width; y++)
         {
           MapGrid[x].Add(y, new MapObject(x, y));
         }
       }
 
       OverlayGrid = new Dictionary<int, Dictionary<int, MapObject>>();
-      for (int x = 0; x < Game.MapBox.Width - 1; x++)
+      for (int x = 0; x <= Map.Width; x++)
       {
         OverlayGrid.Add(x, new Dictionary<int, MapObject>());
-        for (int y = 0; y < Game.MapBox.Height - 1; y++)
+        for (int y = 0; y <= Map.Width; y++)
         {
           OverlayGrid[x].Add(y, new MapObject(x, y));
         }
@@ -103,7 +102,6 @@ namespace ConsoleDungeonCrawler.GameData
       OverlayObjects = new Dictionary<char, List<MapObject>>();
       foreach (ObjectType objectType in OverlayTypes)
         OverlayObjects.Add(objectType.Symbol, new List<MapObject>());
-
     }
 
     internal static void LoadMapGridFromFile(string filename)
@@ -111,10 +109,10 @@ namespace ConsoleDungeonCrawler.GameData
       StringBuilder sb = new StringBuilder();
       sb.Append(File.ReadAllText(filename));
       string[] lines = sb.ToString().Split('\n');
-      for (int y = 1; y <= Game.MapBox.Height; y++)
+      for (int y = 1; y <= Map.Height; y++)
       {
         string line = lines[y];
-        for (int x = 1; x <= Game.MapBox.Width; x++)
+        for (int x = 1; x <= Map.Width; x++)
         {
           char c = line[x];
           // find the object type where the symbol matches the string
@@ -131,10 +129,10 @@ namespace ConsoleDungeonCrawler.GameData
       StringBuilder sb = new StringBuilder();
       sb.Append(File.ReadAllText(filename));
       string[] lines = sb.ToString().Split('\n');
-      for (int y = 1; y <= Game.MapBox.Height; y++)
+      for (int y = 1; y <= Map.Height; y++)
       {
         string line = lines[y];
-        for (int x = 1; x <= Game.MapBox.Width; x++)
+        for (int x = 1; x <= Map.Width; x++)
         {
           char c = line[x];
           // find the object type where the symbol matches the string
@@ -419,72 +417,5 @@ namespace ConsoleDungeonCrawler.GameData
         }
       }
     }
-  }
-
-
-
-  internal class MapObject
-  {
-    // Note:  x and y are in relation to the map area, not the console screen.
-    // We will add the x and y position of the map area to these
-
-    /// <summary>
-    /// the x coordinate within the map area
-    /// </summary>
-    internal int X { get; set; }
-
-    /// <summary>
-    /// the y coordinate within the map area
-    /// </summary>
-    internal int Y { get; set; }
-
-    internal ObjectType Type = new ObjectType();
-
-    internal bool Visible = true;
-
-    internal Item Loot = new Item();
-
-
-    internal MapObject()
-    {
-    }
-
-    internal MapObject(int x, int y)
-    {
-      this.X = x;
-      this.Y = y;
-    }
-
-    internal MapObject(int x, int y, ObjectType type)
-    {
-      this.X = x;
-      this.Y = y;
-      Type = type;
-    }
-
-    internal MapObject(int x, int y, ObjectType type, bool isVisible)
-    {
-      this.X = x;
-      this.Y = y;
-      Type = type;
-      Visible = isVisible;
-    }
-
-    internal void Draw()
-    {
-      ConsoleEx.WriteAt(this.Type.Symbol, this.X + Map.Left, this.Y + Map.Top, this.Type.ForegroundColor, this.Type.BackgroundColor);
-    }
-  }
-
-  internal class ObjectType
-  {
-    internal char Symbol = ' ';
-    internal string Name = "Empty";
-    internal Color ForegroundColor = Color.Black;
-    internal Color BackgroundColor = Color.Black;
-    internal bool IsPassable = false;
-    internal bool IsVisible = true;
-    internal bool IsAttackable = false;
-    internal bool IsLootable = false;
   }
 }
