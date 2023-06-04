@@ -6,7 +6,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
   internal class MapObject : Position
   {
     internal ObjectType Type = new ObjectType();
-    internal bool Visible = true;
+    internal bool IsVisible = true;
     internal Item Loot = new Item();
 
     internal MapObject()
@@ -26,17 +26,17 @@ namespace ConsoleDungeonCrawler.Game.Maps
       Type = type;
     }
 
-    internal MapObject(int x, int y, ObjectType type, bool isVisible)
+    internal MapObject(int x, int y, ObjectType type, bool isIsVisible)
     {
       X = x;
       Y = y;
       Type = type;
-      Visible = isVisible;
+      IsVisible = isIsVisible;
     }
 
     internal void Draw()
     {
-      if (!Visible || Type.Symbol == ' ') return;
+      if (!IsVisible || Type.Symbol == ' ') return;
       ConsoleEx.WriteAt(Type.Symbol, X + Map.Left, Y + Map.Top, Type.ForegroundColor, Type.BackgroundColor);
     }
   }

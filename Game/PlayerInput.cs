@@ -1,4 +1,5 @@
 ﻿using ConsoleDungeonCrawler.Game.Entities;
+using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game
@@ -18,7 +19,7 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.S:
           case ConsoleKey.D:
             GamePlayScreen.Messages.Add(new Message($"You pressed Shift+{keyInfo.Key}"));
-            Actions.JumpPlayer(keyInfo.Key);
+            Map.Player.Jump(keyInfo.Key);
             break;
         }
       }
@@ -31,7 +32,7 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.S:
           case ConsoleKey.D:
             GamePlayScreen.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
-            Actions.MovePlayer(keyInfo.Key);
+            Map.Player.Move(keyInfo.Key);
             break;
           case ConsoleKey.End:
             Game.IsOver = true;

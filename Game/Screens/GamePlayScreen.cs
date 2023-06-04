@@ -30,8 +30,9 @@ namespace ConsoleDungeonCrawler.Game.Screens
       StatusSection();
       LegendSection();
       // we add this last so that the player is always on top
-      Player.MapObj.Draw();
+      Map.Player.Draw();
       Map.WhatIsVisible();
+      Actions.MonsterActions();
       MessageSection();
     }
 
@@ -112,7 +113,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       Map.Instance.DrawOverlay();
 
       // we add this last so that the player is always on top
-      Player.MapObj.Draw();
+      Map.Player.Draw();
     }
 
     internal static void LegendSection()
@@ -123,7 +124,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       {
         foreach (MapObject mapObject in Map.OverlayObjects[type])
         {
-          if (!mapObject.Visible || mapObject.Type.Symbol == ' ') continue;
+          if (!mapObject.IsVisible || mapObject.Type.Symbol == ' ') continue;
           ConsoleEx.WriteLegendItem(mapObject, col, row, LegendBox.Width - 2);
           row++;
         }
