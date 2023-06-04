@@ -29,9 +29,7 @@ namespace ConsoleDungeonCrawler.Game
       while (!IsOver && !IsWon)
       {
         if (IsPaused)
-        {
           GamePausedScreen.Draw();
-        }
         else
         {
           PlayerInput.Process();
@@ -39,13 +37,9 @@ namespace ConsoleDungeonCrawler.Game
         }
       }
       if (IsOver)
-      {
         GameOverScreen.Draw();
-      }
       else if (IsWon)
-      {
         GameWonScreen.Draw();
-      }
 
     }
   }

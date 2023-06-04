@@ -6,6 +6,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
   {
     internal char Symbol = ' ';
     internal string Name = "Empty";
+    internal string Singular = "Empty Space";
+    internal string Plural = "Empty Spaces";
     internal Color ForegroundColor = Color.Black;
     internal Color BackgroundColor = Color.Black;
     internal bool IsPassable = false;

@@ -1,4 +1,5 @@
-﻿using ConsoleDungeonCrawler.Game.Entities;
+﻿using System.Runtime.Remoting;
+using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 
@@ -18,7 +19,7 @@ namespace ConsoleDungeonCrawler.Game
         case 'm':
           GamePlayScreen.Messages.Add($"Picking up {obj.Type.Name}...");
           Player.AddToInventory(obj.Loot);
-          UpdateOverlayObject(obj);
+          Map.UpdateOverlayObject(obj);
           break;
         default:
           break;
@@ -28,20 +29,24 @@ namespace ConsoleDungeonCrawler.Game
     public static void OpenDoor()
     {
       if (!Map.IsPlayerNextToMap('+', out MapObject door)) return;
-      ObjectType? type = Map.MapTypes.Find(t => t.Symbol == '-');
-      if (type == null) return;
+      ObjectType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new ObjectType();
+      if (type.Symbol == ' ') return;
       GamePlayScreen.Messages.Add($"Opening Door...");
+      Map.RemoveFromMapObjects(door);
       door.Type = type;
+      Map.AddToMapObjects(door);
       door.Draw();
     }
 
     public static void CloseDoor()
     {
       if (!Map.IsPlayerNextToMap('-', out MapObject door)) return;
-      ObjectType? type = Map.MapTypes.Find(t => t.Symbol == '+');
-      if (type == null) return;
+      ObjectType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new ObjectType();
+      if (type.Symbol == ' ') return;
       GamePlayScreen.Messages.Add($"Closing Door...");
+      Map.RemoveFromMapObjects(door);
       door.Type = type;
+      Map.AddToMapObjects(door);
       door.Draw();
     }
 
@@ -64,16 +69,6 @@ namespace ConsoleDungeonCrawler.Game
       Map.MapGrid[newPos.Item1][newPos.Item2].Draw();
       Map.OverlayGrid[oldPos.Item1][oldPos.Item2].Draw();
       Map.OverlayGrid[newPos.Item1][newPos.Item2].Draw();
-    }
-
-    private static void UpdateOverlayObject(MapObject obj)
-    {
-      int idx = Map.OverlayObjects[obj.Type.Symbol].IndexOf(obj);
-      MapObject newObj = new MapObject(obj.X, obj.Y, new ObjectType(), false);
-      Map.OverlayGrid[obj.X][obj.Y] = newObj;
-      Map.OverlayObjects[obj.Type.Symbol][idx] = newObj;
-      newObj.Draw();
-      GamePlayScreen.LegendSection();
     }
   }
 }

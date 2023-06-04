@@ -29,9 +29,10 @@ namespace ConsoleDungeonCrawler.Game.Screens
       Map.SetVisibleArea(10);
       StatusSection();
       LegendSection();
-      MessageSection();
       // we add this last so that the player is always on top
       Player.OnMap.Draw();
+      Map.WhatIsVisible();
+      MessageSection();
     }
 
     internal static void Borders()
@@ -102,8 +103,6 @@ namespace ConsoleDungeonCrawler.Game.Screens
       ConsoleEx.WriteAt($"Mana: {Player.Mana}/{Player.MaxMana}", col, row, ConsoleColor.White);
       row++;
       ConsoleEx.WriteAt($"Gold: {Player.Gold}g", col, row, ConsoleColor.White);
-
-
     }
 
     internal static void MapSection()
@@ -149,5 +148,4 @@ namespace ConsoleDungeonCrawler.Game.Screens
       }
     }
   }
-
 }
