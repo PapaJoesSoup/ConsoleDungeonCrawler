@@ -24,7 +24,8 @@ namespace ConsoleDungeonCrawler.Game
     private static void PlayGame()
     {
       ConsoleEx.Clear();
-      //Console.SetCursorPosition(0, 0);
+      GamePlayScreen.Messages.Add("You have entered the Dungeon!");
+      GamePlayScreen.Messages.Add("You look around...");
       GamePlayScreen.Draw();
       while (!IsOver && !IsWon)
       {

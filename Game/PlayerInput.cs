@@ -8,39 +8,55 @@ namespace ConsoleDungeonCrawler.Game
     {
       // Capture and hide the key the user pressed
       ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-      switch (keyInfo.Key)
+      if ((keyInfo.Modifiers & ConsoleModifiers.Shift) != 0)
       {
-        case ConsoleKey.W:
-        case ConsoleKey.A:
-        case ConsoleKey.S:
-        case ConsoleKey.D:
-          GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}");
-          Actions.MovePlayer(keyInfo.Key);
-          break;
-        case ConsoleKey.End:
-          Game.IsOver = true;
-          break;
-        case ConsoleKey.Escape:
-          Game.IsPaused = true;
-          break;
-        case ConsoleKey.PageUp:
-          GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}");
-          break;
-        case ConsoleKey.PageDown:
-          GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}");
-          break;
-        case ConsoleKey.O:
-          Actions.OpenDoor();
-          break;
-        case ConsoleKey.C:
-          Actions.CloseDoor();
-          break;
-        case ConsoleKey.Enter:
-          Actions.PickupOverlayItem();
-          break;
-        default:
-          GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}, which does nothing.");
-          break;
+        switch (keyInfo.Key)
+        {
+          case ConsoleKey.W:
+          case ConsoleKey.A:
+          case ConsoleKey.S:
+          case ConsoleKey.D:
+            GamePlayScreen.Messages.Add($"You pressed Shift+{keyInfo.Key}");
+            Actions.JumpPlayer(keyInfo.Key);
+            break;
+        }
+      }
+      else
+      {
+        switch (keyInfo.Key)
+        {
+          case ConsoleKey.W:
+          case ConsoleKey.A:
+          case ConsoleKey.S:
+          case ConsoleKey.D:
+            GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}");
+            Actions.MovePlayer(keyInfo.Key);
+            break;
+          case ConsoleKey.End:
+            Game.IsOver = true;
+            break;
+          case ConsoleKey.Escape:
+            Game.IsPaused = true;
+            break;
+          case ConsoleKey.PageUp:
+            GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}");
+            break;
+          case ConsoleKey.PageDown:
+            GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}");
+            break;
+          case ConsoleKey.O:
+            Actions.OpenDoor();
+            break;
+          case ConsoleKey.C:
+            Actions.CloseDoor();
+            break;
+          case ConsoleKey.Enter:
+            Actions.PickupOverlayItem();
+            break;
+            default:
+            GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}, which does nothing.");
+            break;
+        }
       }
     }
   }

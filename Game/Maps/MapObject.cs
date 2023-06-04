@@ -3,27 +3,11 @@ using ConsoleDungeonCrawler.Game.Entities;
 
 namespace ConsoleDungeonCrawler.Game.Maps
 {
-  internal class MapObject
+  internal class MapObject : Position
   {
-    // Note:  x and y are in relation to the map area, not the console screen.
-    // We will add the x and y position of the map area to these
-
-    /// <summary>
-    /// the x coordinate within the map area
-    /// </summary>
-    internal int X { get; set; }
-
-    /// <summary>
-    /// the y coordinate within the map area
-    /// </summary>
-    internal int Y { get; set; }
-
     internal ObjectType Type = new ObjectType();
-
     internal bool Visible = true;
-
     internal Item Loot = new Item();
-
 
     internal MapObject()
     {

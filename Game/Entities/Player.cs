@@ -2,7 +2,7 @@
 
 namespace ConsoleDungeonCrawler.Game.Entities
 {
-    internal static class Player
+  internal static class Player
   {
     internal static int Level = 1;
     internal static int Experience = 0;
@@ -17,11 +17,11 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static Weapon Weapon = new Weapon();
     internal static Dictionary<int, Spell> Spells;
     internal static Dictionary<int, Item> Inventory;
-    internal static MapObject OnMap = new MapObject();
+    internal static MapObject MapObj = new MapObject();
 
     static Player()
     {
-      // Add 4 empty slots to armor set
+      // Add 5 empty slots to armor set
       ArmorSet = new List<Armor>();
       ArmorSet.Add(new Armor(ArmorType.Head));
       ArmorSet.Add(new Armor(ArmorType.Body));

@@ -30,7 +30,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       StatusSection();
       LegendSection();
       // we add this last so that the player is always on top
-      Player.OnMap.Draw();
+      Player.MapObj.Draw();
       Map.WhatIsVisible();
       MessageSection();
     }
@@ -112,7 +112,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       Map.Instance.DrawOverlay();
 
       // we add this last so that the player is always on top
-      Player.OnMap.Draw();
+      Player.MapObj.Draw();
     }
 
     internal static void LegendSection()

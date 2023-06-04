@@ -1,5 +1,4 @@
-﻿using System.Runtime.Remoting;
-using ConsoleDungeonCrawler.Game.Entities;
+﻿using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 
@@ -17,7 +16,8 @@ namespace ConsoleDungeonCrawler.Game
       {
         case 'i':
         case 'm':
-          GamePlayScreen.Messages.Add($"Picking up {obj.Type.Name}...");
+        case 'g':
+          GamePlayScreen.Messages.Add($"You Picked up {obj.Type.Singular}!");
           Player.AddToInventory(obj.Loot);
           Map.UpdateOverlayObject(obj);
           break;
@@ -59,16 +59,37 @@ namespace ConsoleDungeonCrawler.Game
       if (key == ConsoleKey.S) { x = 0; y = 1; }
       if (key == ConsoleKey.D) { x = 1; y = 0; }
 
-      Tuple<int, int> oldPos = new Tuple<int, int>(Player.OnMap.X, Player.OnMap.Y);
-      Tuple<int, int> newPos = new Tuple<int, int>(Player.OnMap.X + x, Player.OnMap.Y + y);
+      Position oldPos = new Position(Player.MapObj.X, Player.MapObj.Y);
+      Position newPos = new Position(Player.MapObj.X + x, Player.MapObj.Y + y);
 
-      if (!Map.CanMoveTo(newPos.Item1, newPos.Item2)) return;
-      Map.OverlayObjects['P'][0].X = newPos.Item1;
-      Map.OverlayObjects['P'][0].Y = newPos.Item2;
-      Map.MapGrid[oldPos.Item1][oldPos.Item2].Draw();
-      Map.MapGrid[newPos.Item1][newPos.Item2].Draw();
-      Map.OverlayGrid[oldPos.Item1][oldPos.Item2].Draw();
-      Map.OverlayGrid[newPos.Item1][newPos.Item2].Draw();
+      if (!Map.CanMoveTo(newPos.X, newPos.Y)) return;
+      Map.OverlayObjects['P'][0].X = newPos.X;
+      Map.OverlayObjects['P'][0].Y = newPos.Y;
+      Map.MapGrid[oldPos.X][oldPos.Y].Draw();
+      Map.MapGrid[newPos.X][newPos.Y].Draw();
+      Map.OverlayGrid[oldPos.X][oldPos.Y].Draw();
+      Map.OverlayGrid[newPos.X][newPos.Y].Draw();
+    }
+
+    public static void JumpPlayer(ConsoleKey key)
+    {
+      int x = 0;
+      int y = 0;
+      if (key == ConsoleKey.W) { x = 0; y = -2; }
+      if (key == ConsoleKey.A) { x = -2; y = 0; }
+      if (key == ConsoleKey.S) { x = 0; y = 2; }
+      if (key == ConsoleKey.D) { x = 2; y = 0; }
+
+      Position oldPos = new Position(Player.MapObj.X, Player.MapObj.Y);
+      Position newPos = new Position(Player.MapObj.X + x, Player.MapObj.Y + y);
+
+      if (!Map.CanJumpTo(oldPos.X, oldPos.Y, newPos.X, newPos.Y)) return;
+      Map.OverlayObjects['P'][0].X = newPos.X;
+      Map.OverlayObjects['P'][0].Y = newPos.Y;
+      Map.MapGrid[oldPos.X][oldPos.Y].Draw();
+      Map.MapGrid[newPos.X][newPos.Y].Draw();
+      Map.OverlayGrid[oldPos.X][oldPos.Y].Draw();
+      Map.OverlayGrid[newPos.X][newPos.Y].Draw();
     }
   }
 }
