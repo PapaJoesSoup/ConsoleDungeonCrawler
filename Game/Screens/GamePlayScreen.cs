@@ -10,7 +10,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static Box MapBox = new Box(1, 7, 178, 35);
     internal static Box LegendBox = new Box(178, 7, 31, 35);
     internal static Box MessageBox = new Box(1, 41, 208, 10);
-    internal static List<string> Messages = new List<string>();
+    internal static List<Message> Messages = new List<Message>();
 
     internal static BoxCharsEx boxCharsEx = new BoxCharsEx("\xe2948d", "\xe29491", "\\xd59f", "\xe29499", "\xe295bc", "\xe29482");
     internal static char HBorderChar = '=';
@@ -142,8 +142,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int offset = Messages.Count - 8 > 0 ? Messages.Count - 8 : 0;
       for (int index = 0 + offset; index < Messages.Count; index++)
       {
-        string? message = Messages[index].PadRight(MessageBox.Width - 3);
-        ConsoleEx.WriteAt(message, col, row, ConsoleColor.White);
+        Messages[index].WriteAt(col, row);
         row++;
       }
     }

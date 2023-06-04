@@ -1,4 +1,5 @@
-﻿using ConsoleDungeonCrawler.Game.Screens;
+﻿using ConsoleDungeonCrawler.Game.Entities;
+using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game
 {
@@ -16,7 +17,7 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.A:
           case ConsoleKey.S:
           case ConsoleKey.D:
-            GamePlayScreen.Messages.Add($"You pressed Shift+{keyInfo.Key}");
+            GamePlayScreen.Messages.Add(new Message($"You pressed Shift+{keyInfo.Key}"));
             Actions.JumpPlayer(keyInfo.Key);
             break;
         }
@@ -29,7 +30,7 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.A:
           case ConsoleKey.S:
           case ConsoleKey.D:
-            GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}");
+            GamePlayScreen.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
             Actions.MovePlayer(keyInfo.Key);
             break;
           case ConsoleKey.End:
@@ -39,10 +40,10 @@ namespace ConsoleDungeonCrawler.Game
             Game.IsPaused = true;
             break;
           case ConsoleKey.PageUp:
-            GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}");
+            GamePlayScreen.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
             break;
           case ConsoleKey.PageDown:
-            GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}");
+            GamePlayScreen.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
             break;
           case ConsoleKey.O:
             Actions.OpenDoor();
@@ -54,7 +55,7 @@ namespace ConsoleDungeonCrawler.Game
             Actions.PickupOverlayItem();
             break;
             default:
-            GamePlayScreen.Messages.Add($"You pressed {keyInfo.Key}, which does nothing.");
+              GamePlayScreen.Messages.Add(new Message($"You pressed {keyInfo.Key}, which does nothing."));
             break;
         }
       }

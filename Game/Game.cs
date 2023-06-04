@@ -1,4 +1,6 @@
-﻿using ConsoleDungeonCrawler.Extensions;
+﻿using System.Drawing;
+using ConsoleDungeonCrawler.Extensions;
+using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 
@@ -24,8 +26,8 @@ namespace ConsoleDungeonCrawler.Game
     private static void PlayGame()
     {
       ConsoleEx.Clear();
-      GamePlayScreen.Messages.Add("You have entered the Dungeon!");
-      GamePlayScreen.Messages.Add("You look around...");
+      GamePlayScreen.Messages.Add(new Message("You have entered the Dungeon!", Color.Chartreuse, Color.Black));
+      GamePlayScreen.Messages.Add(new Message("You look around...",Color.White, Color.Black));
       GamePlayScreen.Draw();
       while (!IsOver && !IsWon)
       {

@@ -475,7 +475,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
           if (obj.Visible) count++;
 
         if (count < 1) continue;
-        GamePlayScreen.Messages.Add($"You see {(count < 2 ? type.Singular : type.Plural)} ({count})...");
+        GamePlayScreen.Messages.Add(
+          new Message($"You see {(count < 2 ? type.Singular : type.Plural)} ({count})...", type.Symbol == '#'? Color.White : type.ForegroundColor, Color.Black));
       }
 
       foreach (char symbol in Map.OverlayObjects.Keys)
@@ -488,7 +489,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
           if (obj.Visible) count++;
 
         if (count < 1) continue;
-        GamePlayScreen.Messages.Add($"You see {(count < 2 ? type.Singular : type.Plural)} ({count})...");
+        GamePlayScreen.Messages.Add(new Message($"You see {(count < 2 ? type.Singular : type.Plural)} ({count})...", (type.Symbol == 'S' || type.Symbol == 'E') ? Color.White : type.ForegroundColor, Color.Black));
       }
     }
 

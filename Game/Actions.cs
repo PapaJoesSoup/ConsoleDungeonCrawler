@@ -1,4 +1,5 @@
-﻿using ConsoleDungeonCrawler.Game.Entities;
+﻿using System.Drawing;
+using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 
@@ -17,7 +18,7 @@ namespace ConsoleDungeonCrawler.Game
         case 'i':
         case 'm':
         case 'g':
-          GamePlayScreen.Messages.Add($"You Picked up {obj.Type.Singular}!");
+          GamePlayScreen.Messages.Add(new Message($"You Picked up {obj.Type.Singular}!", Color.DarkGoldenrod, Color.Black));
           Player.AddToInventory(obj.Loot);
           Map.UpdateOverlayObject(obj);
           break;
@@ -31,7 +32,7 @@ namespace ConsoleDungeonCrawler.Game
       if (!Map.IsPlayerNextToMap('+', out MapObject door)) return;
       ObjectType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new ObjectType();
       if (type.Symbol == ' ') return;
-      GamePlayScreen.Messages.Add($"Opening Door...");
+      GamePlayScreen.Messages.Add(new Message("Opening Door...", Color.Yellow, Color.Black));
       Map.RemoveFromMapObjects(door);
       door.Type = type;
       Map.AddToMapObjects(door);
@@ -43,7 +44,8 @@ namespace ConsoleDungeonCrawler.Game
       if (!Map.IsPlayerNextToMap('-', out MapObject door)) return;
       ObjectType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new ObjectType();
       if (type.Symbol == ' ') return;
-      GamePlayScreen.Messages.Add($"Closing Door...");
+      GamePlayScreen.Messages.Add(new Message("Closing Door...", Color.Yellow,
+        Color.Black));
       Map.RemoveFromMapObjects(door);
       door.Type = type;
       Map.AddToMapObjects(door);
