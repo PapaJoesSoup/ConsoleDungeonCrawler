@@ -7,4 +7,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Game\Maps\Data\MapPlacement.txt" />
+    <None Remove="Game\Maps\Data\MapTemplate.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Game\Maps\Data\MapPlacement.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Maps\Data\MapTemplate.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

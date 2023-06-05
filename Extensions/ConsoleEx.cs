@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Globalization;
-using ConsoleDungeonCrawler.GameData;
-using ConsoleDungeonCrawler.Extensions;
+using ConsoleDungeonCrawler.Game;
+using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler.Extensions
 {
@@ -17,7 +17,7 @@ namespace ConsoleDungeonCrawler.Extensions
       set
       {
         foregroundColor = value;
-        Console.Write(ConsoleColorEx.ToFgHiColor(value) );
+        Console.Write(ConsoleColorEx.ToFgHiColor(value));
       }
     }
 
@@ -35,17 +35,17 @@ namespace ConsoleDungeonCrawler.Extensions
     internal static void InitializeConsole()
     {
       Console.CursorVisible = false;
-      Console.Title = Game.Title;
+      Console.Title = Game.Game.Title;
     }
 
     internal static void WriteLegendItem(MapObject mapObject, int col, int row, int width)
     {
-      // create a formatted line containing the symbol and the name of the map object
+      // create a formatted line containing the symbol and the type of the map object
       int padding = width - mapObject.Type.Name.Length - 5;
-      int paddingStart = col + mapObject.Type.Name.Length + 3 ;
+      int paddingStart = col + mapObject.Type.Name.Length + 3;
       WriteAt(' ', col, row, Color.White, Color.DimGray);
-      WriteAt(mapObject.Type.Symbol.ToString(), col + 1, row, mapObject.Type.ForegroundColor, mapObject.Type.BackgroundColor );
-      WriteAt(':', col + 2,row,Color.White, Color.DimGray);
+      WriteAt(mapObject.Type.Symbol.ToString(), col + 1, row, mapObject.Type.ForegroundColor, mapObject.Type.BackgroundColor);
+      WriteAt(':', col + 2, row, Color.White, Color.DimGray);
       WriteAt(mapObject.Type.Name, col + 3, row, mapObject.Type.ForegroundColor, Color.DimGray);
       WriteAt(new string(' ', padding), paddingStart, row, Color.White, Color.DimGray);
     }
@@ -365,6 +365,71 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y, color);
     }
 
+    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign, Color color,
+      Color backgroundColor, int xOffset, int yOffset)
+    {
+      int x = 0;
+      int y = 0;
+      switch (hAlign)
+      {
+        case HAlign.Left:
+          x = 0;
+          break;
+        case HAlign.Center:
+          x = (Console.WindowWidth / 2) - (s.Length / 2);
+          break;
+        case HAlign.Right:
+          x = Console.WindowWidth - s.Length;
+          break;
+      }
+
+      switch (vAlign)
+      {
+        case VAlign.Top:
+          y = 0;
+          break;
+        case VAlign.Middle:
+          y = (Console.WindowHeight / 2) - 1;
+          break;
+        case VAlign.Bottom:
+          y = Console.WindowHeight - 1;
+          break;
+      }
+      WriteAt(s, x + xOffset, y + yOffset, color, backgroundColor);
+    }
+
+    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign, Color color,
+      Color backgroundColor)
+    {
+      int x = 0;
+      int y = 0;
+      switch (hAlign)
+      {
+        case HAlign.Left:
+          x = 0;
+          break;
+        case HAlign.Center:
+          x = (Console.WindowWidth / 2) - (s.Length / 2);
+          break;
+        case HAlign.Right:
+          x = Console.WindowWidth - s.Length;
+          break;
+      }
+
+      switch (vAlign)
+      {
+        case VAlign.Top:
+          y = 0;
+          break;
+        case VAlign.Middle:
+          y = (Console.WindowHeight / 2) - 1;
+          break;
+        case VAlign.Bottom:
+          y = Console.WindowHeight - 1;
+          break;
+      }
+      WriteAt(s, x, y, color, backgroundColor);
+    }
 
 
     // WriteAt string methods
@@ -425,7 +490,7 @@ namespace ConsoleDungeonCrawler.Extensions
         foreach (char c in s)
         {
           Console.Write(c);
-          Thread.Sleep(delay);
+          if (delay > 0) Thread.Sleep(delay);
         }
 
         Console.ResetColor();
@@ -446,7 +511,7 @@ namespace ConsoleDungeonCrawler.Extensions
         foreach (char c in s)
         {
           Console.Write(c);
-          Thread.Sleep(delay);
+          if (delay > 0) Thread.Sleep(delay);
         }
 
         Console.ResetColor();
@@ -489,7 +554,7 @@ namespace ConsoleDungeonCrawler.Extensions
           foreach (char c in s)
           {
             Console.Write(c);
-            Thread.Sleep(delay);
+            if (delay > 0) Thread.Sleep(delay);
           }
         }
 
@@ -512,7 +577,7 @@ namespace ConsoleDungeonCrawler.Extensions
           foreach (char c in s)
           {
             Console.Write(c);
-            Thread.Sleep(delay);
+            if (delay > 0) Thread.Sleep(delay);
           }
         }
       }
@@ -941,6 +1006,32 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
+    internal static void WriteAt(string s, int x, int y, Color color, Color backgroundColor, int delay,
+      int repeat)
+    {
+      try
+      {
+        Console.SetCursorPosition(x, y);
+        ConsoleEx.ForegroundColor = color;
+        ConsoleEx.BackgroundColor = backgroundColor;
+        for (int i = 0; i < repeat; i++)
+        {
+          foreach (char c in s)
+          {
+            Console.Write(c);
+            if (delay > 0) Thread.Sleep(delay);
+          }
+        }
+
+        Console.ResetColor();
+      }
+      catch (ArgumentOutOfRangeException e)
+      {
+        Console.Clear();
+        Console.WriteLine(e.Message);
+      }
+    }
+
 
     // WriteBorder Methods
     internal static void WriteBorder(Box box, char h, char v, ConsoleColor color)
@@ -955,7 +1046,7 @@ namespace ConsoleDungeonCrawler.Extensions
           }
           else
           {
-            ConsoleEx.WriteAt(v,box.Left, box.Top + i, color);
+            ConsoleEx.WriteAt(v, box.Left, box.Top + i, color);
             ConsoleEx.WriteAt(v, box.Left + box.Width - 1, box.Top + i, color);
           }
         }
@@ -1127,71 +1218,5 @@ namespace ConsoleDungeonCrawler.Extensions
       Console.Clear();
     }
 
-  }
-
-  internal class BoxChars
-  {
-    internal char topLeft = ' ';
-    internal char topRight = ' ';
-    internal char botLeft = ' ';
-    internal char botRight = ' ';
-    internal char hor = ' ';
-    internal char ver = ' ';
-
-    internal BoxChars()
-    {
-    }
-
-    internal BoxChars(char topLeft, char topRight, char botLeft, char botRight, char hor, char ver)
-    {
-      this.topLeft = topLeft;
-      this.topRight = topRight;
-      this.botLeft = botLeft;
-      this.botRight = botRight;
-      this.hor = hor;
-      this.ver = ver;
-    }
-  }
-
-  internal class BoxCharsEx
-  {
-    internal string topLeft = " ";
-    internal string topRight = " ";
-    internal string botLeft = " ";
-    internal string botRight = " ";
-    internal string hor = " ";
-    internal string ver = " ";
-    internal BoxCharsEx() { }
-
-    internal BoxCharsEx(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver)
-    {
-      this.topLeft = topLeft;
-      this.topRight = topRight;
-      this.botLeft = botLeft;
-      this.botRight = botRight;
-      this.hor = hor;
-      this.ver = ver;
-    }
-
-  }
-
-  internal class Box
-  {
-    internal int Height = 0;
-    internal int Width = 0;
-    internal int Left = 0;
-    internal int Top = 0;
-
-    internal Box()
-    {
-    }
-
-    internal Box(int left, int top, int width, int height)
-    {
-      Left = left;
-      Top = top;
-      Width = width;
-      Height = height;
-    }
   }
 }
