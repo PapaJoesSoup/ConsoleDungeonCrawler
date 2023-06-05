@@ -4,7 +4,7 @@ using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler.Game.Screens
 {
-  internal static class GamePlayScreen
+    internal static class GamePlayScreen
   {
     internal static Box StatusBox = new Box(1, 0, 208, 8);
     internal static Box MapBox = new Box(1, 7, 178, 35);
@@ -27,11 +27,10 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static void Update()
     {
       Map.SetVisibleArea(10);
+      Map.Player.Draw();
       StatusSection();
       LegendSection();
-      // we add this last so that the player is always on top
-      Map.Player.Draw();
-      Map.WhatIsVisible();
+      if(!Player.InCombat) Map.WhatIsVisible();
       Actions.MonsterActions();
       MessageSection();
     }

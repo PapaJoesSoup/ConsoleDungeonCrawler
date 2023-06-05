@@ -1,4 +1,5 @@
-﻿using ConsoleDungeonCrawler.Extensions;
+﻿using System.Drawing;
+using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
 
 namespace ConsoleDungeonCrawler.Game.Maps
@@ -8,6 +9,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
     internal ObjectType Type = new ObjectType();
     internal bool IsVisible = true;
     internal Item Loot = new Item();
+    internal Color ForegroundColor = Color.White;
+    internal Color BackgroundColor = Color.Black;
 
     internal MapObject()
     {
@@ -17,6 +20,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
     {
       X = x;
       Y = y;
+      ForegroundColor = Type.ForegroundColor;
+      BackgroundColor = Type.BackgroundColor;
     }
 
     internal MapObject(int x, int y, ObjectType type)
@@ -24,6 +29,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
       X = x;
       Y = y;
       Type = type;
+      ForegroundColor = type.ForegroundColor;
+      BackgroundColor = type.BackgroundColor;
     }
 
     internal MapObject(int x, int y, ObjectType type, bool isIsVisible)
@@ -32,12 +39,14 @@ namespace ConsoleDungeonCrawler.Game.Maps
       Y = y;
       Type = type;
       IsVisible = isIsVisible;
+      ForegroundColor = type.ForegroundColor;
+      BackgroundColor = type.BackgroundColor;
     }
 
     internal void Draw()
     {
       if (!IsVisible || Type.Symbol == ' ') return;
-      ConsoleEx.WriteAt(Type.Symbol, X + Map.Left, Y + Map.Top, Type.ForegroundColor, Type.BackgroundColor);
+      ConsoleEx.WriteAt(Type.Symbol, X + Map.Left, Y + Map.Top, ForegroundColor, BackgroundColor);
     }
   }
 

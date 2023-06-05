@@ -62,6 +62,7 @@ namespace ConsoleDungeonCrawler.Game
           if (!monster.IsVisible || !monster.IsAlive) continue;
           monster.Detect();
           if (!monster.InCombat) continue;
+          Player.InCombat = true;
           monster.Attack();
         }
       }

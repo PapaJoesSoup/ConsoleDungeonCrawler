@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Globalization;
-using ConsoleDungeonCrawler.Game.Entities;
+using ConsoleDungeonCrawler.Game;
 using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler.Extensions
@@ -40,7 +40,7 @@ namespace ConsoleDungeonCrawler.Extensions
 
     internal static void WriteLegendItem(MapObject mapObject, int col, int row, int width)
     {
-      // create a formatted line containing the symbol and the name of the map object
+      // create a formatted line containing the symbol and the type of the map object
       int padding = width - mapObject.Type.Name.Length - 5;
       int paddingStart = col + mapObject.Type.Name.Length + 3;
       WriteAt(' ', col, row, Color.White, Color.DimGray);

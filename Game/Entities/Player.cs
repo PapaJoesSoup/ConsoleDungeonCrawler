@@ -1,5 +1,7 @@
-﻿using ConsoleDungeonCrawler.Game.Maps;
+﻿using ConsoleDungeonCrawler.Game.Entities.Items;
+using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
+using System.Drawing;
 
 namespace ConsoleDungeonCrawler.Game.Entities
 {
@@ -14,10 +16,17 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static int Mana = 0;
     internal static int MaxMana = 0;
     internal static decimal Gold = 0;
+
     internal static List<Armor> ArmorSet = new List<Armor>();
     internal static Weapon Weapon = new Weapon();
     internal static Dictionary<int, Spell> Spells = new Dictionary<int, Spell>();
     internal static Dictionary<int, Item> Inventory = new Dictionary<int, Item>();
+    internal static bool IsAlive = true;
+    internal static bool InCombat = false;
+
+    internal Player()
+    {
+    }
 
     internal Player(MapObject mapObject)
     {
@@ -25,6 +34,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
       X = mapObject.X;
       Y = mapObject.Y;
       Type = mapObject.Type;
+      ForegroundColor = Type.ForegroundColor;
+      BackgroundColor = Type.BackgroundColor;
       IsVisible = mapObject.IsVisible;
 
       // Add 5 empty slots to armor set
@@ -39,14 +50,14 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Inventory = new Dictionary<int, Item>();
       for (int i = 1; i < 6; i++)
       {
-        Inventory.Add(i, new Item() { name = ItemName.None, rarity = ItemRarity.Common, id = 0 });
+        Inventory.Add(i, new Item() { Type = ItemType.None });
       }
 
       // Add 5 empty slots to spells
       Spells = new Dictionary<int, Spell>();
       for (int i = 1; i < 6; i++)
       {
-        Spells.Add(i, new Spell() { Name = SpellName.None, DamageType = DamageType.Magical, DamageAmount = DamageEffectAmount.None });
+        Spells.Add(i, new Spell() { Name = SpellName.None, DamageType = DamageType.Magical, Damage = 0 });
       }
     }
 
@@ -54,10 +65,29 @@ namespace ConsoleDungeonCrawler.Game.Entities
     {
       int x = 0;
       int y = 0;
-      if (key == ConsoleKey.W) { x = 0; y = -1; }
-      if (key == ConsoleKey.A) { x = -1; y = 0; }
-      if (key == ConsoleKey.S) { x = 0; y = 1; }
-      if (key == ConsoleKey.D) { x = 1; y = 0; }
+      if (key == ConsoleKey.W)
+      {
+        x = 0;
+        y = -1;
+      }
+
+      if (key == ConsoleKey.A)
+      {
+        x = -1;
+        y = 0;
+      }
+
+      if (key == ConsoleKey.S)
+      {
+        x = 0;
+        y = 1;
+      }
+
+      if (key == ConsoleKey.D)
+      {
+        x = 1;
+        y = 0;
+      }
 
       Position oldPos = new Position(X, Y);
       Position newPos = new Position(X + x, Y + y);
@@ -76,10 +106,29 @@ namespace ConsoleDungeonCrawler.Game.Entities
     {
       int x = 0;
       int y = 0;
-      if (key == ConsoleKey.W) { x = 0; y = -2; }
-      if (key == ConsoleKey.A) { x = -2; y = 0; }
-      if (key == ConsoleKey.S) { x = 0; y = 2; }
-      if (key == ConsoleKey.D) { x = 2; y = 0; }
+      if (key == ConsoleKey.W)
+      {
+        x = 0;
+        y = -2;
+      }
+
+      if (key == ConsoleKey.A)
+      {
+        x = -2;
+        y = 0;
+      }
+
+      if (key == ConsoleKey.S)
+      {
+        x = 0;
+        y = 2;
+      }
+
+      if (key == ConsoleKey.D)
+      {
+        x = 2;
+        y = 0;
+      }
 
       Position oldPos = new Position(X, Y);
       Position newPos = new Position(X + x, Y + y);
@@ -94,15 +143,63 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Map.OverlayGrid[newPos.X][newPos.Y].Draw();
     }
 
+    public void Attack()
+    {
+      if (!InCombat) return;
+      switch (Weapon.WeaponType)
+      {
+        case WeaponType.Fists:
+        case WeaponType.Sword:
+        case WeaponType.Axe:
+        case WeaponType.Mace:
+        case WeaponType.Dagger:
+        case WeaponType.Staff:
+          if (IsNextToOverlay(out MapObject objM) == ' ') return;
+          Monster meelee = (Monster)objM;
+          GamePlayScreen.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {meelee.Type.Name}!"));
+          meelee.TakeDamage(Weapon.Damage);
+          break;
+        case WeaponType.Bow:
+        case WeaponType.Wand:
+          if (IsInRange(Weapon.Range, out MapObject objR)) return;
+          Monster ranged = (Monster)objR;
+          GamePlayScreen.Messages.Add(new Message($"You shoot your {Weapon.WeaponType} at the {ranged.Type.Name}!"));
+          ranged.TakeDamage(Weapon.Damage);
+          break;
+      }
+    }
 
     internal void EquipArmor(Armor armor)
     {
-
+      switch (armor.ArmorType)
+      {
+        case ArmorType.Head:
+          AddToInventory(ArmorSet[0]);
+          ArmorSet[0] = armor;
+          break;
+        case ArmorType.Body:
+          AddToInventory(ArmorSet[1]);
+          ArmorSet[1] = armor;
+          break;
+        case ArmorType.Hands:
+          AddToInventory(ArmorSet[2]);
+          ArmorSet[2] = armor;
+          break;
+        case ArmorType.Legs:
+          AddToInventory(ArmorSet[3]);
+          ArmorSet[3] = armor;
+          break;
+        case ArmorType.Feet:
+          AddToInventory(ArmorSet[4]);
+          ArmorSet[4] = armor;
+          break;
+      }
     }
 
     internal void EquipWeapon(Weapon weapon)
     {
-
+      AddToInventory(Weapon);
+      Weapon = weapon;
     }
 
     internal void EquipSpell(Spell spell)
@@ -122,8 +219,28 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     internal void TakeDamage(int damage)
     {
-      Health -= damage;
-      if (Health <= 0) Game.IsOver = true;
+      if (damage <= 0)
+      {
+        GamePlayScreen.Messages.Add(new Message($"Monster Missed you!", Color.DarkOrange, Color.Black));
+        GamePlayScreen.Messages.Add(
+          new Message($"You have {Player.Health} health left!", Color.DarkOrange, Color.Black));
+      }
+
+      ;
+      GamePlayScreen.Messages.Add(new Message($"You were hit for {damage} damage!", Color.DarkOrange, Color.Black));
+      Player.Health -= damage;
+      if (Player.Health <= 0)
+      {
+        Player.Health = 0;
+        GamePlayScreen.Messages.Add(new Message("You died!", Color.Red, Color.Black));
+        Player.InCombat = false;
+        Player.IsAlive = false;
+      }
+      else
+      {
+        GamePlayScreen.Messages.Add(
+          new Message($"You have {Player.Health} health left!", Color.DarkOrange, Color.Black));
+      }
     }
 
     internal void Heal(int amount)
@@ -160,29 +277,20 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     internal void AddToInventory(Item item)
     {
+      switch (item.Type)
+      {
+        case ItemType.None:
+          break;
+        case ItemType.Potion:
+          break;
+        case ItemType.Gold:
+          break;
+        case ItemType.Weapon:
+          break;
+        case ItemType.Armor:
+          break;
+      }
       // Check to see if item is in inventory and add to stack, otherwise add to first empty slot
-      if (Inventory.ContainsValue(item))
-      {
-        foreach (KeyValuePair<int, Item> slot in Inventory)
-        {
-          if (slot.Value.id == item.id)
-          {
-            slot.Value.Quantity++;
-            break;
-          }
-        }
-      }
-      else
-      {
-        foreach (KeyValuePair<int, Item> slot in Inventory)
-        {
-          if (slot.Value.id == 0)
-          {
-            //slot.Value = item;
-            break;
-          }
-        }
-      }
     }
 
     internal char IsNextToOverlay(out MapObject obj)
@@ -193,24 +301,28 @@ namespace ConsoleDungeonCrawler.Game.Entities
         obj = Map.OverlayGrid[X - 1][Y];
         return obj.Type.Symbol;
       }
+
       // look right
       if (X < GamePlayScreen.MapBox.Width && Map.OverlayGrid[X + 1][Y].Type.Symbol != ' ')
       {
         obj = Map.OverlayGrid[X + 1][Y];
         return obj.Type.Symbol;
       }
+
       // look up
       if (Y > 0 && Map.OverlayGrid[X][Y - 1].Type.Symbol != ' ')
       {
         obj = Map.OverlayGrid[X][Y - 1];
         return obj.Type.Symbol;
       }
+
       // look down
       if (Y >= GamePlayScreen.MapBox.Height || Map.OverlayGrid[X][Y + 1].Type.Symbol != ' ')
       {
         obj = Map.OverlayGrid[X][Y + 1];
         return obj.Type.Symbol;
       }
+
       // not found
       obj = new MapObject();
       return ' ';
@@ -224,24 +336,28 @@ namespace ConsoleDungeonCrawler.Game.Entities
         obj = Map.OverlayGrid[X - 1][Y];
         return true;
       }
+
       // look right
       if (X < GamePlayScreen.MapBox.Width && Map.OverlayGrid[X + 1][Y].Type.Symbol == symbol)
       {
         obj = Map.OverlayGrid[X + 1][Y];
         return true;
       }
+
       // look up
       if (Y > 0 && Map.OverlayGrid[X][Y - 1].Type.Symbol == symbol)
       {
         obj = Map.OverlayGrid[X][Y - 1];
         return true;
       }
+
       // look down
       if (Y >= GamePlayScreen.MapBox.Height || Map.OverlayGrid[X][Y + 1].Type.Symbol == symbol)
       {
         obj = Map.OverlayGrid[X][Y + 1];
         return true;
       }
+
       // not found
       obj = new MapObject();
       return false;
@@ -255,24 +371,67 @@ namespace ConsoleDungeonCrawler.Game.Entities
         obj = Map.MapGrid[X - 1][Y];
         return true;
       }
+
       // look right
       if (X < GamePlayScreen.MapBox.Width && Map.MapGrid[X + 1][Y].Type.Symbol == symbol)
       {
         obj = Map.MapGrid[X + 1][Y];
         return true;
       }
+
       // look up
       if (Y > 0 && Map.MapGrid[X][Y - 1].Type.Symbol == symbol)
       {
         obj = Map.MapGrid[X][Y - 1];
         return true;
       }
+
       // look down
       if (Y >= GamePlayScreen.MapBox.Height || Map.MapGrid[X][Y + 1].Type.Symbol == symbol)
       {
         obj = Map.MapGrid[X][Y + 1];
         return true;
       }
+
+      // not found
+      obj = new MapObject();
+      return false;
+    }
+
+    internal bool IsInRange(int radius, out MapObject obj)
+    {
+      // find the closest object within the radius
+      for (int i = 0; i < radius; i++)
+      {
+        // look left
+        if (X > 0 && Map.MapGrid[X - 1][Y].Type.Symbol != ' ')
+        {
+          obj = Map.MapGrid[X - 1][Y];
+          return true;
+        }
+
+        // look right
+        if (X < GamePlayScreen.MapBox.Width && Map.MapGrid[X + 1][Y].Type.Symbol != ' ')
+        {
+          obj = Map.MapGrid[X + 1][Y];
+          return true;
+        }
+
+        // look up
+        if (Y > 0 && Map.MapGrid[X][Y - 1].Type.Symbol != ' ')
+        {
+          obj = Map.MapGrid[X][Y - 1];
+          return true;
+        }
+
+        // look down
+        if (Y >= GamePlayScreen.MapBox.Height || Map.MapGrid[X][Y + 1].Type.Symbol != ' ')
+        {
+          obj = Map.MapGrid[X][Y + 1];
+          return true;
+        }
+      }
+
       // not found
       obj = new MapObject();
       return false;

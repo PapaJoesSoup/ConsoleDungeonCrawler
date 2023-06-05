@@ -21,7 +21,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
     internal static Dictionary<char, List<MapObject>> MapObjects = new Dictionary<char, List<MapObject>>();
     internal static Dictionary<char, List<MapObject>> OverlayObjects = new Dictionary<char, List<MapObject>>();
 
-    internal static Player Player;
+    internal static Player Player = new Player();
 
     internal Map()
     {

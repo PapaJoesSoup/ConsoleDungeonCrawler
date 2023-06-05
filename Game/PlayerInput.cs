@@ -55,6 +55,9 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.Enter:
             Actions.PickupOverlayItem();
             break;
+          case ConsoleKey.T:
+            Map.Player.Attack();
+            break;
             default:
               GamePlayScreen.Messages.Add(new Message($"You pressed {keyInfo.Key}, which does nothing."));
             break;

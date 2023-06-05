@@ -1,9 +1,9 @@
-﻿namespace ConsoleDungeonCrawler.Game.Entities
+﻿namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
-    internal class Armor
+  internal class Armor : Item
   {
-    internal ArmorType Type = ArmorType.None;
-    internal ArmorName Name = ArmorName.None;
+    internal ArmorType ArmorType = ArmorType.None;
+    internal ArmorName ArmorName = ArmorName.None;
     internal ItemRarity Rarity = ItemRarity.Common;
     internal int ArmorValue = 0;
     internal int ArmorBonus = 0;
@@ -16,18 +16,17 @@
 
     internal Armor(ArmorType type)
     {
-      Type = type;
+      ArmorType = type;
     }
 
     internal Armor(ArmorType type, ArmorName name, ItemRarity rarity, int armorValue, int durability)
     {
-      Type = type;
-      Name = name;
+      ArmorType = type;
+      ArmorName = name;
       Rarity = rarity;
       ArmorValue = armorValue;
       Durability = durability;
       MaxDurability = durability;
     }
   }
-
 }
