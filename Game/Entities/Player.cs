@@ -106,29 +106,10 @@ namespace ConsoleDungeonCrawler.Game.Entities
     {
       int x = 0;
       int y = 0;
-      if (key == ConsoleKey.W)
-      {
-        x = 0;
-        y = -2;
-      }
-
-      if (key == ConsoleKey.A)
-      {
-        x = -2;
-        y = 0;
-      }
-
-      if (key == ConsoleKey.S)
-      {
-        x = 0;
-        y = 2;
-      }
-
-      if (key == ConsoleKey.D)
-      {
-        x = 2;
-        y = 0;
-      }
+      if (key == ConsoleKey.W) { x = 0; y = -2; }
+      if (key == ConsoleKey.A) { x = -2; y = 0; }
+      if (key == ConsoleKey.S) { x = 0; y = 2; }
+      if (key == ConsoleKey.D) { x = 2; y = 0; }
 
       Position oldPos = new Position(X, Y);
       Position newPos = new Position(X + x, Y + y);
