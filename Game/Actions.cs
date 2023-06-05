@@ -60,7 +60,7 @@ namespace ConsoleDungeonCrawler.Game
         {
           if (obj is not Monster monster) continue;
           if (!monster.IsVisible || !monster.IsAlive) continue;
-          monster.Detect();
+          monster.DetectPlayer();
           if (!monster.InCombat) continue;
           Player.InCombat = true;
           monster.Attack();

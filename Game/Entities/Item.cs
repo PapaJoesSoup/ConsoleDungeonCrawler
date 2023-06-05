@@ -7,12 +7,12 @@
     internal string Description = "None";
     internal int Quantity = 1;
     internal int stackSize = 1;
-    internal int Cost = 0;
-    internal int Value = 0;
+    internal decimal Cost = 0;
+    internal decimal Value = 0;
 
     public Item() { }
 
-    public Item(ItemType type, int qty, int cost, int value)
+    public Item(ItemType type, int qty, decimal cost, decimal value)
     {
       this.Type = type;
       Quantity = qty;

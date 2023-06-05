@@ -34,29 +34,20 @@
     None,
     Cloth,
     Leather,
-    Chainmail,
+    ChainMail,
     Plate
   }
 
   internal enum WeaponType
   {
+    Fists,
     Sword,
     Axe,
     Mace,
-    Bow,
     Staff,
     Dagger,
-    Wand,
-    Fists
-  }
-
-  internal enum MonsterType
-  {
-    Humanoid,
-    Beast,
-    Undead,
-    Demon,
-    Dragon
+    Bow,
+    Wand
   }
 
   internal enum MonsterName
@@ -80,7 +71,8 @@
     Armor,
     Gold,
     Bandage,
-    Food
+    Food,
+    Chest
   }
 
   internal enum ItemRarity
@@ -92,8 +84,45 @@
     Legendary
   }
 
-  internal enum PotionType
+  internal enum FoodType
   {
+    Ration,
+    BearSteak,
+    WolfSteak,
+    DeerSteak,
+    BoarChop,
+    Salmon,
+    Trout,
+    Snapper,
+    Bread,
+    Fruit,
+    Vegetable,
+    MelonJuice,
+    FruitJuice,
+    Water,
+    Tea,
+    Coffee,
+    Milk,
+    Wine,
+    Beer,
+    Ale,
+    Whiskey,
+    Cider
+  }
+
+  internal enum BandageType
+  {
+    Cloth,
+    Linen,
+    Silk,
+    Wool,
+    Cotton,
+    RuneCloth
+  }
+
+  internal enum BuffType
+  {
+    None,
     Health,
     Mana,
     HealthAndMana

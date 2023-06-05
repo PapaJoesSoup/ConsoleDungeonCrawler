@@ -13,7 +13,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal int Mana = 0;
     internal int MaxMana = 0;
     internal int Level = 1;
-    internal decimal Gold = 0;
+    internal decimal Gold = (decimal)0.00;
     internal Weapon Weapon = new Weapon();
     internal Spell Spell = new Spell();
     internal List<Item> Inventory = new List<Item>();
@@ -45,17 +45,29 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Level = level;
     }
 
-    internal void Detect()
+    private void InitInventory()
+    {
+      // get a random number and check to see if any inventory items should be added
+      // 1 in 3 chance of adding an item
+      if (Dice.Roll(1, 3) != 1) return;
+      // now randomly select an item to add
+      int item = Dice.Roll(1, Enum.GetNames<ItemType>().Length);
+      Inventory.Add(new Item((ItemType)item, 1, 0, 0));
+
+      Gold = (decimal)Dice.Roll(Level * 200)/100;
+
+    }
+
+    internal void DetectPlayer()
     {
       if (InCombat) return;
       // check if player is within radius of 3 tiles
-      if (Map.Player.X >= X - 3 && Map.Player.X <= X + 3 &&
-          Map.Player.Y >= Y - 3 && Map.Player.Y <= Y + 3)
-      {
-        InCombat = true;
-        BackgroundColor = Color.DarkOrange;
-        GamePlayScreen.Messages.Add(new Message("You are in combat!", Color.Red, Color.Black));
-      }
+      if (Map.Player.X < X - 3 || Map.Player.X > X + 3 ||
+          Map.Player.Y < Y - 3 || Map.Player.Y > Y + 3) return;
+      InCombat = true;
+      Player.InCombat = true;
+      BackgroundColor = Color.DarkOrange;
+      GamePlayScreen.Messages.Add(new Message("You are in combat!", Color.Red, Color.Black));
     }
 
     internal void Attack()
@@ -92,10 +104,9 @@ namespace ConsoleDungeonCrawler.Game.Entities
           Health = 0;
           IsAlive = false;
           int xp = Dice.Roll(Level);
-          int gold = Dice.Roll(Level);
           GamePlayScreen.Messages.Add(new Message($"You killed the {Type.Name}!", Color.DarkOrange, Color.Black));
-          GamePlayScreen.Messages.Add(new Message($"You gained {gold} gold!", Color.DarkOrange, Color.Black));
-          Player.Gold += gold;
+          GamePlayScreen.Messages.Add(new Message($"You gained {Gold} gold!", Color.DarkOrange, Color.Black));
+          Player.Gold += Gold;
           BackgroundColor = Type.BackgroundColor;
           ForegroundColor = Color.Gray;
           Type.IsPassable = true;
