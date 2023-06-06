@@ -21,6 +21,10 @@ namespace ConsoleDungeonCrawler.Game
             GamePlayScreen.Messages.Add(new Message($"You pressed Shift+{keyInfo.Key}"));
             Map.Player.Jump(keyInfo.Key);
             break;
+          case ConsoleKey.I:
+            GamePlayScreen.Messages.Add(new Message($"You pressed Shift+{keyInfo.Key}"));
+            Inventory.Draw();
+            break;
         }
       }
       else

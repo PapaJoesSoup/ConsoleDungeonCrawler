@@ -8,7 +8,6 @@ namespace ConsoleDungeonCrawler.Game.Maps
   {
     internal ObjectType Type = new ObjectType();
     internal bool IsVisible = true;
-    internal Item Loot = new Item();
     internal Color ForegroundColor = Color.White;
     internal Color BackgroundColor = Color.Black;
 

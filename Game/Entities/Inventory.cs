@@ -1,20 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities.Items;
+using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game.Entities
 {
   internal static class Inventory
   {
+    private static BoxChars b = new BoxChars() { botLeft = '=', botRight = '=', topRight = '=', topLeft = '=', hor = '=', ver = '|' };
+
+    // Player Inventory
     internal static Dictionary<ItemType, List<Item>> Items = new Dictionary<ItemType, List<Item>>();
 
+    //Loot Tables
     internal static Dictionary<WeaponType, List<Weapon>> WeaponTypes = new Dictionary<WeaponType, List<Weapon>>();
     internal static Dictionary<ArmorType, Dictionary<ArmorName, List<Armor>>> ArmorDictionary = new Dictionary<ArmorType, Dictionary<ArmorName, List<Armor>>>();
     internal static List<Bandage> Bandages = new List<Bandage>();
     internal static List<Food> Foods = new List<Food>();
+
 
     static Inventory()
     {
@@ -24,6 +32,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       InitFoodTypes();
 
     }
+
     private static void InitWeaponTypes()
     {
       WeaponTypes.Add(WeaponType.Fists, new List<Weapon>());
@@ -266,6 +275,14 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Foods.Add(new Food(FoodType.Cider, BuffType.Mana, 1, 1, 0));
     }
 
+    internal static void Draw()
+    {
+      DialogBox.Draw();
+      ConsoleEx.WriteAlignedAt("Player Inventory Management", HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive);
+      ConsoleEx.WriteAlignedAt("Press any key to continue", HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, 2);
+      Console.ReadKey(true);
+      DialogBox.Close();
+    }
 
     public static void AddItem(Item item)
     {

@@ -19,7 +19,7 @@ namespace ConsoleDungeonCrawler.Game
         case 'm':
         case 'g':
           GamePlayScreen.Messages.Add(new Message($"You Picked up {obj.Type.Singular}!", Color.DarkGoldenrod, Color.Black));
-          Map.Player.AddToInventory(obj.Loot);
+          Inventory.AddItem(Inventory.GetRandomItem());
           Map.UpdateOverlayObject(obj);
           break;
         default:

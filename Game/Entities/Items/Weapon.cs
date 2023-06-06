@@ -47,6 +47,13 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
       Weapon weapon = Inventory.WeaponTypes[weaponType][rnd.Next(0, Inventory.WeaponTypes[weaponType].Count)];
       return weapon;
     }
+
+    internal static Weapon GetWeapon(WeaponType weaponType, int idx)
+    {
+      Random rnd = new Random();
+      Weapon weapon = Inventory.WeaponTypes[weaponType][idx];
+      return weapon;
+    }
   }
 
 }

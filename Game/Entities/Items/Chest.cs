@@ -8,7 +8,6 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Chest : Item
   {
-
     internal List<Item> Items = new List<Item>();
 
     internal Chest()
@@ -24,6 +23,7 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
       Description = "A Chest";
       Cost = cost;
       Value = value;
+      Items = GetRandomItems();
     }
 
     internal static Chest GetRandomChest()
@@ -72,17 +72,7 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
           return new List<Item>() { Potion.GetRandomPotion(), Bandage.GetRandomBandage(), randomGold };
         case 10:
           return new List<Item>() { Potion.GetRandomPotion(), Armor.GetRandomArmor(), randomGold };
-        case 11:
-          return new List<Item>() { Potion.GetRandomPotion(), Bandage.GetRandomBandage(), randomGold };
-        case 12:
-          return new List<Item>() { Potion.GetRandomPotion(), Bandage.GetRandomBandage(), randomGold };
-        case 13:
-          return new List<Item>() { Potion.GetRandomPotion(), Bandage.GetRandomBandage(), randomGold };
-        case 14:
-          return new List<Item>() { Potion.GetRandomPotion(), Bandage.GetRandomBandage(), randomGold };
-        case 15:
-          return new List<Item>() { Potion.GetRandomPotion(), Bandage.GetRandomBandage(), randomGold };
-        default:
+         default:
           return new List<Item>() { Potion.GetRandomPotion(), randomGold };
       }
     }

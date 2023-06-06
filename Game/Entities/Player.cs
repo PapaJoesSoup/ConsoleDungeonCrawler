@@ -2,6 +2,8 @@
 using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 using System.Drawing;
+using Microsoft.VisualBasic;
+using System.Linq;
 
 namespace ConsoleDungeonCrawler.Game.Entities
 {
@@ -20,7 +22,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static List<Armor> ArmorSet = new List<Armor>();
     internal static Weapon Weapon = new Weapon();
     internal static Dictionary<int, Spell> Spells = new Dictionary<int, Spell>();
-    internal static Dictionary<int, Item> Inventory = new Dictionary<int, Item>();
     internal static bool IsAlive = true;
     internal static bool InCombat = false;
 
@@ -39,19 +40,20 @@ namespace ConsoleDungeonCrawler.Game.Entities
       IsVisible = mapObject.IsVisible;
 
       // Add 5 empty slots to armor set
-      ArmorSet = new List<Armor>();
-      ArmorSet.Add(new Armor(ArmorType.Head));
-      ArmorSet.Add(new Armor(ArmorType.Body));
-      ArmorSet.Add(new Armor(ArmorType.Hands));
-      ArmorSet.Add(new Armor(ArmorType.Legs));
-      ArmorSet.Add(new Armor(ArmorType.Feet));
-
-      // Add 5 empty slots to inventory
-      Inventory = new Dictionary<int, Item>();
-      for (int i = 1; i < 6; i++)
+      ArmorSet = new List<Armor>
       {
-        Inventory.Add(i, new Item() { Type = ItemType.None });
-      }
+        new Armor(ArmorType.Head),
+        new Armor(ArmorType.Body),
+        new Armor(ArmorType.Hands),
+        new Armor(ArmorType.Legs),
+        new Armor(ArmorType.Feet)
+      };
+
+      // Add 5 initial slots to inventory
+      Inventory.AddItem( new Potion(BuffType.Health, 0, 0, 0));
+      Inventory.AddItem(new Potion(BuffType.Health, 0, 0, 0));
+      Inventory.AddItem( new Food(FoodType.Bread, BuffType.Health, 0, 0, 0));
+      Inventory.AddItem( new Food(FoodType.Vegetable, BuffType.Health, 0, 0, 0));
 
       // Add 5 empty slots to spells
       Spells = new Dictionary<int, Spell>();
@@ -65,29 +67,10 @@ namespace ConsoleDungeonCrawler.Game.Entities
     {
       int x = 0;
       int y = 0;
-      if (key == ConsoleKey.W)
-      {
-        x = 0;
-        y = -1;
-      }
-
-      if (key == ConsoleKey.A)
-      {
-        x = -1;
-        y = 0;
-      }
-
-      if (key == ConsoleKey.S)
-      {
-        x = 0;
-        y = 1;
-      }
-
-      if (key == ConsoleKey.D)
-      {
-        x = 1;
-        y = 0;
-      }
+      if (key == ConsoleKey.W) { x = 0; y = -1; }
+      if (key == ConsoleKey.A) { x = -1; y = 0; }
+      if (key == ConsoleKey.S) { x = 0; y = 1; }
+      if (key == ConsoleKey.D) { x = 1; y = 0; }
 
       Position oldPos = new Position(X, Y);
       Position newPos = new Position(X + x, Y + y);
@@ -155,23 +138,23 @@ namespace ConsoleDungeonCrawler.Game.Entities
       switch (armor.ArmorType)
       {
         case ArmorType.Head:
-          AddToInventory(ArmorSet[0]);
+          Inventory.AddItem(ArmorSet[0]);
           ArmorSet[0] = armor;
           break;
         case ArmorType.Body:
-          AddToInventory(ArmorSet[1]);
+          Inventory.AddItem(ArmorSet[1]);
           ArmorSet[1] = armor;
           break;
         case ArmorType.Hands:
-          AddToInventory(ArmorSet[2]);
+          Inventory.AddItem(ArmorSet[2]);
           ArmorSet[2] = armor;
           break;
         case ArmorType.Legs:
-          AddToInventory(ArmorSet[3]);
+          Inventory.AddItem(ArmorSet[3]);
           ArmorSet[3] = armor;
           break;
         case ArmorType.Feet:
-          AddToInventory(ArmorSet[4]);
+          Inventory.AddItem(ArmorSet[4]);
           ArmorSet[4] = armor;
           break;
       }
@@ -179,7 +162,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     internal void EquipWeapon(Weapon weapon)
     {
-      AddToInventory(Weapon);
+      Inventory.AddItem(Weapon);
       Weapon = weapon;
     }
 
@@ -254,24 +237,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal void AddExperience(int amount)
     {
 
-    }
-
-    internal void AddToInventory(Item item)
-    {
-      switch (item.Type)
-      {
-        case ItemType.None:
-          break;
-        case ItemType.Potion:
-          break;
-        case ItemType.Gold:
-          break;
-        case ItemType.Weapon:
-          break;
-        case ItemType.Armor:
-          break;
-      }
-      // Check to see if item is in inventory and add to stack, otherwise add to first empty slot
     }
 
     internal char IsNextToOverlay(out MapObject obj)
@@ -417,5 +382,24 @@ namespace ConsoleDungeonCrawler.Game.Entities
       obj = new MapObject();
       return false;
     }
+
+    internal static bool IsInCombat()
+    {
+      // Check if there is a mapObject.InCombat == true in OverlayObjects Except Player
+      foreach (char key in Map.OverlayObjects.Keys)
+      {
+        if (Map.OverlayObjects[key].Count == 0) continue;
+        List<MapObject> objs = Map.OverlayObjects[key];
+        if (!objs[0].Type.IsAttackable) continue;
+        foreach (MapObject obj in objs)
+        {
+          if (obj.Type.Symbol == 'P') continue;
+          if (obj is Monster == false) continue;
+          if (((Monster)obj).InCombat) return true;
+        }
+      }
+      return false;
+    }
+
   }
 }

@@ -62,7 +62,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       row++;
       foreach (var armor in Player.ArmorSet)
       {
-        string armorText = $"{armor.Type.ToString()}: {armor.Name} ".PadRight(col + 50);
+        string armorText = $"{armor.ArmorType}: {armor.Name} ".PadRight(col + 50);
         ConsoleEx.WriteAt(armorText, col, row, ConsoleColor.White);
         row++;
       }
@@ -70,11 +70,15 @@ namespace ConsoleDungeonCrawler.Game.Screens
       //Items
       col = StatusBox.Left + 60;
       row = StatusBox.Top + 1;
+      int count = 0;
       ConsoleEx.WriteAt("Items", col, row, ConsoleColor.Yellow);
       row++;
-      foreach (var item in Player.Inventory)
+      foreach (ItemType type in Inventory.Items.Keys)
       {
-        ConsoleEx.WriteAt($"{item.Key}: {item.Value.Description} ", col, row, ConsoleColor.White);
+        foreach (Item item in Inventory.Items[type])
+          count++;
+        ConsoleEx.WriteAt($"{type}: {count} ", col, row, ConsoleColor.White);
+        count = 0;
         row++;
       }
 

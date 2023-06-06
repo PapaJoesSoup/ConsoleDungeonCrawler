@@ -16,7 +16,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal decimal Gold = (decimal)0.00;
     internal Weapon Weapon = new Weapon();
     internal Spell Spell = new Spell();
-    internal List<Item> Inventory = new List<Item>();
     internal bool IsAlive = true;
     internal bool InCombat = false;
 
@@ -52,8 +51,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
       if (Dice.Roll(1, 3) != 1) return;
       // now randomly select an item to add
       int item = Dice.Roll(1, Enum.GetNames<ItemType>().Length);
-      Inventory.Add(new Item((ItemType)item, 1, 0, 0));
-
       Gold = (decimal)Dice.Roll(Level * 200)/100;
 
     }
@@ -107,11 +104,21 @@ namespace ConsoleDungeonCrawler.Game.Entities
           GamePlayScreen.Messages.Add(new Message($"You killed the {Type.Name}!", Color.DarkOrange, Color.Black));
           GamePlayScreen.Messages.Add(new Message($"You gained {Gold} gold!", Color.DarkOrange, Color.Black));
           Player.Gold += Gold;
+          Random Random = new Random();
+          if (Random.Next(1, 5) == 1)
+          {
+            Item item = Inventory.GetRandomItem();
+            Inventory.AddItem(item);
+            GamePlayScreen.Messages.Add(new Message($"You gained a {item.Type}!", Color.DarkOrange, Color.Black));
+          }
+          GamePlayScreen.Messages.Add(new Message($"You gained {xp} experience!", Color.DarkOrange, Color.Black));
+          Player.Experience += xp;
           BackgroundColor = Type.BackgroundColor;
           ForegroundColor = Color.Gray;
           Type.IsPassable = true;
           InCombat = false;
           Map.RemoveFromOverlayObjects(this);
+          Player.InCombat = Player.IsInCombat();
         }
         else
           GamePlayScreen.Messages.Add(
