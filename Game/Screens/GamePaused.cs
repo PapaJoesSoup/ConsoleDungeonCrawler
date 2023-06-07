@@ -3,7 +3,7 @@ using ConsoleDungeonCrawler.Extensions;
 
 namespace ConsoleDungeonCrawler.Game.Screens
 {
-  internal static class GamePausedScreen
+  internal static class GamePaused
   {
     private static BoxChars b = new BoxChars() {botLeft = '=', botRight = '=', topRight = '=', topLeft = '=', hor = '=', ver = '|' };
 
@@ -16,7 +16,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       Console.ReadKey(true);
       Game.IsPaused = false;
       ConsoleEx.Clear();
-      GamePlayScreen.Draw();
+      GamePlay.Draw();
     }
   }
 }

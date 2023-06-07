@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using ConsoleDungeonCrawler.Game.Entities;
+using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 
@@ -13,18 +14,24 @@ namespace ConsoleDungeonCrawler.Game
       // Items can buff the player, or be added to the inventory
       // Items can be gold, potions, weapons, armor, etc.
       if (Map.Player.IsNextToOverlay(out MapObject obj) == ' ') return;
+      Item item = new Item();
       switch (obj.Type.Symbol)
       {
         case 'i':
-        case 'm':
-        case 'g':
-          GamePlayScreen.Messages.Add(new Message($"You Picked up {obj.Type.Singular}!", Color.DarkGoldenrod, Color.Black));
-          Inventory.AddItem(Inventory.GetRandomItem());
-          Map.UpdateOverlayObject(obj);
+          item = Inventory.GetRandomItem();
           break;
-        default:
+        case 'm':
+          item = Chest.GetRandomChest();
+          break;
+        case '$':
+          item = Inventory.GetRandomItem(ItemType.Gold);
           break;
       }
+      Inventory.AddItem(item);
+      string message = item.Type == ItemType.Gold ? "You Picked up a pouch of gold!" : $"You Picked up {item.Description}!";
+      GamePlay.Messages.Add(new Message(message, Color.DarkGoldenrod, Color.Black));
+      Map.UpdateOverlayObject(obj);
+
     }
 
     public static void OpenDoor()
@@ -32,7 +39,7 @@ namespace ConsoleDungeonCrawler.Game
       if (!Map.Player.IsNextToMap('+', out MapObject door)) return;
       ObjectType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new ObjectType();
       if (type.Symbol == ' ') return;
-      GamePlayScreen.Messages.Add(new Message("Opening Door...", Color.Yellow, Color.Black));
+      GamePlay.Messages.Add(new Message("Opening Door...", Color.Yellow, Color.Black));
       Map.RemoveFromMapObjects(door);
       door.Type = type;
       Map.AddToMapObjects(door);
@@ -44,7 +51,7 @@ namespace ConsoleDungeonCrawler.Game
       if (!Map.Player.IsNextToMap('-', out MapObject door)) return;
       ObjectType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new ObjectType();
       if (type.Symbol == ' ') return;
-      GamePlayScreen.Messages.Add(new Message("Closing Door...", Color.Yellow,
+      GamePlay.Messages.Add(new Message("Closing Door...", Color.Yellow,
         Color.Black));
       Map.RemoveFromMapObjects(door);
       door.Type = type;

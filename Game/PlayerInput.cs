@@ -18,11 +18,11 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.A:
           case ConsoleKey.S:
           case ConsoleKey.D:
-            GamePlayScreen.Messages.Add(new Message($"You pressed Shift+{keyInfo.Key}"));
+            GamePlay.Messages.Add(new Message($"You pressed Shift+{keyInfo.Key}"));
             Map.Player.Jump(keyInfo.Key);
             break;
           case ConsoleKey.I:
-            GamePlayScreen.Messages.Add(new Message($"You pressed Shift+{keyInfo.Key}"));
+            GamePlay.Messages.Add(new Message($"You pressed Shift+{keyInfo.Key}"));
             Inventory.Draw();
             break;
         }
@@ -35,7 +35,7 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.A:
           case ConsoleKey.S:
           case ConsoleKey.D:
-            GamePlayScreen.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
+            GamePlay.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
             Map.Player.Move(keyInfo.Key);
             break;
           case ConsoleKey.End:
@@ -45,10 +45,10 @@ namespace ConsoleDungeonCrawler.Game
             Game.IsPaused = true;
             break;
           case ConsoleKey.PageUp:
-            GamePlayScreen.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
+            GamePlay.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
             break;
           case ConsoleKey.PageDown:
-            GamePlayScreen.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
+            GamePlay.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
             break;
           case ConsoleKey.O:
             Actions.OpenDoor();
@@ -63,7 +63,7 @@ namespace ConsoleDungeonCrawler.Game
             Map.Player.Attack();
             break;
             default:
-              GamePlayScreen.Messages.Add(new Message($"You pressed {keyInfo.Key}, which does nothing."));
+              GamePlay.Messages.Add(new Message($"You pressed {keyInfo.Key}, which does nothing."));
             break;
         }
       }

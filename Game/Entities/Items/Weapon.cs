@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace ConsoleDungeonCrawler.Game.Entities.Items
+﻿namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Weapon : Item
   {
@@ -16,6 +14,11 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
       Type = ItemType.Weapon;
       Name = "Fists";
       Description = "Your fists";
+      Quantity = 1;
+      StackSize = 1;
+      BuyCost = 1M;
+      SellCost = 0.10M;
+
 
       WeaponType = WeaponType.Fists;
       Damage = 1;
@@ -25,14 +28,20 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
 
     }
 
-    internal Weapon(string name, string description, WeaponType weaponType, int damage, int durability,
+    internal Weapon(string name, string description, WeaponType weaponType, ItemRarity rarity, int damage, int durability,
       int maxDurability, int range)
     {
       Type = ItemType.Weapon;
       Name = name;
       Description = description;
+      Quantity = 1;
+      StackSize = 1;
+      BuyCost = 1M;
+      SellCost = 0.10M;
+
 
       WeaponType = weaponType;
+      Rarity = rarity;
       Damage = damage;
       Durability = durability;
       MaxDurability = maxDurability;
@@ -43,8 +52,8 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
     internal static Weapon GetRandomWeapon()
     {
       Random rnd = new Random();
-      WeaponType weaponType = (WeaponType)rnd.Next(1, Inventory.WeaponTypes.Count);
-      Weapon weapon = Inventory.WeaponTypes[weaponType][rnd.Next(0, Inventory.WeaponTypes[weaponType].Count)];
+      WeaponType weaponType = (WeaponType)rnd.Next(1, Inventory.WeaponTypes.Count + 1);
+      Weapon weapon = Inventory.WeaponTypes[weaponType][rnd.Next(0, Inventory.WeaponTypes[weaponType].Count + 1)];
       return weapon;
     }
 

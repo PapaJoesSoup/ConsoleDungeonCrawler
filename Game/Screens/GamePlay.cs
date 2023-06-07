@@ -4,12 +4,13 @@ using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler.Game.Screens
 {
-    internal static class GamePlayScreen
+    internal static class GamePlay
   {
     internal static Box StatusBox = new Box(1, 0, 208, 8);
     internal static Box MapBox = new Box(1, 7, 178, 35);
     internal static Box LegendBox = new Box(178, 7, 31, 35);
     internal static Box MessageBox = new Box(1, 41, 208, 10);
+
     internal static List<Message> Messages = new List<Message>();
 
     internal static BoxCharsEx boxCharsEx = new BoxCharsEx("\xe2948d", "\xe29491", "\\xd59f", "\xe29499", "\xe295bc", "\xe29482");
@@ -67,19 +68,27 @@ namespace ConsoleDungeonCrawler.Game.Screens
         row++;
       }
 
-      //Items
-      col = StatusBox.Left + 60;
+      //Inventory
+      col = StatusBox.Left + 25;
       row = StatusBox.Top + 1;
+      int colWidth = 22;
       int count = 0;
-      ConsoleEx.WriteAt("Items", col, row, ConsoleColor.Yellow);
+      ConsoleEx.WriteAt("Inventory", col, row, ConsoleColor.Yellow);
       row++;
-      foreach (ItemType type in Inventory.Items.Keys)
+      foreach (Bag bag in Inventory.Bags)
       {
-        foreach (Item item in Inventory.Items[type])
+        foreach (Item item in bag.Items)
+        {
+          ConsoleEx.WriteInventoryItem(item, col, row, colWidth);
+          row++;
           count++;
-        ConsoleEx.WriteAt($"{type}: {count} ", col, row, ConsoleColor.White);
-        count = 0;
-        row++;
+
+          if (count < 5) continue;
+          count = 0;
+          row = StatusBox.Top + 2;
+          col += colWidth + 2;
+        }
+
       }
 
       //Spells

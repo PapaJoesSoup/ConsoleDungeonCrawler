@@ -3,7 +3,7 @@ using ConsoleDungeonCrawler.Extensions;
 
 namespace ConsoleDungeonCrawler.Game.Screens
 {
-    internal static class GameCreditsScreen
+    internal static class GameCredits
   {
     internal static void Draw()
     {

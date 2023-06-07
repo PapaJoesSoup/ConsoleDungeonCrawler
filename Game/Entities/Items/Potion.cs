@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConsoleDungeonCrawler.Game.Entities.Items
+﻿namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Potion : Item
   {
@@ -17,31 +11,32 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
 
     }
 
-    internal Potion(BuffType potionType, int quantity, decimal cost, decimal value)
+    internal Potion(BuffType potionType, int quantity, decimal buyCost, decimal sellCost)
     {
       Type = ItemType.Potion;
-      BuffType = potionType;
       Quantity = quantity;
+      StackSize = 20;
+      BuyCost = buyCost;
+      SellCost = sellCost;
+
       Name = $"{BuffType} Potion";
       Description = $"A {BuffType} Potion";
-      Cost = cost;
-      Value = value;
+      BuffType = potionType;
     }
 
     internal static Potion GetRandomPotion()
     {
-      Random random = new Random();
-      int randomPotion = random.Next(0, 3);
+      int randomPotion = Dice.Roll(0, 2);
       switch (randomPotion)
       {
         case 0:
-          return new Potion(BuffType.Health, 1, 1, 0);
+          return new Potion(BuffType.Health, 1, 1, 0.2M);
         case 1:
-          return new Potion(BuffType.Mana, 1, 1, 0);
+          return new Potion(BuffType.Mana, 1, 1, 0.3M);
         case 2:
-          return new Potion(BuffType.HealthAndMana, 1, 1, 0);
+          return new Potion(BuffType.HealthAndMana, 1, 1, 0.5M);
         default:
-          return new Potion(BuffType.Health, 1, 1, 0);
+          return new Potion(BuffType.Health, 1, 1, 0.2M);
       }
     }
   }

@@ -4,7 +4,6 @@
   {
     internal ArmorType ArmorType = ArmorType.None;
     internal ArmorName ArmorName = ArmorName.None;
-    internal ItemRarity Rarity = ItemRarity.Common;
     internal int ArmorValue = 0;
     internal int ArmorBonus = 0;
     internal int Durability = 0;
@@ -21,16 +20,20 @@
       ArmorType = type;
     }
 
-    internal Armor(ArmorType type, ArmorName name, BuffType buffType, ItemRarity rarity, int armorValue, int durability, decimal cost, decimal value)
+    internal Armor(ArmorType type, ArmorName name, BuffType buffType, ItemRarity rarity, int armorValue, int durability, decimal buyCost, decimal sellCost)
     {
+      Type = ItemType.Armor;
       Name = $"{name} {type} Armor";
       Description = $" {rarity} {name} {type} Armor";
-      Cost = cost;
-      Value = value;
+      Rarity = rarity;
+      Quantity = 1;
+      StackSize = 1;
+
+      BuyCost = buyCost;
+      SellCost = sellCost;
 
       ArmorType = type;
       ArmorName = name;
-      Rarity = rarity;
       ArmorValue = armorValue;
       BuffType = buffType;
       Durability = durability;
@@ -40,10 +43,9 @@
 
     internal static Armor GetRandomArmor()
     {
-      Random random = new Random();
-      int armorType = random.Next(0, 4);
-      int armorName = random.Next(0, 5);
-      int armorRarity = random.Next(0, 5);
+      int armorType = Dice.Roll(1, 5);
+      int armorName = Dice.Roll(1, 4); // 0 is None
+      int armorRarity = Dice.Roll(0, 5);
       return Inventory.ArmorDictionary[(ArmorType)armorType][(ArmorName)armorName][armorRarity];
     }
   }

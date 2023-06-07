@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
@@ -51,8 +50,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       if (Dice.Roll(1, 3) != 1) return;
       // now randomly select an item to add
       int item = Dice.Roll(1, Enum.GetNames<ItemType>().Length);
-      Gold = (decimal)Dice.Roll(Level * 200)/100;
-
+      Gold = (decimal)Dice.Roll(1, Level * 2);
     }
 
     internal void DetectPlayer()
@@ -64,7 +62,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       InCombat = true;
       Player.InCombat = true;
       BackgroundColor = Color.DarkOrange;
-      GamePlayScreen.Messages.Add(new Message("You are in combat!", Color.Red, Color.Black));
+      GamePlay.Messages.Add(new Message("You are in combat!", Color.Red, Color.Black));
     }
 
     internal void Attack()
@@ -79,7 +77,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
         {
           // roll for damage
           int damage = Dice.Roll(Weapon.Damage);
-          Map.Player.TakeDamage(damage);
+          Player.TakeDamage(damage);
         }
       }
     }
@@ -88,31 +86,29 @@ namespace ConsoleDungeonCrawler.Game.Entities
     {
       if (damage <= 0)
       {
-        GamePlayScreen.Messages.Add(new Message($"You missed the {Type.Name}!", Color.DarkOrange, Color.Black));
-        GamePlayScreen.Messages.Add(
-          new Message($"{Type.Name} has {Health} health left!", Color.DarkOrange, Color.Black));
+        GamePlay.Messages.Add(new Message($"You missed the {Type.Name}!", Color.DarkOrange, Color.Black));
+        GamePlay.Messages.Add(new Message($"{Type.Name} has {Health} health left!", Color.DarkOrange, Color.Black));
       }
       else
       {
-        GamePlayScreen.Messages.Add(new Message($"You hit the {Type.Name} for {damage} damage!", Color.DarkOrange, Color.Black));
+        GamePlay.Messages.Add(new Message($"You hit the {Type.Name} for {damage} damage!", Color.DarkOrange, Color.Black));
         Health -= damage;
         if (Health <= 0)
         {
           Health = 0;
           IsAlive = false;
-          int xp = Dice.Roll(Level);
-          GamePlayScreen.Messages.Add(new Message($"You killed the {Type.Name}!", Color.DarkOrange, Color.Black));
-          GamePlayScreen.Messages.Add(new Message($"You gained {Gold} gold!", Color.DarkOrange, Color.Black));
+          GamePlay.Messages.Add(new Message($"You killed the {Type.Name}!", Color.DarkOrange, Color.Black));
+          int xp = Dice.Roll(Level *2 );
+          GamePlay.Messages.Add(new Message($"You gained {xp} experience!", Color.DarkOrange, Color.Black));
+          Player.AddExperience(xp);
+          GamePlay.Messages.Add(new Message($"You gained {Gold} gold!", Color.DarkOrange, Color.Black));
           Player.Gold += Gold;
-          Random Random = new Random();
-          if (Random.Next(1, 5) == 1)
+          if (Dice.Roll(5) == 1) // 1 in 5 chance of dropping an item
           {
             Item item = Inventory.GetRandomItem();
             Inventory.AddItem(item);
-            GamePlayScreen.Messages.Add(new Message($"You gained a {item.Type}!", Color.DarkOrange, Color.Black));
+            GamePlay.Messages.Add(new Message($"You gained {item.Description}!", Color.DarkOrange, Color.Black));
           }
-          GamePlayScreen.Messages.Add(new Message($"You gained {xp} experience!", Color.DarkOrange, Color.Black));
-          Player.Experience += xp;
           BackgroundColor = Type.BackgroundColor;
           ForegroundColor = Color.Gray;
           Type.IsPassable = true;
@@ -121,8 +117,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
           Player.InCombat = Player.IsInCombat();
         }
         else
-          GamePlayScreen.Messages.Add(
-            new Message($"{Type.Name} has {Health} health left!", Color.DarkOrange, Color.Black));
+          GamePlay.Messages.Add(new Message($"{Type.Name} has {Health} health left!", Color.DarkOrange, Color.Black));
       }
     }
   }

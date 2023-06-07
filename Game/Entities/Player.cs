@@ -2,8 +2,6 @@
 using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 using System.Drawing;
-using Microsoft.VisualBasic;
-using System.Linq;
 
 namespace ConsoleDungeonCrawler.Game.Entities
 {
@@ -11,7 +9,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
   {
     internal static int Level = 1;
     internal static int Experience = 0;
-    internal static int ExperienceToNextLevel = 100;
+    internal static int ExperienceToLevel = 100;
     internal static PlayerClass Class = PlayerClass.Rogue;
     internal static int Health = 100;
     internal static int MaxHealth = 100;
@@ -50,10 +48,11 @@ namespace ConsoleDungeonCrawler.Game.Entities
       };
 
       // Add 5 initial slots to inventory
-      Inventory.AddItem( new Potion(BuffType.Health, 0, 0, 0));
-      Inventory.AddItem(new Potion(BuffType.Health, 0, 0, 0));
-      Inventory.AddItem( new Food(FoodType.Bread, BuffType.Health, 0, 0, 0));
-      Inventory.AddItem( new Food(FoodType.Vegetable, BuffType.Health, 0, 0, 0));
+      Inventory.Bags.Add(new Bag());
+      Inventory.AddItem( new Potion(BuffType.Health, 1, 1, 0));
+      Inventory.AddItem(new Potion(BuffType.Health, 1, 1, 0));
+      Inventory.AddItem( new Food(FoodType.Bread, BuffType.Health, 1, 1, 0));
+      Inventory.AddItem( new Food(FoodType.Vegetable, BuffType.Health, 1, 1, 0));
 
       // Add 5 empty slots to spells
       Spells = new Dictionary<int, Spell>();
@@ -120,20 +119,20 @@ namespace ConsoleDungeonCrawler.Game.Entities
         case WeaponType.Staff:
           if (IsNextToOverlay(out MapObject objM) == ' ') return;
           Monster meelee = (Monster)objM;
-          GamePlayScreen.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {meelee.Type.Name}!"));
+          GamePlay.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {meelee.Type.Name}!"));
           meelee.TakeDamage(Weapon.Damage);
           break;
         case WeaponType.Bow:
         case WeaponType.Wand:
           if (IsInRange(Weapon.Range, out MapObject objR)) return;
           Monster ranged = (Monster)objR;
-          GamePlayScreen.Messages.Add(new Message($"You shoot your {Weapon.WeaponType} at the {ranged.Type.Name}!"));
+          GamePlay.Messages.Add(new Message($"You shoot your {Weapon.WeaponType} at the {ranged.Type.Name}!"));
           ranged.TakeDamage(Weapon.Damage);
           break;
       }
     }
 
-    internal void EquipArmor(Armor armor)
+    internal static void EquipArmor(Armor armor)
     {
       switch (armor.ArmorType)
       {
@@ -160,60 +159,60 @@ namespace ConsoleDungeonCrawler.Game.Entities
       }
     }
 
-    internal void EquipWeapon(Weapon weapon)
+    internal static void EquipWeapon(Weapon weapon)
     {
       Inventory.AddItem(Weapon);
       Weapon = weapon;
     }
 
-    internal void EquipSpell(Spell spell)
+    internal static void EquipSpell(Spell spell)
     {
 
     }
 
-    internal void UseItem(Item item)
+    internal static void UseItem(Item item)
     {
 
     }
 
-    internal void UseSpell(Spell spell)
+    internal static void UseSpell(Spell spell)
     {
 
     }
 
-    internal void TakeDamage(int damage)
+    internal static void TakeDamage(int damage)
     {
       if (damage <= 0)
       {
-        GamePlayScreen.Messages.Add(new Message($"Monster Missed you!", Color.DarkOrange, Color.Black));
-        GamePlayScreen.Messages.Add(
+        GamePlay.Messages.Add(new Message($"Monster Missed you!", Color.DarkOrange, Color.Black));
+        GamePlay.Messages.Add(
           new Message($"You have {Player.Health} health left!", Color.DarkOrange, Color.Black));
       }
 
       ;
-      GamePlayScreen.Messages.Add(new Message($"You were hit for {damage} damage!", Color.DarkOrange, Color.Black));
+      GamePlay.Messages.Add(new Message($"You were hit for {damage} damage!", Color.DarkOrange, Color.Black));
       Player.Health -= damage;
       if (Player.Health <= 0)
       {
         Player.Health = 0;
-        GamePlayScreen.Messages.Add(new Message("You died!", Color.Red, Color.Black));
+        GamePlay.Messages.Add(new Message("You died!", Color.Red, Color.Black));
         Player.InCombat = false;
         Player.IsAlive = false;
       }
       else
       {
-        GamePlayScreen.Messages.Add(
+        GamePlay.Messages.Add(
           new Message($"You have {Player.Health} health left!", Color.DarkOrange, Color.Black));
       }
     }
 
-    internal void Heal(int amount)
+    internal static void Heal(int amount)
     {
       Health += amount;
       if (Health > MaxHealth) Health = MaxHealth;
     }
 
-    internal void RestoreMana(int amount)
+    internal static void RestoreMana(int amount)
     {
       Mana += amount;
       if (Mana > MaxMana) Mana = MaxMana;
@@ -224,19 +223,54 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Gold += amount;
     }
 
-    internal void RemoveGold(decimal amount)
+    internal static bool RemoveGold(decimal amount)
     {
+      if (amount > Gold)
+      {
+        GamePlay.Messages.Add(new Message("You don't have enough gold!", Color.Red, Color.Black));
+        return false;
+      }
       Gold -= amount;
+      return true;
     }
 
-    internal void LevelUp()
+    internal static void LevelUp()
     {
       Level++;
+      ExperienceToLevel = (int)(ExperienceToLevel * 1.5);
+      MaxHealth += 10;
+      if(MaxMana > 0) MaxMana += 5;
+      Health = MaxHealth;
+      Mana = MaxMana;
+      GamePlay.Messages.Add(new Message($"You are now level {Level}!", Color.Green, Color.Black));
     }
 
-    internal void AddExperience(int amount)
+    internal static void AddExperience(int amount)
     {
+      Experience += amount;
+      if (Experience >= ExperienceToLevel)
+      {
+        Experience -= ExperienceToLevel;
+        LevelUp();
+      }
+    }
 
+    internal static bool IsInCombat()
+    {
+      // Check if there is a mapObject.InCombat == true in OverlayObjects Except Player
+      foreach (char key in Map.OverlayObjects.Keys)
+      {
+        if (Map.OverlayObjects[key].Count == 0) continue;
+        List<MapObject> objs = Map.OverlayObjects[key];
+        if (!objs[0].Type.IsAttackable) continue;
+        foreach (MapObject obj in objs)
+        {
+          if (obj.Type.Symbol == 'P') continue;
+          if (obj is Monster == false) continue;
+          if (((Monster)obj).InCombat) return true;
+        }
+      }
+      return false;
     }
 
     internal char IsNextToOverlay(out MapObject obj)
@@ -249,7 +283,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       }
 
       // look right
-      if (X < GamePlayScreen.MapBox.Width && Map.OverlayGrid[X + 1][Y].Type.Symbol != ' ')
+      if (X < GamePlay.MapBox.Width && Map.OverlayGrid[X + 1][Y].Type.Symbol != ' ')
       {
         obj = Map.OverlayGrid[X + 1][Y];
         return obj.Type.Symbol;
@@ -263,7 +297,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       }
 
       // look down
-      if (Y >= GamePlayScreen.MapBox.Height || Map.OverlayGrid[X][Y + 1].Type.Symbol != ' ')
+      if (Y >= GamePlay.MapBox.Height || Map.OverlayGrid[X][Y + 1].Type.Symbol != ' ')
       {
         obj = Map.OverlayGrid[X][Y + 1];
         return obj.Type.Symbol;
@@ -284,7 +318,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       }
 
       // look right
-      if (X < GamePlayScreen.MapBox.Width && Map.OverlayGrid[X + 1][Y].Type.Symbol == symbol)
+      if (X < GamePlay.MapBox.Width && Map.OverlayGrid[X + 1][Y].Type.Symbol == symbol)
       {
         obj = Map.OverlayGrid[X + 1][Y];
         return true;
@@ -298,7 +332,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       }
 
       // look down
-      if (Y >= GamePlayScreen.MapBox.Height || Map.OverlayGrid[X][Y + 1].Type.Symbol == symbol)
+      if (Y >= GamePlay.MapBox.Height || Map.OverlayGrid[X][Y + 1].Type.Symbol == symbol)
       {
         obj = Map.OverlayGrid[X][Y + 1];
         return true;
@@ -319,7 +353,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       }
 
       // look right
-      if (X < GamePlayScreen.MapBox.Width && Map.MapGrid[X + 1][Y].Type.Symbol == symbol)
+      if (X < GamePlay.MapBox.Width && Map.MapGrid[X + 1][Y].Type.Symbol == symbol)
       {
         obj = Map.MapGrid[X + 1][Y];
         return true;
@@ -333,7 +367,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       }
 
       // look down
-      if (Y >= GamePlayScreen.MapBox.Height || Map.MapGrid[X][Y + 1].Type.Symbol == symbol)
+      if (Y >= GamePlay.MapBox.Height || Map.MapGrid[X][Y + 1].Type.Symbol == symbol)
       {
         obj = Map.MapGrid[X][Y + 1];
         return true;
@@ -357,7 +391,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
         }
 
         // look right
-        if (X < GamePlayScreen.MapBox.Width && Map.MapGrid[X + 1][Y].Type.Symbol != ' ')
+        if (X < GamePlay.MapBox.Width && Map.MapGrid[X + 1][Y].Type.Symbol != ' ')
         {
           obj = Map.MapGrid[X + 1][Y];
           return true;
@@ -371,7 +405,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
         }
 
         // look down
-        if (Y >= GamePlayScreen.MapBox.Height || Map.MapGrid[X][Y + 1].Type.Symbol != ' ')
+        if (Y >= GamePlay.MapBox.Height || Map.MapGrid[X][Y + 1].Type.Symbol != ' ')
         {
           obj = Map.MapGrid[X][Y + 1];
           return true;
@@ -382,24 +416,5 @@ namespace ConsoleDungeonCrawler.Game.Entities
       obj = new MapObject();
       return false;
     }
-
-    internal static bool IsInCombat()
-    {
-      // Check if there is a mapObject.InCombat == true in OverlayObjects Except Player
-      foreach (char key in Map.OverlayObjects.Keys)
-      {
-        if (Map.OverlayObjects[key].Count == 0) continue;
-        List<MapObject> objs = Map.OverlayObjects[key];
-        if (!objs[0].Type.IsAttackable) continue;
-        foreach (MapObject obj in objs)
-        {
-          if (obj.Type.Symbol == 'P') continue;
-          if (obj is Monster == false) continue;
-          if (((Monster)obj).InCombat) return true;
-        }
-      }
-      return false;
-    }
-
   }
 }

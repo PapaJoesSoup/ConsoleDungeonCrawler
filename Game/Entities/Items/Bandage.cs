@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ConsoleDungeonCrawler.Game.Maps;
-
-namespace ConsoleDungeonCrawler.Game.Entities.Items
+﻿namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Bandage : Item
   {
@@ -17,23 +10,22 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
 
     }
 
-    internal Bandage(BandageType bandageType, int buffAmount, int quantity, decimal cost, decimal value)
+    internal Bandage(BandageType bandageType, int buffAmount, int quantity, decimal buyCost, decimal sellCost)
     {
       Type = ItemType.Bandage;
-
       Quantity = quantity;
+      StackSize = 20;
       Name = $"{bandageType} Bandage";
       Description = $"A {bandageType} Bandage";
-      Cost = cost;
-      Value = value;
+      BuyCost = buyCost;
+      SellCost = sellCost;
       BandageType = bandageType;
       BuffAmount = buffAmount;
     }
 
     internal static Bandage GetRandomBandage()
     {
-      Random random = new Random();
-      int randomBandage = random.Next(0, Inventory.Bandages.Count);
+      int randomBandage = Dice.Roll(0, Inventory.Bandages.Count);
       return Inventory.Bandages[randomBandage];
     }
 

@@ -17,32 +17,32 @@ namespace ConsoleDungeonCrawler.Game
     {
       ConsoleEx.Clear();
       ConsoleEx.InitializeConsole();
-      Map.Instance = new Map(GamePlayScreen.MapBox);
+      Map.Instance = new Map(GamePlay.MapBox);
 
-      TitleScreen.Draw();
+            Screens.Title.Draw();
       PlayGame();
     }
 
     private static void PlayGame()
     {
       ConsoleEx.Clear();
-      GamePlayScreen.Messages.Add(new Message("You have entered the Dungeon!", Color.Chartreuse, Color.Black));
-      GamePlayScreen.Messages.Add(new Message("You look around...",Color.White, Color.Black));
-      GamePlayScreen.Draw();
+      GamePlay.Messages.Add(new Message("You have entered the Dungeon!", Color.Chartreuse, Color.Black));
+      GamePlay.Messages.Add(new Message("You look around...",Color.White, Color.Black));
+      GamePlay.Draw();
       while (!IsOver && !IsWon)
       {
         if (IsPaused)
-          GamePausedScreen.Draw();
+          GamePaused.Draw();
         else
         {
           PlayerInput.Process();
-          GamePlayScreen.Update();
+          GamePlay.Update();
         }
       }
       if (IsOver)
-        GameOverScreen.Draw();
+        GameOver.Draw();
       else if (IsWon)
-        GameWonScreen.Draw();
+        GameWon.Draw();
 
     }
   }

@@ -1,53 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConsoleDungeonCrawler.Game.Entities.Items
+﻿namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Chest : Item
   {
+    internal ItemRarity ItemRarity = ItemRarity.Common;
     internal List<Item> Items = new List<Item>();
 
     internal Chest()
     {
+      Type = ItemType.Chest;
+      Name = $"{ItemRarity} Chest";
+      Description = $"A {ItemRarity} Chest";
+      Quantity = 1;
+      StackSize = 1;
+      BuyCost = 1M;
+      SellCost = 0.10M;
 
+      Items = GetChestItems();
     }
 
-    internal Chest(int quantity, decimal cost, decimal value)
+    internal Chest(int quantity, ItemRarity rarity, decimal buyCost, decimal sellCost)
     {
       Type = ItemType.Chest;
-      Quantity = quantity;
       Name = "Chest";
       Description = "A Chest";
-      Cost = cost;
-      Value = value;
-      Items = GetRandomItems();
+      ItemRarity = rarity;
+      Quantity = quantity;
+      StackSize = 1;
+      BuyCost = buyCost;
+      SellCost = sellCost;
+
     }
 
-    internal static Chest GetRandomChest()
+    internal static Chest GetRandomChest(int min = 0, int max = 5)
     {
-      Random random = new Random();
-      int randomChest = random.Next(0, 3);
+      if (min < 0) min = 0;
+      if (max > 5) max = 5;
+      int randomChest = Dice.Roll(min, max);
       switch (randomChest)
       {
         case 0:
-          return new Chest(1, 1, 0);
+          return new Chest(1, ItemRarity.Poor, 0.5M, 0.1M);
         case 1:
-          return new Chest(1, 1, 0);
+          return new Chest(1, ItemRarity.Common, 1, 0.5M);
         case 2:
-          return new Chest(1, 1, 0);
+          return new Chest(1, ItemRarity.Uncommon, 5, 1M);
+        case 3:
+          return new Chest(1, ItemRarity.Rare, 10, 1.5M);
+        case 4:
+          return new Chest(1, ItemRarity.Epic, 20, 4M);
+        case 5:
+          return new Chest(1, ItemRarity.Legendary, 50, 7.5M);
         default:
-          return new Chest(1, 1, 0);
+          return new Chest(1, ItemRarity.Common, 1, 0.5M);
       }
     }
 
-    private List<Item> GetRandomItems()
+    private List<Item> GetChestItems()
     {
-      Random random = new Random();
-      int randomItems = random.Next(0, 15);
-      Item randomGold = new Item(ItemType.Gold, random.Next(0, 10), 0, random.Next(0, 10));
+      int randomItems = Dice.Roll(0, 10);
+      Item randomGold = new Item(ItemType.Gold, Dice.Roll(1, 10), 1, 1);
       switch (randomItems)
       {
         case 0:

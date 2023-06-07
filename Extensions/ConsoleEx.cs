@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Globalization;
 using ConsoleDungeonCrawler.Game;
+using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler.Extensions
@@ -17,7 +18,7 @@ namespace ConsoleDungeonCrawler.Extensions
       set
       {
         foregroundColor = value;
-        Console.Write(ConsoleColorEx.ToFgHiColor(value));
+        Console.Write(ColorEx.ToFgHiColor(value));
       }
     }
 
@@ -28,7 +29,7 @@ namespace ConsoleDungeonCrawler.Extensions
       set
       {
         backgroundColor = value;
-        Console.Write(ConsoleColorEx.ToBgHiColor(value));
+        Console.Write(ColorEx.ToBgHiColor(value));
       }
     }
 
@@ -48,6 +49,14 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(':', col + 2, row, Color.White, Color.DimGray);
       WriteAt(mapObject.Type.Name, col + 3, row, mapObject.Type.ForegroundColor, Color.DimGray);
       WriteAt(new string(' ', padding), paddingStart, row, Color.White, Color.DimGray);
+    }
+
+    internal static void WriteInventoryItem(Item item, int col, int row, int colWidth)
+    {
+      // create a formatted line containing the symbol and the type of the map object
+
+      WriteAt($"({item.Quantity})", col, row, ColorEx.RarityColor(item.Rarity));
+      WriteAt(item.Name.PadRight(col + colWidth), col + 5, row, ColorEx.RarityColor(item.Rarity));
     }
 
     // WriteAlignedAt Methods
@@ -1209,7 +1218,7 @@ namespace ConsoleDungeonCrawler.Extensions
     //Utility Methods
     internal static void ResetColor()
     {
-      Console.Write(ConsoleColorEx.resetColor);
+      Console.Write(ColorEx.resetColor);
     }
 
     internal static void Clear()

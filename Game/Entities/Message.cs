@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Screens;
 
@@ -34,7 +29,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     internal void WriteAt(int x, int y)
     {
-      ConsoleEx.WriteAt(Text.PadRight(GamePlayScreen.MessageBox.Width - 3), x, y, ForegroundColor, BackgroundColor);
+      ConsoleEx.WriteAt(Text.PadRight(GamePlay.MessageBox.Width - 3), x, y, ForegroundColor, BackgroundColor);
     }
   }
 }

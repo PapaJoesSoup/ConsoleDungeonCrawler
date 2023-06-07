@@ -1,8 +1,9 @@
 ﻿using System.Drawing;
+using ConsoleDungeonCrawler.Game;
 
 namespace ConsoleDungeonCrawler.Extensions
 {
-  internal static class ConsoleColorEx
+  internal static class ColorEx
   {
     // Setup console to use extended ansii 256 colors
     internal static string bgColor = "\x1b[48;5;";
@@ -15,7 +16,7 @@ namespace ConsoleDungeonCrawler.Extensions
     // Reset console colors
     internal static string resetColor = "\x1b[0m";
 
-    static ConsoleColorEx()
+    static ColorEx()
     {
     }
 
@@ -31,6 +32,27 @@ namespace ConsoleDungeonCrawler.Extensions
     internal static string ToRGB(Color color)
     {
       return $"{color.R};{color.G};{color.B}";
+    }
+
+    internal static Color RarityColor(ItemRarity rarity)
+    {
+      switch (rarity)
+      {
+        case ItemRarity.Poor:
+          return Color.Gray;
+        case ItemRarity.Common:
+          return Color.White;
+        case ItemRarity.Uncommon:
+          return Color.Green;
+        case ItemRarity.Rare:
+          return Color.Blue;
+        case ItemRarity.Epic:
+          return Color.Purple;
+        case ItemRarity.Legendary:
+          return Color.Orange;
+        default:
+          return Color.White;
+      }
     }
   }
 }

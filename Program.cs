@@ -81,7 +81,7 @@ namespace ConsoleDungeonCrawler
       // Print all 256 colors
       for (int i = 0; i < 255; i++)
       {
-        Console.Write($"{ConsoleColorEx.bgColor}{i}m*");
+        Console.Write($"{ColorEx.bgColor}{i}m*");
       }
 
       // Print all 24 bit rgb colors

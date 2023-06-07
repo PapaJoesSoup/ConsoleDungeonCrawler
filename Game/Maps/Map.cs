@@ -69,7 +69,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
         new() { Symbol = 'z', Name = "Ooze", Singular = "an Ooze", Plural = "some Oozes", ForegroundColor = Color.GreenYellow, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
         new() { Symbol = 'g', Name = "Goblin", Singular = " a Goblin", Plural = "some Goblins", ForegroundColor = Color.CadetBlue, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
         new() { Symbol = 'B', Name = "Boss", Singular = "a Boss", Plural = "some Bosses", ForegroundColor = Color.Maroon, BackgroundColor = Color.Yellow, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 'm', Name = "Chest", Singular = "a Chest", Plural = "some Chests", ForegroundColor = Color.Silver, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true},
+        new() { Symbol = 'm', Name = "Chest", Singular = "a Chest", Plural = "some Chests", ForegroundColor = Color.Silver, BackgroundColor = Color.DimGray, IsPassable = false, IsLootable = true},
         new() { Symbol = 'i', Name = "Item", Singular = "an Item", Plural = "some Items", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = false, IsLootable = true },
         new() { Symbol = '$', Name = "Gold", Singular = "some Gold", Plural = "some stacks of Gold", ForegroundColor = Color.Gold, BackgroundColor = Color.DimGray, IsPassable = false, IsLootable = true },
         new() { Symbol = 'T', Name = "Teleporter", Singular = "a Teleporter", Plural = "some Teleporters", ForegroundColor = Color.Gold, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true },
@@ -397,7 +397,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
           if (obj.IsVisible) count++;
 
         if (count < 1) continue;
-        GamePlayScreen.Messages.Add(
+        GamePlay.Messages.Add(
           new Message($"You see {(count < 2 ? type.Singular : type.Plural)} ({count})...", type.Symbol == '#'? Color.White : type.ForegroundColor, Color.Black));
       }
 
@@ -411,7 +411,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
           if (obj.IsVisible) count++;
 
         if (count < 1) continue;
-        GamePlayScreen.Messages.Add(new Message($"You see {(count < 2 ? type.Singular : type.Plural)} ({count})...", (type.Symbol == 'S' || type.Symbol == 'E') ? Color.White : type.ForegroundColor, Color.Black));
+        GamePlay.Messages.Add(new Message($"You see {(count < 2 ? type.Singular : type.Plural)} ({count})...", (type.Symbol == 'S' || type.Symbol == 'E') ? Color.White : type.ForegroundColor, Color.Black));
       }
     }
 
@@ -440,7 +440,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
     {
       RemoveFromOverlayObjects(obj);
       RemoveFromOverlayGrid(obj);
-      GamePlayScreen.LegendSection();
+      GamePlay.LegendSection();
     }
 
     internal static void RemoveFromOverlayObjects(MapObject obj)

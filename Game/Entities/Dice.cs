@@ -3,24 +3,27 @@ namespace ConsoleDungeonCrawler.Game.Entities
 {
   internal static class Dice
   {
+    private static Random _random = new Random();
+
+    /// <summary>
+    /// Returns a random number between 1 and sides
+    /// </summary>
+    /// <param name="sides"></param>
+    /// <returns></returns>
     internal static int Roll(int sides)
     {
-      return new Random().Next(1, sides + 1);
+      return _random.Next(1, sides + 1);
     }
 
-    internal static int Roll(int numberOfDice, int sides)
+    /// <summary>
+    /// Returns a random number between minimum number and sides
+    /// </summary>
+    /// <param name="min"></param>
+    /// <param name="sides"></param>
+    /// <returns></returns>
+    internal static int Roll(int min, int sides)
     {
-      int total = 0;
-      for (int i = 0; i < numberOfDice; i++)
-      {
-        total += Roll(sides);
-      }
-      return total;
-    }
-
-    internal static int Roll(int numberOfDice, int sides, int modifier)
-    {
-      return Roll(sides, numberOfDice) + modifier;
+      return _random.Next(min, sides + 1);
     }
   }
 }

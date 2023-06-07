@@ -77,6 +77,7 @@
 
   internal enum ItemRarity
   {
+    Poor,
     Common,
     Uncommon,
     Rare,
@@ -94,6 +95,7 @@
     Salmon,
     Trout,
     Snapper,
+    Feast,
     Bread,
     Fruit,
     Vegetable,

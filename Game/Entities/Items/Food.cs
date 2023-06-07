@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConsoleDungeonCrawler.Game.Entities.Items
+﻿namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Food : Item
   {
@@ -17,23 +11,25 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
 
     }
 
-    internal Food(FoodType foodType, BuffType bufftype, int quantity, decimal cost, decimal value)
+    internal Food(FoodType foodType, BuffType bufftype, int quantity, decimal buyCost, decimal value)
     {
       Type = ItemType.Food;
       FoodType = foodType;
       BuffType = bufftype;
       Quantity = quantity;
+      StackSize = 20;
+
       Name = $"{FoodType} Food";
       Description = $"A {FoodType} Food";
-      Cost = cost;
-      Value = 0;
+      BuyCost = buyCost;
+      SellCost = 0;
     }
 
     internal static Food GetRandomFood()
     {
-      Random random = new Random();
-      int randomFood = random.Next(0, Inventory.Foods.Count);
-      return Inventory.Foods[randomFood];
+      BuffType randomBuff = (BuffType)Dice.Roll(1, Inventory.Foods.Count); // 0 is None
+      int randomFood = Dice.Roll(0, Inventory.Foods[randomBuff].Count);
+      return Inventory.Foods[randomBuff][randomFood];
     }
 
   }
