@@ -58,7 +58,7 @@
     private List<Item> GetChestItems()
     {
       int randomItems = Dice.Roll(0, 10);
-      Item randomGold = new Item(ItemType.Gold, Dice.Roll(1, 10), 1, 1);
+      Item randomGold = new Item(ItemType.Gold, Player.Level, Dice.Roll(1, 10), 1, 1);
       switch (randomItems)
       {
         case 0:

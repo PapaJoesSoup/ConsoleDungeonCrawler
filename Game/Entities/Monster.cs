@@ -38,7 +38,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Mana = level * 2;
       MaxMana = level * 2;
       Level = level * 2;
-      Gold = level * 2;
+      Gold = Decimal.Round(level * Dice.Roll(.01M, 1.1M), 2);
       Weapon = new Weapon();
       Level = level;
     }
@@ -62,6 +62,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       InCombat = true;
       Player.InCombat = true;
       BackgroundColor = Color.DarkOrange;
+      this.Draw();
       GamePlay.Messages.Add(new Message("You are in combat!", Color.Red, Color.Black));
     }
 
@@ -113,6 +114,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
           ForegroundColor = Color.Gray;
           Type.IsPassable = true;
           InCombat = false;
+          this.Draw();
           Map.RemoveFromOverlayObjects(this);
           Player.InCombat = Player.IsInCombat();
         }

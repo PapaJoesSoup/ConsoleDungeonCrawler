@@ -25,5 +25,16 @@ namespace ConsoleDungeonCrawler.Game.Entities
     {
       return _random.Next(min, sides + 1);
     }
+
+    /// <summary>
+    /// Returns a random  decimal number between minimum number and max number
+    /// </summary>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <returns></returns>
+    internal static decimal Roll(decimal min, decimal max)
+    {
+      return (decimal)_random.NextDouble() * (max - min) + min;
+    }
   }
 }

@@ -51,15 +51,13 @@
 
     internal static Weapon GetRandomWeapon()
     {
-      Random rnd = new Random();
-      WeaponType weaponType = (WeaponType)rnd.Next(1, Inventory.WeaponTypes.Count + 1);
-      Weapon weapon = Inventory.WeaponTypes[weaponType][rnd.Next(0, Inventory.WeaponTypes[weaponType].Count + 1)];
+      WeaponType weaponType = (WeaponType)Dice.Roll(1, Inventory.WeaponTypes.Count);
+      Weapon weapon = Inventory.WeaponTypes[weaponType][Dice.Roll(0, Inventory.WeaponTypes[weaponType].Count)];
       return weapon;
     }
 
     internal static Weapon GetWeapon(WeaponType weaponType, int idx)
     {
-      Random rnd = new Random();
       Weapon weapon = Inventory.WeaponTypes[weaponType][idx];
       return weapon;
     }

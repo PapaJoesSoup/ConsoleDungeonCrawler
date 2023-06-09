@@ -36,8 +36,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
       InitTypeLists();
       InitDictionaries();
-      LoadMapGridFromFile("Game/Maps/Data/MapTemplate.txt");
-      LoadOverlayFromFile("Game/Maps/Data/MapPlacement.txt");
+      LoadMapGridFromFile("Game/Maps/Data/MapGrid1.txt");
+      LoadOverlayFromFile("Game/Maps/Data/MapOverlay1.txt");
     }
 
     internal void InitTypeLists()

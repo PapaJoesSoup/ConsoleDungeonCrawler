@@ -1,6 +1,4 @@
 ﻿using System.Drawing;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.InteropServices;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Screens;
@@ -358,6 +356,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static void InitFoodTypes()
     {
       Foods.Add(BuffType.Health, new List<Food>());
+      Foods[BuffType.Health].Add(new Food(FoodType.Ration, BuffType.Health, 1, 1, 0));
       Foods[BuffType.Health].Add(new Food(FoodType.Vegetable, BuffType.Health, 1, 1, 0));
       Foods[BuffType.Health].Add(new Food(FoodType.Fruit, BuffType.Health, 1, 1, 0));
       Foods[BuffType.Health].Add(new Food(FoodType.BearSteak, BuffType.Health, 1, 1, 0));
@@ -386,20 +385,11 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Foods[BuffType.Mana].Add(new Food(FoodType.Cider, BuffType.Mana, 1, 1, 0));
     }
 
-    internal static void Draw()
-    {
-      Dialog.Draw();
-      ConsoleEx.WriteAlignedAt("Player Inventory Management", HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive);
-      ConsoleEx.WriteAlignedAt("Press any key to continue", HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, 2);
-      Console.ReadKey(true);
-      Dialog.Close();
-    }
-
     public static bool AddItem(Item item)
     {
       if (item.Type == ItemType.Gold)
       {
-        Player.Gold += item.Quantity;
+        Player.Gold += Decimal.Round(item.Quantity * item.SellCost, 2);
         return true;
       }
       foreach (Bag bag in Bags)
@@ -472,6 +462,10 @@ namespace ConsoleDungeonCrawler.Game.Entities
     
     public static Item GetRandomItem(ItemType type)
     {
+      //default result is gold, so set the quantity and value
+      int qty = Dice.Roll(1, 5);
+      decimal value = Decimal.Round(Dice.Roll(.01M, 1.1M), 2); 
+
       switch (type)
       {
         case ItemType.Weapon:
@@ -481,15 +475,16 @@ namespace ConsoleDungeonCrawler.Game.Entities
         case ItemType.Food:
           return Food.GetRandomFood();
         case ItemType.Gold:
-          return new Item(ItemType.Gold, Dice.Roll(1, 5), 1, 1);
+          return new Item(ItemType.Gold, Player.Level, qty, value, value);
         case ItemType.Armor:
           return Armor.GetRandomArmor();
         case ItemType.Chest:
           return Chest.GetRandomChest();
         case ItemType.Bandage:
           return Bandage.GetRandomBandage();
+        default:  
+          return new Item(ItemType.Gold, Player.Level, qty, value, value);
       }
-      return new Item();
     }
   }
 }

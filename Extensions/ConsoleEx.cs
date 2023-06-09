@@ -440,6 +440,71 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y, color, backgroundColor);
     }
 
+    internal static void WriteAlignedAt(Box box, string s, HAlign hAlign, VAlign vAlign, Color color,
+      Color backgroundColor)
+    {
+      int x = 0;
+      int y = 0;
+      switch (hAlign)
+      {
+        case HAlign.Left:
+          x = box.Left + 1;
+          break;
+        case HAlign.Center:
+          x = (Console.WindowWidth / 2) - (s.Length / 2);
+          break;
+        case HAlign.Right:
+          x = box.Width - s.Length;
+          break;
+      }
+
+      switch (vAlign)
+      {
+        case VAlign.Top:
+          y = box.Top + 1;
+          break;
+        case VAlign.Middle:
+          y = ((Console.WindowHeight) / 2) - 1;
+          break;
+        case VAlign.Bottom:
+          y = box.Height + box.Top - 1;
+          break;
+      }
+      WriteAt(s, x, y, color, backgroundColor);
+    }
+
+    internal static void WriteAlignedAt(Box box, string s, HAlign hAlign, VAlign vAlign, Color color,
+      Color backgroundColor, int xOffset, int yOffset)
+    {
+      int x = 0;
+      int y = 0;
+      switch (hAlign)
+      {
+        case HAlign.Left:
+          x = box.Left + 1;
+          break;
+        case HAlign.Center:
+          x = (Console.WindowWidth / 2) - (s.Length / 2);
+          break;
+        case HAlign.Right:
+          x = box.Width + box.Left - s.Length;
+          break;
+      }
+
+      switch (vAlign)
+      {
+        case VAlign.Top:
+          y = box.Top + 1;
+          break;
+        case VAlign.Middle:
+          y = (Console.WindowHeight / 2) - 1;
+          break;
+        case VAlign.Bottom:
+          y = box.Height + box.Top - 1;
+          break;
+      }
+      WriteAt(s, x + xOffset, y + yOffset, color, backgroundColor);
+    }
 
     // WriteAt string methods
     internal static void WriteAt(string s, int x, int y)

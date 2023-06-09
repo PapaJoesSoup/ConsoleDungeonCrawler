@@ -34,5 +34,28 @@
       Player.Health += BuffAmount;
       Inventory.RemoveItem(this);
     }
+
+    private void SetLevelFromType()
+    {
+      switch (BandageType)
+      {
+        case BandageType.Cloth:
+          Level = 1;
+          break;
+        case BandageType.Linen:
+          Level = 10;
+          break;
+        case BandageType.Wool:
+          Level = 20;
+          break;
+        case BandageType.Silk:
+          Level = 30;
+          break;
+        case BandageType.RuneCloth:
+          Level = 40;
+          break;
+
+      }
+    }
   }
 }

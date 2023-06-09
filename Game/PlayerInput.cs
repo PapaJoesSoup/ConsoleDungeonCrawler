@@ -23,7 +23,7 @@ namespace ConsoleDungeonCrawler.Game
             break;
           case ConsoleKey.I:
             GamePlay.Messages.Add(new Message($"You pressed Shift+{keyInfo.Key}"));
-            Inventory.Draw();
+            PlayerInventory.Draw();
             break;
         }
       }

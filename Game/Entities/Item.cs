@@ -5,6 +5,7 @@
     internal ItemType Type = ItemType.None;
     internal string Name = "None";
     internal string Description = "None";
+    internal int Level = 1;
     internal ItemRarity Rarity = ItemRarity.Common;
     internal int Quantity = 1;
     internal int StackSize = 1;
@@ -13,24 +14,15 @@
 
     public Item() { }
 
-    public Item(ItemType type, int qty, decimal cost, decimal value)
+    public Item(ItemType type, int level, int qty, decimal cost, decimal value)
     {
       Type = type;
       Name = type.ToString();
+      Level = level;
       Description = Type == ItemType.Gold ? $"some {type.ToString()}" : $"a {type.ToString()}";
       Quantity = qty;
       BuyCost = cost;
       SellCost = value;
-
-    }
-
-    public void UseItem()
-    {
-      switch (this)
-      {
-        default:
-          break;
-      }
     }
   }
 }

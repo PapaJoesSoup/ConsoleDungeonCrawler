@@ -24,7 +24,7 @@
       BuyCost = buyCost;
       SellCost = 0;
     }
-
+    
     internal static Food GetRandomFood()
     {
       BuffType randomBuff = (BuffType)Dice.Roll(1, Inventory.Foods.Count); // 0 is None
