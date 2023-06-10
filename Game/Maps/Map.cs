@@ -77,7 +77,6 @@ namespace ConsoleDungeonCrawler.Game.Maps
       };
     }
 
-
     internal void InitDictionaries()
     {
       MapGrid = new Dictionary<int, Dictionary<int, MapObject>>();
@@ -192,7 +191,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
     internal static bool CanMoveTo(int x, int y)
     {
       // check to see if there is an object there that is not passable
-      return MapGrid[x][y].Type.IsPassable && OverlayGrid[x][y].Type.IsPassable;
+      return MapGrid[x][y].IsPassable && OverlayGrid[x][y].IsPassable;
     }
 
     internal static bool CanJumpTo(int oldX, int oldY, int x, int y)
@@ -205,7 +204,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
         int maxY = Math.Max(oldY, y);
         for (int i = minY; i <= maxY; i++)
         {
-          if (!MapGrid[x][i].Type.IsPassable || !OverlayGrid[x][i].Type.IsPassable) return false;
+          if (!MapGrid[x][i].IsPassable || !OverlayGrid[x][i].IsPassable) return false;
         }
       }
       else if (oldY == y)
@@ -215,7 +214,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
         int maxX = Math.Max(oldX, x);
         for (int i = minX; i <= maxX; i++)
         {
-          if (!MapGrid[i][y].Type.IsPassable || !OverlayGrid[i][y].Type.IsPassable) return false;
+          if (!MapGrid[i][y].IsPassable || !OverlayGrid[i][y].IsPassable) return false;
         }
       }
       return true;
@@ -223,7 +222,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
     internal static bool CanAttack(int x, int y)
     {
-      // check to see if there is an object there that is not passable
+      // check to see if there is an object there that is attackable
       return OverlayGrid[x][y].Type.IsAttackable;
     }
 
@@ -235,7 +234,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
     private static void SetVisibleYObjects(int x, int y, ref int yLimit)
     {
-      if (MapGrid[x][y].Type.IsPassable)
+      if (MapGrid[x][y].IsPassable)
       {
         MapGrid[x][y].IsVisible = true;
         AddToMapObjects(MapGrid[x][y]);
@@ -257,7 +256,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
     private static void SetVisibleXObjects(int x, int y, ref int xLimit)
     {
-      if (MapGrid[x][y].Type.IsPassable)
+      if (MapGrid[x][y].IsPassable)
       {
         MapGrid[x][y].IsVisible = true;
         AddToMapObjects(MapGrid[x][y]);

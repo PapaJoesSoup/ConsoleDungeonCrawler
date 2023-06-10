@@ -8,9 +8,6 @@ namespace ConsoleDungeonCrawler.Extensions
 {
     internal static class ConsoleEx
   {
-    internal static int ScreenHeight;
-    internal static int ScreenWidth;
-
     private static Color foregroundColor = Color.Gray;
     internal static Color ForegroundColor
     {
@@ -1279,6 +1276,49 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
+
+    // Read Methods
+    internal static int ReadInt(int x, int y, Color foregroundColor, Color backgroundColor)
+    {
+      ForegroundColor = foregroundColor;
+      BackgroundColor = backgroundColor;
+      bool valid = false;
+      int result = -1;
+      while (!valid)
+      {
+        Console.SetCursorPosition(x, y);
+        ConsoleKeyInfo keyInfo = Console.ReadKey();
+        valid = int.TryParse(keyInfo.KeyChar.ToString(), out result);
+        if (valid) continue;
+        Console.SetCursorPosition(x, y);
+        Console.Write(" ");
+      }
+      ResetColor();
+      return result;
+    }
+
+    internal static bool ReadBool(int x, int y, Color foregroundColor, Color backgroundColor)
+    {
+      ForegroundColor = foregroundColor;
+      BackgroundColor = backgroundColor;
+      bool valid = false;
+      bool result = false;
+      while (!valid)
+      {
+        Console.SetCursorPosition(x, y);
+        ConsoleKeyInfo keyInfo = Console.ReadKey();
+        valid = keyInfo.KeyChar is 'Y' or 'N';
+        if (valid)
+        {
+          result = keyInfo.KeyChar is 'Y';
+          continue;
+        }
+        Console.SetCursorPosition(x, y);
+        Console.Write(" ");
+      }
+      ResetColor();
+      return result;
+    }
 
     //Utility Methods
     internal static void ResetColor()

@@ -55,21 +55,54 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
     internal static void StatusSection()
     {
-      int row = StatusBox.Top + 1;
-      int col = StatusBox.Left + 2;
+      ArmorStats();
+      InventoryStats();
+      SpellStats();
+      PlayerStats();
+    }
 
-      //Armor
-      ConsoleEx.WriteAt("Armor", col, row, ConsoleColor.Yellow);
+    internal static void PlayerStats()
+    {
+      //Player Stats
+      int col = StatusBox.Left + 178;
+      int row = StatusBox.Top + 1;
+
+      ConsoleEx.WriteAt($"Player - Level: {Player.Level}", col, row, ConsoleColor.Yellow);
       row++;
-      foreach (var armor in Player.ArmorSet)
+      ConsoleEx.WriteAt($"Class: {Player.Class}", col, row, ConsoleColor.White);
+      row++;
+      ConsoleEx.WriteAt($"Weapon: ", col, row, ConsoleColor.White);
+      ConsoleEx.WriteAt($"{Player.Weapon.Name}", col + 8, row, ColorEx.RarityColor(Player.Weapon.Rarity));
+      row++;
+      ConsoleEx.WriteAt($"Health: {Player.Health}/{Player.MaxHealth}", col, row, ConsoleColor.White);
+      row++;
+      ConsoleEx.WriteAt($"Mana: {Player.Mana}/{Player.MaxMana}", col, row, ConsoleColor.White);
+      row++;
+      ConsoleEx.WriteAt($"Gold: {Player.Gold}g", col, row, ConsoleColor.White);
+    }
+
+    internal static void SpellStats()
+    {
+      int col;
+      int row;
+      //Spells
+      col = StatusBox.Left + 120;
+      row = StatusBox.Top + 1;
+      ConsoleEx.WriteAt("Spells", col, row, ConsoleColor.Yellow);
+      row++;
+      foreach (var spell in Player.Spells)
       {
-        string armorText = $"{armor.ArmorType}: {armor.Name} ".PadRight(col + 50);
-        ConsoleEx.WriteAt(armorText, col, row, ConsoleColor.White);
+        ConsoleEx.WriteAt($"{spell.Value.Name}: {spell.Value.Description} ", col, row, ConsoleColor.White);
         row++;
       }
+    }
 
+    internal static void InventoryStats()
+    {
+      int col;
+      int row;
       //Inventory
-      col = StatusBox.Left + 25;
+      col = StatusBox.Left + 30;
       row = StatusBox.Top + 1;
       int colWidth = 22;
       int count = 0;
@@ -88,34 +121,23 @@ namespace ConsoleDungeonCrawler.Game.Screens
           row = StatusBox.Top + 2;
           col += colWidth + 2;
         }
-
       }
+    }
 
-      //Spells
-      col = StatusBox.Left + 120;
-      row = StatusBox.Top + 1;
-      ConsoleEx.WriteAt("Spells", col, row, ConsoleColor.Yellow);
+    internal static void ArmorStats()
+    {
+      int row = StatusBox.Top + 1;
+      int col = StatusBox.Left + 2;
+
+      //Armor
+      ConsoleEx.WriteAt("Armor", col, row, ConsoleColor.Yellow);
       row++;
-      foreach (var spell in Player.Spells)
+      foreach (var armor in Player.ArmorSet)
       {
-        ConsoleEx.WriteAt($"{spell.Value.Name}: {spell.Value.Description} ", col, row, ConsoleColor.White);
+        string armorText = $"{armor.ArmorType}: {armor.Name} ".PadRight(col + 50);
+        ConsoleEx.WriteAt(armorText, col, row, ConsoleColor.White);
         row++;
       }
-
-      //Player Stats
-      col = StatusBox.Left + 178;
-      row = StatusBox.Top + 1;
-      ConsoleEx.WriteAt("Player", col, row, ConsoleColor.Yellow);
-      row++;
-      ConsoleEx.WriteAt($"Class: {Player.Class}", col, row, ConsoleColor.White);
-      row++;
-      ConsoleEx.WriteAt($"Level: {Player.Level}", col, row, ConsoleColor.White);
-      row++;
-      ConsoleEx.WriteAt($"Health: {Player.Health}/{Player.MaxHealth}", col, row, ConsoleColor.White);
-      row++;
-      ConsoleEx.WriteAt($"Mana: {Player.Mana}/{Player.MaxMana}", col, row, ConsoleColor.White);
-      row++;
-      ConsoleEx.WriteAt($"Gold: {Player.Gold}g", col, row, ConsoleColor.White);
     }
 
     internal static void MapSection()

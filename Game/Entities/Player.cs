@@ -137,23 +137,28 @@ namespace ConsoleDungeonCrawler.Game.Entities
       switch (armor.ArmorType)
       {
         case ArmorType.Head:
-          Inventory.AddItem(ArmorSet[0]);
+          if (ArmorSet[0].ArmorType != ArmorType.None)
+            Inventory.AddItem(ArmorSet[0]); 
           ArmorSet[0] = armor;
           break;
         case ArmorType.Body:
-          Inventory.AddItem(ArmorSet[1]);
+          if (ArmorSet[1].ArmorType != ArmorType.None)
+            Inventory.AddItem(ArmorSet[1]);
           ArmorSet[1] = armor;
           break;
         case ArmorType.Hands:
-          Inventory.AddItem(ArmorSet[2]);
+          if (ArmorSet[2].ArmorType != ArmorType.None)
+            Inventory.AddItem(ArmorSet[2]);
           ArmorSet[2] = armor;
           break;
         case ArmorType.Legs:
-          Inventory.AddItem(ArmorSet[3]);
+          if (ArmorSet[3].ArmorType != ArmorType.None)
+            Inventory.AddItem(ArmorSet[3]);
           ArmorSet[3] = armor;
           break;
         case ArmorType.Feet:
-          Inventory.AddItem(ArmorSet[4]);
+          if (ArmorSet[4].ArmorType != ArmorType.None)
+            Inventory.AddItem(ArmorSet[4]);
           ArmorSet[4] = armor;
           break;
       }
@@ -161,16 +166,12 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     internal static void EquipWeapon(Weapon weapon)
     {
-      Inventory.AddItem(Weapon);
+
+      Inventory.AddItem(Player.Weapon);
       Weapon = weapon;
     }
 
     internal static void EquipSpell(Spell spell)
-    {
-
-    }
-
-    internal static void UseItem(Item item)
     {
 
     }
@@ -218,11 +219,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
       if (Mana > MaxMana) Mana = MaxMana;
     }
 
-    internal void AddGold(decimal amount)
-    {
-      Gold += amount;
-    }
-
     internal static bool RemoveGold(decimal amount)
     {
       if (amount > Gold)
@@ -265,7 +261,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
         if (!objs[0].Type.IsAttackable) continue;
         foreach (MapObject obj in objs)
         {
-          if (obj.Type.Symbol == 'P') continue;
+          if (obj is Player) continue;
           if (obj is Monster == false) continue;
           if (((Monster)obj).InCombat) return true;
         }

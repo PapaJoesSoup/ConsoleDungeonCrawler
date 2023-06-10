@@ -27,8 +27,8 @@
     
     internal static Food GetRandomFood()
     {
-      BuffType randomBuff = (BuffType)Dice.Roll(1, Inventory.Foods.Count); // 0 is None
-      int randomFood = Dice.Roll(0, Inventory.Foods[randomBuff].Count);
+      BuffType randomBuff = (BuffType)Dice.Roll(1, Inventory.Foods.Count - 1); // 0 is None
+      int randomFood = Dice.Roll(0, Inventory.Foods[randomBuff].Count - 1);
       return Inventory.Foods[randomBuff][randomFood];
     }
 

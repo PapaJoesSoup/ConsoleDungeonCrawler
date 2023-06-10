@@ -2,7 +2,7 @@
 {
   internal class Bag
   {
-    internal int Capacity = 20;
+    internal int Capacity = 16;
     internal List<Item> Items = new List<Item>();
 
     internal Bag()

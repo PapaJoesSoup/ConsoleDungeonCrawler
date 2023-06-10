@@ -22,13 +22,13 @@ namespace ConsoleDungeonCrawler
       // Enable extended colors
       EnableExtendedColors();
 
-      ConsoleEx.ScreenHeight = Console.WindowHeight;
-      ConsoleEx.ScreenWidth = Console.WindowWidth;
-
       map = new Map();
       Game.Game.Run();
     }
 
+    /// <summary>
+    /// This is a windows only feature...
+    /// </summary>
     private static void EnableExtendedColors()
     {
       // Setup console to use extended ansii colors
@@ -46,6 +46,19 @@ namespace ConsoleDungeonCrawler
       SetConsoleMode(handle, mode | 0x4);
     }
 
+    /// <summary>
+    /// This is a windows only feature...
+    /// </summary>
+    private static void SetScreenSizes(int width, int height)
+    {
+      // Set console window size
+      Console.SetWindowSize(width, height);
+      Console.SetBufferSize(width, height);
+    }
+
+    /// <summary>
+    /// This is a windows only feature...
+    /// </summary>
     private static void MaximizeConsoleWindow()
     {
       // Setup console to allow window to be maximized
@@ -74,27 +87,7 @@ namespace ConsoleDungeonCrawler
       int width = screenRect.Right - screenRect.Left;
       int height = screenRect.Bottom - screenRect.Top;
       MoveWindow(consoleWindowHandle, screenRect.Left, screenRect.Top, width, height, true);
-    }
-
-    private static void PrintColorsEx()
-    {
-      // Print all 256 colors
-      for (int i = 0; i < 255; i++)
-      {
-        Console.Write($"{ColorEx.bgColor}{i}m*");
-      }
-
-      // Print all 24 bit rgb colors
-      //for (int r = 0; r < 255; r++)
-      //{
-      //  for (int g = 0; g < 255; g++)
-      //  {
-      //    for (int b = 0; b < 255; b++)
-      //    {
-      //      Console.Write($"{ConsoleColorEx.bgHiColor}{r};{g};{b}m*");
-      //    }
-      //  }
-      //}
+      SetScreenSizes(width, height);
     }
   }
 }

@@ -3,7 +3,7 @@
   internal class Bandage : Item
   {
     BandageType BandageType = BandageType.Cloth;
-    int BuffAmount = 1;
+    internal int BuffAmount = 1;
 
     internal Bandage()
     {
@@ -27,12 +27,6 @@
     {
       int randomBandage = Dice.Roll(0, Inventory.Bandages.Count);
       return Inventory.Bandages[randomBandage];
-    }
-
-    internal void Use()
-    {
-      Player.Health += BuffAmount;
-      Inventory.RemoveItem(this);
     }
 
     private void SetLevelFromType()

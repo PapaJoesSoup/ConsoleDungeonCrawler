@@ -51,8 +51,8 @@
 
     internal static Weapon GetRandomWeapon()
     {
-      WeaponType weaponType = (WeaponType)Dice.Roll(1, Inventory.WeaponTypes.Count);
-      Weapon weapon = Inventory.WeaponTypes[weaponType][Dice.Roll(0, Inventory.WeaponTypes[weaponType].Count)];
+      WeaponType weaponType = (WeaponType)Dice.Roll(1, Inventory.WeaponTypes.Count - 1);
+      Weapon weapon = Inventory.WeaponTypes[weaponType][Dice.Roll(0, Inventory.WeaponTypes[weaponType].Count - 1)];
       return weapon;
     }
 

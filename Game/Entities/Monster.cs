@@ -32,6 +32,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       ForegroundColor = Type.ForegroundColor;
       BackgroundColor = Type.BackgroundColor;
       IsVisible = obj.IsVisible;
+      IsPassable = Type.IsPassable;
 
       Health = level * 2;
       MaxHealth = level * 2;
@@ -70,17 +71,13 @@ namespace ConsoleDungeonCrawler.Game.Entities
     {
       if (!InCombat) return;
       // check if player is within radius of Weapon range
-      if (Map.Player.X >= X - Weapon.Range && Map.Player.X <= X + Weapon.Range &&
-          Map.Player.Y >= Y - Weapon.Range && Map.Player.Y <= Y + Weapon.Range)
-      {
-        // roll to hit
-        if (Dice.Roll(1, 20) >= 10)
-        {
-          // roll for damage
-          int damage = Dice.Roll(Weapon.Damage);
-          Player.TakeDamage(damage);
-        }
-      }
+      if (Map.Player.X < X - Weapon.Range || Map.Player.X > X + Weapon.Range ||
+          Map.Player.Y < Y - Weapon.Range || Map.Player.Y > Y + Weapon.Range) return;
+      // roll to hit
+      if (Dice.Roll(1, 20) < 10) return;
+      // roll for damage
+      int damage = Dice.Roll(Weapon.Damage);
+      Player.TakeDamage(damage);
     }
 
     internal void TakeDamage(int damage)
@@ -112,7 +109,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
           }
           BackgroundColor = Type.BackgroundColor;
           ForegroundColor = Color.Gray;
-          Type.IsPassable = true;
+          IsPassable = true;
           InCombat = false;
           this.Draw();
           Map.RemoveFromOverlayObjects(this);

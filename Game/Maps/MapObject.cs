@@ -7,7 +7,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
   internal class MapObject : Position
   {
     internal ObjectType Type = new ObjectType();
-    internal bool IsVisible = true;
+    internal bool IsVisible = false;
+    internal bool IsPassable = false;
     internal Color ForegroundColor = Color.White;
     internal Color BackgroundColor = Color.Black;
 
@@ -19,6 +20,9 @@ namespace ConsoleDungeonCrawler.Game.Maps
     {
       X = x;
       Y = y;
+      Type = new ObjectType();
+      IsVisible = Type.IsVisible;
+      IsPassable = Type.IsPassable;
       ForegroundColor = Type.ForegroundColor;
       BackgroundColor = Type.BackgroundColor;
     }
@@ -28,16 +32,20 @@ namespace ConsoleDungeonCrawler.Game.Maps
       X = x;
       Y = y;
       Type = type;
+      IsVisible = type.IsVisible;
+      IsPassable = type.IsPassable;
       ForegroundColor = type.ForegroundColor;
       BackgroundColor = type.BackgroundColor;
+
     }
 
-    internal MapObject(int x, int y, ObjectType type, bool isIsVisible)
+    internal MapObject(int x, int y, ObjectType type, bool isVisible)
     {
       X = x;
       Y = y;
       Type = type;
-      IsVisible = isIsVisible;
+      IsVisible = isVisible;
+      IsPassable = type.IsPassable;
       ForegroundColor = type.ForegroundColor;
       BackgroundColor = type.BackgroundColor;
     }

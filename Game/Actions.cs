@@ -42,6 +42,7 @@ namespace ConsoleDungeonCrawler.Game
       GamePlay.Messages.Add(new Message("Opening Door...", Color.Yellow, Color.Black));
       Map.RemoveFromMapObjects(door);
       door.Type = type;
+      door.IsPassable = type.IsPassable;
       Map.AddToMapObjects(door);
       door.Draw();
     }
@@ -55,6 +56,7 @@ namespace ConsoleDungeonCrawler.Game
         Color.Black));
       Map.RemoveFromMapObjects(door);
       door.Type = type;
+      door.IsPassable = type.IsPassable;
       Map.AddToMapObjects(door);
       door.Draw();
     }

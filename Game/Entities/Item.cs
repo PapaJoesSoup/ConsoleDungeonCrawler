@@ -1,4 +1,6 @@
-﻿namespace ConsoleDungeonCrawler.Game.Entities
+﻿using ConsoleDungeonCrawler.Game.Entities.Items;
+
+namespace ConsoleDungeonCrawler.Game.Entities
 {
   internal class Item
   {
@@ -23,6 +25,53 @@
       Quantity = qty;
       BuyCost = cost;
       SellCost = value;
+    }
+
+    public bool Use()
+    {
+      bool result = true;
+      switch (Type)
+      {
+        case ItemType.Gold:
+          Player.Gold += Level * Quantity * SellCost;
+          break;
+        case ItemType.Food:
+          Player.Heal(((Food)this).BuffAmount); 
+          break;
+        case ItemType.Potion:
+          switch (((Potion)this).BuffType)
+          {
+            case BuffType.Health:
+              Player.Heal(((Potion)this).BuffAmount);
+              break;
+            case BuffType.Mana:
+              Player.RestoreMana(((Potion)this).BuffAmount);
+              break;
+            case BuffType.HealthAndMana:
+              Player.Heal(((Potion)this).BuffAmount);
+              Player.RestoreMana(((Potion)this).BuffAmount);
+              break;
+          }
+          break;
+        case ItemType.Weapon:
+          Player.EquipWeapon((Weapon)this);
+          break;
+        case ItemType.Armor:
+          Player.EquipArmor((Armor)this);
+          break;
+        case ItemType.Bandage:
+          Player.Heal(((Bandage)this).BuffAmount);
+          break;
+        case ItemType.Chest:
+          foreach (Item t in ((Chest)this).Items)
+            Inventory.AddItem(t);
+
+          break;
+        default:
+          result = false;
+          break;
+      }
+      return result;
     }
   }
 }
