@@ -37,6 +37,7 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.D:
             GamePlay.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
             Map.Player.Move(keyInfo.Key);
+            Actions.PickupOverlayItem();
             break;
           case ConsoleKey.End:
             Game.IsOver = true;
@@ -55,9 +56,6 @@ namespace ConsoleDungeonCrawler.Game
             break;
           case ConsoleKey.C:
             Actions.CloseDoor();
-            break;
-          case ConsoleKey.Enter:
-            Actions.PickupOverlayItem();
             break;
           case ConsoleKey.T:
             Map.Player.Attack();

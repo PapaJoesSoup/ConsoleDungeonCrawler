@@ -29,6 +29,7 @@
       BuyCost = buyCost;
       SellCost = sellCost;
 
+      Items = GetChestItems();
     }
 
     internal static Chest GetRandomChest(int min = 0, int max = 5)

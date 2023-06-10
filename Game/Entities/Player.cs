@@ -142,22 +142,22 @@ namespace ConsoleDungeonCrawler.Game.Entities
           ArmorSet[0] = armor;
           break;
         case ArmorType.Body:
-          if (ArmorSet[1].ArmorType != ArmorType.None)
+          if (ArmorSet[1].ArmorName != ArmorName.None)
             Inventory.AddItem(ArmorSet[1]);
           ArmorSet[1] = armor;
           break;
         case ArmorType.Hands:
-          if (ArmorSet[2].ArmorType != ArmorType.None)
+          if (ArmorSet[2].ArmorName != ArmorName.None)
             Inventory.AddItem(ArmorSet[2]);
           ArmorSet[2] = armor;
           break;
         case ArmorType.Legs:
-          if (ArmorSet[3].ArmorType != ArmorType.None)
+          if (ArmorSet[3].ArmorName != ArmorName.None)
             Inventory.AddItem(ArmorSet[3]);
           ArmorSet[3] = armor;
           break;
         case ArmorType.Feet:
-          if (ArmorSet[4].ArmorType != ArmorType.None)
+          if (ArmorSet[4].ArmorName != ArmorName.None)
             Inventory.AddItem(ArmorSet[4]);
           ArmorSet[4] = armor;
           break;

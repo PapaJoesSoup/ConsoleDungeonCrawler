@@ -45,35 +45,35 @@ namespace ConsoleDungeonCrawler.Game.Maps
       // These are for building the map
       MapTypes = new List<ObjectType>
       {
-        new() { Symbol = '#', Name = "Wall", Singular = "a wall", Plural = "some walls", ForegroundColor = Color.FromArgb(255,40,40,40), BackgroundColor = Color.FromArgb(255,40,40,40), IsPassable = false },
-        new() { Symbol = '.', Name = "Floor", Singular = "a floor", Plural = "some flooring", ForegroundColor = Color.Gray, BackgroundColor = Color.DimGray, IsPassable = true },
-        new() { Symbol = '+', Name = "DoorC", Singular = "a closed door", Plural = "some closed doors", ForegroundColor = Color.Yellow, BackgroundColor = Color.DimGray, IsPassable = false },
-        new() { Symbol = '-', Name = "DoorO", Singular = "an open door", Plural = "some open doors", ForegroundColor = Color.Yellow, BackgroundColor = Color.DimGray, IsPassable = true },
-        new() { Symbol = '>', Name = "StairsU", Singular = "stairs going up", Plural = "multiple stairs going up", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = true },
-        new() { Symbol = '<', Name = "StairsD", Singular = "stairs going down", Plural = "multiple stairs going down", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = true },
-        new() { Symbol = '!', Name = "Fire", Singular = "a fire", Plural = "some fire", ForegroundColor = Color.OrangeRed, BackgroundColor = Color.DimGray, IsPassable = false },
-        new() { Symbol = '~', Name = "Water", Singular = "some water", Plural = "some patches of water", ForegroundColor = Color.Aqua, BackgroundColor = Color.Aqua, IsPassable = false },
-        new() { Symbol = 'a', Name = "Acid", Singular = "some acid", Plural = "some patches of acid", ForegroundColor = Color.SaddleBrown, BackgroundColor = Color.Chartreuse, IsPassable = false },
-        new() { Symbol = 'L', Name = "Lava", Singular = "some lava", Plural = "some patches of lava", ForegroundColor = Color.PapayaWhip, BackgroundColor = Color.Goldenrod, IsPassable = false },
-        new() { Symbol = 'I', Name = "Ice", Singular = "some ice", Plural = "some patches of ice", ForegroundColor = Color.Blue, BackgroundColor = Color.DeepSkyBlue, IsPassable = false }
+        new('#', "Wall", "a wall", "some walls", Color.FromArgb(255, 40, 40, 40), Color.FromArgb(255, 40, 40, 40), false, false, false),
+        new('.', "Floor", "a floor", "some flooring", Color.Gray, Color.DimGray, true, false, false),
+        new('+', "DoorC", "a closed door", "some closed doors", Color.Yellow, Color.DimGray, false, false, false),
+        new('-', "DoorO", "an open door", "some open doors", Color.Yellow, Color.DimGray, true, false, false),
+        new('>', "StairsU", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
+        new('<', "StairsD", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
+        new('!', "Fire", "a fire", "some fire", Color.OrangeRed, Color.DimGray, false, false, false),
+        new('~', "Water", "some water", "some patches of water", Color.Aqua, Color.Aqua, false, false, false),
+        new('a', "Acid", "some acid", "some patches of acid", Color.SaddleBrown, Color.Chartreuse, false, false, false),
+        new('L', "Lava", "some lava", "some patches of lava", Color.PapayaWhip, Color.Goldenrod, false, false, false),
+        new('I', "Ice", "some ice", "some patches of ice", Color.Blue, Color.DeepSkyBlue, false, false, false)
       };
 
       // These are for placing objects on the map.
       OverlayTypes = new List<ObjectType>
       {
-        new() { Symbol = 'S', Name = "Start", Singular = "the Entrance", Plural = "the Entrance", ForegroundColor = Color.Black, BackgroundColor = Color.White, IsPassable = true },
-        new() { Symbol = 'X', Name = "Exit", Singular = "the Exit", Plural = "The Exit", ForegroundColor = Color.MidnightBlue, BackgroundColor = Color.Gold, IsPassable = true },
-        new() { Symbol = 'P', Name = "Player", Singular = "me", Plural = "am is seeing double?", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = true, IsAttackable = true },
-        new() { Symbol = 'O', Name = "Ogre", Singular = "an Ogre", Plural = "Some Ogres", ForegroundColor = Color.Chocolate, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 'k', Name = "Kobald", Singular = "a Kobald", Plural = "some Kobalds", ForegroundColor = Color.BlueViolet, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 'z', Name = "Ooze", Singular = "an Ooze", Plural = "some Oozes", ForegroundColor = Color.GreenYellow, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 'g', Name = "Goblin", Singular = " a Goblin", Plural = "some Goblins", ForegroundColor = Color.CadetBlue, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 'B', Name = "Boss", Singular = "a Boss", Plural = "some Bosses", ForegroundColor = Color.Maroon, BackgroundColor = Color.Yellow, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 'm', Name = "Chest", Singular = "a Chest", Plural = "some Chests", ForegroundColor = Color.Silver, BackgroundColor = Color.DimGray, IsPassable = false, IsLootable = true},
-        new() { Symbol = 'i', Name = "Item", Singular = "an Item", Plural = "some Items", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = false, IsLootable = true },
-        new() { Symbol = '$', Name = "Gold", Singular = "some Gold", Plural = "some stacks of Gold", ForegroundColor = Color.Gold, BackgroundColor = Color.DimGray, IsPassable = false, IsLootable = true },
-        new() { Symbol = 'T', Name = "Teleporter", Singular = "a Teleporter", Plural = "some Teleporters", ForegroundColor = Color.Gold, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true },
-        new() { Symbol = 'x', Name = "Trap", Singular = "a Trap", Plural = "some Traps", ForegroundColor = Color.LightSalmon, BackgroundColor = Color.DimGray, IsPassable = false }
+        new('S', "Start", "the Entrance", "the Entrance", Color.Black, Color.White, true, false, false),
+        new('X', "Exit", "the Exit", "The Exit", Color.MidnightBlue, Color.Gold, true, false, false),
+        new('m', "Chest", "a Chest", "some Chests", Color.Silver, Color.DimGray, true, false, false),
+        new('i', "Item", "an Item", "some Items", Color.White, Color.DimGray, true, false, true),
+        new('$', "Gold", "some Gold", "some stacks of Gold", Color.Gold, Color.DimGray, true, false, true),
+        new('T', "Teleporter", "a Teleporter", "some Teleporters", Color.Gold, Color.DimGray, true, false, false),
+        new('x', "Trap", "a Trap", "some Traps", Color.LightSalmon, Color.DimGray, false, false, false),
+        new('P', "Player", "me", "am is seeing double?", Color.White, Color.DimGray, true, true, true),
+        new('k', "Kobald", "a Kobald", "some Kobalds", Color.BlueViolet, Color.DimGray, false, true, true),
+        new('z', "Ooze", "an Ooze", "some Oozes", Color.GreenYellow, Color.DimGray, false, true, true),
+        new('g', "Goblin", " a Goblin", "some Goblins", Color.CadetBlue, Color.DimGray, false, true, true),
+        new('O', "Ogre", "an Ogre", "Some Ogres", Color.Chocolate, Color.DimGray, false, true, true),
+        new('B', "Boss", "a Boss", "some Bosses", Color.Maroon, Color.Yellow, false, true, true)
       };
     }
 
@@ -145,7 +145,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
             Map.Player = new Player(obj);
             OverlayObjects[type.Symbol].Add(Map.Player);
           }
-          else if (obj.Type.IsAttackable)
+          else if (obj.IsAttackable)
           {
             Monster monster = new Monster(obj, 1);
             OverlayObjects[type.Symbol].Add(monster);
@@ -451,6 +451,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
     internal static void RemoveFromOverlayGrid(MapObject obj)
     {
+      if (obj is Monster) return;
       MapObject newObj = new MapObject(obj.X, obj.Y, new ObjectType(true));
       Map.OverlayGrid[obj.X][obj.Y] = newObj;
     }

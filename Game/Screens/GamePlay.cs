@@ -102,7 +102,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int col;
       int row;
       //Inventory
-      col = StatusBox.Left + 30;
+      col = StatusBox.Left + 31;
       row = StatusBox.Top + 1;
       int colWidth = 22;
       int count = 0;

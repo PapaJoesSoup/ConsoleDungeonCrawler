@@ -65,7 +65,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
         case ItemType.Chest:
           foreach (Item t in ((Chest)this).Items)
             Inventory.AddItem(t);
-
           break;
         default:
           result = false;

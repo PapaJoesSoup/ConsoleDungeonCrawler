@@ -8,15 +8,29 @@ namespace ConsoleDungeonCrawler.Game
 {
   internal static class Actions
   {
+    /// <summary>
+    /// Pick up any items that are on the ground under the player.  Dead monsters are lootable till looted.
+    /// </summary>
     public static void PickupOverlayItem()
     {
-      // TODO: Add logic to pick up items
-      // Items can buff the player, or be added to the inventory
-      // Items can be gold, potions, weapons, armor, etc.
-      if (Map.Player.IsNextToOverlay(out MapObject obj) == ' ') return;
+      if (Map.OverlayGrid[Map.Player.X][Map.Player.Y].Type.Symbol == ' ') return;
+      MapObject obj = Map.OverlayGrid[Map.Player.X][Map.Player.Y];
       Item item = new Item();
       switch (obj.Type.Symbol)
       {
+        case 'O':
+        case 'k':
+        case 'z':
+        case 'g':
+        case 'B':
+          if (obj.IsLootable)
+          {
+            Player.Gold += ((Monster)obj).Gold;
+            GamePlay.Messages.Add(new Message($"You gained {((Monster)obj).Gold} gold!", Color.DarkOrange, Color.Black));
+            item = Monster.Loot((Monster)obj);
+            obj.IsLootable = false;
+          }
+          break;
         case 'i':
           item = Inventory.GetRandomItem();
           break;
@@ -26,7 +40,10 @@ namespace ConsoleDungeonCrawler.Game
         case '$':
           item = Inventory.GetRandomItem(ItemType.Gold);
           break;
+        default:
+          return;
       }
+      if (item.Type == ItemType.None) return;
       Inventory.AddItem(item);
       string message = item.Type == ItemType.Gold ? "You Picked up a pouch of gold!" : $"You Picked up {item.Description}!";
       GamePlay.Messages.Add(new Message(message, Color.DarkGoldenrod, Color.Black));

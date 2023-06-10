@@ -33,7 +33,10 @@ namespace ConsoleDungeonCrawler.Game.Entities
       BackgroundColor = Type.BackgroundColor;
       IsVisible = obj.IsVisible;
       IsPassable = Type.IsPassable;
+      IsAttackable = Type.IsAttackable;
+      IsLootable = Type.IsLootable;
 
+      // set Monster properties
       Health = level * 2;
       MaxHealth = level * 2;
       Mana = level * 2;
@@ -99,14 +102,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
           int xp = Dice.Roll(Level *2 );
           GamePlay.Messages.Add(new Message($"You gained {xp} experience!", Color.DarkOrange, Color.Black));
           Player.AddExperience(xp);
-          GamePlay.Messages.Add(new Message($"You gained {Gold} gold!", Color.DarkOrange, Color.Black));
-          Player.Gold += Gold;
-          if (Dice.Roll(5) == 1) // 1 in 5 chance of dropping an item
-          {
-            Item item = Inventory.GetRandomItem();
-            Inventory.AddItem(item);
-            GamePlay.Messages.Add(new Message($"You gained {item.Description}!", Color.DarkOrange, Color.Black));
-          }
           BackgroundColor = Type.BackgroundColor;
           ForegroundColor = Color.Gray;
           IsPassable = true;
@@ -118,6 +113,32 @@ namespace ConsoleDungeonCrawler.Game.Entities
         else
           GamePlay.Messages.Add(new Message($"{Type.Name} has {Health} health left!", Color.DarkOrange, Color.Black));
       }
+    }
+
+    internal static int SetOdds(Char type)
+    {
+      switch (type)
+      {
+        case 'g':
+        case 'z':
+          return 5;
+        case 'O':
+          return 3;
+        case 'B':
+          return 1;
+        default:
+          return 5;
+      }
+    }
+
+    internal static Item Loot(Monster monster)
+    {
+      if (Dice.Roll(SetOdds(monster.Type.Symbol)) != 1) return new Item(); //chance of dropping an item
+      Item item = Inventory.GetRandomItem();
+      Inventory.AddItem(item);
+      GamePlay.Messages.Add(new Message($"You gained {item.Description}!", Color.DarkOrange, Color.Black));
+      monster.IsLootable = false;
+      return item;
     }
   }
 }

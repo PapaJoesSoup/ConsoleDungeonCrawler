@@ -9,6 +9,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
     internal ObjectType Type = new ObjectType();
     internal bool IsVisible = false;
     internal bool IsPassable = false;
+    internal bool IsLootable = false;
+    internal bool IsAttackable = false;
     internal Color ForegroundColor = Color.White;
     internal Color BackgroundColor = Color.Black;
 
@@ -23,6 +25,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
       Type = new ObjectType();
       IsVisible = Type.IsVisible;
       IsPassable = Type.IsPassable;
+      IsAttackable = Type.IsAttackable;
+      IsLootable = Type.IsLootable;
       ForegroundColor = Type.ForegroundColor;
       BackgroundColor = Type.BackgroundColor;
     }
@@ -34,6 +38,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
       Type = type;
       IsVisible = type.IsVisible;
       IsPassable = type.IsPassable;
+      IsAttackable = type.IsAttackable;
+      IsLootable = type.IsLootable;
       ForegroundColor = type.ForegroundColor;
       BackgroundColor = type.BackgroundColor;
 
@@ -46,6 +52,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
       Type = type;
       IsVisible = isVisible;
       IsPassable = type.IsPassable;
+      IsAttackable = type.IsAttackable;
+      IsLootable = type.IsLootable;
       ForegroundColor = type.ForegroundColor;
       BackgroundColor = type.BackgroundColor;
     }
