@@ -17,6 +17,7 @@ namespace ConsoleDungeonCrawler
 
     public static void Main(string[] args)
     {
+      Console.OutputEncoding = System.Text.Encoding.Unicode;
       // Maximize console window
       MaximizeConsoleWindow();
       // Enable extended colors

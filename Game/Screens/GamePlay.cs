@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.Design;
-using System.Drawing;
+﻿using System.Drawing;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Maps;
@@ -10,24 +9,30 @@ namespace ConsoleDungeonCrawler.Game.Screens
   {
     internal static Box StatusBox = new Box(1, 0, 208, 8);
     internal static Box MapBox = new Box(1, 7, 178, 35);
-    internal static Box OverlayBox = new Box(178, 7, 31, 30);
+    internal static Box OverlayBox = new Box(178, 7, 31, 27);
     internal static Box MessageBox = new Box(1, 41, 178, 10);
-    internal static Box LegendBox = new Box(178, 36, 31, 15);
+    internal static Box LegendBox = new Box(178, 33, 31, 18);
 
     internal static List<Message> Messages = new List<Message>();
 
-    internal static BoxCharsEx boxCharsEx = new BoxCharsEx("\xe2948d", "\xe29491", "\\xd59f", "\xe29499", "\xe295bc", "\xe29482");
+    internal static BoxCharsEx boxCharsEx = new BoxCharsEx("\u948d", "\u9491", "\ud59f", "\u9499", "\u95bc", "\u9482");
     internal static char HBorderChar = '=';
     internal static char VBorderChar = '|';
 
     internal static int currentBag = 1;
 
-
+    // MessageOffset is a negative number that decrements the index of the first message to display in the message Section
+    internal static int MessageOffset = 0;
+    internal static ConsoleKeyInfo LastKey;
+    
 
     internal static void Draw()
     {
       Borders();
+      //BordersEx();
       MapSection();
+      LegendSection();
+      MessageLegend();
       Update();
     }
 
@@ -37,7 +42,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       Map.Player.Draw();
       StatusSection();
       OverlaySection();
-      if(!Player.InCombat) Map.WhatIsVisible();
+      if(AcceptableKeys()) Map.WhatIsVisible();
       Actions.MonsterActions();
       MessageSection();
     }
@@ -194,39 +199,68 @@ namespace ConsoleDungeonCrawler.Game.Screens
       if (row >= OverlayBox.Top + OverlayBox.Height - 1) return;
       for (int index = row; index < OverlayBox.Top + OverlayBox.Height - 1; index++)
         ConsoleEx.WriteAt(" ", col, index, ConsoleColor.Black, ConsoleColor.Black, 0, OverlayBox.Width - 3);
-
-      LegendSection();
     }
 
     internal static void LegendSection()
     {
       int col = LegendBox.Left + 2;
       int row = LegendBox.Top + 1;
-      ConsoleEx.WriteAt("Legend: ", col, row, ConsoleColor.White); row += 2;
-      ConsoleEx.WriteAt("[W A S D] - Move", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("Game Play Legend: ", col, row, ConsoleColor.Yellow); row += 2;
+      ConsoleEx.WriteAt("[W,A,S,D] - Move", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[Shift+W,A,S,D] - Jump", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[T] - Attack Enemy", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[O] - Open Door", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[C] - Close Door", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[1-0] - Cast Spell", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[H] - Use Healing Potion", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[M] - Use Mana Potion", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[G] - Use Bandage", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[O,C] - Open/Close Door", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[+,-] - Up/Down Stairs", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[< >] - Switch Bag Shown", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[Esc] - Pause Menu", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[Shift+I] - Inventory", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[Shift+S] - Spells", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[PageUP] - Messages - 8", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[PageDown] - Messages + 8", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[Shift+Q] - Quit", col, row, ConsoleColor.White);
     }
 
     internal static void MessageSection()
     {
-      int row = MessageBox.Top + 1;
+      // display the last 8 messages or less.  allow scrolling up or down through messages in pages of 8
       int col = MessageBox.Left + 2;
-      if (Messages.Count <= 0) return;
-      int offset = Messages.Count - 8 > 0 ? Messages.Count - 8 : 0;
-      for (int index = 0 + offset; index < Messages.Count; index++)
+      int row = MessageBox.Top + 1;
+      if (MessageOffset > 0) MessageOffset = 0;
+      if (MessageOffset < -Messages.Count) MessageOffset = -Messages.Count;
+      int end = Messages.Count + MessageOffset;
+      if (Messages.Count < end) end = Messages.Count;
+      int start = 0;
+      if (end > 8) start = end - 8;
+      if (end < 8 && Messages.Count >= 8) end = 8;
+      for (int index = start; index < end; index++)
       {
         Messages[index].WriteAt(col, row);
         row++;
       }
+      // clear the rest of the message box
+      if (row >= MessageBox.Top + MessageBox.Height - 1) return;
+      for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
+        ConsoleEx.WriteAt(" ", col, index, Color.Black, Color.Black, 0, MessageBox.Width - 32);
+    }
+
+    internal static void MessageLegend()
+    {
+      int col = MessageBox.Width - 28;
+      int row = MessageBox.Top + 1;
+      ConsoleEx.WriteAt("Messages Legend: ", col, row, ConsoleColor.Yellow); row += 2;
+      ConsoleEx.WriteAt("[UpArrow] - Prev Message", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[DownArrow] - Next Message", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[PageUP] - Messages - 8", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[PageDown] - Messages + 8", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[Home] - First Message", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[End] - Last Message", col, row, ConsoleColor.White);
+    }
+
+    internal static bool AcceptableKeys()
+    {
+      return (!Player.InCombat && LastKey.Key is ConsoleKey.W or ConsoleKey.A or ConsoleKey.S or ConsoleKey.D);
     }
   }
 }

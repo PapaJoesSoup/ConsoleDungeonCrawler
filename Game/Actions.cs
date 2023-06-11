@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Maps;
@@ -69,8 +70,7 @@ namespace ConsoleDungeonCrawler.Game
       if (!Map.Player.IsNextToMap('-', out MapObject door)) return;
       ObjectType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new ObjectType();
       if (type.Symbol == ' ') return;
-      GamePlay.Messages.Add(new Message("Closing Door...", Color.Yellow,
-        Color.Black));
+      GamePlay.Messages.Add(new Message("Closing Door...", Color.Yellow, Color.Black));
       Map.RemoveFromMapObjects(door);
       door.Type = type;
       door.IsPassable = type.IsPassable;

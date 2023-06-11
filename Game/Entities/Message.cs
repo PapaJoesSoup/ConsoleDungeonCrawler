@@ -1,35 +1,30 @@
 ﻿using System.Drawing;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Screens;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ConsoleDungeonCrawler.Game.Entities
 {
   internal class Message
   {
-    internal string Text = "";
+    internal string Text;
     internal Color ForegroundColor = Color.White;
     internal Color BackgroundColor = Color.Black;
 
-    internal Message()
-    {
-
-    }
-
     internal Message(string text, Color foregroundColor, Color backgroundColor)
     {
-      Text = text;
+      Text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
       ForegroundColor = foregroundColor;
       BackgroundColor = backgroundColor;
     }
 
-    public Message(string text) : this()
+    public Message(string text)
     {
-      Text = text;
+      Text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
     }
-
     internal void WriteAt(int x, int y)
     {
-      ConsoleEx.WriteAt($"{DateTime.Now:MM/dd/yy HH:mm:ss} - {Text}".PadRight(GamePlay.MessageBox.Width - 4), x, y, ForegroundColor, BackgroundColor);
+      ConsoleEx.WriteAt(Text.PadRight(GamePlay.MessageBox.Width - 32), x, y, ForegroundColor, BackgroundColor);
     }
   }
 }
