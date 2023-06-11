@@ -53,13 +53,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Inventory.AddItem(new Potion(BuffType.Health, 1, 1, 0));
       Inventory.AddItem( new Food(FoodType.Bread, BuffType.Health, 1, 1, 0));
       Inventory.AddItem( new Food(FoodType.Vegetable, BuffType.Health, 1, 1, 0));
-
-      // Add 5 empty slots to spells
-      Spells = new Dictionary<int, Spell>();
-      for (int i = 1; i < 6; i++)
-      {
-        Spells.Add(i, new Spell() { Name = SpellName.None, DamageType = DamageType.Magical, Damage = 0 });
-      }
     }
 
     public void Move(ConsoleKey key)

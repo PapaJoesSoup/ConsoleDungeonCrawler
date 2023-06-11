@@ -1,4 +1,6 @@
-﻿using ConsoleDungeonCrawler.Extensions;
+﻿using System.ComponentModel.Design;
+using System.Drawing;
+using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Maps;
 
@@ -8,14 +10,18 @@ namespace ConsoleDungeonCrawler.Game.Screens
   {
     internal static Box StatusBox = new Box(1, 0, 208, 8);
     internal static Box MapBox = new Box(1, 7, 178, 35);
-    internal static Box LegendBox = new Box(178, 7, 31, 35);
-    internal static Box MessageBox = new Box(1, 41, 208, 10);
+    internal static Box OverlayBox = new Box(178, 7, 31, 30);
+    internal static Box MessageBox = new Box(1, 41, 178, 10);
+    internal static Box LegendBox = new Box(178, 36, 31, 15);
 
     internal static List<Message> Messages = new List<Message>();
 
     internal static BoxCharsEx boxCharsEx = new BoxCharsEx("\xe2948d", "\xe29491", "\\xd59f", "\xe29499", "\xe295bc", "\xe29482");
     internal static char HBorderChar = '=';
     internal static char VBorderChar = '|';
+
+    internal static int currentBag = 1;
+
 
 
     internal static void Draw()
@@ -30,7 +36,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       Map.SetVisibleArea(10);
       Map.Player.Draw();
       StatusSection();
-      LegendSection();
+      OverlaySection();
       if(!Player.InCombat) Map.WhatIsVisible();
       Actions.MonsterActions();
       MessageSection();
@@ -41,16 +47,18 @@ namespace ConsoleDungeonCrawler.Game.Screens
       ConsoleEx.WriteBorder(StatusBox, HBorderChar, VBorderChar, ConsoleColor.Yellow);
       ConsoleEx.WriteAlignedAt($"[{Game.Title}]", HAlign.Center, VAlign.Top, ConsoleColor.White);
       ConsoleEx.WriteBorder(MapBox, HBorderChar, VBorderChar, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(LegendBox, HBorderChar, VBorderChar, ConsoleColor.Yellow);
+      ConsoleEx.WriteBorder(OverlayBox, HBorderChar, VBorderChar, ConsoleColor.Yellow);
       ConsoleEx.WriteBorder(MessageBox, HBorderChar, VBorderChar, ConsoleColor.Yellow);
+      ConsoleEx.WriteBorder(LegendBox, HBorderChar, VBorderChar, ConsoleColor.Yellow);
     }
 
     internal static void BordersEx()
     {
       ConsoleEx.WriteBorder(StatusBox, boxCharsEx, ConsoleColor.Yellow);
       ConsoleEx.WriteBorder(MapBox, boxCharsEx, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(LegendBox, boxCharsEx, ConsoleColor.Yellow);
+      ConsoleEx.WriteBorder(OverlayBox, boxCharsEx, ConsoleColor.Yellow);
       ConsoleEx.WriteBorder(MessageBox, boxCharsEx, ConsoleColor.Yellow);
+      ConsoleEx.WriteBorder(LegendBox, boxCharsEx, ConsoleColor.Yellow);
     }
 
     internal static void StatusSection()
@@ -85,15 +93,28 @@ namespace ConsoleDungeonCrawler.Game.Screens
     {
       int col;
       int row;
+      int count = 0;
       //Spells
-      col = StatusBox.Left + 120;
+      col = StatusBox.Left + 130;
       row = StatusBox.Top + 1;
+      int colWidth = 22;
       ConsoleEx.WriteAt("Spells", col, row, ConsoleColor.Yellow);
       row++;
-      foreach (var spell in Player.Spells)
+      for (int index = 0; index < 10; index++) // 10 spells max
       {
-        ConsoleEx.WriteAt($"{spell.Value.Name}: {spell.Value.Description} ", col, row, ConsoleColor.White);
+        if (index >= Player.Spells.Count) ConsoleEx.WriteAt($"None", col, row, Color.DimGray);
+        else
+        {
+          Spell spell = Player.Spells[index];
+          ConsoleEx.WriteAt($"{spell.Name}: {spell.Description} ", col, row, ConsoleColor.White);
+        }
         row++;
+        count++;
+
+        if (count < 5) continue;
+        count = 0;
+        row = StatusBox.Top + 2;
+        col += colWidth + 2;
       }
     }
 
@@ -106,21 +127,27 @@ namespace ConsoleDungeonCrawler.Game.Screens
       row = StatusBox.Top + 1;
       int colWidth = 22;
       int count = 0;
-      ConsoleEx.WriteAt("Inventory", col, row, ConsoleColor.Yellow);
-      row++;
-      foreach (Bag bag in Inventory.Bags)
-      {
-        foreach (Item item in bag.Items)
-        {
-          ConsoleEx.WriteInventoryItem(item, col, row, colWidth);
-          row++;
-          count++;
+      int totalBags = Inventory.Bags.Count;
 
-          if (count < 5) continue;
-          count = 0;
-          row = StatusBox.Top + 2;
-          col += colWidth + 2;
+      Bag bag = Inventory.Bags[currentBag - 1];
+      ConsoleEx.WriteAt($"Inventory - Bag: {currentBag} of {totalBags}  (< or > to switch bags)", col, row, ConsoleColor.Yellow);
+      row++;
+      for (int index = 0; index < bag.Capacity; index++)
+      {
+        if (index >= bag.Items.Count) ConsoleEx.WriteAt("Empty".PadRight(colWidth), col, row, Color.DimGray);
+        else
+        {
+          Item item = bag.Items[index];
+          ConsoleEx.WriteInventoryItem(item, col, row, colWidth);
         }
+        
+        row++;
+        count++;
+
+        if (count < 5) continue;
+        count = 0;
+        row = StatusBox.Top + 2;
+        col += colWidth + 2;
       }
     }
 
@@ -150,23 +177,43 @@ namespace ConsoleDungeonCrawler.Game.Screens
       Map.Player.Draw();
     }
 
-    internal static void LegendSection()
+    internal static void OverlaySection()
     {
-      int col = LegendBox.Left + 2;
-      int row = LegendBox.Top + 1;
+      int col = OverlayBox.Left + 2;
+      int row = OverlayBox.Top + 1;
       foreach (char type in Map.OverlayObjects.Keys)
       {
         foreach (MapObject mapObject in Map.OverlayObjects[type])
         {
           if (!mapObject.IsVisible || mapObject.Type.Symbol == ' ') continue;
-          ConsoleEx.WriteLegendItem(mapObject, col, row, LegendBox.Width - 2);
+          ConsoleEx.WriteLegendItem(mapObject, col, row, OverlayBox.Width - 2);
           row++;
         }
       }
       // clear the rest of the legend box
-      if (row >= LegendBox.Top + LegendBox.Height - 1) return;
-      for (int index = row; index < LegendBox.Top + LegendBox.Height - 1; index++)
-        ConsoleEx.WriteAt(" ", col, index, ConsoleColor.Black, ConsoleColor.Black, 0, LegendBox.Width - 3);
+      if (row >= OverlayBox.Top + OverlayBox.Height - 1) return;
+      for (int index = row; index < OverlayBox.Top + OverlayBox.Height - 1; index++)
+        ConsoleEx.WriteAt(" ", col, index, ConsoleColor.Black, ConsoleColor.Black, 0, OverlayBox.Width - 3);
+
+      LegendSection();
+    }
+
+    internal static void LegendSection()
+    {
+      int col = LegendBox.Left + 2;
+      int row = LegendBox.Top + 1;
+      ConsoleEx.WriteAt("Legend: ", col, row, ConsoleColor.White); row += 2;
+      ConsoleEx.WriteAt("[W A S D] - Move", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[T] - Attack Enemy", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[O] - Open Door", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[C] - Close Door", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[< >] - Switch Bag Shown", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[Esc] - Pause Menu", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[Shift+I] - Inventory", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[Shift+S] - Spells", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[PageUP] - Messages - 8", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[PageDown] - Messages + 8", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[Shift+Q] - Quit", col, row, ConsoleColor.White);
     }
 
     internal static void MessageSection()

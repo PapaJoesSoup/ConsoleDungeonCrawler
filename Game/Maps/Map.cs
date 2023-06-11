@@ -439,7 +439,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
     {
       RemoveFromOverlayObjects(obj);
       RemoveFromOverlayGrid(obj);
-      GamePlay.LegendSection();
+      GamePlay.OverlaySection();
     }
 
     internal static void RemoveFromOverlayObjects(MapObject obj)

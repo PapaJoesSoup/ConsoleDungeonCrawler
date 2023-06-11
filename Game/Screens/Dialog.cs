@@ -6,7 +6,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
   internal static class Dialog
   {
     // This is the default box for the generic dialog box
-    internal static Box Box = new Box(Console.WindowWidth / 2 - 52, Console.WindowHeight / 2 - 10, 100, 20);
+    internal static Box Box = new Box(Console.WindowWidth / 2 - 52, Console.WindowHeight / 2 - 12, 100, 25);
     
     // These are the default box characters for all dialog boxes
     internal static BoxChars BChars = new BoxChars() { botLeft = '=', botRight = '=', topRight = '=', topLeft = '=', hor = '=', ver = '|' };
@@ -78,6 +78,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       ConsoleEx.WriteAlignedAt(box, prompt, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, -1, 0);
       result = ConsoleEx.ReadBool(Console.GetCursorPosition().Left, Console.GetCursorPosition().Top, Color.White, Color.Black);
     }
+
     internal static void Notify(string title, string message)
     {
       Box box = new Box(Console.WindowWidth / 2 - (message.Length + 6) / 2, Console.WindowHeight / 2 - 4, message.Length + 10, 7);

@@ -51,6 +51,14 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.PageDown:
             GamePlay.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
             break;
+          case ConsoleKey.OemComma:
+            GamePlay.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
+            if (Inventory.Bags.Count == 1) return;
+
+            break;
+          case ConsoleKey.OemPeriod:
+            GamePlay.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
+            break;
           case ConsoleKey.O:
             Actions.OpenDoor();
             break;

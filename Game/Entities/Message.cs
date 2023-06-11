@@ -29,7 +29,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     internal void WriteAt(int x, int y)
     {
-      ConsoleEx.WriteAt(Text.PadRight(GamePlay.MessageBox.Width - 3), x, y, ForegroundColor, BackgroundColor);
+      ConsoleEx.WriteAt($"{DateTime.Now:MM/dd/yy HH:mm:ss} - {Text}".PadRight(GamePlay.MessageBox.Width - 4), x, y, ForegroundColor, BackgroundColor);
     }
   }
 }

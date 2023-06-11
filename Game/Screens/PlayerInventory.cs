@@ -25,9 +25,10 @@ namespace ConsoleDungeonCrawler.Game.Screens
          // Create a new box for the player inventory
         int x = 1;
         int y = 1;
+        ConsoleEx.WriteAt("Select Bag: ([x])", Dialog.Box.Left + 2, Dialog.Box.Top + 1, Color.White, Color.Olive);
+        y += 2;
         foreach (var bag in Inventory.Bags)
         {
-          ConsoleEx.WriteAt("Select Bag: ([x])", Dialog.Box.Left + 2, Dialog.Box.Top + 1, Color.White, Color.Olive);
           ConsoleEx.WriteAt($"[{y}] Bag {y}", Dialog.Box.Left + 2, Dialog.Box.Top + 1 + y, Color.White,
             ActiveBag == y - 1 ? Color.Orange : Color.Olive);
           x++;
@@ -47,28 +48,30 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
     private static void DrawLegend()
     {
-      int y = 1;
       Box box = new Box(Dialog.Box.Left, Dialog.Box.Top + 8, 22, 10);
-      ConsoleEx.WriteAt($"Legend:", box.Left + 2, box.Top, Color.White, Color.Olive);
+      int y = box.Top + 1;
+      ConsoleEx.WriteAt($"Legend:", box.Left + 2, box.Top, Color.White, Color.Olive); y++;
 
-      ConsoleEx.WriteAt($"[1-5] Select Bag", box.Left + 2, box.Top + y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.PageUp}] Prev Bag", box.Left + 2, box.Top + y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.PageDown}] Next Bag", box.Left + 2, box.Top + y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.UpArrow}] Prev Item", box.Left + 2, box.Top + y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.DownArrow}] Next Item", box.Left + 2, box.Top + y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.Escape}] Close Dialog", box.Left + 2, box.Top + y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.M}] Move Item", box.Left + 2, box.Top + y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.R}] Remove Item", box.Left + 2, box.Top + y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.S}] Sell Item", box.Left + 2, box.Top + y, Color.White, Color.Olive); y++;
+      ConsoleEx.WriteAt($"[1-5] Select Bag", box.Left + 2, y, Color.White, Color.Olive); y++;
+      ConsoleEx.WriteAt($"[{ConsoleKey.PageUp}] Prev Bag", box.Left + 2, y, Color.White, Color.Olive); y++;
+      ConsoleEx.WriteAt($"[{ConsoleKey.PageDown}] Next Bag", box.Left + 2, y, Color.White, Color.Olive); y++;
+      ConsoleEx.WriteAt($"[{ConsoleKey.UpArrow}] Prev Item", box.Left + 2, y, Color.White, Color.Olive); y++;
+      ConsoleEx.WriteAt($"[{ConsoleKey.DownArrow}] Next Item", box.Left + 2, y, Color.White, Color.Olive); y++;
+      ConsoleEx.WriteAt($"[{ConsoleKey.Escape}] Close Dialog", box.Left + 2, y, Color.White, Color.Olive); y++;
+      ConsoleEx.WriteAt($"[{ConsoleKey.M}] Move Item", box.Left + 2, y, Color.White, Color.Olive); y++;
+      ConsoleEx.WriteAt($"[{ConsoleKey.R}] Remove Item", box.Left + 2, y, Color.White, Color.Olive); y++;
+      ConsoleEx.WriteAt($"[{ConsoleKey.S}] Sell Item", box.Left + 2, y, Color.White, Color.Olive); y++;
+      ConsoleEx.WriteAt($"[{ConsoleKey.U}] Use Item", box.Left + 2, y, Color.White, Color.Olive); y++;
     }
+
     internal static void DrawBag(Bag bag)
     {
       int x = Dialog.Box.Left + 25;
       int y = Dialog.Box.Top + 1;
       ConsoleEx.WriteAt($"Bag {ActiveBag + 1} Contents:", x, y, Color.White, Color.Olive);
-      y++;
+      y+= 2;
 
-      for(int i = 0; i < bag.Capacity; i++)
+      for (int i = 0; i < bag.Capacity; i++)
       {
         if (i >= bag.Items.Count)
           ConsoleEx.WriteAt($"[{i + 1}]:  Empty", x, y, Color.White, Color.Olive);

@@ -12,6 +12,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     // Player Inventory
     internal static int BagCount = 1;
+    internal static int MaxBags = 4;
     internal static List<Bag> Bags = new List<Bag>();
 
     //Loot Tables

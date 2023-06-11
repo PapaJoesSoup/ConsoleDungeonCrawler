@@ -1307,10 +1307,10 @@ namespace ConsoleDungeonCrawler.Extensions
       {
         Console.SetCursorPosition(x, y);
         ConsoleKeyInfo keyInfo = Console.ReadKey();
-        valid = keyInfo.KeyChar is 'Y' or 'N';
+        valid = keyInfo.Key is ConsoleKey.Y or ConsoleKey.N;
         if (valid)
         {
-          result = keyInfo.KeyChar is 'Y';
+          result = keyInfo.Key is ConsoleKey.Y;
           continue;
         }
         Console.SetCursorPosition(x, y);
