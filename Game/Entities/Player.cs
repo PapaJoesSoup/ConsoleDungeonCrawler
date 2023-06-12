@@ -176,15 +176,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     internal static void TakeDamage(int damage)
     {
-      if (damage <= 0)
-      {
-        GamePlay.Messages.Add(new Message($"Monster Missed you!", Color.DarkOrange, Color.Black));
-        GamePlay.Messages.Add(
-          new Message($"You have {Player.Health} health left!", Color.DarkOrange, Color.Black));
-      }
-
-      ;
-      GamePlay.Messages.Add(new Message($"You were hit for {damage} damage!", Color.DarkOrange, Color.Black));
       Player.Health -= damage;
       if (Player.Health <= 0)
       {

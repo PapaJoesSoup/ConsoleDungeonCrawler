@@ -67,7 +67,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Player.InCombat = true;
       BackgroundColor = Color.DarkOrange;
       this.Draw();
-      GamePlay.Messages.Add(new Message("You are in combat!", Color.Red, Color.Black));
+      GamePlay.Messages.Add(new Message($"A {Type.Name} spots you!  You are in combat!", Color.Red, Color.Black));
     }
 
     internal void Attack()
@@ -80,7 +80,13 @@ namespace ConsoleDungeonCrawler.Game.Entities
       if (Dice.Roll(1, 20) < 10) return;
       // roll for damage
       int damage = Dice.Roll(Weapon.Damage);
-      Player.TakeDamage(damage);
+      if (damage == 0)
+        GamePlay.Messages.Add(new Message($"The {Type.Name} attacks and misses you!", Color.DarkOrange, Color.Black));
+      else
+      {
+        GamePlay.Messages.Add(new Message($"The {Type.Name} attacks and hits you for {damage} damage!", Color.DarkOrange, Color.Black));
+        Player.TakeDamage(damage);
+      }
     }
 
     internal void TakeDamage(int damage)

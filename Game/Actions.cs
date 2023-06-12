@@ -97,11 +97,11 @@ namespace ConsoleDungeonCrawler.Game
     {
       int index = (int)char.GetNumericValue(keyInfo.KeyChar);
       if (index > Player.Spells.Count) return;
+      if (!Player.Spells.ContainsKey(index)) return;
       Spell spell = Player.Spells[index];
-      if (spell == null) return;
       if (spell.ManaCost > Player.Mana)
       {
-        GamePlay.Messages.Add(new Message("Not enough mana!", Color.Red, Color.Black));
+        GamePlay.Messages.Add(new Message($"Not enough mana to cast {spell.Name}!", Color.Red, Color.Black));
         return;
       }
       Player.Mana -= spell.ManaCost;

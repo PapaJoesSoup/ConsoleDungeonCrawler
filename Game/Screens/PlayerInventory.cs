@@ -103,10 +103,9 @@ namespace ConsoleDungeonCrawler.Game.Screens
         return;
       }
 
-      Dialog.Confirm("Remove Item", "Are you sure you want to remove this item? (Y or N)", out bool remove);
-      if (remove) RemoveItem(Inventory.Bags[ActiveBag].Items[ActiveItem]);
+      Dialog.Confirm("Remove Item", "Are you sure you want to destroy this item? (Y or N)", out bool remove);
+      if (remove) Inventory.Bags[ActiveBag].Items.RemoveAt(ActiveItem);
       PlayerInventory.Draw();
-
     }
 
     private static void MoveItem()
@@ -145,7 +144,8 @@ namespace ConsoleDungeonCrawler.Game.Screens
         PlayerInventory.Draw();
         return;
       }
-      RemoveItem(Inventory.Bags[ActiveBag].Items[ActiveItem]);
+      if (Inventory.Bags[ActiveBag].Items[ActiveItem].Quantity > 0) Inventory.Bags[ActiveBag].Items[ActiveItem].Quantity--;
+      if (Inventory.Bags[ActiveBag].Items[ActiveItem].Quantity == 0) Inventory.Bags[ActiveBag].Items.RemoveAt(ActiveItem);
       GamePlay.StatusSection();
       PlayerInventory.Draw();
     }
@@ -157,12 +157,6 @@ namespace ConsoleDungeonCrawler.Game.Screens
         Player.Gold += item.SellCost;
         item.Quantity--;
       }
-      if (item.Quantity == 0) Inventory.Bags[ActiveBag].Items.Remove(item);
-    }
-
-    internal static void RemoveItem(Item item)
-    {
-      if (item.Quantity > 0) item.Quantity--;
       if (item.Quantity == 0) Inventory.Bags[ActiveBag].Items.Remove(item);
     }
 

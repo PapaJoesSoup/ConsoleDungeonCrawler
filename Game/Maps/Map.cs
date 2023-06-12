@@ -436,6 +436,21 @@ namespace ConsoleDungeonCrawler.Game.Maps
       return visibleChanged;
     }
 
+    internal static void WriteVisibleObjects()
+    {
+      string message = "";
+      foreach (char symbol in visibleObjects.Keys)
+      {
+        ObjectType type = visibleObjects[symbol].Item1;
+        int count = visibleObjects[symbol].Item2;
+        if (count < 1) continue;
+        if (count == 1) message += $"{type.Singular}, ";
+        else message += $"{type.Plural} ({count}), ";
+      }
+      if (message.Length > 0) message = message.Substring(0, message.Length - 2);
+      GamePlay.Messages.Add(new Message($"You see {message}.", Color.White, Color.Black));
+    }
+    
     internal static void AddToMapObjects(MapObject obj)
     {
       if (MapObjects.ContainsKey(obj.Type.Symbol))
@@ -495,19 +510,5 @@ namespace ConsoleDungeonCrawler.Game.Maps
       }
     }
 
-    internal static void WriteVisibleObjects()
-    {
-      string message = "";
-      foreach (char symbol in visibleObjects.Keys)
-      {
-        ObjectType type = visibleObjects[symbol].Item1;
-        int count = visibleObjects[symbol].Item2;
-        if (count < 1) continue;
-        if (count == 1) message += $"{type.Singular}, ";
-        else message += $"{type.Plural} ({count}), ";
-      }
-      if (message.Length > 0) message = message.Substring(0, message.Length - 2);
-      GamePlay.Messages.Add(new Message($"You see {message}.", Color.White, Color.Black));
-    }
   }
 }

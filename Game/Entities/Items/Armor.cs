@@ -14,8 +14,6 @@
     internal static float ArmorBonusMultiplier = 1.0f;
     internal static float ArmorDurabilityMultiplier = 1.0f;
     
-
-
     internal Armor()
     {
     }
@@ -47,12 +45,10 @@
 
     }
 
-
-
     internal static Armor GetRandomArmor()
     {
       int armorType = Dice.Roll(1, 5);
-      int armorName = Dice.Roll(1, 4); // 0 is None
+      int armorName = Dice.Roll(1, 4);
       int armorRarity = Dice.Roll(0, 5);
       int Level = Dice.Roll(1, Player.Level);
 

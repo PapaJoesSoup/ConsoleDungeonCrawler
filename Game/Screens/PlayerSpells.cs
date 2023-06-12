@@ -35,7 +35,6 @@ namespace ConsoleDungeonCrawler.Game.Screens
       ConsoleEx.WriteAt($"[{ConsoleKey.DownArrow}] Next Spell", x, y, Color.White, Color.Olive); y++;
       ConsoleEx.WriteAt($"[{ConsoleKey.M}] Move Spell", x, y, Color.White, Color.Olive); y++;
       ConsoleEx.WriteAt($"[{ConsoleKey.R}] Remove Spell", x, y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.U}] Use Spell", x, y, Color.White, Color.Olive); y++;
       ConsoleEx.WriteAt($"[{ConsoleKey.Escape}] Close Dialog", x, y, Color.White, Color.Olive); y++;
     }
 
@@ -60,19 +59,32 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
     internal static void MoveSpell()
     {
-      Console.WriteLine("Move Spell");
+      Dialog.AskForInt("Move Item To Key", "Enter a Key number (1-0): ", out int newKey);
+      if (Player.Spells.ContainsKey(newKey))
+      {
+        PlayerSpells.Draw();
+        Dialog.Notify("Destination Full", "THe destination key contains a spell.  Spells will be swapped.");
+        Spell temp = Player.Spells[newKey];
+        Spell temp2 = Player.Spells[ActiveSpell];
+        Player.Spells[newKey] = temp2;
+        Player.Spells[ActiveSpell] = temp;
+        ActiveSpell = newKey;
+        PlayerSpells.Draw();
+        return;
+      }
+      Spell temp3 = Player.Spells[ActiveSpell];
+      Player.Spells.Remove(ActiveSpell);
+      Player.Spells.Add(newKey, temp3);
+      PlayerSpells.Draw();
     }
 
     internal static void RemoveSpell()
     {
-      Console.WriteLine("Remove Spell");
+      Dialog.Confirm("Delete Spell", "This will PERMANENTLY remove this spell.  Are you sure? (Y / N): ", out bool confirm);
+      if (confirm) Player.Spells.Remove(ActiveSpell);
+      PlayerSpells.Draw();
     }
 
-    internal static void UseSpell()
-    {
-      Console.WriteLine("Use Spell");
-    }
-    
     internal static void KeyHandler()
     {
       ConsoleKeyInfo keyInfo = Console.ReadKey(true);
@@ -81,16 +93,6 @@ namespace ConsoleDungeonCrawler.Game.Screens
         case ConsoleKey.Escape:
           DialogOpen = false;
           Dialog.Close();
-          break;
-        case ConsoleKey.D1:
-        case ConsoleKey.D2:
-        case ConsoleKey.D3:
-        case ConsoleKey.D4:
-        case ConsoleKey.D5:
-          break;
-        case ConsoleKey.PageUp:
-          break;
-        case ConsoleKey.PageDown:
           break;
         case ConsoleKey.UpArrow:
           if (ActiveSpell -1 < 1) ActiveSpell = 10;
@@ -105,9 +107,6 @@ namespace ConsoleDungeonCrawler.Game.Screens
           break;
         case ConsoleKey.R:
           RemoveSpell();
-          break;
-        case ConsoleKey.U:
-          UseSpell();
           break;
       }
     }

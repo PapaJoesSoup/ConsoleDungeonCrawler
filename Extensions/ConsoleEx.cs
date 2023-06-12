@@ -1198,6 +1198,99 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
+    // WriteBorderEx Methods
+    internal static void WriteBorderEx(Box box, char h, char v, Color color)
+    {
+      try
+      {
+        for (int i = 0; i < box.Height; i++)
+        {
+          if (i == 0 || i == box.Height - 1)
+          {
+            ConsoleEx.WriteAt(h, box.Left, box.Top + i, color, box.Width);
+          }
+          else
+          {
+            ConsoleEx.WriteAt(v, box.Left, box.Top + i, color);
+            ConsoleEx.WriteAt(v, box.Left + box.Width - 1, box.Top + i, color);
+          }
+        }
+        ConsoleEx.ResetColor();
+      }
+      catch (ArgumentOutOfRangeException e)
+      {
+        ConsoleEx.Clear();
+        Console.WriteLine(e.Message);
+      }
+    }
+
+    internal static void WriteBorderEx(Box box, BoxChars bChars, Color color)
+    {
+      try
+      {
+        for (int i = 0; i < box.Height; i++)
+        {
+          if (i == 0)
+          {
+            ConsoleEx.WriteAt(bChars.topLeft, box.Left, box.Top + i, color);
+            ConsoleEx.WriteAt(bChars.topRight, box.Left + box.Width - 1, box.Top + i, color);
+            ConsoleEx.WriteAt(bChars.hor, box.Left + 1, box.Top + i, color, box.Width - 2);
+          }
+          else if (i == box.Height - 1)
+          {
+            ConsoleEx.WriteAt(bChars.botLeft, box.Left, box.Top + i, color);
+            ConsoleEx.WriteAt(bChars.botRight, box.Left + box.Width - 1, box.Top + i, color);
+            ConsoleEx.WriteAt(bChars.hor, box.Left + 1, box.Top + i, color, box.Width - 2);
+          }
+          else
+          {
+            ConsoleEx.WriteAt(bChars.ver, box.Left, box.Top + i, color);
+            ConsoleEx.WriteAt(bChars.ver, box.Left + box.Width - 1, box.Top + i, color);
+          }
+        }
+
+        ConsoleEx.ResetColor();
+      }
+      catch (ArgumentOutOfRangeException e)
+      {
+        ConsoleEx.Clear();
+        Console.WriteLine(e.Message);
+      }
+    }
+
+    internal static void WriteBorderEx(Box box, BoxCharsEx bChars, Color color)
+    {
+      try
+      {
+        for (int i = 0; i < box.Height; i++)
+        {
+          if (i == 0)
+          {
+            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topLeft), box.Left, box.Top + i, color);
+            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topRight), box.Left + box.Width - 1, box.Top + i, color);
+            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), box.Left + 1, box.Top + i, color, box.Width - 2);
+          }
+          else if (i == box.Height - 1)
+          {
+            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botLeft), box.Left, box.Top + i, color);
+            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botRight), box.Left + box.Width - 1, box.Top + i, color);
+            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), box.Left + 1, box.Top + i, color, box.Width - 2);
+          }
+          else
+          {
+            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.ver), box.Left, box.Top + i, color);
+            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.ver), box.Left + box.Width - 1, box.Top + i, color);
+          }
+        }
+
+        ConsoleEx.ResetColor();
+      }
+      catch (ArgumentOutOfRangeException e)
+      {
+        ConsoleEx.Clear();
+        Console.WriteLine(e.Message);
+      }
+    }
 
     // Flashing Methods
     // make a char flash

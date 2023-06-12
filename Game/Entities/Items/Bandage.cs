@@ -25,7 +25,7 @@
 
     internal static Bandage GetRandomBandage()
     {
-      int randomBandage = Dice.Roll(0, Inventory.Bandages.Count);
+      int randomBandage = Dice.Roll(0, Inventory.Bandages.Count - 1);
       return Inventory.Bandages[randomBandage];
     }
 

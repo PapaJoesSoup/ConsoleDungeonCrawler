@@ -33,6 +33,9 @@ namespace ConsoleDungeonCrawler.Game.Screens
       MapSection();
       LegendSection();
       MessageLegend();
+      Map.SetVisibleArea(10);
+      Map.Player.Draw();
+      Map.WhatIsVisible();
       Update();
     }
 
@@ -49,12 +52,12 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
     internal static void Borders()
     {
-      ConsoleEx.WriteBorder(StatusBox, HBorderChar, VBorderChar, ConsoleColor.Yellow);
+      ConsoleEx.WriteBorderEx(StatusBox, HBorderChar, VBorderChar, Color.Gold);
       ConsoleEx.WriteAlignedAt($"[{Game.Title}]", HAlign.Center, VAlign.Top, ConsoleColor.White);
-      ConsoleEx.WriteBorder(MapBox, HBorderChar, VBorderChar, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(OverlayBox, HBorderChar, VBorderChar, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(MessageBox, HBorderChar, VBorderChar, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(LegendBox, HBorderChar, VBorderChar, ConsoleColor.Yellow);
+      ConsoleEx.WriteBorderEx(MapBox, HBorderChar, VBorderChar , Color.Gold);
+      ConsoleEx.WriteBorderEx(OverlayBox, HBorderChar, VBorderChar , Color.Gold);
+      ConsoleEx.WriteBorderEx(MessageBox, HBorderChar, VBorderChar, Color.Gold);
+      ConsoleEx.WriteBorderEx(LegendBox, HBorderChar, VBorderChar, Color.Gold);
     }
 
     internal static void BordersEx()
@@ -79,18 +82,16 @@ namespace ConsoleDungeonCrawler.Game.Screens
       //Player Stats
       int col = StatusBox.Left + 178;
       int row = StatusBox.Top + 1;
-
-      ConsoleEx.WriteAt($"Player - Level: {Player.Level}", col, row, ConsoleColor.Yellow);
-      row++;
-      ConsoleEx.WriteAt($"Class: {Player.Class}", col, row, ConsoleColor.White);
-      row++;
+      for (int index = row; index < row + 6; index++)
+      {
+        ConsoleEx.WriteAt('|', col - 1, index, Color.Gold);
+      }
+      ConsoleEx.WriteAt($"Player - Level: {Player.Level}", col, row, Color.Gold); row++;
+      ConsoleEx.WriteAt($"Class: {Player.Class}", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt($"Weapon: ", col, row, ConsoleColor.White);
-      ConsoleEx.WriteAt($"{Player.Weapon.Name}", col + 8, row, ColorEx.RarityColor(Player.Weapon.Rarity));
-      row++;
-      ConsoleEx.WriteAt($"Health: {Player.Health}/{Player.MaxHealth}", col, row, ConsoleColor.White);
-      row++;
-      ConsoleEx.WriteAt($"Mana: {Player.Mana}/{Player.MaxMana}", col, row, ConsoleColor.White);
-      row++;
+      ConsoleEx.WriteAt($"{Player.Weapon.Name}", col + 8, row, ColorEx.RarityColor(Player.Weapon.Rarity)); row++;
+      ConsoleEx.WriteAt($"Health: {Player.Health}/{Player.MaxHealth}", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt($"Mana: {Player.Mana}/{Player.MaxMana}", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt($"Gold: {Player.Gold}g", col, row, ConsoleColor.White);
     }
 
@@ -100,10 +101,14 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int row;
       int count = 0;
       //Spells
-      col = StatusBox.Left + 130;
+      col = StatusBox.Left + 140;
       row = StatusBox.Top + 1;
-      int colWidth = 22;
-      ConsoleEx.WriteAt("Spells", col, row, ConsoleColor.Yellow);
+      int colWidth = 18;
+      for (int index = row; index < row + 6; index++)
+      {
+        ConsoleEx.WriteAt('|', col - 1, index, Color.Gold);
+      }
+      ConsoleEx.WriteAt("Spells", col, row, Color.Gold);
       row++;
       for (int index = 0; index < 10; index++) // 10 spells max
       {
@@ -130,12 +135,16 @@ namespace ConsoleDungeonCrawler.Game.Screens
       //Inventory
       col = StatusBox.Left + 31;
       row = StatusBox.Top + 1;
-      int colWidth = 22;
+      int colWidth = 25;
       int count = 0;
       int totalBags = Inventory.Bags.Count;
+      for (int index = row; index < row + 6; index++)
+      {
+        ConsoleEx.WriteAt('|', col - 1, index, Color.Gold);
+      }
 
       Bag bag = Inventory.Bags[currentBag - 1];
-      ConsoleEx.WriteAt($"Inventory - Bag: {currentBag} of {totalBags}  (< or > to switch bags)", col, row, ConsoleColor.Yellow);
+      ConsoleEx.WriteAt($"Inventory - Bag: {currentBag} of {totalBags}  (< or > to switch bags)", col, row, Color.Gold);
       row++;
       for (int index = 0; index < bag.Capacity; index++)
       {
@@ -162,7 +171,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int col = StatusBox.Left + 2;
 
       //Armor
-      ConsoleEx.WriteAt("Armor", col, row, ConsoleColor.Yellow);
+      ConsoleEx.WriteAt("Armor", col, row, Color.Gold);
       row++;
       foreach (var armor in Player.ArmorSet)
       {

@@ -89,16 +89,16 @@ namespace ConsoleDungeonCrawler.Game
             break;
           case ConsoleKey.O:
             Actions.OpenDoor();
+            Map.SetVisibleArea(10);
+            Map.WhatIsVisible();
             break;
           case ConsoleKey.C:
             Actions.CloseDoor();
             break;
           case ConsoleKey.F11:
-            //Up Stairs
             //Actions.UpStairs();
             break;
           case ConsoleKey.F12:
-            //Down Stairs
             //Actions.DownStairs();
             break;
           case ConsoleKey.T:
