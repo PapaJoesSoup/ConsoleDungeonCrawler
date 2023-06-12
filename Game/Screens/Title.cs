@@ -2,7 +2,7 @@
 
 namespace ConsoleDungeonCrawler.Game.Screens
 {
-    internal static class TitleScreen
+    internal static class Title
   {
     // Create a method that displays the title screen in ascii art
     internal static void Draw()

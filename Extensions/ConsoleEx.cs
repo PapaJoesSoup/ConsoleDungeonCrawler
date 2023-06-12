@@ -1,15 +1,13 @@
 ﻿using System.Drawing;
 using System.Globalization;
 using ConsoleDungeonCrawler.Game;
+using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler.Extensions
 {
     internal static class ConsoleEx
   {
-    internal static int ScreenHeight;
-    internal static int ScreenWidth;
-
     private static Color foregroundColor = Color.Gray;
     internal static Color ForegroundColor
     {
@@ -17,7 +15,7 @@ namespace ConsoleDungeonCrawler.Extensions
       set
       {
         foregroundColor = value;
-        Console.Write(ConsoleColorEx.ToFgHiColor(value));
+        Console.Write(ColorEx.ToFgHiColor(value));
       }
     }
 
@@ -28,7 +26,7 @@ namespace ConsoleDungeonCrawler.Extensions
       set
       {
         backgroundColor = value;
-        Console.Write(ConsoleColorEx.ToBgHiColor(value));
+        Console.Write(ColorEx.ToBgHiColor(value));
       }
     }
 
@@ -48,6 +46,14 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(':', col + 2, row, Color.White, Color.DimGray);
       WriteAt(mapObject.Type.Name, col + 3, row, mapObject.Type.ForegroundColor, Color.DimGray);
       WriteAt(new string(' ', padding), paddingStart, row, Color.White, Color.DimGray);
+    }
+
+    internal static void WriteInventoryItem(Item item, int col, int row, int colWidth)
+    {
+      // create a formatted line containing the symbol and the type of the map object
+
+      WriteAt($"({item.Quantity})", col, row, ColorEx.RarityColor(item.Rarity));
+      WriteAt(item.Name.PadRight(col + colWidth), col + 5, row, ColorEx.RarityColor(item.Rarity));
     }
 
     // WriteAlignedAt Methods
@@ -431,6 +437,71 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y, color, backgroundColor);
     }
 
+    internal static void WriteAlignedAt(Box box, string s, HAlign hAlign, VAlign vAlign, Color color,
+      Color backgroundColor)
+    {
+      int x = 0;
+      int y = 0;
+      switch (hAlign)
+      {
+        case HAlign.Left:
+          x = box.Left + 1;
+          break;
+        case HAlign.Center:
+          x = (Console.WindowWidth / 2) - (s.Length / 2);
+          break;
+        case HAlign.Right:
+          x = box.Width - s.Length;
+          break;
+      }
+
+      switch (vAlign)
+      {
+        case VAlign.Top:
+          y = box.Top + 1;
+          break;
+        case VAlign.Middle:
+          y = ((Console.WindowHeight) / 2) - 1;
+          break;
+        case VAlign.Bottom:
+          y = box.Height + box.Top - 1;
+          break;
+      }
+      WriteAt(s, x, y, color, backgroundColor);
+    }
+
+    internal static void WriteAlignedAt(Box box, string s, HAlign hAlign, VAlign vAlign, Color color,
+      Color backgroundColor, int xOffset, int yOffset)
+    {
+      int x = 0;
+      int y = 0;
+      switch (hAlign)
+      {
+        case HAlign.Left:
+          x = box.Left + 1;
+          break;
+        case HAlign.Center:
+          x = (Console.WindowWidth / 2) - (s.Length / 2);
+          break;
+        case HAlign.Right:
+          x = box.Width + box.Left - s.Length;
+          break;
+      }
+
+      switch (vAlign)
+      {
+        case VAlign.Top:
+          y = box.Top + 1;
+          break;
+        case VAlign.Middle:
+          y = (Console.WindowHeight / 2) - 1;
+          break;
+        case VAlign.Bottom:
+          y = box.Height + box.Top - 1;
+          break;
+      }
+      WriteAt(s, x + xOffset, y + yOffset, color, backgroundColor);
+    }
 
     // WriteAt string methods
     internal static void WriteAt(string s, int x, int y)
@@ -1206,10 +1277,53 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
 
+    // Read Methods
+    internal static int ReadInt(int x, int y, Color foregroundColor, Color backgroundColor)
+    {
+      ForegroundColor = foregroundColor;
+      BackgroundColor = backgroundColor;
+      bool valid = false;
+      int result = -1;
+      while (!valid)
+      {
+        Console.SetCursorPosition(x, y);
+        ConsoleKeyInfo keyInfo = Console.ReadKey();
+        valid = int.TryParse(keyInfo.KeyChar.ToString(), out result);
+        if (valid) continue;
+        Console.SetCursorPosition(x, y);
+        Console.Write(" ");
+      }
+      ResetColor();
+      return result;
+    }
+
+    internal static bool ReadBool(int x, int y, Color foregroundColor, Color backgroundColor)
+    {
+      ForegroundColor = foregroundColor;
+      BackgroundColor = backgroundColor;
+      bool valid = false;
+      bool result = false;
+      while (!valid)
+      {
+        Console.SetCursorPosition(x, y);
+        ConsoleKeyInfo keyInfo = Console.ReadKey();
+        valid = keyInfo.Key is ConsoleKey.Y or ConsoleKey.N;
+        if (valid)
+        {
+          result = keyInfo.Key is ConsoleKey.Y;
+          continue;
+        }
+        Console.SetCursorPosition(x, y);
+        Console.Write(" ");
+      }
+      ResetColor();
+      return result;
+    }
+
     //Utility Methods
     internal static void ResetColor()
     {
-      Console.Write(ConsoleColorEx.resetColor);
+      Console.Write(ColorEx.resetColor);
     }
 
     internal static void Clear()

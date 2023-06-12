@@ -7,5 +7,10 @@
     internal DamageType DamageType = DamageType.Magical;
     internal int Damage = 0;
     internal int ManaCost = 0;
+
+    internal void Cast()
+    {
+
+    }
   }
 }

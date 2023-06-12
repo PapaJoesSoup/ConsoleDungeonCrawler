@@ -8,15 +8,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Game\Maps\Data\MapPlacement.txt" />
-    <None Remove="Game\Maps\Data\MapTemplate.txt" />
+    <None Remove="Game\Maps\Data\MapGrid1.txt" />
+    <None Remove="Game\Maps\Data\MapOverlay1.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Game\Maps\Data\MapPlacement.txt">
+    <Content Include="Game\Maps\Data\MapOverlay1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\MapTemplate.txt">
+    <Content Include="Game\Maps\Data\MapGrid1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

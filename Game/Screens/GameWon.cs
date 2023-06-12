@@ -2,7 +2,7 @@
 
 namespace ConsoleDungeonCrawler.Game.Screens
 {
-    internal static class GameWonScreen
+    internal static class GameWon
   {
     internal static void Draw()
     {

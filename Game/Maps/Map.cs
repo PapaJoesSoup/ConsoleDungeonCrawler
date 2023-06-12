@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics.Metrics;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Text;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
@@ -20,6 +22,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
     internal static Dictionary<int, Dictionary<int, MapObject>> OverlayGrid = new Dictionary<int, Dictionary<int, MapObject>>();
     internal static Dictionary<char, List<MapObject>> MapObjects = new Dictionary<char, List<MapObject>>();
     internal static Dictionary<char, List<MapObject>> OverlayObjects = new Dictionary<char, List<MapObject>>();
+    internal static Dictionary<char, Tuple<ObjectType, int>> visibleObjects = new Dictionary<char, Tuple<ObjectType, int>>();
 
     internal static Player Player = new Player();
 
@@ -36,8 +39,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
       InitTypeLists();
       InitDictionaries();
-      LoadMapGridFromFile("Game/Maps/Data/MapTemplate.txt");
-      LoadOverlayFromFile("Game/Maps/Data/MapPlacement.txt");
+      LoadMapGridFromFile("Game/Maps/Data/MapGrid1.txt");
+      LoadOverlayFromFile("Game/Maps/Data/MapOverlay1.txt");
     }
 
     internal void InitTypeLists()
@@ -45,38 +48,37 @@ namespace ConsoleDungeonCrawler.Game.Maps
       // These are for building the map
       MapTypes = new List<ObjectType>
       {
-        new() { Symbol = '#', Name = "Wall", Singular = "a wall", Plural = "some walls", ForegroundColor = Color.FromArgb(255,40,40,40), BackgroundColor = Color.FromArgb(255,40,40,40), IsPassable = false },
-        new() { Symbol = '.', Name = "Floor", Singular = "a floor", Plural = "some flooring", ForegroundColor = Color.Gray, BackgroundColor = Color.DimGray, IsPassable = true },
-        new() { Symbol = '+', Name = "DoorC", Singular = "a closed door", Plural = "some closed doors", ForegroundColor = Color.Yellow, BackgroundColor = Color.DimGray, IsPassable = false },
-        new() { Symbol = '-', Name = "DoorO", Singular = "an open door", Plural = "some open doors", ForegroundColor = Color.Yellow, BackgroundColor = Color.DimGray, IsPassable = true },
-        new() { Symbol = '>', Name = "StairsU", Singular = "stairs going up", Plural = "multiple stairs going up", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = true },
-        new() { Symbol = '<', Name = "StairsD", Singular = "stairs going down", Plural = "multiple stairs going down", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = true },
-        new() { Symbol = '!', Name = "Fire", Singular = "a fire", Plural = "some fire", ForegroundColor = Color.OrangeRed, BackgroundColor = Color.DimGray, IsPassable = false },
-        new() { Symbol = '~', Name = "Water", Singular = "some water", Plural = "some patches of water", ForegroundColor = Color.Aqua, BackgroundColor = Color.Aqua, IsPassable = false },
-        new() { Symbol = 'a', Name = "Acid", Singular = "some acid", Plural = "some patches of acid", ForegroundColor = Color.SaddleBrown, BackgroundColor = Color.Chartreuse, IsPassable = false },
-        new() { Symbol = 'L', Name = "Lava", Singular = "some lava", Plural = "some patches of lava", ForegroundColor = Color.PapayaWhip, BackgroundColor = Color.Goldenrod, IsPassable = false },
-        new() { Symbol = 'I', Name = "Ice", Singular = "some ice", Plural = "some patches of ice", ForegroundColor = Color.Blue, BackgroundColor = Color.DeepSkyBlue, IsPassable = false }
+        new('#', "Wall", "a wall", "some walls", Color.FromArgb(255, 40, 40, 40), Color.FromArgb(255, 40, 40, 40), false, false, false),
+        new('.', "Floor", "a floor", "some flooring", Color.Gray, Color.DimGray, true, false, false),
+        new('+', "DoorC", "a closed door", "some closed doors", Color.Yellow, Color.DimGray, false, false, false),
+        new('-', "DoorO", "an open door", "some open doors", Color.Yellow, Color.DimGray, true, false, false),
+        new('>', "StairsU", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
+        new('<', "StairsD", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
+        new('!', "Fire", "a fire", "some fire", Color.OrangeRed, Color.DimGray, false, false, false),
+        new('~', "Water", "some water", "some patches of water", Color.Aqua, Color.Aqua, false, false, false),
+        new('a', "Acid", "some acid", "some patches of acid", Color.SaddleBrown, Color.Chartreuse, false, false, false),
+        new('L', "Lava", "some lava", "some patches of lava", Color.PapayaWhip, Color.Goldenrod, false, false, false),
+        new('I', "Ice", "some ice", "some patches of ice", Color.Blue, Color.DeepSkyBlue, false, false, false)
       };
 
       // These are for placing objects on the map.
       OverlayTypes = new List<ObjectType>
       {
-        new() { Symbol = 'S', Name = "Start", Singular = "the Entrance", Plural = "the Entrance", ForegroundColor = Color.Black, BackgroundColor = Color.White, IsPassable = true },
-        new() { Symbol = 'X', Name = "Exit", Singular = "the Exit", Plural = "The Exit", ForegroundColor = Color.MidnightBlue, BackgroundColor = Color.Gold, IsPassable = true },
-        new() { Symbol = 'P', Name = "Player", Singular = "me", Plural = "am is seeing double?", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = true, IsAttackable = true },
-        new() { Symbol = 'O', Name = "Ogre", Singular = "an Ogre", Plural = "Some Ogres", ForegroundColor = Color.Chocolate, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 'k', Name = "Kobald", Singular = "a Kobald", Plural = "some Kobalds", ForegroundColor = Color.BlueViolet, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 'z', Name = "Ooze", Singular = "an Ooze", Plural = "some Oozes", ForegroundColor = Color.GreenYellow, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 'g', Name = "Goblin", Singular = " a Goblin", Plural = "some Goblins", ForegroundColor = Color.CadetBlue, BackgroundColor = Color.DimGray, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 'B', Name = "Boss", Singular = "a Boss", Plural = "some Bosses", ForegroundColor = Color.Maroon, BackgroundColor = Color.Yellow, IsPassable = false, IsAttackable = true },
-        new() { Symbol = 'm', Name = "Chest", Singular = "a Chest", Plural = "some Chests", ForegroundColor = Color.Silver, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true},
-        new() { Symbol = 'i', Name = "Item", Singular = "an Item", Plural = "some Items", ForegroundColor = Color.White, BackgroundColor = Color.DimGray, IsPassable = false, IsLootable = true },
-        new() { Symbol = '$', Name = "Gold", Singular = "some Gold", Plural = "some stacks of Gold", ForegroundColor = Color.Gold, BackgroundColor = Color.DimGray, IsPassable = false, IsLootable = true },
-        new() { Symbol = 'T', Name = "Teleporter", Singular = "a Teleporter", Plural = "some Teleporters", ForegroundColor = Color.Gold, BackgroundColor = Color.DimGray, IsPassable = true, IsLootable = true },
-        new() { Symbol = 'x', Name = "Trap", Singular = "a Trap", Plural = "some Traps", ForegroundColor = Color.LightSalmon, BackgroundColor = Color.DimGray, IsPassable = false }
+        new('S', "Start", "the Entrance", "the Entrance", Color.Black, Color.White, true, false, false),
+        new('X', "Exit", "the Exit", "The Exit", Color.MidnightBlue, Color.Gold, true, false, false),
+        new('m', "Chest", "a Chest", "some Chests", Color.Silver, Color.DimGray, true, false, false),
+        new('i', "Item", "an Item", "some Items", Color.White, Color.DimGray, true, false, true),
+        new('$', "Gold", "some Gold", "some stacks of Gold", Color.Gold, Color.DimGray, true, false, true),
+        new('T', "Teleporter", "a Teleporter", "some Teleporters", Color.Gold, Color.DimGray, true, false, false),
+        new('x', "Trap", "a Trap", "some Traps", Color.LightSalmon, Color.DimGray, false, false, false),
+        new('P', "Player", "me", "am is seeing double?", Color.White, Color.DimGray, true, true, true),
+        new('k', "Kobald", "a Kobald", "some Kobalds", Color.BlueViolet, Color.DimGray, false, true, true),
+        new('z', "Ooze", "an Ooze", "some Oozes", Color.GreenYellow, Color.DimGray, false, true, true),
+        new('g', "Goblin", " a Goblin", "some Goblins", Color.CadetBlue, Color.DimGray, false, true, true),
+        new('O', "Ogre", "an Ogre", "Some Ogres", Color.Chocolate, Color.DimGray, false, true, true),
+        new('B', "Boss", "a Boss", "some Bosses", Color.Maroon, Color.Yellow, false, true, true)
       };
     }
-
 
     internal void InitDictionaries()
     {
@@ -146,7 +148,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
             Map.Player = new Player(obj);
             OverlayObjects[type.Symbol].Add(Map.Player);
           }
-          else if (obj.Type.IsAttackable)
+          else if (obj.IsAttackable)
           {
             Monster monster = new Monster(obj, 1);
             OverlayObjects[type.Symbol].Add(monster);
@@ -192,7 +194,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
     internal static bool CanMoveTo(int x, int y)
     {
       // check to see if there is an object there that is not passable
-      return MapGrid[x][y].Type.IsPassable && OverlayGrid[x][y].Type.IsPassable;
+      return MapGrid[x][y].IsPassable && OverlayGrid[x][y].IsPassable;
     }
 
     internal static bool CanJumpTo(int oldX, int oldY, int x, int y)
@@ -205,7 +207,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
         int maxY = Math.Max(oldY, y);
         for (int i = minY; i <= maxY; i++)
         {
-          if (!MapGrid[x][i].Type.IsPassable || !OverlayGrid[x][i].Type.IsPassable) return false;
+          if (!MapGrid[x][i].IsPassable || !OverlayGrid[x][i].IsPassable) return false;
         }
       }
       else if (oldY == y)
@@ -215,7 +217,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
         int maxX = Math.Max(oldX, x);
         for (int i = minX; i <= maxX; i++)
         {
-          if (!MapGrid[i][y].Type.IsPassable || !OverlayGrid[i][y].Type.IsPassable) return false;
+          if (!MapGrid[i][y].IsPassable || !OverlayGrid[i][y].IsPassable) return false;
         }
       }
       return true;
@@ -223,7 +225,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
     internal static bool CanAttack(int x, int y)
     {
-      // check to see if there is an object there that is not passable
+      // check to see if there is an object there that is attackable
       return OverlayGrid[x][y].Type.IsAttackable;
     }
 
@@ -235,7 +237,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
     private static void SetVisibleYObjects(int x, int y, ref int yLimit)
     {
-      if (MapGrid[x][y].Type.IsPassable)
+      if (MapGrid[x][y].IsPassable)
       {
         MapGrid[x][y].IsVisible = true;
         AddToMapObjects(MapGrid[x][y]);
@@ -257,7 +259,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
     private static void SetVisibleXObjects(int x, int y, ref int xLimit)
     {
-      if (MapGrid[x][y].Type.IsPassable)
+      if (MapGrid[x][y].IsPassable)
       {
         MapGrid[x][y].IsVisible = true;
         AddToMapObjects(MapGrid[x][y]);
@@ -386,33 +388,52 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
     public static void WhatIsVisible()
     {
+      bool visibleChanged = false;
       foreach (char symbol in Map.MapObjects.Keys)
       {
         if (symbol == ' ') continue;
-        int count = 0;
         ObjectType type = Map.MapTypes.Find(t => t.Symbol == symbol) ?? new ObjectType();
         if (type.Symbol == ' ') continue;
-
-        foreach (MapObject obj in Map.MapObjects[symbol])
-          if (obj.IsVisible) count++;
-
-        if (count < 1) continue;
-        GamePlayScreen.Messages.Add(
-          new Message($"You see {(count < 2 ? type.Singular : type.Plural)} ({count})...", type.Symbol == '#'? Color.White : type.ForegroundColor, Color.Black));
+        visibleChanged = GetObjectTypeCount(Map.MapObjects[symbol], visibleChanged, type);
       }
-
-      foreach (char symbol in Map.OverlayObjects.Keys)
+      foreach (char symbol in Map.MapObjects.Keys)
       {
         if (symbol == 'P' || symbol == ' ') continue;
-        int count = 0;
         ObjectType type = Map.OverlayTypes.Find(t => t.Symbol == symbol) ?? new ObjectType();
         if (type.Symbol == ' ') continue;
-        foreach (MapObject obj in Map.OverlayObjects[symbol])
-          if (obj.IsVisible) count++;
-
-        if (count < 1) continue;
-        GamePlayScreen.Messages.Add(new Message($"You see {(count < 2 ? type.Singular : type.Plural)} ({count})...", (type.Symbol == 'S' || type.Symbol == 'E') ? Color.White : type.ForegroundColor, Color.Black));
+        visibleChanged = GetObjectTypeCount(Map.OverlayObjects[symbol], visibleChanged, type);
       }
+      if (visibleChanged) WriteVisibleObjects();
+    }
+
+    private static bool GetObjectTypeCount(List<MapObject> list, bool visibleChanged, ObjectType type)
+    {
+      int count = 0;
+      foreach (MapObject obj in list) if (obj.IsVisible) count++;
+
+      if (count < 1)
+      {
+        if (visibleObjects.ContainsKey(type.Symbol))
+        {
+          visibleObjects.Remove(type.Symbol);
+          visibleChanged = true;
+        }
+
+        return visibleChanged;
+      }
+
+      if (visibleObjects.ContainsKey(type.Symbol))
+      {
+        if (visibleObjects[type.Symbol].Item2 == count) return visibleChanged;
+        visibleObjects[type.Symbol] = new Tuple<ObjectType, int>(type, count);
+        visibleChanged = true;
+      }
+      else
+      {
+        visibleObjects.Add(type.Symbol, new Tuple<ObjectType, int>(type, count));
+        visibleChanged = true;
+      }
+      return visibleChanged;
     }
 
     internal static void AddToMapObjects(MapObject obj)
@@ -440,7 +461,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
     {
       RemoveFromOverlayObjects(obj);
       RemoveFromOverlayGrid(obj);
-      GamePlayScreen.LegendSection();
+      GamePlay.OverlaySection();
     }
 
     internal static void RemoveFromOverlayObjects(MapObject obj)
@@ -452,8 +473,41 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
     internal static void RemoveFromOverlayGrid(MapObject obj)
     {
+      if (obj is Monster) return;
       MapObject newObj = new MapObject(obj.X, obj.Y, new ObjectType(true));
       Map.OverlayGrid[obj.X][obj.Y] = newObj;
+    }
+
+    internal static Direction GetDirection(ConsoleKey key)
+    {
+      switch (key)
+      {
+        case ConsoleKey.W:
+          return Direction.North;
+        case ConsoleKey.S:
+          return Direction.South;
+        case ConsoleKey.A:
+          return Direction.West;
+        case ConsoleKey.D:
+          return Direction.East;
+        default:
+          return Direction.None;
+      }
+    }
+
+    internal static void WriteVisibleObjects()
+    {
+      string message = "";
+      foreach (char symbol in visibleObjects.Keys)
+      {
+        ObjectType type = visibleObjects[symbol].Item1;
+        int count = visibleObjects[symbol].Item2;
+        if (count < 1) continue;
+        if (count == 1) message += $"{type.Singular}, ";
+        else message += $"{type.Plural} ({count}), ";
+      }
+      if (message.Length > 0) message = message.Substring(0, message.Length - 2);
+      GamePlay.Messages.Add(new Message($"You see {message}.", Color.White, Color.Black));
     }
   }
 }
