@@ -1,9 +1,6 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Drawing;
+﻿using System.Drawing;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
-using ConsoleDungeonCrawler.Game.Entities.Items;
 
 namespace ConsoleDungeonCrawler.Game.Screens
 {

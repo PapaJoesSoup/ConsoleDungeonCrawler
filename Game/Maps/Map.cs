@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using System.Diagnostics.Metrics;
+using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Text;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
@@ -20,6 +22,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
     internal static Dictionary<int, Dictionary<int, MapObject>> OverlayGrid = new Dictionary<int, Dictionary<int, MapObject>>();
     internal static Dictionary<char, List<MapObject>> MapObjects = new Dictionary<char, List<MapObject>>();
     internal static Dictionary<char, List<MapObject>> OverlayObjects = new Dictionary<char, List<MapObject>>();
+    internal static Dictionary<char, Tuple<ObjectType, int>> visibleObjects = new Dictionary<char, Tuple<ObjectType, int>>();
 
     internal static Player Player = new Player();
 
@@ -385,33 +388,52 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
     public static void WhatIsVisible()
     {
+      bool visibleChanged = false;
       foreach (char symbol in Map.MapObjects.Keys)
       {
         if (symbol == ' ') continue;
-        int count = 0;
         ObjectType type = Map.MapTypes.Find(t => t.Symbol == symbol) ?? new ObjectType();
         if (type.Symbol == ' ') continue;
-
-        foreach (MapObject obj in Map.MapObjects[symbol])
-          if (obj.IsVisible) count++;
-
-        if (count < 1) continue;
-        GamePlay.Messages.Add(
-          new Message($"You see {(count < 2 ? type.Singular : type.Plural)} ({count})...", type.Symbol == '#'? Color.White : type.ForegroundColor, Color.Black));
+        visibleChanged = GetObjectTypeCount(Map.MapObjects[symbol], visibleChanged, type);
       }
-
-      foreach (char symbol in Map.OverlayObjects.Keys)
+      foreach (char symbol in Map.MapObjects.Keys)
       {
         if (symbol == 'P' || symbol == ' ') continue;
-        int count = 0;
         ObjectType type = Map.OverlayTypes.Find(t => t.Symbol == symbol) ?? new ObjectType();
         if (type.Symbol == ' ') continue;
-        foreach (MapObject obj in Map.OverlayObjects[symbol])
-          if (obj.IsVisible) count++;
-
-        if (count < 1) continue;
-        GamePlay.Messages.Add(new Message($"You see {(count < 2 ? type.Singular : type.Plural)} ({count})...", (type.Symbol == 'S' || type.Symbol == 'E') ? Color.White : type.ForegroundColor, Color.Black));
+        visibleChanged = GetObjectTypeCount(Map.OverlayObjects[symbol], visibleChanged, type);
       }
+      if (visibleChanged) WriteVisibleObjects();
+    }
+
+    private static bool GetObjectTypeCount(List<MapObject> list, bool visibleChanged, ObjectType type)
+    {
+      int count = 0;
+      foreach (MapObject obj in list) if (obj.IsVisible) count++;
+
+      if (count < 1)
+      {
+        if (visibleObjects.ContainsKey(type.Symbol))
+        {
+          visibleObjects.Remove(type.Symbol);
+          visibleChanged = true;
+        }
+
+        return visibleChanged;
+      }
+
+      if (visibleObjects.ContainsKey(type.Symbol))
+      {
+        if (visibleObjects[type.Symbol].Item2 == count) return visibleChanged;
+        visibleObjects[type.Symbol] = new Tuple<ObjectType, int>(type, count);
+        visibleChanged = true;
+      }
+      else
+      {
+        visibleObjects.Add(type.Symbol, new Tuple<ObjectType, int>(type, count));
+        visibleChanged = true;
+      }
+      return visibleChanged;
     }
 
     internal static void AddToMapObjects(MapObject obj)
@@ -454,6 +476,38 @@ namespace ConsoleDungeonCrawler.Game.Maps
       if (obj is Monster) return;
       MapObject newObj = new MapObject(obj.X, obj.Y, new ObjectType(true));
       Map.OverlayGrid[obj.X][obj.Y] = newObj;
+    }
+
+    internal static Direction GetDirection(ConsoleKey key)
+    {
+      switch (key)
+      {
+        case ConsoleKey.W:
+          return Direction.North;
+        case ConsoleKey.S:
+          return Direction.South;
+        case ConsoleKey.A:
+          return Direction.West;
+        case ConsoleKey.D:
+          return Direction.East;
+        default:
+          return Direction.None;
+      }
+    }
+
+    internal static void WriteVisibleObjects()
+    {
+      string message = "";
+      foreach (char symbol in visibleObjects.Keys)
+      {
+        ObjectType type = visibleObjects[symbol].Item1;
+        int count = visibleObjects[symbol].Item2;
+        if (count < 1) continue;
+        if (count == 1) message += $"{type.Singular}, ";
+        else message += $"{type.Plural} ({count}), ";
+      }
+      if (message.Length > 0) message = message.Substring(0, message.Length - 2);
+      GamePlay.Messages.Add(new Message($"You see {message}.", Color.White, Color.Black));
     }
   }
 }

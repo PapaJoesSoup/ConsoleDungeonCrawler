@@ -1,4 +1,5 @@
-﻿using ConsoleDungeonCrawler.Game.Entities;
+﻿using System.Runtime.InteropServices.ObjectiveC;
+using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 
@@ -10,6 +11,7 @@ namespace ConsoleDungeonCrawler.Game
     {
       // Capture and hide the key the user pressed
       ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+      GamePlay.LastKey = keyInfo;
       if ((keyInfo.Modifiers & ConsoleModifiers.Shift) != 0)
       {
         switch (keyInfo.Key)
@@ -18,31 +20,43 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.A:
           case ConsoleKey.S:
           case ConsoleKey.D:
-            GamePlay.Messages.Add(new Message($"You pressed Shift+{keyInfo.Key}"));
+            GamePlay.Messages.Add(new Message($"You jumped {Map.GetDirection(keyInfo.Key)}..."));
             Map.Player.Jump(keyInfo.Key);
             break;
           case ConsoleKey.I:
-            GamePlay.Messages.Add(new Message($"You pressed Shift+{keyInfo.Key}"));
             PlayerInventory.Draw();
             break;
+          case ConsoleKey.P:
+            PlayerSpells.Draw();
+            break;
           case ConsoleKey.Q:
-            GamePlay.Messages.Add(new Message($"You pressed Shift+{keyInfo.Key}"));
             Game.IsOver = true;
             break;
         }
       }
       else
       {
-        GamePlay.LastKey = keyInfo;
         switch (keyInfo.Key)
         {
           case ConsoleKey.W:
           case ConsoleKey.A:
           case ConsoleKey.S:
           case ConsoleKey.D:
-            GamePlay.Messages.Add(new Message($"You pressed {keyInfo.Key}"));
+            GamePlay.Messages.Add(new Message($"You moved {Map.GetDirection(keyInfo.Key)}..."));
             Map.Player.Move(keyInfo.Key);
             Actions.PickupOverlayItem();
+            break;
+          case ConsoleKey.D0:
+          case ConsoleKey.D1:
+          case ConsoleKey.D2:
+          case ConsoleKey.D3:
+          case ConsoleKey.D4:
+          case ConsoleKey.D5:
+          case ConsoleKey.D6:
+          case ConsoleKey.D7:
+          case ConsoleKey.D8:
+          case ConsoleKey.D9:
+            Actions.UseSpell(keyInfo);
             break;
           case ConsoleKey.Escape:
             Game.IsPaused = true;
@@ -66,12 +80,10 @@ namespace ConsoleDungeonCrawler.Game
             GamePlay.MessageOffset = 0;
             break;
           case ConsoleKey.OemComma:
-            GamePlay.Messages.Add(new Message($"You pressed <"));
             if (Inventory.Bags.Count > 1)
               GamePlay.currentBag--;
             break;
           case ConsoleKey.OemPeriod:
-            GamePlay.Messages.Add(new Message($"You pressed >"));
             if (GamePlay.currentBag < Inventory.Bags.Count)
               GamePlay.currentBag++;
             break;
@@ -81,11 +93,18 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.C:
             Actions.CloseDoor();
             break;
+          case ConsoleKey.F11:
+            //Up Stairs
+            //Actions.UpStairs();
+            break;
+          case ConsoleKey.F12:
+            //Down Stairs
+            //Actions.DownStairs();
+            break;
           case ConsoleKey.T:
             Map.Player.Attack();
-            break;
-            default:
-              GamePlay.Messages.Add(new Message($"You pressed {keyInfo.Key}, which does nothing."));
+            break; 
+          default:
             break;
         }
       }

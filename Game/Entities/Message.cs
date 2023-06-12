@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Screens;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace ConsoleDungeonCrawler.Game.Entities
 {

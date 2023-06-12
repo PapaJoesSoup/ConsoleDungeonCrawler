@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Maps;
@@ -92,6 +91,21 @@ namespace ConsoleDungeonCrawler.Game
           monster.Attack();
         }
       }
+    }
+
+    public static void UseSpell(ConsoleKeyInfo keyInfo)
+    {
+      int index = (int)char.GetNumericValue(keyInfo.KeyChar);
+      if (index > Player.Spells.Count) return;
+      Spell spell = Player.Spells[index];
+      if (spell == null) return;
+      if (spell.ManaCost > Player.Mana)
+      {
+        GamePlay.Messages.Add(new Message("Not enough mana!", Color.Red, Color.Black));
+        return;
+      }
+      Player.Mana -= spell.ManaCost;
+      spell.Cast();
     }
   }
 }

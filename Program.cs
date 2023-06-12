@@ -1,5 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler
