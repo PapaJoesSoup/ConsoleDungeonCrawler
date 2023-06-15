@@ -38,14 +38,14 @@ namespace ConsoleDungeonCrawler.Game
           item = Chest.GetRandomItem();
           break;
         case '$':
-          item = Item.GetRandomItem();
+          item = Gold.GetRandomItem();
           break;
         default:
           return;
       }
       if (item.Type == ItemType.None) return;
       Inventory.AddItem(item);
-      string message = item.Type == ItemType.Gold ? "You Picked up a pouch of gold!" : $"You Picked up {item.Description}!";
+     string message = item.Type == ItemType.Gold ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!" : $"You Picked up {item.Description}!";
       GamePlay.Messages.Add(new Message(message, Color.DarkGoldenrod, Color.Black));
       Map.UpdateOverlayObject(obj);
 

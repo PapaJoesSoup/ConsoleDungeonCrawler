@@ -391,7 +391,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     {
       if (item.Type == ItemType.Gold)
       {
-        Player.Gold += Decimal.Round(item.Quantity * item.SellCost, 2);
+        Player.Gold += ((Gold)item).GetValue();
         return true;
       }
       foreach (Bag bag in Bags)
@@ -465,11 +465,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
     public static Item GetRandomItem(ItemType type)
     {
       //default result is gold, so set the quantity and value
-      int qty = Dice.Roll(1, 5);
-      decimal value = Decimal.Round(Dice.Roll(.01M, 1.1M), 2);
-      Item item  = new Item();
-      item.Type = type;
-      
       switch (type)
       {
         case ItemType.Weapon:
@@ -479,7 +474,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
         case ItemType.Food:
           return Food.GetRandomItem();
         case ItemType.Gold:
-          return new Item(ItemType.Gold, Player.Level, qty, value, value);
+          return Gold.GetRandomItem();
         case ItemType.Armor:
           return Armor.GetRandomItem();
         case ItemType.Chest:
@@ -487,7 +482,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
         case ItemType.Bandage:
           return Bandage.GetRandomItem();
         default:  
-          return new Item(ItemType.Gold, Player.Level, qty, value, value);
+          return Gold.GetRandomItem();
       }
     }
   }

@@ -38,29 +38,29 @@
       switch (randomItems)
       {
         case 0:
-          return new List<Item>() { Armor.GetRandomItem(), Potion.GetRandomItem(), Item.GetRandomItem() };
+          return new List<Item>() { Armor.GetRandomItem(), Potion.GetRandomItem(), Gold.GetRandomItem() };
         case 1:
-          return new List<Item>() { Bandage.GetRandomItem(), Item.GetRandomItem() };
+          return new List<Item>() { Bandage.GetRandomItem(), Gold.GetRandomItem() };
         case 2:
-          return new List<Item>() { Weapon.GetRandomItem(),Potion.GetRandomItem(), Bandage.GetRandomItem(), Item.GetRandomItem() };
+          return new List<Item>() { Weapon.GetRandomItem(),Potion.GetRandomItem(), Bandage.GetRandomItem(), Gold.GetRandomItem() };
         case 3:
-          return new List<Item>() { Food.GetRandomItem(), Food.GetRandomItem(), Potion.GetRandomItem(), Bandage.GetRandomItem(), Item.GetRandomItem() };
+          return new List<Item>() { Food.GetRandomItem(), Food.GetRandomItem(), Potion.GetRandomItem(), Bandage.GetRandomItem(), Gold.GetRandomItem() };
         case 4:
-          return new List<Item>() { Armor.GetRandomItem(), Bandage.GetRandomItem(), Item.GetRandomItem() };
+          return new List<Item>() { Armor.GetRandomItem(), Bandage.GetRandomItem(), Gold.GetRandomItem() };
         case 5:
-          return new List<Item>() { Potion.GetRandomItem(), Food.GetRandomItem(), Item.GetRandomItem() };
+          return new List<Item>() { Potion.GetRandomItem(), Food.GetRandomItem(), Gold.GetRandomItem() };
         case 6:
-          return new List<Item>() { Armor.GetRandomItem(), Weapon.GetRandomItem(), Item.GetRandomItem() };
+          return new List<Item>() { Armor.GetRandomItem(), Weapon.GetRandomItem(), Gold.GetRandomItem() };
         case 7:
-          return new List<Item>() { Armor.GetRandomItem(), Weapon.GetRandomItem(), Potion.GetRandomItem(), Bandage.GetRandomItem(), Item.GetRandomItem() };
+          return new List<Item>() { Armor.GetRandomItem(), Weapon.GetRandomItem(), Potion.GetRandomItem(), Bandage.GetRandomItem(), Gold.GetRandomItem() };
         case 8:
-          return new List<Item>() { Food.GetRandomItem(), Potion.GetRandomItem(), Potion.GetRandomItem(), Item.GetRandomItem() };
+          return new List<Item>() { Food.GetRandomItem(), Potion.GetRandomItem(), Potion.GetRandomItem(), Gold.GetRandomItem() };
         case 9:
-          return new List<Item>() { Potion.GetRandomItem(), Bandage.GetRandomItem(), Item.GetRandomItem() };
+          return new List<Item>() { Potion.GetRandomItem(), Bandage.GetRandomItem(), Gold.GetRandomItem() };
         case 10:
-          return new List<Item>() { Potion.GetRandomItem(), Armor.GetRandomItem(), Item.GetRandomItem() };
+          return new List<Item>() { Potion.GetRandomItem(), Armor.GetRandomItem(), Gold.GetRandomItem() };
          default:
-          return new List<Item>() { Potion.GetRandomItem(), Item.GetRandomItem() };
+          return new List<Item>() { Potion.GetRandomItem(), Gold.GetRandomItem() };
       }
     }
 
@@ -73,6 +73,12 @@
         {
           Inventory.AddItem(item);
         }
+      }
+      foreach (Bag bag in Inventory.Bags)
+      {
+        if (!bag.Items.Contains(this)) continue;
+        bag.Items.Remove(this);
+        return result;
       }
 
       return result;

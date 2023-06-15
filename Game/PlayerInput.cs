@@ -42,8 +42,9 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.A:
           case ConsoleKey.S:
           case ConsoleKey.D:
+
+            if (!Map.Player.Move(keyInfo.Key)) break;
             GamePlay.Messages.Add(new Message($"You moved {Map.GetDirection(keyInfo.Key)}..."));
-            Map.Player.Move(keyInfo.Key);
             Actions.PickupOverlayItem();
             break;
           case ConsoleKey.D0:

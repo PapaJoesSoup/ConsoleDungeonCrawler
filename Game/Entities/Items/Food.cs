@@ -22,8 +22,15 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
       Quantity = quantity;
       StackSize = 20;
 
-      Name = $"{FoodType} Food";
-      Description = $"A {FoodType} Food";
+      Name = $"{FoodType}";
+      if (BuffType == BuffType.Health)
+      {
+        Description = $"A {FoodType}";
+      }
+      else
+      {
+        Description = $"some {FoodType}";
+      }
       BuyCost = buyCost;
       SellCost = 0;
     }
@@ -49,8 +56,9 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
           break;
       }
       Quantity--;
+      GamePlay.Messages.Add(new Message(this.BuffType == BuffType.Mana ? $"You drank {Description}." : $"You ate {Description}.", Color.Orange, Color.Black));
       if (Quantity > 0) return true;
-      GamePlay.Messages.Add(new Message($"You used your last {Name}.", Color.Orange, Color.Black));
+      GamePlay.Messages.Add(new Message(this.BuffType == BuffType.Mana ? $"You drank your last {Name}." : $"You ate your last {Name}.", Color.Orange, Color.Black));
       Inventory.RemoveItem(this);
 
       return true;

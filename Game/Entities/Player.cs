@@ -55,7 +55,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Inventory.AddItem( new Food(FoodType.Vegetable, BuffType.Health, 1, 1, 0));
     }
 
-    public void Move(ConsoleKey key)
+    public bool Move(ConsoleKey key)
     {
       int x = 0;
       int y = 0;
@@ -67,7 +67,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Position oldPos = new Position(X, Y);
       Position newPos = new Position(X + x, Y + y);
 
-      if (!Map.CanMoveTo(newPos.X, newPos.Y)) return;
+      if (!Map.CanMoveTo(newPos.X, newPos.Y)) return false;
       X = newPos.X;
       Y = newPos.Y;
       Map.OverlayObjects['P'][0] = this;
@@ -75,6 +75,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Map.MapGrid[newPos.X][newPos.Y].Draw();
       Map.OverlayGrid[oldPos.X][oldPos.Y].Draw();
       Map.OverlayGrid[newPos.X][newPos.Y].Draw();
+      return true;
     }
 
     public void Jump(ConsoleKey key)

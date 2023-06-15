@@ -32,7 +32,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Type = type;
       Name = type.ToString();
       Level = level;
-      Description = Type == ItemType.Gold ? $"some {type.ToString()}" : $"a {type.ToString()}";
+      Description = Type == ItemType.Gold ? $"some {Name}" : $"a {Name}";
       Quantity = qty;
       BuyCost = cost;
       SellCost = value;
@@ -40,9 +40,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     internal virtual bool Use()
     {
-      bool result = true;
-      Player.Gold += Level * Quantity * SellCost;
-      return result;
+      return true;
     }
 
     /// <summary>
@@ -52,7 +50,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     /// <returns></returns>
     internal static Item GetRandomItem()
     {
-      return new Item(ItemType.Gold, Dice.Roll(1, 10), Dice.Roll(1, 10), 0.1M, 0.1M);
+      return Gold.GetRandomItem();
     }
   }
 }

@@ -195,6 +195,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
     {
       int col = OverlayBox.Left + 2;
       int row = OverlayBox.Top + 1;
+      ConsoleEx.WriteAt("Map objects: ", col, row, Color.Gold); row += 2;
       foreach (char type in Map.OverlayObjects.Keys)
       {
         foreach (MapObject mapObject in Map.OverlayObjects[type])
@@ -214,7 +215,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
     {
       int col = LegendBox.Left + 2;
       int row = LegendBox.Top + 1;
-      ConsoleEx.WriteAt("Game Play Legend: ", col, row, ConsoleColor.Yellow); row += 2;
+      ConsoleEx.WriteAt("Game Play Legend: ", col, row, Color.Gold); row += 2;
       ConsoleEx.WriteAt("[W,A,S,D] - Move", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[Shift+W,A,S,D] - Jump", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[T] - Attack Enemy", col, row, ConsoleColor.White); row++;
@@ -258,7 +259,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
     {
       int col = MessageBox.Width - 28;
       int row = MessageBox.Top + 1;
-      ConsoleEx.WriteAt("Messages Legend: ", col, row, ConsoleColor.Yellow); row += 2;
+      ConsoleEx.WriteAt("Messages Legend: ", col, row, Color.Gold); row += 2;
       ConsoleEx.WriteAt("[UpArrow] - Prev Message", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[DownArrow] - Next Message", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[PageUP] - Messages - 8", col, row, ConsoleColor.White); row++;
