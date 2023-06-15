@@ -49,16 +49,29 @@
 
     }
 
-    internal static Weapon GetRandomWeapon()
-    {
-      WeaponType weaponType = (WeaponType)Dice.Roll(1, Inventory.WeaponTypes.Count - 1);
-      Weapon weapon = Inventory.WeaponTypes[weaponType][Dice.Roll(0, Inventory.WeaponTypes[weaponType].Count - 1)];
-      return weapon;
-    }
-
     internal static Weapon GetWeapon(WeaponType weaponType, int idx)
     {
       Weapon weapon = Inventory.WeaponTypes[weaponType][idx];
+      return weapon;
+    }
+
+    internal override bool Use()
+    {
+      bool result = true;
+      foreach (Bag bag in Inventory.Bags)
+      {
+        if (!bag.Items.Contains(this)) continue;
+        bag.Items.Remove(this);
+        Player.EquipWeapon(this);
+        return result;
+      }
+      return false;
+    }
+
+    internal new static Item GetRandomItem()
+    {
+      WeaponType weaponType = (WeaponType)Dice.Roll(1, Inventory.WeaponTypes.Count - 1);
+      Weapon weapon = Inventory.WeaponTypes[weaponType][Dice.Roll(0, Inventory.WeaponTypes[weaponType].Count - 1)];
       return weapon;
     }
   }

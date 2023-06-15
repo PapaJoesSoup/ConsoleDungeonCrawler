@@ -35,10 +35,10 @@ namespace ConsoleDungeonCrawler.Game
           item = Inventory.GetRandomItem();
           break;
         case 'm':
-          item = Chest.GetRandomChest();
+          item = Chest.GetRandomItem();
           break;
         case '$':
-          item = Inventory.GetRandomItem(ItemType.Gold);
+          item = Item.GetRandomItem();
           break;
         default:
           return;

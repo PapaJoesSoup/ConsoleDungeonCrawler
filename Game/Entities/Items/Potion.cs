@@ -1,4 +1,7 @@
-﻿namespace ConsoleDungeonCrawler.Game.Entities.Items
+﻿using ConsoleDungeonCrawler.Game.Screens;
+using System.Drawing;
+
+namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Potion : Item
   {
@@ -24,7 +27,35 @@
       BuffType = potionType;
     }
 
-    internal static Potion GetRandomPotion()
+    internal override bool Use()
+    {
+      if (Player.Health == Player.MaxHealth)
+      {
+        GamePlay.Messages.Add(new Message("You are already at full health.", Color.Orange, Color.Black));
+        return false;
+      }
+      switch (((Potion)this).BuffType)
+      {
+        case BuffType.Health:
+          Player.Heal(((Potion)this).BuffAmount);
+          break;
+        case BuffType.Mana:
+          Player.RestoreMana(((Potion)this).BuffAmount);
+          break;
+        case BuffType.HealthAndMana:
+          Player.Heal(((Potion)this).BuffAmount);
+          Player.RestoreMana(((Potion)this).BuffAmount);
+          break;
+      }
+      Quantity--;
+      if (Quantity > 0) return true;
+      GamePlay.Messages.Add(new Message($"You used your last {Name}.", Color.Orange, Color.Black));
+      Inventory.RemoveItem(this);
+
+      return true;
+    }
+
+    internal new static Item GetRandomItem()
     {
       int randomPotion = Dice.Roll(0, 2);
       switch (randomPotion)

@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Reflection;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Screens;
@@ -465,24 +466,26 @@ namespace ConsoleDungeonCrawler.Game.Entities
     {
       //default result is gold, so set the quantity and value
       int qty = Dice.Roll(1, 5);
-      decimal value = Decimal.Round(Dice.Roll(.01M, 1.1M), 2); 
-
+      decimal value = Decimal.Round(Dice.Roll(.01M, 1.1M), 2);
+      Item item  = new Item();
+      item.Type = type;
+      
       switch (type)
       {
         case ItemType.Weapon:
-          return Weapon.GetRandomWeapon();
+          return Weapon.GetRandomItem();
         case ItemType.Potion:
-          return Potion.GetRandomPotion();
+          return Potion.GetRandomItem();
         case ItemType.Food:
-          return Food.GetRandomFood();
+          return Food.GetRandomItem();
         case ItemType.Gold:
           return new Item(ItemType.Gold, Player.Level, qty, value, value);
         case ItemType.Armor:
-          return Armor.GetRandomArmor();
+          return Armor.GetRandomItem();
         case ItemType.Chest:
-          return Chest.GetRandomChest();
+          return Chest.GetRandomItem();
         case ItemType.Bandage:
-          return Bandage.GetRandomBandage();
+          return Bandage.GetRandomItem();
         default:  
           return new Item(ItemType.Gold, Player.Level, qty, value, value);
       }

@@ -1,4 +1,8 @@
-﻿namespace ConsoleDungeonCrawler.Game.Entities.Items
+﻿using System.Drawing;
+using ConsoleDungeonCrawler.Game.Maps;
+using ConsoleDungeonCrawler.Game.Screens;
+
+namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Bandage : Item
   {
@@ -23,12 +27,6 @@
       BuffAmount = buffAmount;
     }
 
-    internal static Bandage GetRandomBandage()
-    {
-      int randomBandage = Dice.Roll(0, Inventory.Bandages.Count - 1);
-      return Inventory.Bandages[randomBandage];
-    }
-
     private void SetLevelFromType()
     {
       switch (BandageType)
@@ -50,6 +48,35 @@
           break;
 
       }
+    }
+
+    internal override bool Use()
+    {
+      if (Player.Health == Player.MaxHealth)
+      {
+        GamePlay.Messages.Add(new Message("You are already at full health.", Color.Orange, Color.Black));
+        return false;
+      }
+      else
+      {
+        Player.Health += BuffAmount;
+        GamePlay.Messages.Add(new Message($"You were healed for {BuffAmount} health.", Color.Orange, Color.Black));
+        if (Player.Health > Player.MaxHealth)
+        {
+          Player.Health = Player.MaxHealth;
+        }
+        Quantity--;
+        if (Quantity > 0) return true;
+        GamePlay.Messages.Add(new Message($"You used your last {Name}.", Color.Orange, Color.Black));
+        Inventory.RemoveItem(this);
+        return true;
+      }
+    }
+
+    internal new static Item GetRandomItem()
+    {
+      int randomBandage = Dice.Roll(0, Inventory.Bandages.Count - 1);
+      return Inventory.Bandages[randomBandage];
     }
   }
 }

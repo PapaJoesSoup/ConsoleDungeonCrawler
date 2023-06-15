@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler
@@ -17,6 +18,9 @@ namespace ConsoleDungeonCrawler
     public static void Main(string[] args)
     {
       Console.OutputEncoding = System.Text.Encoding.Unicode;
+      ConsoleEx.Clear();
+      ConsoleEx.InitializeConsole();
+
       // Maximize console window
       MaximizeConsoleWindow();
       // Enable extended colors
@@ -24,36 +28,6 @@ namespace ConsoleDungeonCrawler
 
       map = new Map();
       Game.Game.Run();
-    }
-
-    /// <summary>
-    /// This is a windows only feature...
-    /// </summary>
-    private static void EnableExtendedColors()
-    {
-      // Setup console to use extended ansii colors
-      [DllImport("kernel32.dll", SetLastError = true)]
-      static extern bool SetConsoleMode(IntPtr hConsoleHandle, int mode);
-
-      [DllImport("kernel32.dll", SetLastError = true)]
-      static extern bool GetConsoleMode(IntPtr handle, out int mode);
-
-      [DllImport("kernel32.dll", SetLastError = true)]
-      static extern IntPtr GetStdHandle(int handle);
-
-      IntPtr handle = GetStdHandle(-11);
-      GetConsoleMode(handle, out int mode);
-      SetConsoleMode(handle, mode | 0x4);
-    }
-
-    /// <summary>
-    /// This is a windows only feature...
-    /// </summary>
-    private static void SetScreenSizes(int width, int height)
-    {
-      // Set console window size
-      Console.SetWindowSize(width, height);
-      Console.SetBufferSize(width, height);
     }
 
     /// <summary>
@@ -88,6 +62,36 @@ namespace ConsoleDungeonCrawler
       int height = screenRect.Bottom - screenRect.Top;
       MoveWindow(consoleWindowHandle, screenRect.Left, screenRect.Top, width, height, true);
       SetScreenSizes(width, height);
+    }
+    
+    /// <summary>
+    /// This is a windows only feature...
+    /// </summary>
+    private static void EnableExtendedColors()
+    {
+      // Setup console to use extended ansii colors
+      [DllImport("kernel32.dll", SetLastError = true)]
+      static extern bool SetConsoleMode(IntPtr hConsoleHandle, int mode);
+
+      [DllImport("kernel32.dll", SetLastError = true)]
+      static extern bool GetConsoleMode(IntPtr handle, out int mode);
+
+      [DllImport("kernel32.dll", SetLastError = true)]
+      static extern IntPtr GetStdHandle(int handle);
+
+      IntPtr handle = GetStdHandle(-11);
+      GetConsoleMode(handle, out int mode);
+      SetConsoleMode(handle, mode | 0x4);
+    }
+
+    /// <summary>
+    /// This is a windows only feature...
+    /// </summary>
+    private static void SetScreenSizes(int width, int height)
+    {
+      // Set console window size
+      Console.SetWindowSize(width, height);
+      Console.SetBufferSize(width, height);
     }
   }
 }

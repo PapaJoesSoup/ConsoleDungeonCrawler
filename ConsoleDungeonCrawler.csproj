@@ -8,15 +8,29 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Game\Maps\Data\MapGrid1.txt" />
-    <None Remove="Game\Maps\Data\MapOverlay1.txt" />
+    <None Remove="Game\Maps\Data\Castle\LevelMap_0.txt" />
+    <None Remove="Game\Maps\Data\Castle\LevelMap_1.txt" />
+    <None Remove="Game\Maps\Data\Castle\LevelOverlay_0.txt" />
+    <None Remove="Game\Maps\Data\Castle\LevelOverlay_1.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Game\Maps\Data\MapOverlay1.txt">
+    <Content Include="Game\Maps\Data\Castle\LevelMap_0.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\MapGrid1.txt">
+    <Content Include="Game\Maps\Data\Castle\LevelMap_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Maps\Data\Castle\LevelOverlay_-1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Maps\Data\Castle\LevelMap_-1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Maps\Data\Castle\LevelOverlay_0.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Maps\Data\Castle\LevelOverlay_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

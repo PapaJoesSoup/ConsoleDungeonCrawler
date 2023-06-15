@@ -13,13 +13,43 @@ namespace ConsoleDungeonCrawler.Game
     internal static bool IsWon { get; set; }
     internal static bool IsPaused { get; set; }
 
+
+    internal static Dictionary<string, Dictionary<string, string>> Dungeons = new Dictionary<string, Dictionary<string, string>>()
+    {
+      {
+        "Dungeon 1", new Dictionary<string, string>()
+        {
+          {"Name", "Dungeon 1"},
+          {"Description", "A small dungeon"},
+          {"Map", "Dungeon1"},
+          {"Start", "1,1"},
+          {"End", "10,10"}
+        }
+      }
+    };
+
+    internal static void LoadDungeons()
+    {
+      string folderPath  = "Game/Maps/Data";
+      string[] folders = Directory.GetDirectories(folderPath);
+      Dungeons.Clear();
+      foreach (string dungeon in folders)
+      {
+        string[] files = Directory.GetFiles(dungeon); 
+        Dictionary<string, string> maps = new Dictionary<string, string>();
+        foreach (string map in files)
+        {
+          string fileName = Path.GetFileName(map);
+          maps.Add(fileName, map);
+        }
+        Dungeons.Add(dungeon.Split("\\")[1], maps);
+      }
+    }
     public static void Run()
     {
-      ConsoleEx.Clear();
-      ConsoleEx.InitializeConsole();
+      LoadDungeons();
       Map.Instance = new Map(GamePlay.MapBox);
-
-            Screens.Title.Draw();
+      Screens.Title.Draw();
       PlayGame();
     }
 

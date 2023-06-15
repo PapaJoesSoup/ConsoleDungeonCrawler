@@ -39,8 +39,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
       InitTypeLists();
       InitDictionaries();
-      LoadMapGridFromFile("Game/Maps/Data/MapGrid1.txt");
-      LoadOverlayFromFile("Game/Maps/Data/MapOverlay1.txt");
+      LoadMapGridFromFile("Game/Maps/Data/Castle/LevelMap_0.txt");
+      LoadOverlayFromFile("Game/Maps/Data/Castle/LevelOverlay_0.txt");
     }
 
     internal void InitTypeLists()
@@ -163,7 +163,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
       }
     }
 
-    internal void DrawMap()
+    internal static void DrawMap()
     {
       foreach (int x in MapGrid.Keys)
       {
@@ -176,7 +176,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
       }
     }
 
-    internal void DrawOverlay()
+    internal static void DrawOverlay()
     {
       foreach (int x in OverlayGrid.Keys)
       {
@@ -510,5 +510,20 @@ namespace ConsoleDungeonCrawler.Game.Maps
       }
     }
 
+    internal static void ShowFullMap()
+    {
+      foreach (int x in MapGrid.Keys)
+      {
+        foreach (int y in MapGrid[x].Keys)
+        {
+          MapObject obj = MapGrid[x][y];
+          if (obj.Type.Symbol == ' ') continue;
+          obj.Draw();
+          Console.ReadKey(true);
+          Map.DrawMap();
+        }
+      }
+
+    }
   }
 }

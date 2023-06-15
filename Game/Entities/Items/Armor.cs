@@ -45,7 +45,19 @@
 
     }
 
-    internal static Armor GetRandomArmor()
+    internal override bool Use()
+    {
+      foreach (Bag bag in Inventory.Bags)
+      {
+        if (!bag.Items.Contains(this)) continue;
+        bag.Items.Remove(this);
+        Player.EquipArmor(this);
+        return true;
+      }
+      return false;
+    }
+    
+    internal new static Item GetRandomItem()
     {
       int armorType = Dice.Roll(1, 5);
       int armorName = Dice.Roll(1, 4);

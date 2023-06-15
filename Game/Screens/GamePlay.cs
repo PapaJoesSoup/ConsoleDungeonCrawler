@@ -184,8 +184,8 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static void MapSection()
     {
       Map.SetVisibleArea(10);
-      Map.Instance.DrawMap();
-      Map.Instance.DrawOverlay();
+      Map.DrawMap();
+      Map.DrawOverlay();
 
       // we add this last so that the player is always on top
       Map.Player.Draw();

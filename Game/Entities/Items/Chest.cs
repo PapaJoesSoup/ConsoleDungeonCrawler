@@ -32,10 +32,57 @@
       Items = GetChestItems();
     }
 
-    internal static Chest GetRandomChest(int min = 0, int max = 5)
+    private List<Item> GetChestItems()
     {
-      if (min < 0) min = 0;
-      if (max > 5) max = 5;
+      int randomItems = Dice.Roll(0, 10);
+      switch (randomItems)
+      {
+        case 0:
+          return new List<Item>() { Armor.GetRandomItem(), Potion.GetRandomItem(), Item.GetRandomItem() };
+        case 1:
+          return new List<Item>() { Bandage.GetRandomItem(), Item.GetRandomItem() };
+        case 2:
+          return new List<Item>() { Weapon.GetRandomItem(),Potion.GetRandomItem(), Bandage.GetRandomItem(), Item.GetRandomItem() };
+        case 3:
+          return new List<Item>() { Food.GetRandomItem(), Food.GetRandomItem(), Potion.GetRandomItem(), Bandage.GetRandomItem(), Item.GetRandomItem() };
+        case 4:
+          return new List<Item>() { Armor.GetRandomItem(), Bandage.GetRandomItem(), Item.GetRandomItem() };
+        case 5:
+          return new List<Item>() { Potion.GetRandomItem(), Food.GetRandomItem(), Item.GetRandomItem() };
+        case 6:
+          return new List<Item>() { Armor.GetRandomItem(), Weapon.GetRandomItem(), Item.GetRandomItem() };
+        case 7:
+          return new List<Item>() { Armor.GetRandomItem(), Weapon.GetRandomItem(), Potion.GetRandomItem(), Bandage.GetRandomItem(), Item.GetRandomItem() };
+        case 8:
+          return new List<Item>() { Food.GetRandomItem(), Potion.GetRandomItem(), Potion.GetRandomItem(), Item.GetRandomItem() };
+        case 9:
+          return new List<Item>() { Potion.GetRandomItem(), Bandage.GetRandomItem(), Item.GetRandomItem() };
+        case 10:
+          return new List<Item>() { Potion.GetRandomItem(), Armor.GetRandomItem(), Item.GetRandomItem() };
+         default:
+          return new List<Item>() { Potion.GetRandomItem(), Item.GetRandomItem() };
+      }
+    }
+
+    internal override bool Use()
+    {
+      bool result = true;
+      if (Items.Count > 0)
+      {
+        foreach (Item item in Items)
+        {
+          Inventory.AddItem(item);
+        }
+      }
+
+      return result;
+    }
+    
+    internal new static Item GetRandomItem()
+    {
+      int min = 0;
+      int max = 5;
+
       int randomChest = Dice.Roll(min, max);
       switch (randomChest)
       {
@@ -55,39 +102,5 @@
           return new Chest(1, ItemRarity.Common, 1, 0.5M);
       }
     }
-
-    private List<Item> GetChestItems()
-    {
-      int randomItems = Dice.Roll(0, 10);
-      Item randomGold = new Item(ItemType.Gold, Player.Level, Dice.Roll(1, 10), 1, 1);
-      switch (randomItems)
-      {
-        case 0:
-          return new List<Item>() { Armor.GetRandomArmor(), Potion.GetRandomPotion(), randomGold };
-        case 1:
-          return new List<Item>() { Bandage.GetRandomBandage(), randomGold };
-        case 2:
-          return new List<Item>() { Weapon.GetRandomWeapon(),Potion.GetRandomPotion(), Bandage.GetRandomBandage(), randomGold };
-        case 3:
-          return new List<Item>() { Food.GetRandomFood(), Food.GetRandomFood(), Potion.GetRandomPotion(), Bandage.GetRandomBandage(), randomGold };
-        case 4:
-          return new List<Item>() { Armor.GetRandomArmor(), Bandage.GetRandomBandage(), randomGold };
-        case 5:
-          return new List<Item>() { Potion.GetRandomPotion(), Food.GetRandomFood(), randomGold };
-        case 6:
-          return new List<Item>() { Armor.GetRandomArmor(), Weapon.GetRandomWeapon(), randomGold };
-        case 7:
-          return new List<Item>() { Armor.GetRandomArmor(), Weapon.GetRandomWeapon(), Potion.GetRandomPotion(), Bandage.GetRandomBandage(), randomGold };
-        case 8:
-          return new List<Item>() { Food.GetRandomFood(), Potion.GetRandomPotion(), Potion.GetRandomPotion(), randomGold };
-        case 9:
-          return new List<Item>() { Potion.GetRandomPotion(), Bandage.GetRandomBandage(), randomGold };
-        case 10:
-          return new List<Item>() { Potion.GetRandomPotion(), Armor.GetRandomArmor(), randomGold };
-         default:
-          return new List<Item>() { Potion.GetRandomPotion(), randomGold };
-      }
-    }
-
   }
 }
