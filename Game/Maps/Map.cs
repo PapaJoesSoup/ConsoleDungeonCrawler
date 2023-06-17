@@ -11,6 +11,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
   internal class Map
   {
     internal static Map Instance = new Map();
+    internal static int CurrentLevel = 0;
     internal static int Top { get; set; }
     internal static int Left { get; set; }
     internal static int Width { get; set; }
@@ -39,8 +40,7 @@ namespace ConsoleDungeonCrawler.Game.Maps
 
       InitTypeLists();
       InitDictionaries();
-      LoadMapGridFromFile("Game/Maps/Data/Castle/LevelMap_0.txt");
-      LoadOverlayFromFile("Game/Maps/Data/Castle/LevelOverlay_0.txt");
+      LoadLevel(CurrentLevel);
     }
 
     internal void InitTypeLists()
@@ -52,8 +52,8 @@ namespace ConsoleDungeonCrawler.Game.Maps
         new('.', "Floor", "a floor", "some flooring", Color.Gray, Color.DimGray, true, false, false),
         new('+', "DoorC", "a closed door", "some closed doors", Color.Yellow, Color.DimGray, false, false, false),
         new('-', "DoorO", "an open door", "some open doors", Color.Yellow, Color.DimGray, true, false, false),
-        new('>', "StairsU", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
-        new('<', "StairsD", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
+        new('^', "StairsU", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
+        new('v', "StairsD", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
         new('!', "Fire", "a fire", "some fire", Color.OrangeRed, Color.DimGray, false, false, false),
         new('~', "Water", "some water", "some patches of water", Color.Aqua, Color.Aqua, false, false, false),
         new('a', "Acid", "some acid", "some patches of acid", Color.SaddleBrown, Color.Chartreuse, false, false, false),
@@ -106,6 +106,15 @@ namespace ConsoleDungeonCrawler.Game.Maps
       OverlayObjects = new Dictionary<char, List<MapObject>>();
       foreach (ObjectType objectType in OverlayTypes)
         OverlayObjects.Add(objectType.Symbol, new List<MapObject>());
+    }
+
+    internal static void LoadLevel(int Level)
+    {
+      LoadMapGridFromFile($"{Game.MapPath}{Game.CurrentDungeon}/LevelMap_{Level}.txt");
+      LoadOverlayFromFile($"{Game.MapPath}{Game.CurrentDungeon}/LevelOverlay_{Level}.txt");
+      Map.DrawMap();
+      Map.DrawOverlay();
+      Map.Player.Draw();
     }
 
     internal static void LoadMapGridFromFile(string filename)

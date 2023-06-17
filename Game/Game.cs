@@ -12,26 +12,14 @@ namespace ConsoleDungeonCrawler.Game
     internal static bool IsOver { get; set; }
     internal static bool IsWon { get; set; }
     internal static bool IsPaused { get; set; }
+    internal static string CurrentDungeon = "";
+    internal static string MapPath = "Game/Maps/Data/";
 
-
-    internal static Dictionary<string, Dictionary<string, string>> Dungeons = new Dictionary<string, Dictionary<string, string>>()
-    {
-      {
-        "Dungeon 1", new Dictionary<string, string>()
-        {
-          {"Name", "Dungeon 1"},
-          {"Description", "A small dungeon"},
-          {"Map", "Dungeon1"},
-          {"Start", "1,1"},
-          {"End", "10,10"}
-        }
-      }
-    };
+    internal static Dictionary<string, Dictionary<string, string>> Dungeons = new Dictionary<string, Dictionary<string, string>>();
 
     internal static void LoadDungeons()
     {
-      string folderPath  = "Game/Maps/Data";
-      string[] folders = Directory.GetDirectories(folderPath);
+      string[] folders = Directory.GetDirectories(MapPath);
       Dungeons.Clear();
       foreach (string dungeon in folders)
       {
@@ -42,8 +30,9 @@ namespace ConsoleDungeonCrawler.Game
           string fileName = Path.GetFileName(map);
           maps.Add(fileName, map);
         }
-        Dungeons.Add(dungeon.Split("\\")[1], maps);
+        Dungeons.Add(dungeon.Split("/").Last(), maps);
       }
+      CurrentDungeon = Dungeons.Keys.First();
     }
     public static void Run()
     {

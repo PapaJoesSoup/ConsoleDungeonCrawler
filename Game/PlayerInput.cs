@@ -97,10 +97,10 @@ namespace ConsoleDungeonCrawler.Game
             Actions.CloseDoor();
             break;
           case ConsoleKey.F11:
-            //Actions.UpStairs();
+            Actions.UpStairs();
             break;
           case ConsoleKey.F12:
-            //Actions.DownStairs();
+            Actions.DownStairs();
             break;
           case ConsoleKey.T:
             Map.Player.Attack();

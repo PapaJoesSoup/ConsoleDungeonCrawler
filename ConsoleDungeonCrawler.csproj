@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Game\Maps\Data\CastleMania\LevelMap_-1.txt" />
+    <None Remove="Game\Maps\Data\CastleMania\LevelMap_0.txt" />
+    <None Remove="Game\Maps\Data\CastleMania\LevelMap_1.txt" />
+    <None Remove="Game\Maps\Data\CastleMania\LevelOverlay_-1.txt" />
+    <None Remove="Game\Maps\Data\CastleMania\LevelOverlay_0.txt" />
+    <None Remove="Game\Maps\Data\CastleMania\LevelOverlay_1.txt" />
     <None Remove="Game\Maps\Data\Castle\LevelMap_0.txt" />
     <None Remove="Game\Maps\Data\Castle\LevelMap_1.txt" />
     <None Remove="Game\Maps\Data\Castle\LevelOverlay_0.txt" />
@@ -15,6 +21,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Game\Maps\Data\CastleMania\LevelMap_-1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Maps\Data\CastleMania\LevelMap_0.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Maps\Data\CastleMania\LevelMap_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Maps\Data\CastleMania\LevelOverlay_-1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Maps\Data\CastleMania\LevelOverlay_0.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Maps\Data\CastleMania\LevelOverlay_1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game\Maps\Data\Castle\LevelMap_0.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

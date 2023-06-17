@@ -38,6 +38,10 @@ namespace ConsoleDungeonCrawler.Game.Entities
       SellCost = value;
     }
 
+    /// <summary>
+    /// override method to Use an item.  This is overriden in the subtypes with a method uses the item of that type.
+    /// </summary>
+    /// <returns></returns>
     internal virtual bool Use()
     {
       return true;

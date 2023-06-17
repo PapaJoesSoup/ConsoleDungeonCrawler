@@ -131,42 +131,44 @@
     HealthAndMana
   }
 
-  internal enum DamageType
+  internal enum SpellType
   {
-    Physical,
-    Magical
+    Heal,
+    Mana,
+    Damage,
+    Buff,
+    Debuff,
+    Other
   }
 
   internal enum SpellName
   {
-    None,
+    Heal,
+    GreaterHeal,
+    HealOverTime,
     Fireball,
     IceSpike,
     LightningBolt,
-    PoisonCloud,
-    HolyBlast,
-    DarkBlast
-  }
-
-  internal enum SpellCategory
-  {
-    Fire,
-    Ice,
-    Lightning,
-    Poison,
-    Holy,
-    Dark
-  }
-
-  internal enum DamageElement
-  {
-    None,
-    Fire,
-    Ice,
-    Lightning,
-    Poison,
-    Holy,
-    Dark
+    FrostBolt,
+    ArcaneBolt,
+    PoisonBolt,
+    HolyStorm,
+    HolyBolt,
+    IceStorm,
+    LightningStorm,
+    FireStorm,
+    FrostStorm,
+    ArcaneStorm,
+    PoisonStorm,
+    DrainLife,
+    DrainMana,
+    ShowMap,
+    ShowMonsters,
+    SunderArmor,
+    Stamina,
+    GreaterStamina,
+    Slow,
+    Haste,
   }
 
   public enum HAlign

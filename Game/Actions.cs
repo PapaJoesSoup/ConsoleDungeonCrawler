@@ -107,5 +107,28 @@ namespace ConsoleDungeonCrawler.Game
       Player.Mana -= spell.ManaCost;
       spell.Cast();
     }
+
+    public static void UpStairs()
+    {
+      if (!Map.Player.IsNextToMap('^', out MapObject stairs)) return;
+      if (Map.CurrentLevel == 2)
+      {
+        GamePlay.Messages.Add(new Message("You can't go up any further!", Color.Red, Color.Black));
+        return;
+      }
+      Map.CurrentLevel++;
+      Map.LoadLevel(Map.CurrentLevel);
+    }
+    public static void DownStairs()
+    {
+      if (!Map.Player.IsNextToMap('v', out MapObject stairs)) return;
+      if (Map.CurrentLevel == -2)
+      {
+        GamePlay.Messages.Add(new Message("You can't go down any further!", Color.Red, Color.Black));
+        return;
+      }
+      Map.CurrentLevel--;
+      Map.LoadLevel(Map.CurrentLevel);
+    }
   }
 }

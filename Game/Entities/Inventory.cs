@@ -21,6 +21,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static Dictionary<ArmorType, Dictionary<ArmorName, List<Armor>>> ArmorDictionary = new Dictionary<ArmorType, Dictionary<ArmorName, List<Armor>>>();
     internal static List<Bandage> Bandages = new List<Bandage>();
     internal static Dictionary<BuffType, List<Food>> Foods = new Dictionary<BuffType, List<Food>>();
+    internal static Dictionary<SpellName, Spell> Spells = new Dictionary<SpellName, Spell>();
+    internal static Dictionary<BuffType, Potion> Potions = new Dictionary<BuffType, Potion>();
 
 
     static Inventory()
@@ -29,6 +31,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
       InitArmorDictionary();
       InitBandages();
       InitFoodTypes();
+      InitPotionTypes();
+      InitSpellTypes();
     }
 
     private static void InitWeaponTypes()
@@ -385,6 +389,50 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Foods[BuffType.Mana].Add(new Food(FoodType.Ale, BuffType.Mana, 1, 1, 0));
       Foods[BuffType.Mana].Add(new Food(FoodType.Whiskey, BuffType.Mana, 1, 1, 0));
       Foods[BuffType.Mana].Add(new Food(FoodType.Cider, BuffType.Mana, 1, 1, 0));
+    }
+
+    internal static void InitSpellTypes()
+    {
+      // Heals
+      Spells.Add(SpellName.Heal, new Spell(SpellName.Heal, "Heals the player", SpellType.Heal, 3, 3, 10));
+      Spells.Add(SpellName.GreaterHeal, new Spell(SpellName.GreaterHeal, "Large Heal for the player", SpellType.Heal, 3, 3, 10));
+      Spells.Add(SpellName.HealOverTime, new Spell(SpellName.HealOverTime, "Heals the player over time", SpellType.Heal, 3, 3, 10));
+
+      // Damage
+      Spells.Add(SpellName.Fireball, new Spell(SpellName.Fireball, "Shoots a ball of fire at the target", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.IceSpike, new Spell(SpellName.IceSpike, "Causes a Spike of Ice to appear at the feet of the target", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.LightningBolt, new Spell(SpellName.LightningBolt, "Shoots a bolt of lightning at the target", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.HolyBolt, new Spell(SpellName.HolyBolt, "Shoots a bolt of Holy energy at the target", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.PoisonBolt, new Spell(SpellName.PoisonBolt, "Shoots a bolt of poison at the target", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.FrostBolt, new Spell(SpellName.FrostBolt, "Shoots a bolt of frost at the target", SpellType.Damage, 3, 3, 1));
+      Spells.Add(SpellName.ArcaneBolt, new Spell(SpellName.ArcaneBolt, "Shoots a bolt of arcane energy at the target", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.PoisonStorm, new Spell(SpellName.PoisonStorm, "Blasts an area with poison, damaging all targets within the area", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.FireStorm, new Spell(SpellName.FireStorm, "Blasts an area with fire, damaging all targets within the area", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.IceStorm, new Spell(SpellName.IceStorm, "Blasts an area with ice, damaging all targets within the area", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.LightningStorm, new Spell(SpellName.LightningStorm, "Blasts an area with lightning, damaging all targets within the area", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.FrostStorm, new Spell(SpellName.FrostStorm, "Blasts an area with frost, damaging all targets within the area", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.ArcaneStorm, new Spell(SpellName.ArcaneStorm, "Blasts an area with arcane energy, damaging all targets within the area", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.HolyStorm, new Spell(SpellName.HolyStorm, "Blasts an area with Holy energy, damaging all targets within the area", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.DrainLife, new Spell(SpellName.DrainLife, "Drains the life energy of the target", SpellType.Damage, 3, 3, 10));
+      Spells.Add(SpellName.DrainMana, new Spell(SpellName.DrainMana, "Drains the mana of the target", SpellType.Damage, 3, 3, 10));
+
+      // Buff
+      Spells.Add(SpellName.Stamina, new Spell(SpellName.Stamina, "Increases your maximum health", SpellType.Buff, 3, 3, 10));
+      Spells.Add(SpellName.GreaterStamina, new Spell(SpellName.GreaterStamina, "Increases your maximum health", SpellType.Buff, 6, 3, 10));
+      Spells.Add(SpellName.Haste, new Spell(SpellName.Haste, "Get an extra attack in a turn", SpellType.Buff, 3, 3, 10));
+
+      //Debuff
+      Spells.Add(SpellName.SunderArmor, new Spell(SpellName.SunderArmor, "Shows any monsters on the map of the current level for a short time", SpellType.Debuff, 3, 3, 10));
+      Spells.Add(SpellName.Slow, new Spell(SpellName.Slow, "Slows a monsters and prevents an attack for the next turn", SpellType.Debuff, 3, 3, 10));
+
+      // Other
+      Spells.Add(SpellName.ShowMap, new Spell(SpellName.ShowMap, "Shows the entire map of the current level for a short time", SpellType.Other, 3, 3, 10));
+      Spells.Add(SpellName.ShowMonsters, new Spell(SpellName.ShowMap, "Shows any monsters on the map of the current level for a short time", SpellType.Other, 3, 3, 10));
+    }
+
+    internal static void InitPotionTypes()
+    {
+
     }
 
     public static bool AddItem(Item item)
