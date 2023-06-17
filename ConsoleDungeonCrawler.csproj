@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Game\Maps\Data\Title.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Game\Maps\Data\CastleMania\LevelMap_-1.txt" />
     <None Remove="Game\Maps\Data\CastleMania\LevelMap_0.txt" />
     <None Remove="Game\Maps\Data\CastleMania\LevelMap_1.txt" />
@@ -18,6 +22,7 @@
     <None Remove="Game\Maps\Data\Castle\LevelMap_1.txt" />
     <None Remove="Game\Maps\Data\Castle\LevelOverlay_0.txt" />
     <None Remove="Game\Maps\Data\Castle\LevelOverlay_1.txt" />
+    <None Remove="Game\Maps\Data\TitleArt.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +61,12 @@
     </Content>
     <Content Include="Game\Maps\Data\Castle\LevelOverlay_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Maps\Data\TitleArt.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Screens\Title.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

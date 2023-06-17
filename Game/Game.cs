@@ -6,7 +6,7 @@ using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game
 {
-  internal static class Game
+    internal static class Game
   {
     internal static string Title = "Console Dungeon Crawler";
     internal static bool IsOver { get; set; }
