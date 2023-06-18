@@ -103,7 +103,13 @@ namespace ConsoleDungeonCrawler.Game
             break;
           case ConsoleKey.T:
             Map.Player.Attack();
-            break; 
+            break;
+          case ConsoleKey.F5:
+            Map.ShowFullMap();
+            break;
+          case ConsoleKey.F6:
+            Map.ShowFullOverlay();
+            break;
           default:
             break;
         }

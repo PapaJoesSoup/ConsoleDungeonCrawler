@@ -51,7 +51,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static void Borders()
     {
       ConsoleEx.WriteBorderEx(StatusBox, HBorderChar, VBorderChar, Color.Gold);
-      ConsoleEx.WriteAlignedAt($"[{Game.Title}]", HAlign.Center, VAlign.Top, ConsoleColor.White);
+      ConsoleEx.WriteAlignedAt($"[{Game.Title} - The {Game.CurrentDungeon}]", HAlign.Center, VAlign.Top, ConsoleColor.White);
       ConsoleEx.WriteBorderEx(MapBox, HBorderChar, VBorderChar , Color.Gold);
       ConsoleEx.WriteBorderEx(OverlayBox, HBorderChar, VBorderChar , Color.Gold);
       ConsoleEx.WriteBorderEx(MessageBox, HBorderChar, VBorderChar, Color.Gold);

@@ -62,6 +62,17 @@ namespace ConsoleDungeonCrawler.Game.Entities
             if (!IsVisible || Type.Symbol == ' ') return;
             ConsoleEx.WriteAt(Type.Symbol, X + Map.Left, Y + Map.Top, ForegroundColor, BackgroundColor);
         }
-    }
+
+        internal void Draw(bool force)
+        {
+          if (!force)
+          {
+            Draw();
+            return;
+          }
+          if (Type.Symbol == ' ') return;
+            ConsoleEx.WriteAt(Type.Symbol, X + Map.Left, Y + Map.Top, ForegroundColor, BackgroundColor);
+        }
+  }
 
 }
