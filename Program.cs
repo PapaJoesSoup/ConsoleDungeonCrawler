@@ -4,7 +4,7 @@ using ConsoleDungeonCrawler.Game.Entities;
 
 namespace ConsoleDungeonCrawler
 {
-    public static class Program
+  public static class Program
   {
     private struct Rect
     {
@@ -21,7 +21,7 @@ namespace ConsoleDungeonCrawler
       ConsoleEx.InitializeConsole();
 
       // Maximize console window
-      MaximizeConsoleWindow();
+      //MaximizeConsoleWindow();
       // Enable extended colors
       EnableExtendedColors();
 
@@ -61,7 +61,7 @@ namespace ConsoleDungeonCrawler
       MoveWindow(consoleWindowHandle, screenRect.Left, screenRect.Top, width, height, true);
       SetScreenSizes(width, height);
     }
-    
+
     /// <summary>
     /// This is a windows only feature...
     /// </summary>

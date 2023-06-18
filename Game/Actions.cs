@@ -5,7 +5,7 @@ using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game
 {
-    internal static class Actions
+  internal static class Actions
   {
     /// <summary>
     /// Pick up any items that are on the ground under the player.  Dead monsters are lootable till looted.
@@ -44,7 +44,7 @@ namespace ConsoleDungeonCrawler.Game
       }
       if (item.Type == ItemType.None) return;
       Inventory.AddItem(item);
-     string message = item.Type == ItemType.Gold ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!" : $"You Picked up {item.Description}!";
+      string message = item.Type == ItemType.Gold ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!" : $"You Picked up {item.Description}!";
       GamePlay.Messages.Add(new Message(message, Color.DarkGoldenrod, Color.Black));
       Map.UpdateOverlayObject(obj);
 

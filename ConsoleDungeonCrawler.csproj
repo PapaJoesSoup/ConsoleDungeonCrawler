@@ -8,6 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Game\Data\NewFolder\**" />
+    <EmbeddedResource Remove="Game\Data\NewFolder\**" />
+    <None Remove="Game\Data\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Game\Data\Title.cs" />
   </ItemGroup>
 
@@ -62,7 +68,7 @@
     <Content Include="Game\Data\Maps\Castle\LevelOverlay_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Data\TitleArt.txt">
+    <Content Include="Game\Data\Art\TitleArt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Game\Screens\Title.cs">

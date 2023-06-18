@@ -238,14 +238,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
       }
     }
 
-    internal static void ClearMapArea()
-    {
-      for (int y = Top + 1; y < (Top + Height); y++)
-      { 
-        ConsoleEx.WriteAt(new string(' ', Width - 2), Left+ 1, y, ConsoleColor.Black, ConsoleColor.Black);
-      }
-    }
-
     internal static void DrawOverlay()
     {
       foreach (int x in LevelOverlayGrids[Game.CurrentLevel].Keys)
@@ -257,6 +249,12 @@ namespace ConsoleDungeonCrawler.Game.Entities
           obj.Draw();
         }
       }
+    }
+
+    internal static void ClearMapArea()
+    {
+      for (int y = Top + 1; y < (Top + Height); y++)
+        ConsoleEx.WriteAt(new string(' ', Width - 2), Left + 1, y, ConsoleColor.Black, ConsoleColor.Black);
     }
 
 

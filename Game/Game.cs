@@ -5,7 +5,7 @@ using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game
 {
-    internal static class Game
+  internal static class Game
   {
     internal static string Title = "Console Dungeon Crawler";
     internal static string MapPath = "Game/Data/Maps/";
@@ -24,7 +24,7 @@ namespace ConsoleDungeonCrawler.Game
       Dungeons.Clear();
       foreach (string dungeon in folders)
       {
-        string[] files = Directory.GetFiles(dungeon); 
+        string[] files = Directory.GetFiles(dungeon);
         Dictionary<string, string> maps = new Dictionary<string, string>();
         foreach (string map in files)
         {
@@ -48,7 +48,7 @@ namespace ConsoleDungeonCrawler.Game
     {
       ConsoleEx.Clear();
       GamePlay.Messages.Add(new Message($"You have entered the {CurrentDungeon} Dungeon!", Color.Chartreuse, Color.Black));
-      GamePlay.Messages.Add(new Message("You look around...",Color.White, Color.Black));
+      GamePlay.Messages.Add(new Message("You look around...", Color.White, Color.Black));
       GamePlay.Draw();
       while (!IsOver && !IsWon)
       {
@@ -56,7 +56,7 @@ namespace ConsoleDungeonCrawler.Game
           GamePaused.Draw();
         else
         {
-          PlayerInput.Process();
+          GamePlay.KeyHandler();
           GamePlay.Update();
         }
       }

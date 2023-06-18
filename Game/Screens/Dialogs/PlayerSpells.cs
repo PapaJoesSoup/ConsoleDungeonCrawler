@@ -2,7 +2,7 @@
 using ConsoleDungeonCrawler.Game.Entities;
 using System.Drawing;
 
-namespace ConsoleDungeonCrawler.Game.Screens
+namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 {
   internal static class PlayerSpells
   {
@@ -62,27 +62,27 @@ namespace ConsoleDungeonCrawler.Game.Screens
       Dialog.AskForInt("Move Item To Key", "Enter a Key number (1-0): ", out int newKey);
       if (Player.Spells.ContainsKey(newKey))
       {
-        PlayerSpells.Draw();
+        Draw();
         Dialog.Notify("Destination Full", "THe destination key contains a spell.  Spells will be swapped.");
         Spell temp = Player.Spells[newKey];
         Spell temp2 = Player.Spells[ActiveSpell];
         Player.Spells[newKey] = temp2;
         Player.Spells[ActiveSpell] = temp;
         ActiveSpell = newKey;
-        PlayerSpells.Draw();
+        Draw();
         return;
       }
       Spell temp3 = Player.Spells[ActiveSpell];
       Player.Spells.Remove(ActiveSpell);
       Player.Spells.Add(newKey, temp3);
-      PlayerSpells.Draw();
+      Draw();
     }
 
     internal static void RemoveSpell()
     {
       Dialog.Confirm("Delete Spell", "This will PERMANENTLY remove this spell.  Are you sure? (Y / N): ", out bool confirm);
       if (confirm) Player.Spells.Remove(ActiveSpell);
-      PlayerSpells.Draw();
+      Draw();
     }
 
     internal static void KeyHandler()
@@ -95,7 +95,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
           Dialog.Close();
           break;
         case ConsoleKey.UpArrow:
-          if (ActiveSpell -1 < 1) ActiveSpell = 10;
+          if (ActiveSpell - 1 < 1) ActiveSpell = 10;
           else ActiveSpell--;
           break;
         case ConsoleKey.DownArrow:

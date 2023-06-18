@@ -842,7 +842,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, int delay, int repeat)
+    internal static void WriteAt(char c, int x, int y, int repeat, int delay)
     {
       try
       {
@@ -860,7 +860,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, int delay, int repeat, int repeatDelay)
+    internal static void WriteAt(char c, int x, int y, int repeat, int delay, int repeatDelay)
     {
       try
       {
@@ -880,8 +880,8 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay,
-      int repeat)
+    internal static void WriteAt(char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int repeat,
+      int delay)
     {
       try
       {
@@ -903,7 +903,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, ConsoleColor color, int delay, int repeat)
+    internal static void WriteAt(char c, int x, int y, ConsoleColor color, int repeat, int delay)
     {
       try
       {
@@ -1076,8 +1076,8 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, Color color, Color backgroundColor, int delay,
-      int repeat)
+    internal static void WriteAt(string s, int x, int y, Color color, Color backgroundColor, int repeat,
+      int delay)
     {
       try
       {
@@ -1267,13 +1267,13 @@ namespace ConsoleDungeonCrawler.Extensions
           {
             ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topLeft), box.Left, box.Top + i, color);
             ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topRight), box.Left + box.Width - 1, box.Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), box.Left + 1, box.Top + i, color, box.Width - 2);
+            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), box.Left + 1, box.Top, color, Color.Black, box.Width - 2, 0);
           }
           else if (i == box.Height - 1)
           {
             ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botLeft), box.Left, box.Top + i, color);
             ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botRight), box.Left + box.Width - 1, box.Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), box.Left + 1, box.Top + i, color, box.Width - 2);
+            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), box.Left + 1, box.Top + i, color, Color.Black, box.Width - 2, 0);
           }
           else
           {

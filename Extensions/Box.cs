@@ -92,13 +92,13 @@ namespace ConsoleDungeonCrawler.Extensions
           {
             ConsoleEx.WriteAt(bChars.topLeft, Left, Top + i, color, backgroundColor);
             ConsoleEx.WriteAt(bChars.topRight, Left + Width - 1, Top + i, color, backgroundColor);
-            ConsoleEx.WriteAt(bChars.hor.ToString(), Left + 1, Top + i, color, backgroundColor, 0, Width - 2);
+            ConsoleEx.WriteAt(bChars.hor.ToString(), Left + 1, Top + i, color, backgroundColor, Width - 2, 0);
           }
           else if (i == Height - 1)
           {
             ConsoleEx.WriteAt(bChars.botLeft, Left, Top + i, color, backgroundColor);
             ConsoleEx.WriteAt(bChars.botRight, Left + Width - 1, Top + i, color, backgroundColor);
-            ConsoleEx.WriteAt(bChars.hor.ToString(), Left + 1, Top + i, color, backgroundColor, 0, Width - 2);
+            ConsoleEx.WriteAt(bChars.hor.ToString(), Left + 1, Top + i, color, backgroundColor, Width - 2, 0);
           }
           else
           {
@@ -110,7 +110,7 @@ namespace ConsoleDungeonCrawler.Extensions
         // fill inside of box with fill color
         for (int i = 1; i < Height - 1; i++)
         {
-          ConsoleEx.WriteAt(" ", Left + 1, Top + i, fillColor, fillColor, 0, Width - 2);
+          ConsoleEx.WriteAt(" ", Left + 1, Top + i, fillColor, fillColor, Width - 2, 0);
         }
 
         Console.ResetColor();
@@ -166,13 +166,13 @@ namespace ConsoleDungeonCrawler.Extensions
           {
             ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topLeft), Left, Top + i, color, backgroundColor);
             ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topRight), Left + Width - 1, Top + i, color, backgroundColor);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), Left + 1, Top + i, color, Width - 2);
+            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), Left + 1, Top + i, color, backgroundColor, Width - 2, 0);
           }
           else if (i == Height - 1)
           {
             ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botLeft), Left, Top + i, color, backgroundColor);
             ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botRight), Left + Width - 1, Top + i, color, backgroundColor);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), Left + 1, Top + i, color, backgroundColor, 0, Width - 2);
+            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), Left + 1, Top + i, color, backgroundColor, Width - 2, 0);
           }
           else
           {
@@ -230,6 +230,12 @@ namespace ConsoleDungeonCrawler.Extensions
     internal string botRight = " ";
     internal string hor = " ";
     internal string ver = " ";
+    internal string midLeft = " ";
+    internal string midRight = " ";
+    internal string midTop = " ";
+    internal string midBottom = " ";
+    internal string mid = " ";
+    
     internal BoxCharsEx() { }
 
     internal BoxCharsEx(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver)
@@ -240,6 +246,22 @@ namespace ConsoleDungeonCrawler.Extensions
       this.botRight = botRight;
       this.hor = hor;
       this.ver = ver;
+    }
+
+    internal BoxCharsEx(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver,
+      string midLeft, string midRight, string midTop, string midBottom, string mid)
+    {
+      this.topLeft = topLeft;
+      this.topRight = topRight;
+      this.botLeft = botLeft;
+      this.botRight = botRight;
+      this.hor = hor;
+      this.ver = ver;
+      this.midLeft = midLeft;
+      this.midRight = midRight;
+      this.midTop = midTop;
+      this.midBottom = midBottom;
+      this.mid = mid;
     }
   }
 

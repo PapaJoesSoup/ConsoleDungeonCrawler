@@ -1,6 +1,5 @@
 ﻿using ConsoleDungeonCrawler.Extensions;
-using ConsoleDungeonCrawler.Game.Entities;
-using ConsoleDungeonCrawler.Game.Screens;
+using ConsoleDungeonCrawler.Game.Screens.Dialogs;
 using System.Drawing;
 using System.Text;
 
@@ -46,8 +45,9 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
     internal static void LoadTitleArt()
     {
+      Console.OutputEncoding = System.Text.Encoding.Unicode;
       StringBuilder sb = new StringBuilder();
-      sb.Append(File.ReadAllText($"Game/Data/TitleArt.txt"));
+      sb.Append(File.ReadAllText($"Game/Data/Art/TitleArt.txt"));
       // write the title art to the console
       string[] lines = sb.ToString().Split('\n');
       for (int y = 1; y < 50; y++)
@@ -76,6 +76,5 @@ namespace ConsoleDungeonCrawler.Game.Screens
           break;
       }
     }
-
   }
 }

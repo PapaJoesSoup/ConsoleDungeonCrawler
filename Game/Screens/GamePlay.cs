@@ -1,20 +1,24 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
+using ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
 namespace ConsoleDungeonCrawler.Game.Screens
 {
-    internal static class GamePlay
+  internal static class GamePlay
   {
     internal static Box StatusBox = new Box(1, 0, 208, 8);
     internal static Box MapBox = new Box(1, 7, 178, 35);
     internal static Box OverlayBox = new Box(178, 7, 31, 27);
-    internal static Box MessageBox = new Box(1, 41, 178, 10);
-    internal static Box LegendBox = new Box(178, 33, 31, 18);
+    internal static Box MessageBox = new Box(1, 41, 178, 12);
+    internal static Box LegendBox = new Box(178, 33, 31, 20);
 
     internal static List<Message> Messages = new List<Message>();
 
-    internal static BoxCharsEx bCharsEx = new BoxCharsEx("\u948d", "\u9491", "\ud59f", "\u9499", "\u95bc", "\u9482");
+    internal static BoxCharsEx bCharsEx = new BoxCharsEx("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551");
+    internal static BoxCharsEx bCharsEx2 = new BoxCharsEx("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560", "\u2563", "\u2566", "\u2569", "\u256c");
     internal static char HBorderChar = '=';
     internal static char VBorderChar = '|';
 
@@ -23,11 +27,11 @@ namespace ConsoleDungeonCrawler.Game.Screens
     // MessageOffset is a negative number that decrements the index of the first message to display in the message Section
     internal static int MessageOffset = 0;
     internal static ConsoleKeyInfo LastKey;
-    
+
     internal static void Draw()
     {
-      Borders();
-      //BordersEx();
+      //Borders();
+      BordersEx();
       MapSection();
       LegendSection();
       MessageLegend();
@@ -43,7 +47,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       Map.Player.Draw();
       StatusSection();
       OverlaySection();
-      if(AcceptableKeys()) Map.WhatIsVisible();
+      if (AcceptableKeys()) Map.WhatIsVisible();
       Actions.MonsterActions();
       MessageSection();
     }
@@ -51,20 +55,35 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static void Borders()
     {
       ConsoleEx.WriteBorderEx(StatusBox, HBorderChar, VBorderChar, Color.Gold);
-      ConsoleEx.WriteAlignedAt($"[{Game.Title} - The {Game.CurrentDungeon}]", HAlign.Center, VAlign.Top, ConsoleColor.White);
-      ConsoleEx.WriteBorderEx(MapBox, HBorderChar, VBorderChar , Color.Gold);
-      ConsoleEx.WriteBorderEx(OverlayBox, HBorderChar, VBorderChar , Color.Gold);
+      ConsoleEx.WriteAlignedAt($"[{Game.Title} - The {Game.CurrentDungeon}]", HAlign.Center, VAlign.Top, Color.White);
+      ConsoleEx.WriteBorderEx(MapBox, HBorderChar, VBorderChar, Color.Gold);
+      ConsoleEx.WriteBorderEx(OverlayBox, HBorderChar, VBorderChar, Color.Gold);
       ConsoleEx.WriteBorderEx(MessageBox, HBorderChar, VBorderChar, Color.Gold);
       ConsoleEx.WriteBorderEx(LegendBox, HBorderChar, VBorderChar, Color.Gold);
     }
 
     internal static void BordersEx()
     {
-      ConsoleEx.WriteBorder(StatusBox, bCharsEx, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(MapBox, bCharsEx, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(OverlayBox, bCharsEx, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(MessageBox, bCharsEx, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(LegendBox, bCharsEx, ConsoleColor.Yellow);
+      ConsoleEx.WriteBorderEx(StatusBox, bCharsEx, Color.Gold);
+      ConsoleEx.WriteAlignedAt($"[ {Game.Title} - The {Game.CurrentDungeon} ]", HAlign.Center, VAlign.Top, Color.White);
+      ConsoleEx.WriteBorderEx(MapBox, bCharsEx, Color.Gold);
+      ConsoleEx.WriteBorderEx(OverlayBox, bCharsEx, Color.Gold);
+      ConsoleEx.WriteBorderEx(MessageBox, bCharsEx, Color.Gold);
+      ConsoleEx.WriteBorderEx(LegendBox, bCharsEx, Color.Gold);
+
+      // now to clean up the corners
+       ConsoleEx.WriteAt(bCharsEx2.midLeft, MapBox.Left, MapBox.Top, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx2.midTop, OverlayBox.Left, MapBox.Top, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx2.midRight, OverlayBox.Left + OverlayBox.Width - 1 , MapBox.Top, Color.Gold);
+
+      ConsoleEx.WriteAt(bCharsEx2.midLeft, LegendBox.Left, LegendBox.Top, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx2.midRight, LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Color.Gold);
+
+      ConsoleEx.WriteAt(bCharsEx2.midLeft, MessageBox.Left, MessageBox.Top, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx2.midRight, MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Color.Gold);
+       
+      ConsoleEx.WriteAt(bCharsEx2.midBottom, LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
+
     }
 
     internal static void StatusSection()
@@ -78,11 +97,13 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static void PlayerStats()
     {
       //Player Stats
-      int col = StatusBox.Left + 178;
+      int col = StatusBox.Left + 179;
       int row = StatusBox.Top + 1;
+      ConsoleEx.WriteAt(bCharsEx2.midTop, col - 2, row - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx2.mid, col - 2, StatusBox.Height - 1, Color.Gold);
       for (int index = row; index < row + 6; index++)
       {
-        ConsoleEx.WriteAt('|', col - 1, index, Color.Gold);
+        ConsoleEx.WriteAt(bCharsEx2.ver, col - 2, index, Color.Gold);
       }
       ConsoleEx.WriteAt($"Player - Level: {Player.Level}", col, row, Color.Gold); row++;
       ConsoleEx.WriteAt($"Class: {Player.Class}", col, row, ConsoleColor.White); row++;
@@ -102,9 +123,11 @@ namespace ConsoleDungeonCrawler.Game.Screens
       col = StatusBox.Left + 140;
       row = StatusBox.Top + 1;
       int colWidth = 18;
+      ConsoleEx.WriteAt(bCharsEx2.midTop, col - 2, row - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx2.midBottom, col - 2, StatusBox.Height - 1, Color.Gold);
       for (int index = row; index < row + 6; index++)
       {
-        ConsoleEx.WriteAt('|', col - 1, index, Color.Gold);
+        ConsoleEx.WriteAt(bCharsEx2.ver, col - 2, index, Color.Gold);
       }
       ConsoleEx.WriteAt("Spells", col, row, Color.Gold);
       row++;
@@ -136,9 +159,11 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int colWidth = 25;
       int count = 0;
       int totalBags = Inventory.Bags.Count;
+      ConsoleEx.WriteAt(bCharsEx2.midTop, col - 2, row - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx2.midBottom, col - 2, StatusBox.Height - 1, Color.Gold);
       for (int index = row; index < row + 6; index++)
       {
-        ConsoleEx.WriteAt('|', col - 1, index, Color.Gold);
+        ConsoleEx.WriteAt(bCharsEx.ver, col - 2, index, Color.Gold);
       }
 
       Bag bag = Inventory.Bags[currentBag - 1];
@@ -152,7 +177,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
           Item item = bag.Items[index];
           ConsoleEx.WriteInventoryItem(item, col, row, colWidth);
         }
-        
+
         row++;
         count++;
 
@@ -232,16 +257,17 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
     internal static void MessageSection()
     {
-      // display the last 8 messages or less.  allow scrolling up or down through messages in pages of 8
+      // display the last 10 messages or less.  allow scrolling up or down through messages in pages of 8
       int col = MessageBox.Left + 2;
       int row = MessageBox.Top + 1;
+      int displaycount = MessageBox.Height - 2;
       if (MessageOffset > 0) MessageOffset = 0;
       if (MessageOffset < -Messages.Count) MessageOffset = -Messages.Count;
       int end = Messages.Count + MessageOffset;
       if (Messages.Count < end) end = Messages.Count;
       int start = 0;
-      if (end > 8) start = end - 8;
-      if (end < 8 && Messages.Count >= 8) end = 8;
+      if (end > displaycount) start = end - displaycount;
+      if (end < displaycount && Messages.Count >= displaycount) end = displaycount;
       for (int index = start; index < end; index++)
       {
         Messages[index].WriteAt(col, row);
@@ -250,25 +276,141 @@ namespace ConsoleDungeonCrawler.Game.Screens
       // clear the rest of the message box
       if (row >= MessageBox.Top + MessageBox.Height - 1) return;
       for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
-        ConsoleEx.WriteAt(" ", col, index, Color.Black, Color.Black, 0, MessageBox.Width - 32);
+        ConsoleEx.WriteAt(" ", col, index, Color.Black, Color.Black, MessageBox.Width - 33, 0);
     }
 
     internal static void MessageLegend()
     {
-      int col = MessageBox.Width - 28;
+      int col = MessageBox.Width - 30;
       int row = MessageBox.Top + 1;
+      // draw the message Legend left border
+      ConsoleEx.WriteAt(bCharsEx2.midTop, col, row - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx2.midBottom, col, MessageBox.Top + MessageBox.Height - 1, Color.Gold);
+      for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
+        ConsoleEx.WriteAt(bCharsEx2.ver, col, index, Color.Gold);
+      col += 2;
       ConsoleEx.WriteAt("Messages Legend: ", col, row, Color.Gold); row += 2;
-      ConsoleEx.WriteAt("[UpArrow] - Prev Message", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[DownArrow] - Next Message", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[PageUP] - Messages - 8", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[PageDown] - Messages + 8", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[Home] - First Message", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[End] - Last Message", col, row, ConsoleColor.White);
+      ConsoleEx.WriteAt("[UpArrow] - Prev Message", col, row, Color.White); row++;
+      ConsoleEx.WriteAt("[DownArrow] - Next Message", col, row, Color.White); row++;
+      ConsoleEx.WriteAt("[PageUP] - Messages - 10", col, row, Color.White); row++;
+      ConsoleEx.WriteAt("[PageDown] - Messages + 10", col, row, Color.White); row++;
+      ConsoleEx.WriteAt("[Home] - First Message", col, row, Color.White); row++;
+      ConsoleEx.WriteAt("[End] - Last Message", col, row, Color.White);
     }
 
     internal static bool AcceptableKeys()
     {
       return (!Player.InCombat && LastKey.Key is ConsoleKey.W or ConsoleKey.A or ConsoleKey.S or ConsoleKey.D);
+    }
+
+    internal static void KeyHandler()
+    {
+      // Capture and hide the key the user pressed
+      ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+      GamePlay.LastKey = keyInfo;
+      if ((keyInfo.Modifiers & ConsoleModifiers.Shift) != 0)
+      {
+        switch (keyInfo.Key)
+        {
+          case ConsoleKey.W:
+          case ConsoleKey.A:
+          case ConsoleKey.S:
+          case ConsoleKey.D:
+            GamePlay.Messages.Add(new Message($"You jumped {Map.GetDirection(keyInfo.Key)}..."));
+            Map.Player.Jump(keyInfo.Key);
+            break;
+          case ConsoleKey.I:
+            PlayerInventory.Draw();
+            break;
+          case ConsoleKey.P:
+            PlayerSpells.Draw();
+            break;
+          case ConsoleKey.Q:
+            Game.IsOver = true;
+            break;
+        }
+      }
+      else
+      {
+        switch (keyInfo.Key)
+        {
+          case ConsoleKey.W:
+          case ConsoleKey.A:
+          case ConsoleKey.S:
+          case ConsoleKey.D:
+
+            if (!Map.Player.Move(keyInfo.Key)) break;
+            GamePlay.Messages.Add(new Message($"You moved {Map.GetDirection(keyInfo.Key)}..."));
+            Actions.PickupOverlayItem();
+            break;
+          case ConsoleKey.D0:
+          case ConsoleKey.D1:
+          case ConsoleKey.D2:
+          case ConsoleKey.D3:
+          case ConsoleKey.D4:
+          case ConsoleKey.D5:
+          case ConsoleKey.D6:
+          case ConsoleKey.D7:
+          case ConsoleKey.D8:
+          case ConsoleKey.D9:
+            Actions.UseSpell(keyInfo);
+            break;
+          case ConsoleKey.Escape:
+            Game.IsPaused = true;
+            break;
+          case ConsoleKey.PageUp:
+            GamePlay.MessageOffset -= 8;
+            break;
+          case ConsoleKey.PageDown:
+            GamePlay.MessageOffset += 8;
+            break;
+          case ConsoleKey.UpArrow:
+            GamePlay.MessageOffset--;
+            break;
+          case ConsoleKey.DownArrow:
+            GamePlay.MessageOffset++;
+            break;
+          case ConsoleKey.Home:
+            GamePlay.MessageOffset = -GamePlay.Messages.Count;
+            break;
+          case ConsoleKey.End:
+            GamePlay.MessageOffset = 0;
+            break;
+          case ConsoleKey.OemComma:
+            if (Inventory.Bags.Count > 1)
+              GamePlay.currentBag--;
+            break;
+          case ConsoleKey.OemPeriod:
+            if (GamePlay.currentBag < Inventory.Bags.Count)
+              GamePlay.currentBag++;
+            break;
+          case ConsoleKey.O:
+            Actions.OpenDoor();
+            Map.SetVisibleArea(10);
+            Map.WhatIsVisible();
+            break;
+          case ConsoleKey.C:
+            Actions.CloseDoor();
+            break;
+          case ConsoleKey.F7:
+            Actions.UpStairs();
+            break;
+          case ConsoleKey.F8:
+            Actions.DownStairs();
+            break;
+          case ConsoleKey.T:
+            Map.Player.Attack();
+            break;
+          case ConsoleKey.F5:
+            Map.ShowFullMap();
+            break;
+          case ConsoleKey.F6:
+            Map.ShowFullOverlay();
+            break;
+          default:
+            break;
+        }
+      }
     }
   }
 }

@@ -2,11 +2,11 @@
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
 
-namespace ConsoleDungeonCrawler.Game.Screens
+namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 {
   internal static class PlayerInventory
   {
-    private static BoxChars bChars = new BoxChars() {botLeft = '=', botRight = '=', topRight = '=', topLeft = '=', hor = '=', ver = '|' };
+    private static BoxChars bChars = new BoxChars() { botLeft = '=', botRight = '=', topRight = '=', topLeft = '=', hor = '=', ver = '|' };
 
     static int ActiveBag = 0;
     static int ActiveItem = 0;
@@ -19,7 +19,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
       while (DialogOpen)
       {
-         // Create a new box for the player inventory
+        // Create a new box for the player inventory
         int x = 1;
         int y = 1;
         ConsoleEx.WriteAt("Select Bag: ([x])", Dialog.Box.Left + 2, Dialog.Box.Top + 1, Color.White, Color.Olive);
@@ -66,7 +66,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int x = Dialog.Box.Left + 25;
       int y = Dialog.Box.Top + 1;
       ConsoleEx.WriteAt($"Bag {ActiveBag + 1} Contents:", x, y, Color.White, Color.Olive);
-      y+= 2;
+      y += 2;
 
       for (int i = 0; i < bag.Capacity; i++)
       {
@@ -85,13 +85,13 @@ namespace ConsoleDungeonCrawler.Game.Screens
       Inventory.Bags[bag].Items.Add(item);
       Inventory.Bags[ActiveBag].Items.Remove(item);
     }
-    
+
     private static void SellItem()
     {
       Dialog.Confirm("Sell Item",
         $"Sell this item for {Inventory.Bags[ActiveBag].Items[ActiveItem].SellCost} gold? (Y or N)", out bool sell);
       if (sell) SellItem(Inventory.Bags[ActiveBag].Items[ActiveItem]);
-      PlayerInventory.Draw();
+      Draw();
     }
 
     private static void RemoveItem()
@@ -99,13 +99,13 @@ namespace ConsoleDungeonCrawler.Game.Screens
       if (Inventory.Bags[ActiveBag].Items[ActiveItem].Quantity == 0)
       {
         Dialog.Notify("Can't Remove Item", "You don't have any of this item.");
-        PlayerInventory.Draw();
+        Draw();
         return;
       }
 
       Dialog.Confirm("Remove Item", "Are you sure you want to destroy this item? (Y or N)", out bool remove);
       if (remove) Inventory.Bags[ActiveBag].Items.RemoveAt(ActiveItem);
-      PlayerInventory.Draw();
+      Draw();
     }
 
     private static void MoveItem()
@@ -113,7 +113,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       if (Inventory.Bags.Count == 1)
       {
         Dialog.Notify("Can't Move Item", "You only have one bag.");
-        PlayerInventory.Draw();
+        Draw();
         return;
       }
 
@@ -126,7 +126,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
         Dialog.Notify("Invalid Bag", "You entered an invalid bag number.");
       }
 
-      PlayerInventory.Draw();
+      Draw();
     }
 
     private static void UseItem()
@@ -134,20 +134,20 @@ namespace ConsoleDungeonCrawler.Game.Screens
       Dialog.Confirm("Use Item", "Are you sure you want to use this item? (Y or N)", out bool use);
       if (!use)
       {
-        PlayerInventory.Draw();
+        Draw();
         return;
       }
       if (!Inventory.Bags[ActiveBag].Items[ActiveItem].Use())
       {
-        PlayerInventory.Draw();
+        Draw();
         Dialog.Notify("Can't Use Item", "You can't use this item.");
-        PlayerInventory.Draw();
+        Draw();
         return;
       }
       if (Inventory.Bags[ActiveBag].Items[ActiveItem].Quantity > 0) Inventory.Bags[ActiveBag].Items[ActiveItem].Quantity--;
       if (Inventory.Bags[ActiveBag].Items[ActiveItem].Quantity == 0) Inventory.Bags[ActiveBag].Items.RemoveAt(ActiveItem);
       GamePlay.StatusSection();
-      PlayerInventory.Draw();
+      Draw();
     }
 
     internal static void SellItem(Item item)

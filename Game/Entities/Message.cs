@@ -23,7 +23,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     }
     internal void WriteAt(int x, int y)
     {
-      ConsoleEx.WriteAt(Text.PadRight(GamePlay.MessageBox.Width - 32), x, y, ForegroundColor, BackgroundColor);
+      ConsoleEx.WriteAt(Text.PadRight(GamePlay.MessageBox.Width - 33), x, y, ForegroundColor, BackgroundColor);
     }
   }
 }
