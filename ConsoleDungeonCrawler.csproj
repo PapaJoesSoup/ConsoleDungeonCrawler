@@ -8,61 +8,61 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Game\Maps\Data\Title.cs" />
+    <Compile Remove="Game\Data\Title.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Game\Maps\Data\CastleMania\LevelMap_-1.txt" />
-    <None Remove="Game\Maps\Data\CastleMania\LevelMap_0.txt" />
-    <None Remove="Game\Maps\Data\CastleMania\LevelMap_1.txt" />
-    <None Remove="Game\Maps\Data\CastleMania\LevelOverlay_-1.txt" />
-    <None Remove="Game\Maps\Data\CastleMania\LevelOverlay_0.txt" />
-    <None Remove="Game\Maps\Data\CastleMania\LevelOverlay_1.txt" />
-    <None Remove="Game\Maps\Data\Castle\LevelMap_0.txt" />
-    <None Remove="Game\Maps\Data\Castle\LevelMap_1.txt" />
-    <None Remove="Game\Maps\Data\Castle\LevelOverlay_0.txt" />
-    <None Remove="Game\Maps\Data\Castle\LevelOverlay_1.txt" />
-    <None Remove="Game\Maps\Data\TitleArt.txt" />
+    <None Remove="Game\Data\Maps\CastleMania\LevelMap_-1.txt" />
+    <None Remove="Game\Data\Maps\CastleMania\LevelMap_0.txt" />
+    <None Remove="Game\Data\Maps\CastleMania\LevelMap_1.txt" />
+    <None Remove="Game\Data\Maps\CastleMania\LevelOverlay_-1.txt" />
+    <None Remove="Game\Data\Maps\CastleMania\LevelOverlay_0.txt" />
+    <None Remove="Game\Data\Maps\CastleMania\LevelOverlay_1.txt" />
+    <None Remove="Game\Data\Maps\Castle\LevelMap_0.txt" />
+    <None Remove="Game\Data\Maps\Castle\LevelMap_1.txt" />
+    <None Remove="Game\Data\Maps\Castle\LevelOverlay_0.txt" />
+    <None Remove="Game\Data\Maps\Castle\LevelOverlay_1.txt" />
+    <None Remove="Game\Data\TitleArt.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Game\Maps\Data\CastleMania\LevelMap_-1.txt">
+    <Content Include="Game\Data\Maps\CastleMania\LevelMap_-1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\CastleMania\LevelMap_0.txt">
+    <Content Include="Game\Data\Maps\CastleMania\LevelMap_0.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\CastleMania\LevelMap_1.txt">
+    <Content Include="Game\Data\Maps\CastleMania\LevelMap_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\CastleMania\LevelOverlay_-1.txt">
+    <Content Include="Game\Data\Maps\CastleMania\LevelOverlay_-1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\CastleMania\LevelOverlay_0.txt">
+    <Content Include="Game\Data\Maps\CastleMania\LevelOverlay_0.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\CastleMania\LevelOverlay_1.txt">
+    <Content Include="Game\Data\Maps\CastleMania\LevelOverlay_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\Castle\LevelMap_0.txt">
+    <Content Include="Game\Data\Maps\Castle\LevelMap_0.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\Castle\LevelMap_1.txt">
+    <Content Include="Game\Data\Maps\Castle\LevelMap_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\Castle\LevelOverlay_-1.txt">
+    <Content Include="Game\Data\Maps\Castle\LevelOverlay_-1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\Castle\LevelMap_-1.txt">
+    <Content Include="Game\Data\Maps\Castle\LevelMap_-1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\Castle\LevelOverlay_0.txt">
+    <Content Include="Game\Data\Maps\Castle\LevelOverlay_0.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\Castle\LevelOverlay_1.txt">
+    <Content Include="Game\Data\Maps\Castle\LevelOverlay_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Maps\Data\TitleArt.txt">
+    <Content Include="Game\Data\TitleArt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Game\Screens\Title.cs">

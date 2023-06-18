@@ -1,11 +1,10 @@
 ﻿using ConsoleDungeonCrawler.Game.Entities.Items;
-using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 using System.Drawing;
 
 namespace ConsoleDungeonCrawler.Game.Entities
 {
-  internal class Player : MapObject
+    internal class Player : MapObject
   {
     internal static int Level = 1;
     internal static int Experience = 0;
@@ -70,11 +69,11 @@ namespace ConsoleDungeonCrawler.Game.Entities
       if (!Map.CanMoveTo(newPos.X, newPos.Y)) return false;
       X = newPos.X;
       Y = newPos.Y;
-      Map.OverlayObjects['P'][0] = this;
-      Map.MapGrid[oldPos.X][oldPos.Y].Draw();
-      Map.MapGrid[newPos.X][newPos.Y].Draw();
-      Map.OverlayGrid[oldPos.X][oldPos.Y].Draw();
-      Map.OverlayGrid[newPos.X][newPos.Y].Draw();
+      Map.LevelOverlayObjects[Game.CurrentLevel]['P'][0] = this;
+      Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+      Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
+      Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+      Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
       return true;
     }
 
@@ -93,11 +92,11 @@ namespace ConsoleDungeonCrawler.Game.Entities
       if (!Map.CanJumpTo(oldPos.X, oldPos.Y, newPos.X, newPos.Y)) return;
       X = newPos.X;
       Y = newPos.Y;
-      Map.OverlayObjects['P'][0] = this;
-      Map.MapGrid[oldPos.X][oldPos.Y].Draw();
-      Map.MapGrid[newPos.X][newPos.Y].Draw();
-      Map.OverlayGrid[oldPos.X][oldPos.Y].Draw();
-      Map.OverlayGrid[newPos.X][newPos.Y].Draw();
+      Map.LevelOverlayObjects[Game.CurrentLevel]['P'][0] = this;
+      Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+      Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
+      Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+      Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
     }
 
     public void Attack()
@@ -239,10 +238,10 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static bool IsInCombat()
     {
       // Check if there is a mapObject.InCombat == true in OverlayObjects Except Player
-      foreach (char key in Map.OverlayObjects.Keys)
+      foreach (char key in Map.LevelOverlayObjects[Game.CurrentLevel].Keys)
       {
-        if (Map.OverlayObjects[key].Count == 0) continue;
-        List<MapObject> objs = Map.OverlayObjects[key];
+        if (Map.LevelOverlayObjects[Game.CurrentLevel][key].Count == 0) continue;
+        List<MapObject> objs = Map.LevelOverlayObjects[Game.CurrentLevel][key];
         if (!objs[0].Type.IsAttackable) continue;
         foreach (MapObject obj in objs)
         {
@@ -257,30 +256,30 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal char IsNextToOverlay(out MapObject obj)
     {
       // look left
-      if (X > 0 && Map.OverlayGrid[X - 1][Y].Type.Symbol != ' ')
+      if (X > 0 && Map.LevelOverlayGrids[Game.CurrentLevel][X - 1][Y].Type.Symbol != ' ')
       {
-        obj = Map.OverlayGrid[X - 1][Y];
+        obj = Map.LevelOverlayGrids[Game.CurrentLevel][X - 1][Y];
         return obj.Type.Symbol;
       }
 
       // look right
-      if (X < GamePlay.MapBox.Width && Map.OverlayGrid[X + 1][Y].Type.Symbol != ' ')
+      if (X < GamePlay.MapBox.Width && Map.LevelOverlayGrids[Game.CurrentLevel][X + 1][Y].Type.Symbol != ' ')
       {
-        obj = Map.OverlayGrid[X + 1][Y];
+        obj = Map.LevelOverlayGrids[Game.CurrentLevel][X + 1][Y];
         return obj.Type.Symbol;
       }
 
       // look up
-      if (Y > 0 && Map.OverlayGrid[X][Y - 1].Type.Symbol != ' ')
+      if (Y > 0 && Map.LevelOverlayGrids[Game.CurrentLevel][X][Y - 1].Type.Symbol != ' ')
       {
-        obj = Map.OverlayGrid[X][Y - 1];
+        obj = Map.LevelOverlayGrids[Game.CurrentLevel][X][Y - 1];
         return obj.Type.Symbol;
       }
 
       // look down
-      if (Y >= GamePlay.MapBox.Height || Map.OverlayGrid[X][Y + 1].Type.Symbol != ' ')
+      if (Y >= GamePlay.MapBox.Height || Map.LevelOverlayGrids[Game.CurrentLevel][X][Y + 1].Type.Symbol != ' ')
       {
-        obj = Map.OverlayGrid[X][Y + 1];
+        obj = Map.LevelOverlayGrids[Game.CurrentLevel][X][Y + 1];
         return obj.Type.Symbol;
       }
 
@@ -292,30 +291,30 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal bool IsNextToOverlay(char symbol, out MapObject obj)
     {
       // look left
-      if (X > 0 && Map.OverlayGrid[X - 1][Y].Type.Symbol == symbol)
+      if (X > 0 && Map.LevelOverlayGrids[Game.CurrentLevel][X - 1][Y].Type.Symbol == symbol)
       {
-        obj = Map.OverlayGrid[X - 1][Y];
+        obj = Map.LevelOverlayGrids[Game.CurrentLevel][X - 1][Y];
         return true;
       }
 
       // look right
-      if (X < GamePlay.MapBox.Width && Map.OverlayGrid[X + 1][Y].Type.Symbol == symbol)
+      if (X < GamePlay.MapBox.Width && Map.LevelOverlayGrids[Game.CurrentLevel][X + 1][Y].Type.Symbol == symbol)
       {
-        obj = Map.OverlayGrid[X + 1][Y];
+        obj = Map.LevelOverlayGrids[Game.CurrentLevel][X + 1][Y];
         return true;
       }
 
       // look up
-      if (Y > 0 && Map.OverlayGrid[X][Y - 1].Type.Symbol == symbol)
+      if (Y > 0 && Map.LevelOverlayGrids[Game.CurrentLevel][X][Y - 1].Type.Symbol == symbol)
       {
-        obj = Map.OverlayGrid[X][Y - 1];
+        obj = Map.LevelOverlayGrids[Game.CurrentLevel][X][Y - 1];
         return true;
       }
 
       // look down
-      if (Y >= GamePlay.MapBox.Height || Map.OverlayGrid[X][Y + 1].Type.Symbol == symbol)
+      if (Y >= GamePlay.MapBox.Height || Map.LevelOverlayGrids[Game.CurrentLevel][X][Y + 1].Type.Symbol == symbol)
       {
-        obj = Map.OverlayGrid[X][Y + 1];
+        obj = Map.LevelOverlayGrids[Game.CurrentLevel][X][Y + 1];
         return true;
       }
 
@@ -327,30 +326,30 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal bool IsNextToMap(char symbol, out MapObject obj)
     {
       // look left
-      if (X > 0 && Map.MapGrid[X - 1][Y].Type.Symbol == symbol)
+      if (X > 0 && Map.LevelMapGrids[Game.CurrentLevel][X - 1][Y].Type.Symbol == symbol)
       {
-        obj = Map.MapGrid[X - 1][Y];
+        obj = Map.LevelMapGrids[Game.CurrentLevel][X - 1][Y];
         return true;
       }
 
       // look right
-      if (X < GamePlay.MapBox.Width && Map.MapGrid[X + 1][Y].Type.Symbol == symbol)
+      if (X < GamePlay.MapBox.Width && Map.LevelMapGrids[Game.CurrentLevel][X + 1][Y].Type.Symbol == symbol)
       {
-        obj = Map.MapGrid[X + 1][Y];
+        obj = Map.LevelMapGrids[Game.CurrentLevel][X + 1][Y];
         return true;
       }
 
       // look up
-      if (Y > 0 && Map.MapGrid[X][Y - 1].Type.Symbol == symbol)
+      if (Y > 0 && Map.LevelMapGrids[Game.CurrentLevel][X][Y - 1].Type.Symbol == symbol)
       {
-        obj = Map.MapGrid[X][Y - 1];
+        obj = Map.LevelMapGrids[Game.CurrentLevel][X][Y - 1];
         return true;
       }
 
       // look down
-      if (Y >= GamePlay.MapBox.Height || Map.MapGrid[X][Y + 1].Type.Symbol == symbol)
+      if (Y >= GamePlay.MapBox.Height || Map.LevelMapGrids[Game.CurrentLevel][X][Y + 1].Type.Symbol == symbol)
       {
-        obj = Map.MapGrid[X][Y + 1];
+        obj = Map.LevelMapGrids[Game.CurrentLevel][X][Y + 1];
         return true;
       }
 
@@ -365,30 +364,30 @@ namespace ConsoleDungeonCrawler.Game.Entities
       for (int i = 0; i < radius; i++)
       {
         // look left
-        if (X > 0 && Map.MapGrid[X - 1][Y].Type.Symbol != ' ')
+        if (X > 0 && Map.LevelMapGrids[Game.CurrentLevel][X - 1][Y].Type.Symbol != ' ')
         {
-          obj = Map.MapGrid[X - 1][Y];
+          obj = Map.LevelMapGrids[Game.CurrentLevel][X - 1][Y];
           return true;
         }
 
         // look right
-        if (X < GamePlay.MapBox.Width && Map.MapGrid[X + 1][Y].Type.Symbol != ' ')
+        if (X < GamePlay.MapBox.Width && Map.LevelMapGrids[Game.CurrentLevel][X + 1][Y].Type.Symbol != ' ')
         {
-          obj = Map.MapGrid[X + 1][Y];
+          obj = Map.LevelMapGrids[Game.CurrentLevel][X + 1][Y];
           return true;
         }
 
         // look up
-        if (Y > 0 && Map.MapGrid[X][Y - 1].Type.Symbol != ' ')
+        if (Y > 0 && Map.LevelMapGrids[Game.CurrentLevel][X][Y - 1].Type.Symbol != ' ')
         {
-          obj = Map.MapGrid[X][Y - 1];
+          obj = Map.LevelMapGrids[Game.CurrentLevel][X][Y - 1];
           return true;
         }
 
         // look down
-        if (Y >= GamePlay.MapBox.Height || Map.MapGrid[X][Y + 1].Type.Symbol != ' ')
+        if (Y >= GamePlay.MapBox.Height || Map.LevelMapGrids[Game.CurrentLevel][X][Y + 1].Type.Symbol != ' ')
         {
-          obj = Map.MapGrid[X][Y + 1];
+          obj = Map.LevelMapGrids[Game.CurrentLevel][X][Y + 1];
           return true;
         }
       }

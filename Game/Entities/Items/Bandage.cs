@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game.Entities.Items

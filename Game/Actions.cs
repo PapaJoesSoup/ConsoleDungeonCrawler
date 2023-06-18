@@ -1,20 +1,19 @@
 ﻿using System.Drawing;
 using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Entities.Items;
-using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game
 {
-  internal static class Actions
+    internal static class Actions
   {
     /// <summary>
     /// Pick up any items that are on the ground under the player.  Dead monsters are lootable till looted.
     /// </summary>
     public static void PickupOverlayItem()
     {
-      if (Map.OverlayGrid[Map.Player.X][Map.Player.Y].Type.Symbol == ' ') return;
-      MapObject obj = Map.OverlayGrid[Map.Player.X][Map.Player.Y];
+      if (Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y].Type.Symbol == ' ') return;
+      MapObject obj = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y];
       Item item = new Item();
       switch (obj.Type.Symbol)
       {
@@ -79,9 +78,9 @@ namespace ConsoleDungeonCrawler.Game
 
     public static void MonsterActions()
     {
-      foreach (char symbol in Map.OverlayObjects.Keys)
+      foreach (char symbol in Map.LevelOverlayObjects[Game.CurrentLevel].Keys)
       {
-        foreach (MapObject obj in Map.OverlayObjects[symbol])
+        foreach (MapObject obj in Map.LevelOverlayObjects[Game.CurrentLevel][symbol])
         {
           if (obj is not Monster monster) continue;
           if (!monster.IsVisible || !monster.IsAlive) continue;
@@ -111,24 +110,24 @@ namespace ConsoleDungeonCrawler.Game
     public static void UpStairs()
     {
       if (!Map.Player.IsNextToMap('^', out MapObject stairs)) return;
-      if (Map.CurrentLevel == 2)
+      if (Game.CurrentLevel == 2)
       {
         GamePlay.Messages.Add(new Message("You can't go up any further!", Color.Red, Color.Black));
         return;
       }
-      Map.CurrentLevel++;
-      Map.LoadLevel(Map.CurrentLevel);
+      Game.CurrentLevel++;
+      Map.LoadLevel();
     }
     public static void DownStairs()
     {
       if (!Map.Player.IsNextToMap('v', out MapObject stairs)) return;
-      if (Map.CurrentLevel == -2)
+      if (Game.CurrentLevel == -2)
       {
         GamePlay.Messages.Add(new Message("You can't go down any further!", Color.Red, Color.Black));
         return;
       }
-      Map.CurrentLevel--;
-      Map.LoadLevel(Map.CurrentLevel);
+      Game.CurrentLevel--;
+      Map.LoadLevel();
     }
   }
 }

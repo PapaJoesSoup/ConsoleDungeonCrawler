@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
-using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler.Game.Screens
 {
@@ -15,7 +14,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
     internal static List<Message> Messages = new List<Message>();
 
-    internal static BoxCharsEx boxCharsEx = new BoxCharsEx("\u948d", "\u9491", "\ud59f", "\u9499", "\u95bc", "\u9482");
+    internal static BoxCharsEx bCharsEx = new BoxCharsEx("\u948d", "\u9491", "\ud59f", "\u9499", "\u95bc", "\u9482");
     internal static char HBorderChar = '=';
     internal static char VBorderChar = '|';
 
@@ -25,7 +24,6 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static int MessageOffset = 0;
     internal static ConsoleKeyInfo LastKey;
     
-
     internal static void Draw()
     {
       Borders();
@@ -62,11 +60,11 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
     internal static void BordersEx()
     {
-      ConsoleEx.WriteBorder(StatusBox, boxCharsEx, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(MapBox, boxCharsEx, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(OverlayBox, boxCharsEx, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(MessageBox, boxCharsEx, ConsoleColor.Yellow);
-      ConsoleEx.WriteBorder(LegendBox, boxCharsEx, ConsoleColor.Yellow);
+      ConsoleEx.WriteBorder(StatusBox, bCharsEx, ConsoleColor.Yellow);
+      ConsoleEx.WriteBorder(MapBox, bCharsEx, ConsoleColor.Yellow);
+      ConsoleEx.WriteBorder(OverlayBox, bCharsEx, ConsoleColor.Yellow);
+      ConsoleEx.WriteBorder(MessageBox, bCharsEx, ConsoleColor.Yellow);
+      ConsoleEx.WriteBorder(LegendBox, bCharsEx, ConsoleColor.Yellow);
     }
 
     internal static void StatusSection()
@@ -196,9 +194,9 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int col = OverlayBox.Left + 2;
       int row = OverlayBox.Top + 1;
       ConsoleEx.WriteAt("Map objects: ", col, row, Color.Gold); row += 2;
-      foreach (char type in Map.OverlayObjects.Keys)
+      foreach (char type in Map.LevelOverlayObjects[Game.CurrentLevel].Keys)
       {
-        foreach (MapObject mapObject in Map.OverlayObjects[type])
+        foreach (MapObject mapObject in Map.LevelOverlayObjects[Game.CurrentLevel][type])
         {
           if (!mapObject.IsVisible || mapObject.Type.Symbol == ' ') continue;
           ConsoleEx.WriteLegendItem(mapObject, col, row, OverlayBox.Width - 2);
@@ -224,7 +222,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       ConsoleEx.WriteAt("[M] - Use Mana Potion", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[G] - Use Bandage", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[O,C] - Open/Close Door", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[+,-] - Up/Down Stairs", col, row, ConsoleColor.White); row++;
+      ConsoleEx.WriteAt("[F7/F8] - Up/Down Stairs", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[< >] - Switch Bag Shown", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[Esc] - Pause Menu", col, row, ConsoleColor.White); row++;
       ConsoleEx.WriteAt("[Shift+I] - Inventory", col, row, ConsoleColor.White); row++;

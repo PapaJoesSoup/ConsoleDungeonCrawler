@@ -2,7 +2,6 @@
 using System.Globalization;
 using ConsoleDungeonCrawler.Game;
 using ConsoleDungeonCrawler.Game.Entities;
-using ConsoleDungeonCrawler.Game.Maps;
 
 namespace ConsoleDungeonCrawler.Extensions
 {

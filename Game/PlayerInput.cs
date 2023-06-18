@@ -1,11 +1,10 @@
 ﻿using System.Runtime.InteropServices.ObjectiveC;
 using ConsoleDungeonCrawler.Game.Entities;
-using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game
 {
-  internal static class PlayerInput
+    internal static class PlayerInput
   {
     internal static void Process()
     {
@@ -96,10 +95,10 @@ namespace ConsoleDungeonCrawler.Game
           case ConsoleKey.C:
             Actions.CloseDoor();
             break;
-          case ConsoleKey.F11:
+          case ConsoleKey.F7:
             Actions.UpStairs();
             break;
-          case ConsoleKey.F12:
+          case ConsoleKey.F8:
             Actions.DownStairs();
             break;
           case ConsoleKey.T:

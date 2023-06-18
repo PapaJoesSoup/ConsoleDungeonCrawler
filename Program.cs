@@ -1,12 +1,11 @@
 ﻿using System.Runtime.InteropServices;
 using ConsoleDungeonCrawler.Extensions;
-using ConsoleDungeonCrawler.Game.Maps;
+using ConsoleDungeonCrawler.Game.Entities;
 
 namespace ConsoleDungeonCrawler
 {
-  public static class Program
+    public static class Program
   {
-    internal static Map? map;
     private struct Rect
     {
       public int Left;
@@ -26,7 +25,6 @@ namespace ConsoleDungeonCrawler
       // Enable extended colors
       EnableExtendedColors();
 
-      map = new Map();
       Game.Game.Run();
     }
 

@@ -1,11 +1,10 @@
 ﻿using System.Drawing;
 using ConsoleDungeonCrawler.Game.Entities.Items;
-using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game.Entities
 {
-  internal class Monster : MapObject
+    internal class Monster : MapObject
   {
     internal int Health = 10;
     internal int MaxHealth = 10;

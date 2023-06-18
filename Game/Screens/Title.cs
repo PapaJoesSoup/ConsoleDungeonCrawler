@@ -18,7 +18,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static void Draw()
     {
       ConsoleEx.Clear();
-      ScreenBorder.Draw(bChars, Color.DarkOrange, Color.Black, Color.Black);
+      ConsoleEx.WriteBorderEx(ScreenBorder, bChars.hor, bChars.ver, Color.DarkOrange);
       LoadTitleArt();
       Dialog.Draw("Welcome to the Dungeon Crawler!", Box, bChars);
       DialogOpen = true;
@@ -47,7 +47,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static void LoadTitleArt()
     {
       StringBuilder sb = new StringBuilder();
-      sb.Append(File.ReadAllText($"{Game.MapPath}TitleArt.txt"));
+      sb.Append(File.ReadAllText($"Game/Data/TitleArt.txt"));
       // write the title art to the console
       string[] lines = sb.ToString().Split('\n');
       for (int y = 1; y < 50; y++)
@@ -65,7 +65,6 @@ namespace ConsoleDungeonCrawler.Game.Screens
         case ConsoleKey.Enter:
           Game.CurrentDungeon = Game.Dungeons.Keys.ElementAt(ActiveItem);
           DialogOpen = false;
-          Dialog.Close();
           break;
         case ConsoleKey.UpArrow:
           if (ActiveItem == 0) ActiveItem = Game.Dungeons.Count - 1;
