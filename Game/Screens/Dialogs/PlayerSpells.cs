@@ -6,7 +6,6 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 {
   internal static class PlayerSpells
   {
-    private static BoxChars bChars = new BoxChars() { botLeft = '=', botRight = '=', topRight = '=', topLeft = '=', hor = '=', ver = '|' };
     internal static Box Box = new Box(Console.WindowWidth / 2 - 40, Console.WindowHeight / 2 - 8, 80, 17);
 
     static int ActiveSpell = 1;

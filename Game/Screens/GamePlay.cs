@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
+﻿using System.Drawing;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Screens.Dialogs;
@@ -16,11 +14,8 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static Box LegendBox = new Box(178, 33, 31, 20);
 
     internal static List<Message> Messages = new List<Message>();
-
-    internal static BoxCharsEx bCharsEx = new BoxCharsEx("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551");
-    internal static BoxCharsEx bCharsEx2 = new BoxCharsEx("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560", "\u2563", "\u2566", "\u2569", "\u256c");
-    internal static char HBorderChar = '=';
-    internal static char VBorderChar = '|';
+    // These are unicode values for box drawing characters.   Expects Console.OutputEncoding = Encoding.Unicode and Consolas font
+    internal static BoxCharsEx bCharsEx = new BoxCharsEx("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560", "\u2563", "\u2566", "\u2569", "\u256c");
 
     internal static int currentBag = 1;
 
@@ -52,16 +47,6 @@ namespace ConsoleDungeonCrawler.Game.Screens
       MessageSection();
     }
 
-    internal static void Borders()
-    {
-      ConsoleEx.WriteBorderEx(StatusBox, HBorderChar, VBorderChar, Color.Gold);
-      ConsoleEx.WriteAlignedAt($"[{Game.Title} - The {Game.CurrentDungeon}]", HAlign.Center, VAlign.Top, Color.White);
-      ConsoleEx.WriteBorderEx(MapBox, HBorderChar, VBorderChar, Color.Gold);
-      ConsoleEx.WriteBorderEx(OverlayBox, HBorderChar, VBorderChar, Color.Gold);
-      ConsoleEx.WriteBorderEx(MessageBox, HBorderChar, VBorderChar, Color.Gold);
-      ConsoleEx.WriteBorderEx(LegendBox, HBorderChar, VBorderChar, Color.Gold);
-    }
-
     internal static void BordersEx()
     {
       ConsoleEx.WriteBorderEx(StatusBox, bCharsEx, Color.Gold);
@@ -72,17 +57,17 @@ namespace ConsoleDungeonCrawler.Game.Screens
       ConsoleEx.WriteBorderEx(LegendBox, bCharsEx, Color.Gold);
 
       // now to clean up the corners
-       ConsoleEx.WriteAt(bCharsEx2.midLeft, MapBox.Left, MapBox.Top, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx2.midTop, OverlayBox.Left, MapBox.Top, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx2.midRight, OverlayBox.Left + OverlayBox.Width - 1 , MapBox.Top, Color.Gold);
+       ConsoleEx.WriteAt(bCharsEx.midLeft, MapBox.Left, MapBox.Top, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midTop, OverlayBox.Left, MapBox.Top, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midRight, OverlayBox.Left + OverlayBox.Width - 1 , MapBox.Top, Color.Gold);
 
-      ConsoleEx.WriteAt(bCharsEx2.midLeft, LegendBox.Left, LegendBox.Top, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx2.midRight, LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midLeft, LegendBox.Left, LegendBox.Top, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midRight, LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Color.Gold);
 
-      ConsoleEx.WriteAt(bCharsEx2.midLeft, MessageBox.Left, MessageBox.Top, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx2.midRight, MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midLeft, MessageBox.Left, MessageBox.Top, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midRight, MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Color.Gold);
        
-      ConsoleEx.WriteAt(bCharsEx2.midBottom, LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midBottom, LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
 
     }
 
@@ -99,11 +84,11 @@ namespace ConsoleDungeonCrawler.Game.Screens
       //Player Stats
       int col = StatusBox.Left + 179;
       int row = StatusBox.Top + 1;
-      ConsoleEx.WriteAt(bCharsEx2.midTop, col - 2, row - 1, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx2.mid, col - 2, StatusBox.Height - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midTop, col - 2, row - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.mid, col - 2, StatusBox.Height - 1, Color.Gold);
       for (int index = row; index < row + 6; index++)
       {
-        ConsoleEx.WriteAt(bCharsEx2.ver, col - 2, index, Color.Gold);
+        ConsoleEx.WriteAt(bCharsEx.ver, col - 2, index, Color.Gold);
       }
       ConsoleEx.WriteAt($"Player - Level: {Player.Level}", col, row, Color.Gold); row++;
       ConsoleEx.WriteAt($"Class: {Player.Class}", col, row, ConsoleColor.White); row++;
@@ -123,11 +108,11 @@ namespace ConsoleDungeonCrawler.Game.Screens
       col = StatusBox.Left + 140;
       row = StatusBox.Top + 1;
       int colWidth = 18;
-      ConsoleEx.WriteAt(bCharsEx2.midTop, col - 2, row - 1, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx2.midBottom, col - 2, StatusBox.Height - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midTop, col - 2, row - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midBottom, col - 2, StatusBox.Height - 1, Color.Gold);
       for (int index = row; index < row + 6; index++)
       {
-        ConsoleEx.WriteAt(bCharsEx2.ver, col - 2, index, Color.Gold);
+        ConsoleEx.WriteAt(bCharsEx.ver, col - 2, index, Color.Gold);
       }
       ConsoleEx.WriteAt("Spells", col, row, Color.Gold);
       row++;
@@ -159,8 +144,8 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int colWidth = 25;
       int count = 0;
       int totalBags = Inventory.Bags.Count;
-      ConsoleEx.WriteAt(bCharsEx2.midTop, col - 2, row - 1, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx2.midBottom, col - 2, StatusBox.Height - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midTop, col - 2, row - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midBottom, col - 2, StatusBox.Height - 1, Color.Gold);
       for (int index = row; index < row + 6; index++)
       {
         ConsoleEx.WriteAt(bCharsEx.ver, col - 2, index, Color.Gold);
@@ -284,10 +269,10 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int col = MessageBox.Width - 30;
       int row = MessageBox.Top + 1;
       // draw the message Legend left border
-      ConsoleEx.WriteAt(bCharsEx2.midTop, col, row - 1, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx2.midBottom, col, MessageBox.Top + MessageBox.Height - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midTop, col, row - 1, Color.Gold);
+      ConsoleEx.WriteAt(bCharsEx.midBottom, col, MessageBox.Top + MessageBox.Height - 1, Color.Gold);
       for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
-        ConsoleEx.WriteAt(bCharsEx2.ver, col, index, Color.Gold);
+        ConsoleEx.WriteAt(bCharsEx.ver, col, index, Color.Gold);
       col += 2;
       ConsoleEx.WriteAt("Messages Legend: ", col, row, Color.Gold); row += 2;
       ConsoleEx.WriteAt("[UpArrow] - Prev Message", col, row, Color.White); row++;
@@ -338,7 +323,6 @@ namespace ConsoleDungeonCrawler.Game.Screens
           case ConsoleKey.A:
           case ConsoleKey.S:
           case ConsoleKey.D:
-
             if (!Map.Player.Move(keyInfo.Key)) break;
             GamePlay.Messages.Add(new Message($"You moved {Map.GetDirection(keyInfo.Key)}..."));
             Actions.PickupOverlayItem();
@@ -391,12 +375,6 @@ namespace ConsoleDungeonCrawler.Game.Screens
             break;
           case ConsoleKey.C:
             Actions.CloseDoor();
-            break;
-          case ConsoleKey.F7:
-            Actions.UpStairs();
-            break;
-          case ConsoleKey.F8:
-            Actions.DownStairs();
             break;
           case ConsoleKey.T:
             Map.Player.Attack();

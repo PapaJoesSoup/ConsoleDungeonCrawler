@@ -25,9 +25,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static Dictionary<int, Dictionary<char, List<MapObject>>> LevelOverlayObjects = new Dictionary<int, Dictionary<char, List<MapObject>>>();
     internal static Dictionary<int, Dictionary<char, Tuple<ObjectType, int>>> LevelVisibleObjects = new Dictionary<int, Dictionary<char, Tuple<ObjectType, int>>>();
 
-    // refactor for multiple levels
-
-
     internal static Player Player = new Player();
 
     internal Map()
@@ -55,8 +52,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
         new('.', "Floor", "a floor", "some flooring", Color.Gray, Color.DimGray, true, false, false),
         new('+', "DoorC", "a closed door", "some closed doors", Color.Yellow, Color.DimGray, false, false, false),
         new('-', "DoorO", "an open door", "some open doors", Color.Yellow, Color.DimGray, true, false, false),
-        new('^', "StairsU", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, false, false, false),
-        new('v', "StairsD", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, false, false, false),
+        new('^', "UpStairs", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
+        new('v', "DownStairs", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
         new('!', "Fire", "a fire", "some fire", Color.OrangeRed, Color.DimGray, false, false, false),
         new('~', "Water", "some water", "some patches of water", Color.Aqua, Color.Aqua, false, false, false),
         new('a', "Acid", "some acid", "some patches of acid", Color.SaddleBrown, Color.Chartreuse, false, false, false),
@@ -69,6 +66,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
       {
         new('S', "Start", "the Entrance", "the Entrance", Color.Black, Color.White, true, false, false),
         new('X', "Exit", "the Exit", "The Exit", Color.MidnightBlue, Color.Gold, true, false, false),
+        new('^', "UpStairs", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
+        new('v', "DownStairs", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
         new('m', "Chest", "a Chest", "some Chests", Color.Silver, Color.DimGray, true, false, false),
         new('i', "Item", "an Item", "some Items", Color.White, Color.DimGray, true, false, true),
         new('$', "Gold", "some Gold", "some stacks of Gold", Color.Gold, Color.DimGray, true, false, true),

@@ -9,7 +9,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
   internal static class Inventory
   {
     // Inventory interface dialog vars
-    private static BoxChars b = new BoxChars() { botLeft = '=', botRight = '=', topRight = '=', topLeft = '=', hor = '=', ver = '|' };
 
     // Player Inventory
     internal static int BagCount = 1;

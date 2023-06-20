@@ -17,6 +17,12 @@ namespace ConsoleDungeonCrawler.Game
       Item item = new Item();
       switch (obj.Type.Symbol)
       {
+        case '^':
+          UpStairs();
+          break;
+        case 'v':
+          DownStairs();
+          break;
         case 'O':
         case 'k':
         case 'z':
@@ -109,23 +115,23 @@ namespace ConsoleDungeonCrawler.Game
 
     public static void UpStairs()
     {
-      if (!Map.Player.IsNextToMap('^', out MapObject stairs)) return;
       if (Game.CurrentLevel == 2)
       {
         GamePlay.Messages.Add(new Message("You can't go up any further!", Color.Red, Color.Black));
         return;
       }
+      GamePlay.Messages.Add(new Message($"You have gone Up stairs to the floor! above", Color.DarkOrange, Color.Black));
       Game.CurrentLevel++;
       Map.LoadLevel();
     }
     public static void DownStairs()
     {
-      if (!Map.Player.IsNextToMap('v', out MapObject stairs)) return;
       if (Game.CurrentLevel == -2)
       {
         GamePlay.Messages.Add(new Message("You can't go down any further!", Color.Red, Color.Black));
         return;
       }
+      GamePlay.Messages.Add(new Message($"You have gone Down stairs to the floor below!", Color.DarkOrange, Color.Black));
       Game.CurrentLevel--;
       Map.LoadLevel();
     }

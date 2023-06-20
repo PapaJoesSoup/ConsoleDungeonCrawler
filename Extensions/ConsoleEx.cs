@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using ConsoleDungeonCrawler.Game;
 using ConsoleDungeonCrawler.Game.Entities;
 
@@ -7,6 +8,14 @@ namespace ConsoleDungeonCrawler.Extensions
 {
     internal static class ConsoleEx
   {
+    private struct Rect
+    {
+      public int Left;
+      public int Top;
+      public int Right;
+      public int Bottom;
+    }
+
     private static Color foregroundColor = Color.Gray;
     internal static Color ForegroundColor
     {
@@ -31,8 +40,79 @@ namespace ConsoleDungeonCrawler.Extensions
 
     internal static void InitializeConsole()
     {
+      ConsoleEx.Clear();
+      Console.OutputEncoding = System.Text.Encoding.Unicode;
+      // Maximize console window  Use if you have a console window set to a specific size and is not maximized (fullscreen focused
+      //MaximizeConsoleWindow();
+      // Enable extended colors
+      EnableExtendedColors();
+
       Console.CursorVisible = false;
       Console.Title = Game.Game.Title;
+    }
+
+    /// <summary>
+    /// This is a windows only feature...
+    /// </summary>
+    private static void MaximizeConsoleWindow()
+    {
+      // Setup console to allow window to be maximized
+      // Import the necessary functions from user32.dll
+      [DllImport("user32.dll")]
+      static extern IntPtr GetForegroundWindow();
+
+      [DllImport("user32.dll")]
+      static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+      [DllImport("user32.dll")]
+      static extern bool GetWindowRect(IntPtr hWnd, out Rect lpRect);
+
+      [DllImport("user32.dll")]
+      static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
+
+      // Constants for the ShowWindow function
+      const int SW_MAXIMIZE = 3;
+      IntPtr consoleWindowHandle = GetForegroundWindow();
+      ShowWindow(consoleWindowHandle, SW_MAXIMIZE);
+
+      // Get the screen size
+      Rect screenRect;
+      GetWindowRect(consoleWindowHandle, out screenRect);
+      // Resize and reposition the console window to fill the screen
+      int width = screenRect.Right - screenRect.Left;
+      int height = screenRect.Bottom - screenRect.Top;
+      MoveWindow(consoleWindowHandle, screenRect.Left, screenRect.Top, width, height, true);
+      SetScreenSizes(width, height);
+    }
+
+    /// <summary>
+    /// This is a windows only feature...
+    /// </summary>
+    private static void EnableExtendedColors()
+    {
+      // Setup console to use extended ansii colors
+      [DllImport("kernel32.dll", SetLastError = true)]
+      static extern bool SetConsoleMode(IntPtr hConsoleHandle, int mode);
+
+      [DllImport("kernel32.dll", SetLastError = true)]
+      static extern bool GetConsoleMode(IntPtr handle, out int mode);
+
+      [DllImport("kernel32.dll", SetLastError = true)]
+      static extern IntPtr GetStdHandle(int handle);
+
+      IntPtr handle = GetStdHandle(-11);
+      GetConsoleMode(handle, out int mode);
+      SetConsoleMode(handle, mode | 0x4);
+    }
+
+    /// <summary>
+    /// This is a windows only feature...
+    /// </summary>
+    private static void SetScreenSizes(int width, int height)
+    {
+      // Set console window size
+      Console.SetWindowSize(width, height);
+      Console.SetBufferSize(width, height);
     }
 
     internal static void WriteLegendItem(MapObject mapObject, int col, int row, int width)
@@ -998,6 +1078,29 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
+    internal static void WriteAt(char c, int x, int y, Color color, Color backgroundColor, int repeat,
+      int delay = 0)
+    {
+      try
+      {
+        Console.SetCursorPosition(x, y);
+        ConsoleEx.ForegroundColor = color;
+        ConsoleEx.BackgroundColor = backgroundColor;
+        for (int i = 0; i < repeat; i++)
+        {
+          Console.Write(c);
+          Thread.Sleep(delay);
+        }
+
+        Console.ResetColor();
+      }
+      catch (ArgumentOutOfRangeException e)
+      {
+        Console.Clear();
+        Console.WriteLine(e.Message);
+      }
+    }
+
 
     // Extended Color WriteAt String Methods
     internal static void WriteAt(string s, int x, int y, Color color)
@@ -1104,65 +1207,6 @@ namespace ConsoleDungeonCrawler.Extensions
 
 
     // WriteBorder Methods
-    internal static void WriteBorder(Box box, char h, char v, ConsoleColor color)
-    {
-      try
-      {
-        for (int i = 0; i < box.Height; i++)
-        {
-          if (i == 0 || i == box.Height - 1)
-          {
-            ConsoleEx.WriteAt(h, box.Left, box.Top + i, color, box.Width);
-          }
-          else
-          {
-            ConsoleEx.WriteAt(v, box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(v, box.Left + box.Width - 1, box.Top + i, color);
-          }
-        }
-        Console.ResetColor();
-      }
-      catch (ArgumentOutOfRangeException e)
-      {
-        Console.Clear();
-        Console.WriteLine(e.Message);
-      }
-    }
-
-    internal static void WriteBorder(Box box, BoxChars bChars, ConsoleColor color)
-    {
-      try
-      {
-        for (int i = 0; i < box.Height; i++)
-        {
-          if (i == 0)
-          {
-            ConsoleEx.WriteAt(bChars.topLeft, box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(bChars.topRight, box.Left + box.Width - 1, box.Top + i, color);
-            ConsoleEx.WriteAt(bChars.hor, box.Left + 1, box.Top + i, color, box.Width - 2);
-          }
-          else if (i == box.Height - 1)
-          {
-            ConsoleEx.WriteAt(bChars.botLeft, box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(bChars.botRight, box.Left + box.Width - 1, box.Top + i, color);
-            ConsoleEx.WriteAt(bChars.hor, box.Left + 1, box.Top + i, color, box.Width - 2);
-          }
-          else
-          {
-            ConsoleEx.WriteAt(bChars.ver, box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(bChars.ver, box.Left + box.Width - 1, box.Top + i, color);
-          }
-        }
-
-        Console.ResetColor();
-      }
-      catch (ArgumentOutOfRangeException e)
-      {
-        Console.Clear();
-        Console.WriteLine(e.Message);
-      }
-    }
-
     internal static void WriteBorder(Box box, BoxCharsEx bChars, ConsoleColor color)
     {
       try
@@ -1198,65 +1242,6 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     // WriteBorderEx Methods
-    internal static void WriteBorderEx(Box box, char h, char v, Color color)
-    {
-      try
-      {
-        for (int i = 0; i < box.Height; i++)
-        {
-          if (i == 0 || i == box.Height - 1)
-          {
-            ConsoleEx.WriteAt(h, box.Left, box.Top + i, color, box.Width);
-          }
-          else
-          {
-            ConsoleEx.WriteAt(v, box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(v, box.Left + box.Width - 1, box.Top + i, color);
-          }
-        }
-        ConsoleEx.ResetColor();
-      }
-      catch (ArgumentOutOfRangeException e)
-      {
-        ConsoleEx.Clear();
-        Console.WriteLine(e.Message);
-      }
-    }
-
-    internal static void WriteBorderEx(Box box, BoxChars bChars, Color color)
-    {
-      try
-      {
-        for (int i = 0; i < box.Height; i++)
-        {
-          if (i == 0)
-          {
-            ConsoleEx.WriteAt(bChars.topLeft, box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(bChars.topRight, box.Left + box.Width - 1, box.Top + i, color);
-            ConsoleEx.WriteAt(bChars.hor, box.Left + 1, box.Top + i, color, box.Width - 2);
-          }
-          else if (i == box.Height - 1)
-          {
-            ConsoleEx.WriteAt(bChars.botLeft, box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(bChars.botRight, box.Left + box.Width - 1, box.Top + i, color);
-            ConsoleEx.WriteAt(bChars.hor, box.Left + 1, box.Top + i, color, box.Width - 2);
-          }
-          else
-          {
-            ConsoleEx.WriteAt(bChars.ver, box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(bChars.ver, box.Left + box.Width - 1, box.Top + i, color);
-          }
-        }
-
-        ConsoleEx.ResetColor();
-      }
-      catch (ArgumentOutOfRangeException e)
-      {
-        ConsoleEx.Clear();
-        Console.WriteLine(e.Message);
-      }
-    }
-
     internal static void WriteBorderEx(Box box, BoxCharsEx bChars, Color color)
     {
       try
@@ -1423,6 +1408,5 @@ namespace ConsoleDungeonCrawler.Extensions
       ResetColor();
       Console.Clear();
     }
-
   }
 }

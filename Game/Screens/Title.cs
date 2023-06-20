@@ -9,7 +9,6 @@ namespace ConsoleDungeonCrawler.Game.Screens
   {
     private static int ActiveItem = 0;
     static bool DialogOpen = false;
-    private static BoxChars bChars = new BoxChars() { botLeft = '=', botRight = '=', topRight = '=', topLeft = '=', hor = '=', ver = '|' };
     internal static Box ScreenBorder = new Box(0, 0, Console.WindowWidth, Console.WindowHeight);
     internal static Box Box = new Box(Console.WindowWidth / 2 - 40, Console.WindowHeight / 2 - 8, 80, 17);
 
@@ -17,9 +16,9 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static void Draw()
     {
       ConsoleEx.Clear();
-      ConsoleEx.WriteBorderEx(ScreenBorder, bChars.hor, bChars.ver, Color.DarkOrange);
+      ConsoleEx.WriteBorderEx(ScreenBorder, GamePlay.bCharsEx, Color.DarkOrange);
       LoadTitleArt();
-      Dialog.Draw("Welcome to the Dungeon Crawler!", Box, bChars);
+      Dialog.Draw("Welcome to the Dungeon Crawler!", Box, GamePlay.bCharsEx);
       DialogOpen = true;
 
       while (DialogOpen)
@@ -45,15 +44,14 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
     internal static void LoadTitleArt()
     {
-      Console.OutputEncoding = System.Text.Encoding.Unicode;
       StringBuilder sb = new StringBuilder();
       sb.Append(File.ReadAllText($"Game/Data/Art/TitleArt.txt"));
       // write the title art to the console
       string[] lines = sb.ToString().Split('\n');
-      for (int y = 1; y < 50; y++)
+      for (int y = 1; y < 52; y++)
       {
         string line = lines[y];
-        ConsoleEx.WriteAt(line, 4, y, Color.DarkOrange);
+        ConsoleEx.WriteAt(line, 1, y, Color.DarkOrange);
       }
     }
 

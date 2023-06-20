@@ -6,8 +6,6 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 {
   internal static class PlayerInventory
   {
-    private static BoxChars bChars = new BoxChars() { botLeft = '=', botRight = '=', topRight = '=', topLeft = '=', hor = '=', ver = '|' };
-
     static int ActiveBag = 0;
     static int ActiveItem = 0;
     static bool DialogOpen = false;
