@@ -6,7 +6,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
 {
   internal class Message
   {
-    internal string Text;
+    internal readonly string Text;
     internal Color ForegroundColor = Color.White;
     internal Color BackgroundColor = Color.Black;
 

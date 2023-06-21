@@ -10,21 +10,21 @@ namespace ConsoleDungeonCrawler.Game.Screens
   /// </summary>
   internal static class GamePlay
   {
-    internal static Box StatusBox = new Box(1, 0, 208, 8);
-    internal static Box MapBox = new Box(1, 7, 178, 35);
-    internal static Box OverlayBox = new Box(178, 7, 31, 30);
-    internal static Box MessageBox = new Box(1, 41, 178, 12);
-    internal static Box LegendBox = new Box(178, 36, 31, 17);
+    internal static readonly Box StatusBox = new(1, 0, 208, 8);
+    internal static readonly Box MapBox = new(1, 7, 178, 35);
+    internal static readonly Box OverlayBox = new(178, 7, 31, 30);
+    internal static readonly Box MessageBox = new(1, 41, 178, 12);
+    internal static readonly Box LegendBox = new(178, 36, 31, 17);
 
-    internal static List<Message> Messages = new List<Message>();
-    internal static int MessageWidth = MessageBox.Width - 33;
+    internal static readonly List<Message> Messages = new();
+    internal static readonly int MessageWidth = MessageBox.Width - 33;
 
     // These are unicode values for box drawing characters.   Expects Console.OutputEncoding = Encoding.Unicode and Consolas font selected in Terminal Settings.
     // Note that font settings cannot be changed in code, so the user must do this manually.
     // refer to: https://www.fileformat.info/info/unicode/font/consolas/grid.htm for a grid of all characters
-    internal static BoxChars BChars = new BoxChars("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560", "\u2563", "\u2566", "\u2569", "\u256c");
+    internal static readonly BoxChars BChars = new("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560", "\u2563", "\u2566", "\u2569", "\u256c");
 
-    internal static int currentBag = 1;
+    internal static int CurrentBag = 1;
 
     // MessageOffset is a negative number that decrements the index of the first message to display in the message Section
     internal static int MessageOffset = 0;
@@ -66,17 +66,17 @@ namespace ConsoleDungeonCrawler.Game.Screens
       LegendBox.WriteBorder(BChars, Color.Gold);
 
       // now to clean up the corners
-       BChars.midLeft.WriteAt(MapBox.Left, MapBox.Top, Color.Gold);
-      BChars.midTop.WriteAt(OverlayBox.Left, MapBox.Top, Color.Gold);
-      BChars.midRight.WriteAt(OverlayBox.Left + OverlayBox.Width - 1 , MapBox.Top, Color.Gold);
+       BChars.MidLeft.WriteAt(MapBox.Left, MapBox.Top, Color.Gold);
+      BChars.MidTop.WriteAt(OverlayBox.Left, MapBox.Top, Color.Gold);
+      BChars.MidRight.WriteAt(OverlayBox.Left + OverlayBox.Width - 1 , MapBox.Top, Color.Gold);
 
-      BChars.midLeft.WriteAt(LegendBox.Left, LegendBox.Top, Color.Gold);
-      BChars.midRight.WriteAt(LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Color.Gold);
+      BChars.MidLeft.WriteAt(LegendBox.Left, LegendBox.Top, Color.Gold);
+      BChars.MidRight.WriteAt(LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Color.Gold);
 
-      BChars.midLeft.WriteAt(MessageBox.Left, MessageBox.Top, Color.Gold);
-      BChars.midRight.WriteAt(MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Color.Gold);
+      BChars.MidLeft.WriteAt(MessageBox.Left, MessageBox.Top, Color.Gold);
+      BChars.MidRight.WriteAt(MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Color.Gold);
        
-      BChars.midBottom.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
+      BChars.MidBottom.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
 
     }
 
@@ -93,15 +93,15 @@ namespace ConsoleDungeonCrawler.Game.Screens
       //Player Stats
       int col = StatusBox.Left + 179;
       int row = StatusBox.Top + 1;
-      BChars.midTop.WriteAt(col - 2, row - 1, Color.Gold);
-      BChars.mid.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
+      BChars.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
+      BChars.Mid.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
       for (int index = row; index < row + 6; index++)
       {
-        BChars.ver.WriteAt(col - 2, index, Color.Gold);
+        BChars.Ver.WriteAt(col - 2, index, Color.Gold);
       }
       $"Player - Level: {Player.Level}".WriteAt(col, row, Color.Gold); row++;
       $"Class: {Player.Class}".WriteAt(col, row, ConsoleColor.White); row++;
-      $"Weapon: ".WriteAt(col, row, ConsoleColor.White);
+      "Weapon: ".WriteAt(col, row, ConsoleColor.White);
       $"{Player.Weapon.Name}".WriteAt(col + 8, row, ColorEx.RarityColor(Player.Weapon.Rarity)); row++;
       $"Health: {Player.Health}/{Player.MaxHealth}".WriteAt(col, row, ConsoleColor.White); row++;
       $"Mana: {Player.Mana}/{Player.MaxMana}".WriteAt(col, row, ConsoleColor.White); row++;
@@ -117,17 +117,17 @@ namespace ConsoleDungeonCrawler.Game.Screens
       col = StatusBox.Left + 140;
       row = StatusBox.Top + 1;
       int colWidth = 18;
-      BChars.midTop.WriteAt(col - 2, row - 1, Color.Gold);
-      BChars.midBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
+      BChars.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
+      BChars.MidBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
       for (int index = row; index < row + 6; index++)
       {
-        BChars.ver.WriteAt(col - 2, index, Color.Gold);
+        BChars.Ver.WriteAt(col - 2, index, Color.Gold);
       }
       "Spells".WriteAt(col, row, Color.Gold);
       row++;
       for (int index = 0; index < 10; index++) // 10 spells max
       {
-        if (index >= Player.Spells.Count) $"None".WriteAt(col, row, Color.DimGray);
+        if (index >= Player.Spells.Count) "None".WriteAt(col, row, Color.DimGray);
         else
         {
           Spell spell = Player.Spells[index];
@@ -153,15 +153,15 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int colWidth = 25;
       int count = 0;
       int totalBags = Inventory.Bags.Count;
-      BChars.midTop.WriteAt(col - 2, row - 1, Color.Gold);
-      BChars.midBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
+      BChars.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
+      BChars.MidBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
       for (int index = row; index < row + 6; index++)
       {
-        BChars.ver.WriteAt(col - 2, index, Color.Gold);
+        BChars.Ver.WriteAt(col - 2, index, Color.Gold);
       }
 
-      Bag bag = Inventory.Bags[currentBag - 1];
-      $"Inventory - Bag: {currentBag} of {totalBags}  (< or > to switch bags)".WriteAt(col, row, Color.Gold);
+      Bag bag = Inventory.Bags[CurrentBag - 1];
+      $"Inventory - Bag: {CurrentBag} of {totalBags}  (< or > to switch bags)".WriteAt(col, row, Color.Gold);
       row++;
       for (int index = 0; index < bag.Capacity; index++)
       {
@@ -275,10 +275,10 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int col = MessageBox.Width - 30;
       int row = MessageBox.Top + 1;
       // draw the message Legend left border
-      BChars.midTop.WriteAt(col, row - 1, Color.Gold);
-      BChars.midBottom.WriteAt(col, MessageBox.Top + MessageBox.Height - 1, Color.Gold);
+      BChars.MidTop.WriteAt(col, row - 1, Color.Gold);
+      BChars.MidBottom.WriteAt(col, MessageBox.Top + MessageBox.Height - 1, Color.Gold);
       for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
-        BChars.ver.WriteAt(col, index, Color.Gold);
+        BChars.Ver.WriteAt(col, index, Color.Gold);
       col += 2;
       "Messages Legend: ".WriteAt(col, row, Color.Gold); row += 2;
       "[UpArrow] - Prev Message".WriteAt(col, row, Color.White); row++;
@@ -368,11 +368,11 @@ namespace ConsoleDungeonCrawler.Game.Screens
             break;
           case ConsoleKey.OemComma:
             if (Inventory.Bags.Count > 1)
-              GamePlay.currentBag--;
+              GamePlay.CurrentBag--;
             break;
           case ConsoleKey.OemPeriod:
-            if (GamePlay.currentBag < Inventory.Bags.Count)
-              GamePlay.currentBag++;
+            if (GamePlay.CurrentBag < Inventory.Bags.Count)
+              GamePlay.CurrentBag++;
             break;
           case ConsoleKey.O:
             Actions.OpenDoor();
@@ -390,8 +390,6 @@ namespace ConsoleDungeonCrawler.Game.Screens
             break;
           case ConsoleKey.F6:
             Map.ShowFullOverlay();
-            break;
-          default:
             break;
         }
       }

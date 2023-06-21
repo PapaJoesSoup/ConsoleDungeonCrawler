@@ -14,7 +14,7 @@ namespace ConsoleDungeonCrawler.Game
     {
       if (Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y].Type.Symbol == ' ') return;
       MapObject obj = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y];
-      Item item = new Item();
+      Item item = new();
       switch (obj.Type.Symbol)
       {
         case '\u25b2':
@@ -113,25 +113,26 @@ namespace ConsoleDungeonCrawler.Game
       spell.Cast();
     }
 
-    public static void UpStairs()
+    private static void UpStairs()
     {
       if (Game.CurrentLevel == 2)
       {
         GamePlay.Messages.Add(new Message("You can't go up any further!", Color.Red, Color.Black));
         return;
       }
-      GamePlay.Messages.Add(new Message($"You have gone Up stairs to the floor! above", Color.DarkOrange, Color.Black));
+      GamePlay.Messages.Add(new Message("You have gone Up stairs to the floor! above", Color.DarkOrange, Color.Black));
       Game.CurrentLevel++;
       Map.LoadLevel();
     }
-    public static void DownStairs()
+
+    private static void DownStairs()
     {
       if (Game.CurrentLevel == -2)
       {
         GamePlay.Messages.Add(new Message("You can't go down any further!", Color.Red, Color.Black));
         return;
       }
-      GamePlay.Messages.Add(new Message($"You have gone Down stairs to the floor below!", Color.DarkOrange, Color.Black));
+      GamePlay.Messages.Add(new Message("You have gone Down stairs to the floor below!", Color.DarkOrange, Color.Black));
       Game.CurrentLevel--;
       Map.LoadLevel();
     }

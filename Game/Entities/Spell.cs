@@ -2,11 +2,11 @@
 {
   internal class Spell
   {
-    internal SpellName Name = SpellName.Heal;
-    internal string Description = "";
-    internal SpellType Type = SpellType.Heal;
-    internal int TypeAmount = 1;
-    internal int ManaCost = 1;
+    internal readonly SpellName Name = SpellName.Heal;
+    internal readonly string Description = "";
+    internal readonly SpellType Type = SpellType.Heal;
+    internal readonly int TypeAmount = 1;
+    internal readonly int ManaCost = 1;
     internal int LevelLearned = 1;
 
     internal Spell(SpellName name, string description, SpellType type, int typeAmount, int manaCost, int levellearned)

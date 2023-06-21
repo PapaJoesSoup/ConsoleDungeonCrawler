@@ -6,7 +6,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
   internal static class Dialog
   {
     // This is the default box for the generic dialog box
-    internal static Box Box = new Box(Console.WindowWidth / 2 - 52, Console.WindowHeight / 2 - 12, 100, 25);
+    internal static readonly Box Box = new(Console.WindowWidth / 2 - 52, Console.WindowHeight / 2 - 12, 100, 25);
 
     // These colors are for the default theme of a dialog box
     internal static Color BackgroundColor = Color.Black;
@@ -61,7 +61,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     {
       int width = question.Length > prompt.Length ? question.Length : prompt.Length;
 
-      Box box = new Box(Console.WindowWidth / 2 - (width + 8) / 2, Console.WindowHeight / 2 - 3, width + 8, 5);
+      Box box = new(Console.WindowWidth / 2 - (width + 8) / 2, Console.WindowHeight / 2 - 3, width + 8, 5);
       Draw(question, Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, box);
       prompt.WriteAlignedAt(box, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, -1, 0);
       result = ConsoleEx.ReadInt(Console.GetCursorPosition().Left, Console.GetCursorPosition().Top, Color.White, Color.Black);
@@ -71,7 +71,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     {
       int width = question.Length > prompt.Length ? question.Length : prompt.Length;
 
-      Box box = new Box(Console.WindowWidth / 2 - (width + 8) / 2, Console.WindowHeight / 2 - 3, width + 8, 5);
+      Box box = new(Console.WindowWidth / 2 - (width + 8) / 2, Console.WindowHeight / 2 - 3, width + 8, 5);
       Draw(question, Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, box);
       prompt.WriteAlignedAt(box, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, -1, 0);
       result = ConsoleEx.ReadBool(Console.GetCursorPosition().Left, Console.GetCursorPosition().Top, Color.White, Color.Black);
@@ -79,7 +79,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 
     internal static void Notify(string title, string message)
     {
-      Box box = new Box(Console.WindowWidth / 2 - (message.Length + 6) / 2, Console.WindowHeight / 2 - 4, message.Length + 10, 7);
+      Box box = new(Console.WindowWidth / 2 - (message.Length + 6) / 2, Console.WindowHeight / 2 - 4, message.Length + 10, 7);
       Draw(title, Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, box);
       message.WriteAlignedAt(Box, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, 0, -1);
       "Press any key to continue".WriteAlignedAt(Box, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, 0, 1);

@@ -11,8 +11,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal ItemRarity Rarity = ItemRarity.Common;
     internal int Quantity = 1;
     internal int StackSize = 1;
-    internal decimal BuyCost = 0;
-    internal decimal SellCost = 0;
+    internal decimal BuyCost;
+    internal decimal SellCost;
 
     /// <summary>
     /// the default constructor is an item of type Gold with a quantity of 1 and a value of 0.1
@@ -52,7 +52,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     /// It is obfuscated in the subtypes with a method that returns a random item of that type.
     /// </summary>
     /// <returns></returns>
-    internal static Item GetRandomItem()
+    internal virtual Item GetRandomItem()
     {
       return Gold.GetRandomItem();
     }

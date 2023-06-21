@@ -5,8 +5,8 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Bandage : Item
   {
-    BandageType BandageType = BandageType.Cloth;
-    internal int BuffAmount = 1;
+    BandageType bandageType = BandageType.Cloth;
+    internal readonly int BuffAmount = 1;
 
     internal Bandage()
     {
@@ -22,13 +22,13 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
       Description = $"A {bandageType} Bandage";
       BuyCost = buyCost;
       SellCost = sellCost;
-      BandageType = bandageType;
+      this.bandageType = bandageType;
       BuffAmount = buffAmount;
     }
 
     private void SetLevelFromType()
     {
-      switch (BandageType)
+      switch (bandageType)
       {
         case BandageType.Cloth:
           Level = 1;

@@ -6,16 +6,16 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 {
   internal static class PlayerInventory
   {
-    static int ActiveBag = 0;
-    static int ActiveItem = 0;
-    static bool DialogOpen = false;
+    static int activeBag = 0;
+    static int activeItem = 0;
+    static bool dialogOpen = false;
 
     internal static void Draw()
     {
-      DialogOpen = true;
+      dialogOpen = true;
       Dialog.Draw("Player Inventory Manager");
 
-      while (DialogOpen)
+      while (dialogOpen)
       {
         // Create a new box for the player inventory
         int x = 1;
@@ -25,12 +25,12 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
         foreach (var bag in Inventory.Bags)
         {
           $"[{y}] Bag {y}".WriteAt(Dialog.Box.Left + 2, Dialog.Box.Top + 1 + y, Color.White,
-            ActiveBag == y - 1 ? Color.Orange : Color.Olive);
+            activeBag == y - 1 ? Color.Orange : Color.Olive);
           x++;
           y++;
         }
         DrawLegend();
-        DrawBag(Inventory.Bags[ActiveBag]);
+        DrawBag(Inventory.Bags[activeBag]);
         KeyHandler();
       }
 
@@ -43,11 +43,11 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 
     private static void DrawLegend()
     {
-      Box box = new Box(Dialog.Box.Left, Dialog.Box.Top + 8, 22, 10);
+      Box box = new(Dialog.Box.Left, Dialog.Box.Top + 8, 22, 10);
       int y = box.Top + 1;
-      $"Legend:".WriteAt(box.Left + 2, box.Top, Color.White, Color.Olive); y++;
+      "Legend:".WriteAt(box.Left + 2, box.Top, Color.White, Color.Olive); y++;
 
-      $"[1-5] Select Bag".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
+      "[1-5] Select Bag".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
       $"[{ConsoleKey.PageUp}] Prev Bag".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
       $"[{ConsoleKey.PageDown}] Next Bag".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
       $"[{ConsoleKey.UpArrow}] Prev Item".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
@@ -56,14 +56,14 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       $"[{ConsoleKey.M}] Move Item".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
       $"[{ConsoleKey.R}] Remove Item".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
       $"[{ConsoleKey.S}] Sell Item".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
-      $"[{ConsoleKey.U}] Use Item".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
+      $"[{ConsoleKey.U}] Use Item".WriteAt(box.Left + 2, y, Color.White, Color.Olive);
     }
 
     internal static void DrawBag(Bag bag)
     {
       int x = Dialog.Box.Left + 25;
       int y = Dialog.Box.Top + 1;
-      $"Bag {ActiveBag + 1} Contents:".WriteAt(x, y, Color.White, Color.Olive);
+      $"Bag {activeBag + 1} Contents:".WriteAt(x, y, Color.White, Color.Olive);
       y += 2;
 
       for (int i = 0; i < bag.Capacity; i++)
@@ -72,7 +72,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
           $"[{i + 1}]:  Empty".WriteAt(x, y, Color.White, Color.Olive);
         else
           $"[{i + 1}]:  ({bag.Items[i].Quantity}) {bag.Items[i].Name}".WriteAt(x, y, Color.White,
-          i == ActiveItem ? Color.DarkOrange : Color.Olive);
+          i == activeItem ? Color.DarkOrange : Color.Olive);
         y++;
       }
     }
@@ -81,20 +81,20 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     {
       if (Inventory.Bags[bag].Items.Count >= Inventory.Bags[bag].Capacity) return;
       Inventory.Bags[bag].Items.Add(item);
-      Inventory.Bags[ActiveBag].Items.Remove(item);
+      Inventory.Bags[activeBag].Items.Remove(item);
     }
 
     private static void SellItem()
     {
       Dialog.Confirm("Sell Item",
-        $"Sell this item for {Inventory.Bags[ActiveBag].Items[ActiveItem].SellCost} gold? (Y or N)", out bool sell);
-      if (sell) SellItem(Inventory.Bags[ActiveBag].Items[ActiveItem]);
+        $"Sell this item for {Inventory.Bags[activeBag].Items[activeItem].SellCost} gold? (Y or N)", out bool sell);
+      if (sell) SellItem(Inventory.Bags[activeBag].Items[activeItem]);
       Draw();
     }
 
     private static void RemoveItem()
     {
-      if (Inventory.Bags[ActiveBag].Items[ActiveItem].Quantity == 0)
+      if (Inventory.Bags[activeBag].Items[activeItem].Quantity == 0)
       {
         Dialog.Notify("Can't Remove Item", "You don't have any of this item.");
         Draw();
@@ -102,7 +102,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       }
 
       Dialog.Confirm("Remove Item", "Are you sure you want to destroy this item? (Y or N)", out bool remove);
-      if (remove) Inventory.Bags[ActiveBag].Items.RemoveAt(ActiveItem);
+      if (remove) Inventory.Bags[activeBag].Items.RemoveAt(activeItem);
       Draw();
     }
 
@@ -117,8 +117,8 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 
       Dialog.AskForInt("Move Item To Bag", "Enter a bag number: ", out int newBag);
       newBag--; // Adjust for indexing.
-      if (newBag <= Inventory.Bags.Count && newBag >= 1 && newBag != ActiveBag)
-        MoveItem(Inventory.Bags[ActiveBag].Items[ActiveItem], newBag);
+      if (newBag <= Inventory.Bags.Count && newBag >= 1 && newBag != activeBag)
+        MoveItem(Inventory.Bags[activeBag].Items[activeItem], newBag);
       else
       {
         Dialog.Notify("Invalid Bag", "You entered an invalid bag number.");
@@ -135,7 +135,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
         Draw();
         return;
       }
-      if (!Inventory.Bags[ActiveBag].Items[ActiveItem].Use())
+      if (!Inventory.Bags[activeBag].Items[activeItem].Use())
       {
         Draw();
         Dialog.Notify("Can't Use Item", "You can't use this item.");
@@ -153,7 +153,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
         Player.Gold += item.SellCost;
         item.Quantity--;
       }
-      if (item.Quantity == 0) Inventory.Bags[ActiveBag].Items.Remove(item);
+      if (item.Quantity == 0) Inventory.Bags[activeBag].Items.Remove(item);
     }
 
     internal static void KeyHandler()
@@ -162,7 +162,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       switch (keyInfo.Key)
       {
         case ConsoleKey.Escape:
-          DialogOpen = false;
+          dialogOpen = false;
           Dialog.Close();
           break;
         case ConsoleKey.D1:
@@ -171,24 +171,24 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
         case ConsoleKey.D4:
         case ConsoleKey.D5:
           if (Inventory.Bags.Count < (int)keyInfo.Key - 48) return;
-          ActiveBag = (int)keyInfo.Key - 49;
+          activeBag = (int)keyInfo.Key - 49;
           DrawBag(Inventory.Bags[(int)keyInfo.Key - 49]);
           break;
         case ConsoleKey.PageUp:
-          if (ActiveBag == 0) ActiveBag = Inventory.Bags.Count - 1;
-          else ActiveBag--;
+          if (activeBag == 0) activeBag = Inventory.Bags.Count - 1;
+          else activeBag--;
           break;
         case ConsoleKey.PageDown:
-          if (ActiveBag == Inventory.Bags.Count - 1) ActiveBag = 0;
-          else ActiveBag++;
+          if (activeBag == Inventory.Bags.Count - 1) activeBag = 0;
+          else activeBag++;
           break;
         case ConsoleKey.UpArrow:
-          if (ActiveItem == 0) ActiveItem = Inventory.Bags[ActiveBag].Items.Count - 1;
-          else ActiveItem--;
+          if (activeItem == 0) activeItem = Inventory.Bags[activeBag].Items.Count - 1;
+          else activeItem--;
           break;
         case ConsoleKey.DownArrow:
-          if (ActiveItem == Inventory.Bags[ActiveBag].Items.Count - 1) ActiveItem = 0;
-          else ActiveItem++;
+          if (activeItem == Inventory.Bags[activeBag].Items.Count - 1) activeItem = 0;
+          else activeItem++;
           break;
         case ConsoleKey.M:
           MoveItem();

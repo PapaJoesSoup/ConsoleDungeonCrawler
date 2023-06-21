@@ -5,8 +5,8 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Potion : Item
   {
-    internal BuffType BuffType = BuffType.Health;
-    internal int BuffAmount = 1;
+    internal readonly BuffType BuffType = BuffType.Health;
+    internal readonly int BuffAmount = 1;
 
 
     internal Potion()
@@ -34,17 +34,17 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
         GamePlay.Messages.Add(new Message("You are already at full health.", Color.Orange, Color.Black));
         return false;
       }
-      switch (((Potion)this).BuffType)
+      switch (BuffType)
       {
         case BuffType.Health:
-          Player.Heal(((Potion)this).BuffAmount);
+          Player.Heal(BuffAmount);
           break;
         case BuffType.Mana:
-          Player.RestoreMana(((Potion)this).BuffAmount);
+          Player.RestoreMana(BuffAmount);
           break;
         case BuffType.HealthAndMana:
-          Player.Heal(((Potion)this).BuffAmount);
-          Player.RestoreMana(((Potion)this).BuffAmount);
+          Player.Heal(BuffAmount);
+          Player.RestoreMana(BuffAmount);
           break;
       }
       Quantity--;

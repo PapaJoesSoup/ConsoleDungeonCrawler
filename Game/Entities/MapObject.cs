@@ -5,7 +5,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
 {
     internal class MapObject : Position
     {
-        internal ObjectType Type = new ObjectType();
+        internal ObjectType Type = new();
         internal bool IsVisible = false;
         internal bool IsPassable = false;
         internal bool IsLootable = false;

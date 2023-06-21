@@ -8,14 +8,10 @@ namespace ConsoleDungeonCrawler.Extensions
   /// </summary>
   internal class Box
   {
-    internal int Height = 0;
-    internal int Width = 0;
-    internal int Left = 0;
-    internal int Top = 0;
-
-    internal Box()
-    {
-    }
+    internal readonly int Height;
+    internal readonly int Width;
+    internal readonly int Left;
+    internal readonly int Top;
 
     internal Box(int left, int top, int width, int height)
     {
@@ -26,40 +22,6 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     // WriteBorder Methods
-    internal void Draw(BoxChars bChars, ConsoleColor color)
-    {
-      try
-      {
-        for (int i = 0; i < Height; i++)
-        {
-          if (i == 0)
-          {
-            StringInfo.GetNextTextElement(bChars.topLeft).WriteAt(Left, Top + i, color);
-            StringInfo.GetNextTextElement(bChars.topRight).WriteAt(Left + Width - 1, Top + i, color);
-            StringInfo.GetNextTextElement(bChars.hor).WriteAt(Left + 1, Top + i, color, Width - 2);
-          }
-          else if (i == Height - 1)
-          {
-            StringInfo.GetNextTextElement(bChars.botLeft).WriteAt(Left, Top + i, color);
-            StringInfo.GetNextTextElement(bChars.botRight).WriteAt(Left + Width - 1, Top + i, color);
-            StringInfo.GetNextTextElement(bChars.hor).WriteAt(Left + 1, Top + i, color, Width - 2);
-          }
-          else
-          {
-            StringInfo.GetNextTextElement(bChars.ver).WriteAt(Left, Top + i, color);
-            StringInfo.GetNextTextElement(bChars.ver).WriteAt(Left + Width - 1, Top + i, color);
-          }
-        }
-
-        Console.ResetColor();
-      }
-      catch (ArgumentOutOfRangeException e)
-      {
-        Console.Clear();
-        Console.WriteLine(e.Message);
-      }
-    }
-    
     internal void Draw(BoxChars bChars, Color color, Color backgroundColor, Color fillColor)
     {
       try
@@ -68,20 +30,20 @@ namespace ConsoleDungeonCrawler.Extensions
         {
           if (i == 0)
           {
-            StringInfo.GetNextTextElement(bChars.topLeft).WriteAt(Left, Top + i, color, backgroundColor);
-            StringInfo.GetNextTextElement(bChars.topRight).WriteAt(Left + Width - 1, Top + i, color, backgroundColor);
-            StringInfo.GetNextTextElement(bChars.hor).WriteAt(Left + 1, Top + i, color, backgroundColor, Width - 2, 0);
+            StringInfo.GetNextTextElement(bChars.TopLeft).WriteAt(Left, Top + i, color, backgroundColor);
+            StringInfo.GetNextTextElement(bChars.TopRight).WriteAt(Left + Width - 1, Top + i, color, backgroundColor);
+            StringInfo.GetNextTextElement(bChars.Hor).WriteAt(Left + 1, Top + i, color, backgroundColor, Width - 2, 0);
           }
           else if (i == Height - 1)
           {
-            StringInfo.GetNextTextElement(bChars.botLeft).WriteAt(Left, Top + i, color, backgroundColor);
-            StringInfo.GetNextTextElement(bChars.botRight).WriteAt(Left + Width - 1, Top + i, color, backgroundColor);
-            StringInfo.GetNextTextElement(bChars.hor).WriteAt(Left + 1, Top + i, color, backgroundColor, Width - 2, 0);
+            StringInfo.GetNextTextElement(bChars.BotLeft).WriteAt(Left, Top + i, color, backgroundColor);
+            StringInfo.GetNextTextElement(bChars.BotRight).WriteAt(Left + Width - 1, Top + i, color, backgroundColor);
+            StringInfo.GetNextTextElement(bChars.Hor).WriteAt(Left + 1, Top + i, color, backgroundColor, Width - 2, 0);
           }
           else
           {
-            StringInfo.GetNextTextElement(bChars.ver).WriteAt(Left, Top + i, color);
-            StringInfo.GetNextTextElement(bChars.ver).WriteAt(Left + Width - 1, Top + i, color, backgroundColor);
+            StringInfo.GetNextTextElement(bChars.Ver).WriteAt(Left, Top + i, color);
+            StringInfo.GetNextTextElement(bChars.Ver).WriteAt(Left + Width - 1, Top + i, color, backgroundColor);
           }
         }
 
@@ -106,44 +68,32 @@ namespace ConsoleDungeonCrawler.Extensions
   /// </summary>
   internal class BoxChars
   {
-    internal string topLeft = " ";
-    internal string topRight = " ";
-    internal string botLeft = " ";
-    internal string botRight = " ";
-    internal string hor = " ";
-    internal string ver = " ";
-    internal string midLeft = " ";
-    internal string midRight = " ";
-    internal string midTop = " ";
-    internal string midBottom = " ";
-    internal string mid = " ";
+    internal readonly string TopLeft;
+    internal readonly string TopRight;
+    internal readonly string BotLeft;
+    internal readonly string BotRight;
+    internal readonly string Hor;
+    internal readonly string Ver;
+    internal readonly string MidLeft;
+    internal readonly string MidRight;
+    internal readonly string MidTop;
+    internal readonly string MidBottom;
+    internal readonly string Mid;
     
-    internal BoxChars() { }
-
-    internal BoxChars(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver)
-    {
-      this.topLeft = topLeft;
-      this.topRight = topRight;
-      this.botLeft = botLeft;
-      this.botRight = botRight;
-      this.hor = hor;
-      this.ver = ver;
-    }
-
     internal BoxChars(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver,
       string midLeft, string midRight, string midTop, string midBottom, string mid)
     {
-      this.topLeft = topLeft;
-      this.topRight = topRight;
-      this.botLeft = botLeft;
-      this.botRight = botRight;
-      this.hor = hor;
-      this.ver = ver;
-      this.midLeft = midLeft;
-      this.midRight = midRight;
-      this.midTop = midTop;
-      this.midBottom = midBottom;
-      this.mid = mid;
+      this.TopLeft = topLeft;
+      this.TopRight = topRight;
+      this.BotLeft = botLeft;
+      this.BotRight = botRight;
+      this.Hor = hor;
+      this.Ver = ver;
+      this.MidLeft = midLeft;
+      this.MidRight = midRight;
+      this.MidTop = midTop;
+      this.MidBottom = midBottom;
+      this.Mid = mid;
     }
   }
 

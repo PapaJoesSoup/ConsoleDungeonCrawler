@@ -10,10 +10,10 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal int MaxHealth = 10;
     internal int Mana = 0;
     internal int MaxMana = 0;
-    internal int Level = 1;
+    internal readonly int Level = 1;
     internal decimal Gold = (decimal)0.00;
-    internal Weapon Weapon = new Weapon();
-    internal Spell Spell = new Spell();
+    internal readonly Weapon Weapon = new();
+    internal Spell Spell = new();
     internal bool IsAlive = true;
     internal bool InCombat = false;
 
@@ -53,7 +53,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       if (Dice.Roll(1, 3) != 1) return;
       // now randomly select an item to add
       int item = Dice.Roll(1, Enum.GetNames<ItemType>().Length);
-      Gold = (decimal)Dice.Roll(1, Level * 2);
+      Gold = Dice.Roll(1, Level * 2);
     }
 
     internal void DetectPlayer()

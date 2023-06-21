@@ -9,16 +9,16 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static int Level = 1;
     internal static int Experience = 0;
     internal static int ExperienceToLevel = 100;
-    internal static PlayerClass Class = PlayerClass.Rogue;
+    internal static readonly PlayerClass Class = PlayerClass.Rogue;
     internal static int Health = 100;
     internal static int MaxHealth = 100;
     internal static int Mana = 0;
     internal static int MaxMana = 0;
     internal static decimal Gold = 0;
 
-    internal static List<Armor> ArmorSet = new List<Armor>();
-    internal static Weapon Weapon = new Weapon();
-    internal static Dictionary<int, Spell> Spells = new Dictionary<int, Spell>();
+    internal static List<Armor> ArmorSet = new();
+    internal static Weapon Weapon = new();
+    internal static readonly Dictionary<int, Spell> Spells = new();
     internal static bool IsAlive = true;
     internal static bool InCombat = false;
 
@@ -39,11 +39,11 @@ namespace ConsoleDungeonCrawler.Game.Entities
       // Add 5 empty slots to armor set
       ArmorSet = new List<Armor>
       {
-        new Armor(ArmorType.Head),
-        new Armor(ArmorType.Body),
-        new Armor(ArmorType.Hands),
-        new Armor(ArmorType.Legs),
-        new Armor(ArmorType.Feet)
+        new(ArmorType.Head),
+        new(ArmorType.Body),
+        new(ArmorType.Hands),
+        new(ArmorType.Legs),
+        new(ArmorType.Feet)
       };
 
       // Add 5 initial slots to inventory
@@ -63,8 +63,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
       if (key == ConsoleKey.S) { x = 0; y = 1; }
       if (key == ConsoleKey.D) { x = 1; y = 0; }
 
-      Position oldPos = new Position(X, Y);
-      Position newPos = new Position(X + x, Y + y);
+      Position oldPos = new(X, Y);
+      Position newPos = new(X + x, Y + y);
 
       if (!Map.CanMoveTo(newPos.X, newPos.Y)) return false;
       X = newPos.X;
@@ -91,8 +91,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
       if (key == ConsoleKey.S) { x = 0; y = 2; }
       if (key == ConsoleKey.D) { x = 2; y = 0; }
 
-      Position oldPos = new Position(X, Y);
-      Position newPos = new Position(X + x, Y + y);
+      Position oldPos = new(X, Y);
+      Position newPos = new(X + x, Y + y);
 
       if (!Map.CanJumpTo(oldPos.X, oldPos.Y, newPos.X, newPos.Y)) return;
       X = newPos.X;

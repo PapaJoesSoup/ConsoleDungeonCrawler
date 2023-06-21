@@ -1,6 +1,4 @@
 ﻿using System.Drawing;
-using System.Reflection;
-using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Screens;
 
@@ -13,15 +11,15 @@ namespace ConsoleDungeonCrawler.Game.Entities
     // Player Inventory
     internal static int BagCount = 1;
     internal static int MaxBags = 4;
-    internal static List<Bag> Bags = new List<Bag>();
+    internal static readonly List<Bag> Bags = new();
 
     //Loot Tables
-    internal static Dictionary<WeaponType, List<Weapon>> WeaponTypes = new Dictionary<WeaponType, List<Weapon>>();
-    internal static Dictionary<ArmorType, Dictionary<ArmorName, List<Armor>>> ArmorDictionary = new Dictionary<ArmorType, Dictionary<ArmorName, List<Armor>>>();
-    internal static List<Bandage> Bandages = new List<Bandage>();
-    internal static Dictionary<BuffType, List<Food>> Foods = new Dictionary<BuffType, List<Food>>();
-    internal static Dictionary<SpellName, Spell> Spells = new Dictionary<SpellName, Spell>();
-    internal static Dictionary<BuffType, Potion> Potions = new Dictionary<BuffType, Potion>();
+    internal static readonly Dictionary<WeaponType, List<Weapon>> WeaponTypes = new();
+    internal static readonly Dictionary<ArmorType, Dictionary<ArmorName, List<Armor>>> ArmorDictionary = new();
+    internal static readonly List<Bandage> Bandages = new();
+    internal static readonly Dictionary<BuffType, List<Food>> Foods = new();
+    internal static readonly Dictionary<SpellName, Spell> Spells = new();
+    internal static Dictionary<BuffType, Potion> Potions = new();
 
 
     static Inventory()
@@ -152,7 +150,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Legendary, 13, 100, 100, 1));
     }
 
-    internal static void InitArmorDictionary()
+    private static void InitArmorDictionary()
     {
       ArmorDictionary.Add(ArmorType.Head, new Dictionary<ArmorName, List<Armor>>());
       ArmorDictionary.Add(ArmorType.Body, new Dictionary<ArmorName, List<Armor>>());
@@ -348,7 +346,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       ArmorDictionary[ArmorType.Hands][ArmorName.Plate].Add(new Armor(ArmorType.Hands, ArmorName.Plate, BuffType.None, ItemRarity.Legendary, 20, 40, 4, 4));
     }
 
-    internal static void InitBandages()
+    private static void InitBandages()
     {
       Bandages.Add(new Bandage(BandageType.Cloth, 1, 1, 1, 0));
       Bandages.Add(new Bandage(BandageType.Linen, 2, 1, 1, 0));
@@ -358,7 +356,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Bandages.Add(new Bandage(BandageType.RuneCloth, 6, 1, 1, 0));
     }
 
-    internal static void InitFoodTypes()
+    private static void InitFoodTypes()
     {
       Foods.Add(BuffType.Health, new List<Food>());
       Foods[BuffType.Health].Add(new Food(FoodType.Ration, BuffType.Health, 1, 1, 0));
@@ -390,7 +388,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Foods[BuffType.Mana].Add(new Food(FoodType.Cider, BuffType.Mana, 1, 1, 0));
     }
 
-    internal static void InitSpellTypes()
+    private static void InitSpellTypes()
     {
       // Heals
       Spells.Add(SpellName.Heal, new Spell(SpellName.Heal, "Heals the player", SpellType.Heal, 3, 3, 10));
@@ -429,12 +427,12 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Spells.Add(SpellName.ShowMonsters, new Spell(SpellName.ShowMap, "Shows any monsters on the map of the current level for a short time", SpellType.Other, 3, 3, 10));
     }
 
-    internal static void InitPotionTypes()
+    private static void InitPotionTypes()
     {
 
     }
 
-    public static bool AddItem(Item item)
+    internal static bool AddItem(Item item)
     {
       if (item.Type == ItemType.Gold)
       {
@@ -452,13 +450,13 @@ namespace ConsoleDungeonCrawler.Game.Entities
       return false;
     }
 
-    public static BuffType GetRandomBuffType(int min = 1)
+    internal static BuffType GetRandomBuffType(int min = 1)
     {
       int index = Dice.Roll(min, Enum.GetNames(typeof(BuffType)).Length);
       return (BuffType)index;
     }
 
-    public static bool RemoveItem(Item item)
+    internal static bool RemoveItem(Item item)
     {
       foreach (Bag bag in Bags)
       {
@@ -467,7 +465,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       return false;
     }
 
-    public static void RemoveAllItems()
+    internal static void RemoveAllItems()
     {
       foreach (Bag bag in Bags)
       {
@@ -475,7 +473,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       }
     }
 
-    public static int GetQuantity(Item item)
+    internal static int GetQuantity(Item item)
     {
       int quantity = 0;
       foreach (Bag bag in Bags)
@@ -485,7 +483,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       return quantity;
     }
 
-    public static bool HasItem(Item item)
+    internal static bool HasItem(Item item)
     {
       foreach(Bag bag in Bags)
       {
@@ -494,7 +492,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       return false;
     }
 
-    public static bool HasItems(List<Item> items)
+    internal static bool HasItems(List<Item> items)
     {
       foreach (Item item in items)
         if (!HasItem(item)) return false;
@@ -502,14 +500,14 @@ namespace ConsoleDungeonCrawler.Game.Entities
       return true;
     }
 
-    public static Item GetRandomItem()
+    internal static Item GetRandomItem()
     {
       int itemIdx = Dice.Roll(1, Enum.GetNames(typeof(ItemType)).Length);
       Item item = GetRandomItem((ItemType)itemIdx);
       return item;
     }
-    
-    public static Item GetRandomItem(ItemType type)
+
+    internal static Item GetRandomItem(ItemType type)
     {
       //default result is gold, so set the quantity and value
       switch (type)

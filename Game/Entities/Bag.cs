@@ -2,8 +2,8 @@
 {
   internal class Bag
   {
-    internal int Capacity = 20;
-    internal List<Item> Items = new List<Item>();
+    internal readonly int Capacity = 20;
+    internal readonly List<Item> Items;
 
     internal Bag()
     {
@@ -13,6 +13,7 @@
     internal Bag(int capacity)
     {
       Capacity = capacity;
+      Items = new List<Item>();
     }
 
     internal bool AddItem(Item item)

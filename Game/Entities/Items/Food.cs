@@ -5,9 +5,9 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Food : Item
   {
-    internal FoodType FoodType = FoodType.Vegetable;
-    internal BuffType BuffType = BuffType.Health;
-    internal int BuffAmount = 1;
+    internal readonly FoodType FoodType = FoodType.Vegetable;
+    internal readonly BuffType BuffType = BuffType.Health;
+    internal readonly int BuffAmount = 1;
 
     internal Food()
     {

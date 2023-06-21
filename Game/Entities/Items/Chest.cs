@@ -5,8 +5,8 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Chest : Item
   {
-    internal ItemRarity ItemRarity = ItemRarity.Common;
-    internal List<Item> Items = new List<Item>();
+    internal readonly ItemRarity ItemRarity = ItemRarity.Common;
+    internal readonly List<Item> Items = new();
 
     internal Chest()
     {
@@ -71,7 +71,7 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
     {
       
       bool result = true;
-      GamePlay.Messages.Add(new Message($"You open the chest...", Color.DarkOrange, Color.Black));
+      GamePlay.Messages.Add(new Message("You open the chest...", Color.DarkOrange, Color.Black));
       if (Items.Count > 0)
       {
         foreach (Item item in Items)

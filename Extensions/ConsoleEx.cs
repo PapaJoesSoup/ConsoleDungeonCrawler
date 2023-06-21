@@ -71,13 +71,12 @@ namespace ConsoleDungeonCrawler.Extensions
       static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
 
       // Constants for the ShowWindow function
-      const int SW_MAXIMIZE = 3;
+      const int swMaximize = 3;
       IntPtr consoleWindowHandle = GetForegroundWindow();
-      ShowWindow(consoleWindowHandle, SW_MAXIMIZE);
+      ShowWindow(consoleWindowHandle, swMaximize);
 
       // Get the screen size
-      Rect screenRect;
-      GetWindowRect(consoleWindowHandle, out screenRect);
+      GetWindowRect(consoleWindowHandle, out Rect screenRect);
       // Resize and reposition the console window to fill the screen
       int width = screenRect.Right - screenRect.Left;
       int height = screenRect.Bottom - screenRect.Top;
@@ -90,7 +89,7 @@ namespace ConsoleDungeonCrawler.Extensions
     /// </summary>
     private static void EnableExtendedColors()
     {
-      // Setup console to use extended ansii colors
+      // Setup console to use extended ansi colors
       [DllImport("kernel32.dll", SetLastError = true)]
       static extern bool SetConsoleMode(IntPtr hConsoleHandle, int mode);
 
@@ -593,7 +592,7 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     // WriteAt string methods
-    internal static void WriteAt(this string s, int x, int y)
+    private static void WriteAt(this string s, int x, int y)
     {
       try
       {
@@ -1225,20 +1224,20 @@ namespace ConsoleDungeonCrawler.Extensions
         {
           if (i == 0)
           {
-            StringInfo.GetNextTextElement(bChars.topLeft).WriteAt(box.Left, box.Top + i, color);
-            StringInfo.GetNextTextElement(bChars.topRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
-            StringInfo.GetNextTextElement(bChars.hor).WriteAt(box.Left + 1, box.Top + i, color, box.Width - 2);
+            StringInfo.GetNextTextElement(bChars.TopLeft).WriteAt(box.Left, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.TopRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top + i, color, box.Width - 2, 0);
           }
           else if (i == box.Height - 1)
           {
-            StringInfo.GetNextTextElement(bChars.botLeft).WriteAt(box.Left, box.Top + i, color);
-            StringInfo.GetNextTextElement(bChars.botRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
-            StringInfo.GetNextTextElement(bChars.hor).WriteAt(box.Left + 1, box.Top + i, color, box.Width - 2);
+            StringInfo.GetNextTextElement(bChars.BotLeft).WriteAt(box.Left, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.BotRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top + i, color, box.Width - 2, 0);
           }
           else
           {
-            StringInfo.GetNextTextElement(bChars.ver).WriteAt(box.Left, box.Top + i, color);
-            StringInfo.GetNextTextElement(bChars.ver).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.Ver).WriteAt(box.Left, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.Ver).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
           }
         }
 
@@ -1259,20 +1258,20 @@ namespace ConsoleDungeonCrawler.Extensions
         {
           if (i == 0)
           {
-            StringInfo.GetNextTextElement(bChars.topLeft).WriteAt(box.Left, box.Top + i, color);
-            StringInfo.GetNextTextElement(bChars.topRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
-            StringInfo.GetNextTextElement(bChars.hor).WriteAt(box.Left + 1, box.Top, color, Color.Black, box.Width - 2, 0);
+            StringInfo.GetNextTextElement(bChars.TopLeft).WriteAt(box.Left, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.TopRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top, color, Color.Black, box.Width - 2, 0);
           }
           else if (i == box.Height - 1)
           {
-            StringInfo.GetNextTextElement(bChars.botLeft).WriteAt(box.Left, box.Top + i, color);
-            StringInfo.GetNextTextElement(bChars.botRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
-            StringInfo.GetNextTextElement(bChars.hor).WriteAt(box.Left + 1, box.Top + i, color, Color.Black, box.Width - 2, 0);
+            StringInfo.GetNextTextElement(bChars.BotLeft).WriteAt(box.Left, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.BotRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top + i, color, Color.Black, box.Width - 2, 0);
           }
           else
           {
-            StringInfo.GetNextTextElement(bChars.ver).WriteAt(box.Left, box.Top + i, color);
-            StringInfo.GetNextTextElement(bChars.ver).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.Ver).WriteAt(box.Left, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.Ver).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
           }
         }
 

@@ -4,16 +4,16 @@ namespace ConsoleDungeonCrawler.Game.Entities
 {
     internal class ObjectType
     {
-        internal char Symbol = ' ';
-        internal string Name = "Empty";
-        internal string Singular = "Empty Space";
-        internal string Plural = "Empty Spaces";
+        internal readonly char Symbol = ' ';
+        internal readonly string Name = "Empty";
+        internal readonly string Singular = "Empty Space";
+        internal readonly string Plural = "Empty Spaces";
         internal Color ForegroundColor = Color.Black;
         internal Color BackgroundColor = Color.Black;
-        internal bool IsPassable = false;
-        internal bool IsVisible = true;
-        internal bool IsAttackable = false;
-        internal bool IsLootable = false;
+        internal readonly bool IsPassable = false;
+        internal readonly bool IsVisible = true;
+        internal readonly bool IsAttackable = false;
+        internal readonly bool IsLootable = false;
 
         internal ObjectType()
         {

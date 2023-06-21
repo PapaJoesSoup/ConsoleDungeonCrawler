@@ -7,10 +7,10 @@ namespace ConsoleDungeonCrawler.Game.Screens
 {
   internal static class Title
   {
-    private static int ActiveItem = 0;
-    static bool DialogOpen = false;
-    internal static Box ScreenBorder = new Box(0, 0, Console.WindowWidth, Console.WindowHeight);
-    internal static Box Box = new Box(Console.WindowWidth / 2 - 40, Console.WindowHeight / 2 - 8, 80, 17);
+    private static int activeItem = 0;
+    static bool dialogOpen = false;
+    internal static readonly Box ScreenBorder = new(0, 0, Console.WindowWidth, Console.WindowHeight);
+    internal static readonly Box Box = new(Console.WindowWidth / 2 - 40, Console.WindowHeight / 2 - 8, 80, 17);
 
     // Create a method that displays the title screen in ascii art
     internal static void Draw()
@@ -19,9 +19,9 @@ namespace ConsoleDungeonCrawler.Game.Screens
       ScreenBorder.WriteBorder(GamePlay.BChars, Color.DarkOrange);
       LoadTitleArt();
       Dialog.Draw("Welcome to the Dungeon Crawler!", Box, GamePlay.BChars);
-      DialogOpen = true;
+      dialogOpen = true;
 
-      while (DialogOpen)
+      while (dialogOpen)
       {
         int rowCount = 4 + Game.Dungeons.Keys.Count;
         int row = -(rowCount / 2) + 1;
@@ -30,7 +30,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
         for (int i = 0; i < Game.Dungeons.Keys.Count; i++)
         {
           string dungeon = Game.Dungeons.Keys.ElementAt(i);
-          if (i == ActiveItem)
+          if (i == activeItem)
             dungeon.PadCenter(40).WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.DarkOrange, Color.White, 0, row);
           else
             dungeon.PadCenter(40).WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, row);
@@ -44,8 +44,8 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
     internal static void LoadTitleArt()
     {
-      StringBuilder sb = new StringBuilder();
-      sb.Append(File.ReadAllText($"Game/Data/Art/TitleArt.txt"));
+      StringBuilder sb = new();
+      sb.Append(File.ReadAllText("Game/Data/Art/TitleArt.txt"));
       // write the title art to the console
       string[] lines = sb.ToString().Split('\n');
       for (int y = 1; y < 52; y++)
@@ -61,16 +61,16 @@ namespace ConsoleDungeonCrawler.Game.Screens
       switch (keyInfo.Key)
       {
         case ConsoleKey.Enter:
-          Game.CurrentDungeon = Game.Dungeons.Keys.ElementAt(ActiveItem);
-          DialogOpen = false;
+          Game.CurrentDungeon = Game.Dungeons.Keys.ElementAt(activeItem);
+          dialogOpen = false;
           break;
         case ConsoleKey.UpArrow:
-          if (ActiveItem == 0) ActiveItem = Game.Dungeons.Count - 1;
-          else ActiveItem--;
+          if (activeItem == 0) activeItem = Game.Dungeons.Count - 1;
+          else activeItem--;
           break;
         case ConsoleKey.DownArrow:
-          if (ActiveItem == Game.Dungeons.Count - 1) ActiveItem = 0;
-          else ActiveItem++;
+          if (activeItem == Game.Dungeons.Count - 1) activeItem = 0;
+          else activeItem++;
           break;
       }
     }

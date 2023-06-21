@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-using System.Drawing;
-using System.Runtime.InteropServices;
+﻿using System.Drawing;
 using System.Text;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Screens;
@@ -9,23 +7,23 @@ namespace ConsoleDungeonCrawler.Game.Entities
 {
   internal class Map
   {
-    internal static Map Instance = new Map();
+    internal static Map Instance = new();
     internal static int Top { get; set; }
     internal static int Left { get; set; }
     internal static int Width { get; set; }
     internal static int Height { get; set; }
 
-    internal static List<ObjectType> MapTypes = new List<ObjectType>();
-    internal static List<ObjectType> OverlayTypes = new List<ObjectType>();
+    internal static List<ObjectType> MapTypes = new();
+    internal static List<ObjectType> OverlayTypes = new();
 
-    internal static Dictionary<int, Dictionary<int, Dictionary<int, MapObject>>> LevelMapGrids = new Dictionary<int, Dictionary<int, Dictionary<int, MapObject>>>();
-    internal static Dictionary<int, Dictionary<int, Dictionary<int, MapObject>>> LevelOverlayGrids = new Dictionary<int, Dictionary<int, Dictionary<int, MapObject>>>();
+    internal static readonly Dictionary<int, Dictionary<int, Dictionary<int, MapObject>>> LevelMapGrids = new();
+    internal static readonly Dictionary<int, Dictionary<int, Dictionary<int, MapObject>>> LevelOverlayGrids = new();
 
-    internal static Dictionary<int, Dictionary<char, List<MapObject>>> LevelMapObjects = new Dictionary<int, Dictionary<char, List<MapObject>>>();
-    internal static Dictionary<int, Dictionary<char, List<MapObject>>> LevelOverlayObjects = new Dictionary<int, Dictionary<char, List<MapObject>>>();
-    internal static Dictionary<int, Dictionary<char, Tuple<ObjectType, int>>> LevelVisibleObjects = new Dictionary<int, Dictionary<char, Tuple<ObjectType, int>>>();
+    internal static Dictionary<int, Dictionary<char, List<MapObject>>> LevelMapObjects = new();
+    internal static Dictionary<int, Dictionary<char, List<MapObject>>> LevelOverlayObjects = new();
+    internal static Dictionary<int, Dictionary<char, Tuple<ObjectType, int>>> LevelVisibleObjects = new();
 
-    internal static Player Player = new Player();
+    internal static Player Player = new();
     internal static Char StartChar;
     internal static Char ExitChar;
 
@@ -98,34 +96,34 @@ namespace ConsoleDungeonCrawler.Game.Entities
         if (level.Contains("LevelMap_"))
         {
           // create empty map grid
-          Dictionary<int, Dictionary<int, MapObject>> MapGrid = new Dictionary<int, Dictionary<int, MapObject>>();
+          Dictionary<int, Dictionary<int, MapObject>> mapGrid = new();
           for (int x = 0; x <= Width; x++)
           {
-            MapGrid.Add(x, new Dictionary<int, MapObject>());
+            mapGrid.Add(x, new Dictionary<int, MapObject>());
             for (int y = 0; y <= Width; y++)
             {
-              MapGrid[x].Add(y, new MapObject(x, y));
+              mapGrid[x].Add(y, new MapObject(x, y));
             }
           }
           // Add MapGrid to LevelMapGrids
-          LevelMapGrids.Add(lvlNumber, MapGrid);
+          LevelMapGrids.Add(lvlNumber, mapGrid);
         }
 
         if (level.Contains("LevelOverlay_"))
         {
           // create empty overlay grid
-          Dictionary<int, Dictionary<int, MapObject>> OverlayGrid = new Dictionary<int, Dictionary<int, MapObject>>();
-          ObjectType empty = new ObjectType(true);
+          Dictionary<int, Dictionary<int, MapObject>> overlayGrid = new();
+          ObjectType empty = new(true);
           for (int x = 0; x <= Width; x++)
           {
-            OverlayGrid.Add(x, new Dictionary<int, MapObject>());
+            overlayGrid.Add(x, new Dictionary<int, MapObject>());
             for (int y = 0; y <= Width; y++)
             {
-              OverlayGrid[x].Add(y, new MapObject(x, y, empty));
+              overlayGrid[x].Add(y, new MapObject(x, y, empty));
             }
           }
           // Add OverlayGrid to LevelOverlayGrids
-          LevelOverlayGrids.Add(lvlNumber, OverlayGrid);
+          LevelOverlayGrids.Add(lvlNumber, overlayGrid);
         }
       }
 
@@ -178,7 +176,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     internal static void LoadMapGridFromFile(int level, string filename)
     {
-      StringBuilder sb = new StringBuilder();
+      StringBuilder sb = new();
       sb.Append(File.ReadAllText(filename));
       string[] lines = sb.ToString().Split('\n');
       for (int y = 1; y <= Height; y++)
@@ -190,7 +188,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
           // find the object type where the symbol matches the string
           ObjectType? type = MapTypes.Find(t => t.Symbol == c);
           if (type == null) continue;
-          MapObject obj = new MapObject(x - 1, y - 1, type, false);
+          MapObject obj = new(x - 1, y - 1, type, false);
           LevelMapGrids[level][x - 1][y - 1] = obj;
         }
       }
@@ -198,7 +196,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     internal static void LoadOverlayGridFromFile(int level, string filename)
     {
-      StringBuilder sb = new StringBuilder();
+      StringBuilder sb = new();
       sb.Append(File.ReadAllText(filename));
       string[] lines = sb.ToString().Split('\n');
       for (int y = 1; y <= Height; y++)
@@ -210,7 +208,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
           // find the object type where the symbol matches the string
           ObjectType? type = OverlayTypes.Find(t => t.Symbol == c);
           if (type == null) continue;
-          MapObject obj = new MapObject(x - 1, y - 1, type, type.Symbol == Player.Type.Symbol || type.Symbol == StartChar);
+          MapObject obj = new(x - 1, y - 1, type, type.Symbol == Player.Type.Symbol || type.Symbol == StartChar);
           if (type.Symbol == Player.Type.Symbol)
           {
             Player = new Player(obj);
@@ -218,7 +216,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
           }
           else if (obj.IsAttackable)
           {
-            Monster monster = new Monster(obj, 1);
+            Monster monster = new(obj, 1);
             LevelOverlayGrids[level][x - 1][y - 1] = monster;
             LevelOverlayObjects[level][type.Symbol].Add(monster);
           }
@@ -563,7 +561,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static void RemoveFromOverlayGrid(MapObject obj)
     {
       if (obj is Monster) return;
-      MapObject newObj = new MapObject(obj.X, obj.Y, new ObjectType(true));
+      MapObject newObj = new(obj.X, obj.Y, new ObjectType(true));
       LevelOverlayGrids[Game.CurrentLevel][obj.X][obj.Y] = newObj;
     }
 

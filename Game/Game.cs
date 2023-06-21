@@ -7,8 +7,8 @@ namespace ConsoleDungeonCrawler.Game
 {
   internal static class Game
   {
-    internal static string Title = "Console Dungeon Crawler";
-    internal static string MapPath = "Game/Data/Maps/";
+    internal static readonly string Title = "Console Dungeon Crawler";
+    internal static readonly string MapPath = "Game/Data/Maps/";
     internal static string DataPath = "Game/Data/";
     internal static bool IsOver { get; set; }
     internal static bool IsWon { get; set; }
@@ -16,7 +16,7 @@ namespace ConsoleDungeonCrawler.Game
     internal static string CurrentDungeon = "";
     internal static int CurrentLevel = 0;
 
-    internal static Dictionary<string, Dictionary<string, string>> Dungeons = new Dictionary<string, Dictionary<string, string>>();
+    internal static readonly Dictionary<string, Dictionary<string, string>> Dungeons = new();
 
     internal static void LoadDungeons()
     {
@@ -25,7 +25,7 @@ namespace ConsoleDungeonCrawler.Game
       foreach (string dungeon in folders)
       {
         string[] files = Directory.GetFiles(dungeon);
-        Dictionary<string, string> maps = new Dictionary<string, string>();
+        Dictionary<string, string> maps = new();
         foreach (string map in files)
         {
           string fileName = Path.GetFileName(map);
