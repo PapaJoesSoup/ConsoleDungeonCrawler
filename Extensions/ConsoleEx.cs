@@ -1410,7 +1410,7 @@ namespace ConsoleDungeonCrawler.Extensions
     //Utility Methods
     internal static void ResetColor()
     {
-      Console.Write(ColorEx.resetColor);
+      Console.Write(ColorEx.ResetColor);
     }
 
     internal static void Clear()

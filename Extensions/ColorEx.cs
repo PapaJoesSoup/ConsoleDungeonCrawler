@@ -6,15 +6,15 @@ namespace ConsoleDungeonCrawler.Extensions
   internal static class ColorEx
   {
     // Setup console to use extended ansii 256 colors
-    internal static string bgColor = "\x1b[48;5;";
-    internal static string fgColor = "\x1b[38;5;";
+    internal static readonly string BgColor = "\x1b[48;5;";
+    internal static readonly string FgColor = "\x1b[38;5;";
 
     // Setup console to use ansii 24 bit rgb colors
-    internal static string bgHiColor = "\x1b[48;2;";
-    internal static string fgHiColor = "\x1b[38;2;";
+    internal static readonly string BgHiColor = "\x1b[48;2;";
+    internal static readonly string FgHiColor = "\x1b[38;2;";
 
     // Reset console colors
-    internal static string resetColor = "\x1b[0m";
+    internal static readonly string ResetColor = "\x1b[0m";
 
     static ColorEx()
     {
@@ -22,14 +22,15 @@ namespace ConsoleDungeonCrawler.Extensions
 
     internal static string ToFgHiColor(Color color)
     {
-      return $"{fgHiColor}{ToRGB(color)}m";
+      return $"{FgHiColor}{ToRgb(color)}m";
     }
 
     internal static string ToBgHiColor(Color color)
     {
-      return $"{bgHiColor}{ToRGB(color)}m";
+      return $"{BgHiColor}{ToRgb(color)}m";
     }
-    internal static string ToRGB(Color color)
+
+    internal static string ToRgb(Color color)
     {
       return $"{color.R};{color.G};{color.B}";
     }
@@ -55,26 +56,28 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    private static void PrintColorsEx()
+    private static void Test256Colors()
     {
       // Print all 256 colors
       for (int i = 0; i < 255; i++)
       {
-        Console.Write($"{ColorEx.bgColor}{i}m*");
+        Console.Write($"{ColorEx.BgColor}{i}m*");
       }
-
-      // Print all 24 bit rgb colors
-      //for (int r = 0; r < 255; r++)
-      //{
-      //  for (int g = 0; g < 255; g++)
-      //  {
-      //    for (int b = 0; b < 255; b++)
-      //    {
-      //      Console.Write($"{ConsoleColorEx.bgHiColor}{r};{g};{b}m*");
-      //    }
-      //  }
-      //}
     }
 
+    private static void Test24BitColors()
+    {
+      //Print all 24 bit rgb colors
+      for (int r = 0; r < 255; r++)
+      {
+        for (int g = 0; g < 255; g++)
+        {
+          for (int b = 0; b < 255; b++)
+          {
+            Console.Write($"{ColorEx.BgHiColor}{r};{g};{b}m*");
+          }
+        }
+      }
+    }
   }
 }

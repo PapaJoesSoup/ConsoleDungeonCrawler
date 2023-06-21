@@ -142,8 +142,6 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
         Draw();
         return;
       }
-      if (Inventory.Bags[ActiveBag].Items[ActiveItem].Quantity > 0) Inventory.Bags[ActiveBag].Items[ActiveItem].Quantity--;
-      if (Inventory.Bags[ActiveBag].Items[ActiveItem].Quantity == 0) Inventory.Bags[ActiveBag].Items.RemoveAt(ActiveItem);
       GamePlay.StatusSection();
       Draw();
     }
