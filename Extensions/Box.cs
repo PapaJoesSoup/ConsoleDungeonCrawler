@@ -3,6 +3,9 @@ using System.Globalization;
 
 namespace ConsoleDungeonCrawler.Extensions
 {
+  /// <summary>
+  /// This is the class for drawing box characters
+  /// </summary>
   internal class Box
   {
     internal int Height = 0;
@@ -23,7 +26,7 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     // WriteBorder Methods
-    internal void Draw(BoxCharsEx bChars, ConsoleColor color)
+    internal void Draw(BoxChars bChars, ConsoleColor color)
     {
       try
       {
@@ -31,20 +34,20 @@ namespace ConsoleDungeonCrawler.Extensions
         {
           if (i == 0)
           {
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topLeft), Left, Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topRight), Left + Width - 1, Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), Left + 1, Top + i, color, Width - 2);
+            StringInfo.GetNextTextElement(bChars.topLeft).WriteAt(Left, Top + i, color);
+            StringInfo.GetNextTextElement(bChars.topRight).WriteAt(Left + Width - 1, Top + i, color);
+            StringInfo.GetNextTextElement(bChars.hor).WriteAt(Left + 1, Top + i, color, Width - 2);
           }
           else if (i == Height - 1)
           {
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botLeft), Left, Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botRight), Left + Width - 1, Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), Left + 1, Top + i, color, Width - 2);
+            StringInfo.GetNextTextElement(bChars.botLeft).WriteAt(Left, Top + i, color);
+            StringInfo.GetNextTextElement(bChars.botRight).WriteAt(Left + Width - 1, Top + i, color);
+            StringInfo.GetNextTextElement(bChars.hor).WriteAt(Left + 1, Top + i, color, Width - 2);
           }
           else
           {
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.ver), Left, Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.ver), Left + Width - 1, Top + i, color);
+            StringInfo.GetNextTextElement(bChars.ver).WriteAt(Left, Top + i, color);
+            StringInfo.GetNextTextElement(bChars.ver).WriteAt(Left + Width - 1, Top + i, color);
           }
         }
 
@@ -57,7 +60,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
     
-    internal void Draw(BoxCharsEx bChars, Color color, Color backgroundColor, Color fillColor)
+    internal void Draw(BoxChars bChars, Color color, Color backgroundColor, Color fillColor)
     {
       try
       {
@@ -65,27 +68,27 @@ namespace ConsoleDungeonCrawler.Extensions
         {
           if (i == 0)
           {
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topLeft), Left, Top + i, color, backgroundColor);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topRight), Left + Width - 1, Top + i, color, backgroundColor);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), Left + 1, Top + i, color, backgroundColor, Width - 2, 0);
+            StringInfo.GetNextTextElement(bChars.topLeft).WriteAt(Left, Top + i, color, backgroundColor);
+            StringInfo.GetNextTextElement(bChars.topRight).WriteAt(Left + Width - 1, Top + i, color, backgroundColor);
+            StringInfo.GetNextTextElement(bChars.hor).WriteAt(Left + 1, Top + i, color, backgroundColor, Width - 2, 0);
           }
           else if (i == Height - 1)
           {
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botLeft), Left, Top + i, color, backgroundColor);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botRight), Left + Width - 1, Top + i, color, backgroundColor);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), Left + 1, Top + i, color, backgroundColor, Width - 2, 0);
+            StringInfo.GetNextTextElement(bChars.botLeft).WriteAt(Left, Top + i, color, backgroundColor);
+            StringInfo.GetNextTextElement(bChars.botRight).WriteAt(Left + Width - 1, Top + i, color, backgroundColor);
+            StringInfo.GetNextTextElement(bChars.hor).WriteAt(Left + 1, Top + i, color, backgroundColor, Width - 2, 0);
           }
           else
           {
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.ver), Left, Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.ver), Left + Width - 1, Top + i, color, backgroundColor);
+            StringInfo.GetNextTextElement(bChars.ver).WriteAt(Left, Top + i, color);
+            StringInfo.GetNextTextElement(bChars.ver).WriteAt(Left + Width - 1, Top + i, color, backgroundColor);
           }
         }
 
         // fill inside of box with fill color
         for (int i = 1; i < Height - 1; i++)
         {
-          ConsoleEx.WriteAt(' ', Left + 1, Top + i, fillColor, fillColor, Width - 2);
+          ' '.WriteAt(Left + 1, Top + i, fillColor, fillColor, Width - 2);
         }
 
         Console.ResetColor();
@@ -98,7 +101,10 @@ namespace ConsoleDungeonCrawler.Extensions
     }
   }
 
-  internal class BoxCharsEx
+  /// <summary>
+  /// This is the class for Extended Box Characters
+  /// </summary>
+  internal class BoxChars
   {
     internal string topLeft = " ";
     internal string topRight = " ";
@@ -112,9 +118,9 @@ namespace ConsoleDungeonCrawler.Extensions
     internal string midBottom = " ";
     internal string mid = " ";
     
-    internal BoxCharsEx() { }
+    internal BoxChars() { }
 
-    internal BoxCharsEx(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver)
+    internal BoxChars(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver)
     {
       this.topLeft = topLeft;
       this.topRight = topRight;
@@ -124,7 +130,7 @@ namespace ConsoleDungeonCrawler.Extensions
       this.ver = ver;
     }
 
-    internal BoxCharsEx(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver,
+    internal BoxChars(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver,
       string midLeft, string midRight, string midTop, string midBottom, string mid)
     {
       this.topLeft = topLeft;

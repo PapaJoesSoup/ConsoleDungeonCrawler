@@ -60,7 +60,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
         internal void Draw()
         {
             if (!IsVisible || Type.Symbol == ' ') return;
-            ConsoleEx.WriteAt(Type.Symbol, X + Map.Left, Y + Map.Top, ForegroundColor, BackgroundColor);
+            Type.Symbol.WriteAt(X + Map.Left, Y + Map.Top, ForegroundColor, BackgroundColor);
         }
 
         internal void Draw(bool force)
@@ -71,7 +71,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
             return;
           }
           if (Type.Symbol == ' ') return;
-            ConsoleEx.WriteAt(Type.Symbol, X + Map.Left, Y + Map.Top, ForegroundColor, BackgroundColor);
+            Type.Symbol.WriteAt(X + Map.Left, Y + Map.Top, ForegroundColor, BackgroundColor);
         }
   }
 

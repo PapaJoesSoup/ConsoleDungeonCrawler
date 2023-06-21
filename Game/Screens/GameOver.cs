@@ -9,8 +9,8 @@ namespace ConsoleDungeonCrawler.Game.Screens
     {
       GameCredits.Draw();
       ConsoleEx.Clear();
-      ConsoleEx.WriteAlignedAt("Game Over!", HAlign.Center);
-      ConsoleEx.WriteAlignedAt("Press any key to exit the game.", HAlign.Center, VAlign.Bottom);
+      "Game Over!".WriteAlignedAt(HAlign.Center);
+      "Press any key to exit the game.".WriteAlignedAt(HAlign.Center, VAlign.Bottom);
       Console.ReadKey();
       Environment.Exit(0);
 

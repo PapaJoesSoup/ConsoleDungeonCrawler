@@ -1,4 +1,7 @@
-﻿namespace ConsoleDungeonCrawler.Game.Entities.Items
+﻿using System.Drawing;
+using ConsoleDungeonCrawler.Game.Screens;
+
+namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Chest : Item
   {
@@ -66,21 +69,27 @@
 
     internal override bool Use()
     {
+      
       bool result = true;
+      GamePlay.Messages.Add(new Message($"You open the chest...", Color.DarkOrange, Color.Black));
       if (Items.Count > 0)
       {
         foreach (Item item in Items)
         {
           Inventory.AddItem(item);
+          GamePlay.Messages.Add(item.Type == ItemType.Gold
+            ? new Message($"You have gained {((Gold)item).GetValue()} {item.Name}!", Color.DarkOrange, Color.Black)
+            : new Message($"You have gained {item.Quantity} {item.Name}{(item.Quantity > 1 ? "s!" : "!")}",
+              Color.DarkOrange, Color.Black));
         }
       }
       foreach (Bag bag in Inventory.Bags)
       {
         if (!bag.Items.Contains(this)) continue;
         bag.Items.Remove(this);
+        GamePlay.MessageSection();
         return result;
       }
-
       return result;
     }
     

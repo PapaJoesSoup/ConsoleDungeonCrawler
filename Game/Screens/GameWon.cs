@@ -7,8 +7,8 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static void Draw()
     {
       ConsoleEx.Clear();
-      ConsoleEx.WriteAlignedAt("You won the game!", HAlign.Center);
-      ConsoleEx.WriteAlignedAt("Press any key to exit the game.", HAlign.Center, VAlign.Bottom);
+      "You won the game!".WriteAlignedAt(HAlign.Center);
+      "Press any key to exit the game.".WriteAlignedAt(HAlign.Center, VAlign.Bottom);
       Console.ReadKey();
       Environment.Exit(0);
     }

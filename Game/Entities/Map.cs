@@ -26,6 +26,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static Dictionary<int, Dictionary<char, Tuple<ObjectType, int>>> LevelVisibleObjects = new Dictionary<int, Dictionary<char, Tuple<ObjectType, int>>>();
 
     internal static Player Player = new Player();
+    internal static Char StartChar;
+    internal static Char ExitChar;
 
     internal Map()
     {
@@ -52,8 +54,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
         new('.', "Floor", "a floor", "some flooring", Color.Gray, Color.DimGray, true, false, false),
         new('+', "DoorC", "a closed door", "some closed doors", Color.Yellow, Color.DimGray, false, false, false),
         new('-', "DoorO", "an open door", "some open doors", Color.Yellow, Color.DimGray, true, false, false),
-        new('^', "UpStairs", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
-        new('v', "DownStairs", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
+        new('\u25b2', "UpStairs", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
+        new('\u25bc', "DownStairs", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
         new('!', "Fire", "a fire", "some fire", Color.OrangeRed, Color.DimGray, false, false, false),
         new('~', "Water", "some water", "some patches of water", Color.Aqua, Color.Aqua, false, false, false),
         new('a', "Acid", "some acid", "some patches of acid", Color.SaddleBrown, Color.Chartreuse, false, false, false),
@@ -66,20 +68,25 @@ namespace ConsoleDungeonCrawler.Game.Entities
       {
         new('S', "Start", "the Entrance", "the Entrance", Color.Black, Color.White, true, false, false),
         new('X', "Exit", "the Exit", "The Exit", Color.MidnightBlue, Color.Gold, true, false, false),
-        new('^', "UpStairs", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
-        new('v', "DownStairs", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
+        new('\u25b2', "UpStairs", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
+        new('\u25bc', "DownStairs", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
         new('m', "Chest", "a Chest", "some Chests", Color.Silver, Color.DimGray, true, false, false),
         new('i', "Item", "an Item", "some Items", Color.White, Color.DimGray, true, false, true),
         new('$', "Gold", "some Gold", "some stacks of Gold", Color.Gold, Color.DimGray, true, false, true),
         new('T', "Teleporter", "a Teleporter", "some Teleporters", Color.Gold, Color.DimGray, true, false, false),
         new('x', "Trap", "a Trap", "some Traps", Color.LightSalmon, Color.DimGray, false, false, false),
-        new('P', "Player", "me", "am is seeing double?", Color.White, Color.DimGray, true, true, true),
+        new('\u2640', "Player", "me", "am is seeing double?", Color.White, Color.DimGray, true, true, true),
         new('k', "Kobald", "a Kobald", "some Kobalds", Color.BlueViolet, Color.DimGray, false, true, true),
         new('z', "Ooze", "an Ooze", "some Oozes", Color.GreenYellow, Color.DimGray, false, true, true),
         new('g', "Goblin", " a Goblin", "some Goblins", Color.CadetBlue, Color.DimGray, false, true, true),
         new('O', "Ogre", "an Ogre", "Some Ogres", Color.Chocolate, Color.DimGray, false, true, true),
         new('B', "Boss", "a Boss", "some Bosses", Color.Maroon, Color.Yellow, false, true, true)
       };
+
+      // Initialize Player and start char symbols
+      Player.Type = OverlayTypes.Find(x => x.Name == "Player");
+      StartChar = OverlayTypes.Find(x => x.Name == "Start").Symbol;
+      ExitChar = OverlayTypes.Find(x => x.Name == "Exit").Symbol;
     }
 
     internal void InitDictionaries()
@@ -203,8 +210,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
           // find the object type where the symbol matches the string
           ObjectType? type = OverlayTypes.Find(t => t.Symbol == c);
           if (type == null) continue;
-          MapObject obj = new MapObject(x - 1, y - 1, type, type.Symbol is 'P' or 'S');
-          if (type.Symbol == 'P')
+          MapObject obj = new MapObject(x - 1, y - 1, type, type.Symbol == Player.Type.Symbol || type.Symbol == StartChar);
+          if (type.Symbol == Player.Type.Symbol)
           {
             Player = new Player(obj);
             LevelOverlayObjects[level][type.Symbol].Add(Player);
@@ -253,7 +260,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static void ClearMapArea()
     {
       for (int y = Top + 1; y < (Top + Height); y++)
-        ConsoleEx.WriteAt(new string(' ', Width - 2), Left + 1, y, ConsoleColor.Black, ConsoleColor.Black);
+        new string(' ', Width - 2).WriteAt(Left + 1, y, ConsoleColor.Black, ConsoleColor.Black);
     }
 
 
@@ -465,7 +472,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       }
       foreach (char symbol in LevelMapObjects[Game.CurrentLevel].Keys)
       {
-        if (symbol == 'P' || symbol == ' ') continue;
+        if (symbol == Player.Type.Symbol || symbol == ' ') continue;
         ObjectType type = OverlayTypes.Find(t => t.Symbol == symbol) ?? new ObjectType();
         if (type.Symbol == ' ') continue;
         visibleChanged = GetObjectTypeCount(LevelOverlayObjects[Game.CurrentLevel][symbol], visibleChanged, type);

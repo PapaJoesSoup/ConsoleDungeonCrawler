@@ -17,10 +17,10 @@ namespace ConsoleDungeonCrawler.Game
       Item item = new Item();
       switch (obj.Type.Symbol)
       {
-        case '^':
+        case '\u25b2':
           UpStairs();
           break;
-        case 'v':
+        case '\u25bc':
           DownStairs();
           break;
         case 'O':

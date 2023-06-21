@@ -21,9 +21,9 @@ namespace ConsoleDungeonCrawler.Game.Entities
     {
       Text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
     }
-    internal void WriteAt(int x, int y)
+    internal void WriteMessageAt(int x, int y)
     {
-      ConsoleEx.WriteAt(Text.PadRight(GamePlay.MessageBox.Width - 33), x, y, ForegroundColor, BackgroundColor);
+      Text.PadRight(GamePlay.MessageWidth).WriteAt(x, y, ForegroundColor, BackgroundColor);
     }
   }
 }

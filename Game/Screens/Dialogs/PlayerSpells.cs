@@ -28,13 +28,13 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       Box box = new Box(Box.Left, Box.Top, 22, 10);
       int x = box.Left + 2;
       int y = box.Top + 1;
-      ConsoleEx.WriteAt($"Legend:", x, y, Color.White, Color.Olive); y += 2;
+      $"Legend:".WriteAt(x, y, Color.White, Color.Olive); y += 2;
 
-      ConsoleEx.WriteAt($"[{ConsoleKey.UpArrow}] Prev Spell", x, y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.DownArrow}] Next Spell", x, y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.M}] Move Spell", x, y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.R}] Remove Spell", x, y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt($"[{ConsoleKey.Escape}] Close Dialog", x, y, Color.White, Color.Olive); y++;
+      $"[{ConsoleKey.UpArrow}] Prev Spell".WriteAt(x, y, Color.White, Color.Olive); y++;
+      $"[{ConsoleKey.DownArrow}] Next Spell".WriteAt(x, y, Color.White, Color.Olive); y++;
+      $"[{ConsoleKey.M}] Move Spell".WriteAt(x, y, Color.White, Color.Olive); y++;
+      $"[{ConsoleKey.R}] Remove Spell".WriteAt(x, y, Color.White, Color.Olive); y++;
+      $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(x, y, Color.White, Color.Olive); y++;
     }
 
     internal static void DrawSpells()
@@ -43,15 +43,14 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       int x = box.Left + 30;
       int y = box.Top + 1;
 
-      ConsoleEx.WriteAt($"Player Spells", x, y, Color.White, Color.Olive); y += 2;
-      ConsoleEx.WriteAt($"Key:  Spell", x, y, Color.White, Color.Olive); y++;
-      ConsoleEx.WriteAt(new string('-', 48), x, y, Color.White, Color.Olive); y++;
+      $"Player Spells".WriteAt(x, y, Color.White, Color.Olive); y += 2;
+      $"Key:  Spell".WriteAt(x, y, Color.White, Color.Olive); y++;
+      new string('-', 48).WriteAt(x, y, Color.White, Color.Olive); y++;
       for (int i = 1; i <= 10; i++)
       {
-        ConsoleEx.WriteAt(!Player.Spells.ContainsKey(i)
-            ? $"[{(i == 10 ? 0 : i)}]:  Empty"
-            : $"[{(i == 10 ? 0 : i)}]:  {Player.Spells[i].Name} - {Player.Spells[i].Description}"
-          , x, y, Color.White, i == ActiveSpell ? Color.DarkOrange : Color.Olive);
+        (!Player.Spells.ContainsKey(i)
+          ? $"[{(i == 10 ? 0 : i)}]:  Empty"
+          : $"[{(i == 10 ? 0 : i)}]:  {Player.Spells[i].Name} - {Player.Spells[i].Description}").WriteAt(x, y, Color.White, i == ActiveSpell ? Color.DarkOrange : Color.Olive);
         y++;
       }
     }

@@ -16,28 +16,28 @@ namespace ConsoleDungeonCrawler.Game.Screens
     internal static void Draw()
     {
       ConsoleEx.Clear();
-      ConsoleEx.WriteBorderEx(ScreenBorder, GamePlay.bCharsEx, Color.DarkOrange);
+      ScreenBorder.WriteBorder(GamePlay.BChars, Color.DarkOrange);
       LoadTitleArt();
-      Dialog.Draw("Welcome to the Dungeon Crawler!", Box, GamePlay.bCharsEx);
+      Dialog.Draw("Welcome to the Dungeon Crawler!", Box, GamePlay.BChars);
       DialogOpen = true;
 
       while (DialogOpen)
       {
         int rowCount = 4 + Game.Dungeons.Keys.Count;
         int row = -(rowCount / 2) + 1;
-        ConsoleEx.WriteAlignedAt("Please select a Game Map (Up or Down Arrow):", HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, row);
+        "Please select a Game Map (Up or Down Arrow):".WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, row);
         row += 2;
         for (int i = 0; i < Game.Dungeons.Keys.Count; i++)
         {
           string dungeon = Game.Dungeons.Keys.ElementAt(i);
           if (i == ActiveItem)
-            ConsoleEx.WriteAlignedAt(dungeon.PadCenter(40), HAlign.Center, VAlign.Middle, Color.DarkOrange, Color.White, 0, row);
+            dungeon.PadCenter(40).WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.DarkOrange, Color.White, 0, row);
           else
-            ConsoleEx.WriteAlignedAt(dungeon.PadCenter(40), HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, row);
+            dungeon.PadCenter(40).WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, row);
           row++;
         }
 
-        ConsoleEx.WriteAlignedAt("Press Enter to continue", HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, row + 1);
+        "Press Enter to continue".WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, row + 1);
         KeyHandler();
       }
     }
@@ -51,7 +51,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       for (int y = 1; y < 52; y++)
       {
         string line = lines[y];
-        ConsoleEx.WriteAt(line, 1, y, Color.DarkOrange);
+        line.WriteAt(1, y, Color.DarkOrange);
       }
     }
 

@@ -20,8 +20,8 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     /// <param name="title"></param>
     internal static void Draw(string title)
     {
-      Box.Draw(GamePlay.bCharsEx, ForegroundColor, BackgroundColor, FillColor);
-      ConsoleEx.WriteAlignedAt(Box, $"[{title}]", HAlign.Center, VAlign.Top, TextColor, BackgroundColor, 0, -1);
+      Box.Draw(GamePlay.BChars, ForegroundColor, BackgroundColor, FillColor);
+      $"[{title}]".WriteAlignedAt(Box, HAlign.Center, VAlign.Top, TextColor, BackgroundColor, 0, -1);
     }
 
 
@@ -32,12 +32,12 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     /// <param name="box"></param>
     /// <param name="bchars"></param>
     internal static void
-    Draw(string title, Box? box = null, BoxCharsEx? bchars = null)
+    Draw(string title, Box? box = null, BoxChars? bchars = null)
     {
       box ??= Box;
-      bchars ??= GamePlay.bCharsEx;
+      bchars ??= GamePlay.BChars;
       box.Draw(bchars, ForegroundColor, BackgroundColor, FillColor);
-      ConsoleEx.WriteAlignedAt(box, $"[{title}]", HAlign.Center, VAlign.Top, Color.Bisque, Color.Black, 0, -1);
+      $"[{title}]".WriteAlignedAt(box, HAlign.Center, VAlign.Top, Color.Bisque, Color.Black, 0, -1);
     }
 
     /// <summary>
@@ -49,12 +49,12 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     /// <param name="fillColor"></param>
     /// <param name="box"></param>
     /// <param name="bchars"></param>
-    internal static void Draw(string title, Color color, Color backgroundColor, Color fillColor, Color textColor, Box? box = null, BoxCharsEx? bchars = null)
+    internal static void Draw(string title, Color color, Color backgroundColor, Color fillColor, Color textColor, Box? box = null, BoxChars? bchars = null)
     {
       box ??= Box;
-      bchars ??= GamePlay.bCharsEx;
+      bchars ??= GamePlay.BChars;
       box.Draw(bchars, color, backgroundColor, fillColor);
-      ConsoleEx.WriteAlignedAt(box, $"[{title}]", HAlign.Center, VAlign.Top, textColor, backgroundColor, 0, -1);
+      $"[{title}]".WriteAlignedAt(box, HAlign.Center, VAlign.Top, textColor, backgroundColor, 0, -1);
     }
 
     internal static void AskForInt(string question, string prompt, out int result)
@@ -63,7 +63,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 
       Box box = new Box(Console.WindowWidth / 2 - (width + 8) / 2, Console.WindowHeight / 2 - 3, width + 8, 5);
       Draw(question, Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, box);
-      ConsoleEx.WriteAlignedAt(box, prompt, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, -1, 0);
+      prompt.WriteAlignedAt(box, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, -1, 0);
       result = ConsoleEx.ReadInt(Console.GetCursorPosition().Left, Console.GetCursorPosition().Top, Color.White, Color.Black);
     }
 
@@ -73,7 +73,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 
       Box box = new Box(Console.WindowWidth / 2 - (width + 8) / 2, Console.WindowHeight / 2 - 3, width + 8, 5);
       Draw(question, Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, box);
-      ConsoleEx.WriteAlignedAt(box, prompt, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, -1, 0);
+      prompt.WriteAlignedAt(box, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, -1, 0);
       result = ConsoleEx.ReadBool(Console.GetCursorPosition().Left, Console.GetCursorPosition().Top, Color.White, Color.Black);
     }
 
@@ -81,8 +81,8 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     {
       Box box = new Box(Console.WindowWidth / 2 - (message.Length + 6) / 2, Console.WindowHeight / 2 - 4, message.Length + 10, 7);
       Draw(title, Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, box);
-      ConsoleEx.WriteAlignedAt(Box, message, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, 0, -1);
-      ConsoleEx.WriteAlignedAt(Box, "Press any key to continue", HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, 0, 1);
+      message.WriteAlignedAt(Box, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, 0, -1);
+      "Press any key to continue".WriteAlignedAt(Box, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, 0, 1);
       Console.ReadKey(true);
     }
 

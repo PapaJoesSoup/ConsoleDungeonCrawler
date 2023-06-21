@@ -184,38 +184,4 @@
     Bottom,
     Middle
   }
-
-  public enum MapSymbol
-  {
-    Empty = ' ',
-    Wall = '#',
-    Floor = '.',
-    DoorO = '-',
-    DoorC = '+',
-    StairsU = '^',
-    StairsD = 'v',
-    Fire = '!',
-    Water = '~',
-    Acid = 'A',
-    Lava = 'L',
-    Ice = 'I'
-  }
-
-  public enum OverlaySymbol
-  {
-    Empty = ' ',
-    Start = 'S',
-    Exit = 'E',
-    Player = 'P',
-    Ogre = 'O',
-    Kobald = 'k',
-    Ooze = 'z',
-    Goblin = 'g',
-    Chest = 'm',
-    Item = 'i',
-    Gold = '$',
-    Teleporter = 'T',
-    Trap = 'x'
-  }
-
 }

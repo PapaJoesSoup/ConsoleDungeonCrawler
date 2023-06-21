@@ -70,10 +70,10 @@ namespace ConsoleDungeonCrawler.Game.Entities
       X = newPos.X;
       Y = newPos.Y;
       // Check needed for level changes.
-      if (Map.LevelOverlayObjects[Game.CurrentLevel]['P'].Count == 0)
-        Map.LevelOverlayObjects[Game.CurrentLevel]['P'].Add(this);
+      if (Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol].Count == 0)
+        Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol].Add(this);
       else
-        Map.LevelOverlayObjects[Game.CurrentLevel]['P'][0] = this;
+        Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol][0] = this;
 
       Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
       Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
@@ -97,7 +97,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       if (!Map.CanJumpTo(oldPos.X, oldPos.Y, newPos.X, newPos.Y)) return;
       X = newPos.X;
       Y = newPos.Y;
-      Map.LevelOverlayObjects[Game.CurrentLevel]['P'][0] = this;
+      Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol][0] = this;
       Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
       Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
       Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();

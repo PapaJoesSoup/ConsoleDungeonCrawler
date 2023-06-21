@@ -115,7 +115,17 @@ namespace ConsoleDungeonCrawler.Extensions
       Console.SetBufferSize(width, height);
     }
 
-    internal static void WriteLegendItem(MapObject mapObject, int col, int row, int width)
+    /// <summary>
+    /// Prevent stacking of the Keyboard input buffer
+    /// </summary>
+    internal static void FlushInput()
+    {
+      while (Console.KeyAvailable) Console.ReadKey(true);
+    }
+
+    // Extension methods for char and string console writes
+
+    internal static void WriteLegendItem(this MapObject mapObject, int col, int row, int width)
     {
       // create a formatted line containing the symbol and the type of the map object
       int padding = width - mapObject.Type.Name.Length - 5;
@@ -127,7 +137,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(new string(' ', padding), paddingStart, row, Color.White, Color.DimGray);
     }
 
-    internal static void WriteInventoryItem(Item item, int col, int row, int colWidth)
+    internal static void WriteInventoryItem(this Item item, int col, int row, int colWidth)
     {
       // create a formatted line containing the symbol and the type of the map object
 
@@ -136,7 +146,7 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     // WriteAlignedAt Methods
-    internal static void WriteAlignedAt(string s, HAlign hAlign)
+    internal static void WriteAlignedAt(this string s, HAlign hAlign)
     {
       int x = hAlign switch
       {
@@ -148,7 +158,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, Console.CursorTop);
     }
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, ConsoleColor color)
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, ConsoleColor color)
     {
       int x = 0;
       switch (hAlign)
@@ -166,7 +176,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, Console.CursorTop, color);
     }
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, int y)
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, int y)
     {
       int x = 0;
       switch (hAlign)
@@ -184,7 +194,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y);
     }
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, int y, ConsoleColor color)
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, int y, ConsoleColor color)
     {
       int x = 0;
       switch (hAlign)
@@ -202,7 +212,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y, color);
     }
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, int y, ConsoleColor color,
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, int y, ConsoleColor color,
       ConsoleColor backgroundColor)
     {
       int x = 0;
@@ -221,7 +231,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y, color, backgroundColor);
     }
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign)
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign)
     {
       int x = 0;
       int y = 0;
@@ -253,7 +263,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y);
     }
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign, ConsoleColor color)
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, ConsoleColor color)
     {
       int x = 0;
       int y = 0;
@@ -285,7 +295,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y, color);
     }
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign, ConsoleColor color,
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, ConsoleColor color,
       ConsoleColor backgroundColor)
     {
       int x = 0;
@@ -318,7 +328,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y, color, backgroundColor);
     }
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign, int xOffset, int yOffset)
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, int xOffset, int yOffset)
     {
       int x = 0;
       int y = 0;
@@ -350,7 +360,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x + xOffset, y + yOffset);
     }
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign, ConsoleColor color,
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, ConsoleColor color,
       int xOffset, int yOffset)
     {
       int x = 0;
@@ -383,7 +393,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x + xOffset, y + yOffset, color);
     }
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign, ConsoleColor color,
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, ConsoleColor color,
       ConsoleColor backgroundColor, int xOffset, int yOffset)
     {
       int x = 0;
@@ -418,7 +428,7 @@ namespace ConsoleDungeonCrawler.Extensions
 
     // Extended Color WriteAlignedAt Methods
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign, Color color)
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, Color color)
     {
       int x = 0;
       int y = 0;
@@ -450,7 +460,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y, color);
     }
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign, Color color,
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, Color color,
       Color backgroundColor, int xOffset, int yOffset)
     {
       int x = 0;
@@ -483,7 +493,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x + xOffset, y + yOffset, color, backgroundColor);
     }
 
-    internal static void WriteAlignedAt(string s, HAlign hAlign, VAlign vAlign, Color color,
+    internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, Color color,
       Color backgroundColor)
     {
       int x = 0;
@@ -516,7 +526,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y, color, backgroundColor);
     }
 
-    internal static void WriteAlignedAt(Box box, string s, HAlign hAlign, VAlign vAlign, Color color,
+    internal static void WriteAlignedAt(this string s, Box box, HAlign hAlign, VAlign vAlign, Color color,
       Color backgroundColor)
     {
       int x = 0;
@@ -549,7 +559,7 @@ namespace ConsoleDungeonCrawler.Extensions
       WriteAt(s, x, y, color, backgroundColor);
     }
 
-    internal static void WriteAlignedAt(Box box, string s, HAlign hAlign, VAlign vAlign, Color color,
+    internal static void WriteAlignedAt(this string s, Box box, HAlign hAlign, VAlign vAlign, Color color,
       Color backgroundColor, int xOffset, int yOffset)
     {
       int x = 0;
@@ -583,7 +593,7 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     // WriteAt string methods
-    internal static void WriteAt(string s, int x, int y)
+    internal static void WriteAt(this string s, int x, int y)
     {
       try
       {
@@ -597,7 +607,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, ConsoleColor color)
+    internal static void WriteAt(this string s, int x, int y, ConsoleColor color)
     {
       try
       {
@@ -613,7 +623,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, ConsoleColor color, ConsoleColor backgroundColor)
+    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor backgroundColor)
     {
       try
       {
@@ -630,7 +640,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay)
+    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay)
     {
       try
       {
@@ -652,7 +662,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, ConsoleColor color, int delay)
+    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, int delay)
     {
       try
       {
@@ -673,7 +683,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, int delay)
+    internal static void WriteAt(this string s, int x, int y, int delay)
     {
       try
       {
@@ -691,7 +701,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay,
+    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay,
       int repeat)
     {
       try
@@ -717,7 +727,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, int delay, int repeat)
+    internal static void WriteAt(this string s, int x, int y, int delay, int repeat)
     {
       try
       {
@@ -738,7 +748,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay,
+    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay,
       int repeat, int repeatDelay)
     {
       try
@@ -766,7 +776,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, int delay, int repeat, int repeatDelay)
+    internal static void WriteAt(this string s, int x, int y, int delay, int repeat, int repeatDelay)
     {
       try
       {
@@ -789,7 +799,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, ConsoleColor color, int delay, int repeat)
+    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, int delay, int repeat)
     {
       try
       {
@@ -813,7 +823,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, ConsoleColor color, int delay, int repeat, int repeatDelay)
+    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, int delay, int repeat, int repeatDelay)
     {
       try
       {
@@ -840,7 +850,7 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     //WriteAt Char Methods
-    internal static void WriteAt(char c, int x, int y, ConsoleColor color)
+    internal static void WriteAt(this char c, int x, int y, ConsoleColor color)
     {
       try
       {
@@ -856,7 +866,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor)
+    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor)
     {
       try
       {
@@ -873,7 +883,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, ConsoleColor color, int repeat)
+    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, int repeat)
     {
       try
       {
@@ -889,7 +899,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay)
+    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay)
     {
       try
       {
@@ -907,7 +917,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, int delay)
+    internal static void WriteAt(this char c, int x, int y, int delay)
     {
       try
       {
@@ -922,7 +932,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, int repeat, int delay)
+    internal static void WriteAt(this char c, int x, int y, int repeat, int delay)
     {
       try
       {
@@ -940,7 +950,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, int repeat, int delay, int repeatDelay)
+    internal static void WriteAt(this char c, int x, int y, int repeat, int delay, int repeatDelay)
     {
       try
       {
@@ -960,7 +970,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int repeat,
+    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int repeat,
       int delay)
     {
       try
@@ -983,7 +993,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, ConsoleColor color, int repeat, int delay)
+    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, int repeat, int delay)
     {
       try
       {
@@ -1004,7 +1014,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay,
+    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay,
       int repeat, int repeatDelay)
     {
       try
@@ -1030,7 +1040,7 @@ namespace ConsoleDungeonCrawler.Extensions
 
 
     // Extended Color WriteAt Char Methods
-    internal static void WriteAt(char c, int x, int y, Color color, Color backgroundColor)
+    internal static void WriteAt(this char c, int x, int y, Color color, Color backgroundColor)
     {
       try
       {
@@ -1047,7 +1057,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, Color color)
+    internal static void WriteAt(this char c, int x, int y, Color color)
     {
       try
       {
@@ -1062,7 +1072,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, Color color, int repeat)
+    internal static void WriteAt(this char c, int x, int y, Color color, int repeat)
     {
       try
       {
@@ -1078,7 +1088,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(char c, int x, int y, Color color, Color backgroundColor, int repeat,
+    internal static void WriteAt(this char c, int x, int y, Color color, Color backgroundColor, int repeat,
       int delay = 0)
     {
       try
@@ -1103,7 +1113,7 @@ namespace ConsoleDungeonCrawler.Extensions
 
 
     // Extended Color WriteAt String Methods
-    internal static void WriteAt(string s, int x, int y, Color color)
+    internal static void WriteAt(this string s, int x, int y, Color color)
     {
       try
       {
@@ -1119,7 +1129,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, Color color, Color backgroundColor)
+    internal static void WriteAt(this string s, int x, int y, Color color, Color backgroundColor)
     {
       try
       {
@@ -1136,7 +1146,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, Color color, Color backgroundColor, int delay)
+    internal static void WriteAt(this string s, int x, int y, Color color, Color backgroundColor, int delay)
     {
       try
       {
@@ -1158,7 +1168,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, Color color, int delay)
+    internal static void WriteAt(this string s, int x, int y, Color color, int delay)
     {
       try
       {
@@ -1179,7 +1189,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(string s, int x, int y, Color color, Color backgroundColor, int repeat,
+    internal static void WriteAt(this string s, int x, int y, Color color, Color backgroundColor, int repeat,
       int delay)
     {
       try
@@ -1207,7 +1217,7 @@ namespace ConsoleDungeonCrawler.Extensions
 
 
     // WriteBorder Methods
-    internal static void WriteBorder(Box box, BoxCharsEx bChars, ConsoleColor color)
+    internal static void WriteBorder(this Box box, BoxChars bChars, ConsoleColor color)
     {
       try
       {
@@ -1215,20 +1225,20 @@ namespace ConsoleDungeonCrawler.Extensions
         {
           if (i == 0)
           {
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topLeft), box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topRight), box.Left + box.Width - 1, box.Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), box.Left + 1, box.Top + i, color, box.Width - 2);
+            StringInfo.GetNextTextElement(bChars.topLeft).WriteAt(box.Left, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.topRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.hor).WriteAt(box.Left + 1, box.Top + i, color, box.Width - 2);
           }
           else if (i == box.Height - 1)
           {
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botLeft), box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botRight), box.Left + box.Width - 1, box.Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), box.Left + 1, box.Top + i, color, box.Width - 2);
+            StringInfo.GetNextTextElement(bChars.botLeft).WriteAt(box.Left, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.botRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.hor).WriteAt(box.Left + 1, box.Top + i, color, box.Width - 2);
           }
           else
           {
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.ver), box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.ver), box.Left + box.Width - 1, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.ver).WriteAt(box.Left, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.ver).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
           }
         }
 
@@ -1241,8 +1251,7 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    // WriteBorderEx Methods
-    internal static void WriteBorderEx(Box box, BoxCharsEx bChars, Color color)
+    internal static void WriteBorder(this Box box, BoxChars bChars, Color color)
     {
       try
       {
@@ -1250,20 +1259,20 @@ namespace ConsoleDungeonCrawler.Extensions
         {
           if (i == 0)
           {
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topLeft), box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.topRight), box.Left + box.Width - 1, box.Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), box.Left + 1, box.Top, color, Color.Black, box.Width - 2, 0);
+            StringInfo.GetNextTextElement(bChars.topLeft).WriteAt(box.Left, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.topRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.hor).WriteAt(box.Left + 1, box.Top, color, Color.Black, box.Width - 2, 0);
           }
           else if (i == box.Height - 1)
           {
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botLeft), box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.botRight), box.Left + box.Width - 1, box.Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.hor), box.Left + 1, box.Top + i, color, Color.Black, box.Width - 2, 0);
+            StringInfo.GetNextTextElement(bChars.botLeft).WriteAt(box.Left, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.botRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.hor).WriteAt(box.Left + 1, box.Top + i, color, Color.Black, box.Width - 2, 0);
           }
           else
           {
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.ver), box.Left, box.Top + i, color);
-            ConsoleEx.WriteAt(StringInfo.GetNextTextElement(bChars.ver), box.Left + box.Width - 1, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.ver).WriteAt(box.Left, box.Top + i, color);
+            StringInfo.GetNextTextElement(bChars.ver).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
           }
         }
 
@@ -1276,9 +1285,10 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
+
     // Flashing Methods
     // make a char flash
-    internal static void FlashAt(char c, int x, int y, int flashCount, int flashDelay)
+    internal static void FlashAt(this char c, int x, int y, int flashCount, int flashDelay)
     {
       for (int i = 0; i < flashCount; i++)
       {
@@ -1290,7 +1300,7 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     // make a char flash with a given color and delay
-    internal static void FlashAt(char c, int x, int y, int flashCount, int flashDelay,
+    internal static void FlashAt(this char c, int x, int y, int flashCount, int flashDelay,
       ConsoleColor color)
     {
       for (int i = 0; i < flashCount; i++)
@@ -1303,7 +1313,7 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     // make a char flash with a given color and background color and delay
-    internal static void FlashAt(char c, int x, int y, int flashCount, int flashDelay,
+    internal static void FlashAt(this char c, int x, int y, int flashCount, int flashDelay,
       ConsoleColor color, ConsoleColor backgroundColor)
     {
       for (int i = 0; i < flashCount; i++)
@@ -1316,7 +1326,7 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     // make a string flash
-    internal static void FlashAt(string s, int x, int y, int flashCount, int flashDelay)
+    internal static void FlashAt(this string s, int x, int y, int flashCount, int flashDelay)
     {
       for (int i = 0; i < flashCount; i++)
       {
@@ -1328,7 +1338,7 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     // make a string flash with a given color and delay
-    internal static void FlashAt(string s, int x, int y, int flashCount, int flashDelay,
+    internal static void FlashAt(this string s, int x, int y, int flashCount, int flashDelay,
       ConsoleColor color)
     {
       for (int i = 0; i < flashCount; i++)
@@ -1341,7 +1351,7 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     // make a string flash with a given color and background color and delay
-    internal static void FlashAt(string s, int x, int y, int flashCount, int flashDelay,
+    internal static void FlashAt(this string s, int x, int y, int flashCount, int flashDelay,
       ConsoleColor color, ConsoleColor backgroundColor)
     {
       for (int i = 0; i < flashCount; i++)

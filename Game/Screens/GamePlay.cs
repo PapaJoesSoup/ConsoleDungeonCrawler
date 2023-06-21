@@ -5,22 +5,31 @@ using ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
 namespace ConsoleDungeonCrawler.Game.Screens
 {
+  /// <summary>
+  /// GamePlay is the main game screen.  It is responsible for drawing the map, player, and all other objects on the screen.
+  /// </summary>
   internal static class GamePlay
   {
     internal static Box StatusBox = new Box(1, 0, 208, 8);
     internal static Box MapBox = new Box(1, 7, 178, 35);
-    internal static Box OverlayBox = new Box(178, 7, 31, 27);
+    internal static Box OverlayBox = new Box(178, 7, 31, 30);
     internal static Box MessageBox = new Box(1, 41, 178, 12);
-    internal static Box LegendBox = new Box(178, 33, 31, 20);
+    internal static Box LegendBox = new Box(178, 36, 31, 17);
 
     internal static List<Message> Messages = new List<Message>();
-    // These are unicode values for box drawing characters.   Expects Console.OutputEncoding = Encoding.Unicode and Consolas font
-    internal static BoxCharsEx bCharsEx = new BoxCharsEx("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560", "\u2563", "\u2566", "\u2569", "\u256c");
+    internal static int MessageWidth = MessageBox.Width - 33;
+
+    // These are unicode values for box drawing characters.   Expects Console.OutputEncoding = Encoding.Unicode and Consolas font selected in Terminal Settings.
+    // Note that font settings cannot be changed in code, so the user must do this manually.
+    // refer to: https://www.fileformat.info/info/unicode/font/consolas/grid.htm for a grid of all characters
+    internal static BoxChars BChars = new BoxChars("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560", "\u2563", "\u2566", "\u2569", "\u256c");
 
     internal static int currentBag = 1;
 
     // MessageOffset is a negative number that decrements the index of the first message to display in the message Section
     internal static int MessageOffset = 0;
+
+    // LastKey is used to help with player combat state management
     internal static ConsoleKeyInfo LastKey;
 
     internal static void Draw()
@@ -49,25 +58,25 @@ namespace ConsoleDungeonCrawler.Game.Screens
 
     internal static void BordersEx()
     {
-      ConsoleEx.WriteBorderEx(StatusBox, bCharsEx, Color.Gold);
-      ConsoleEx.WriteAlignedAt($"[ {Game.Title} - The {Game.CurrentDungeon} ]", HAlign.Center, VAlign.Top, Color.White);
-      ConsoleEx.WriteBorderEx(MapBox, bCharsEx, Color.Gold);
-      ConsoleEx.WriteBorderEx(OverlayBox, bCharsEx, Color.Gold);
-      ConsoleEx.WriteBorderEx(MessageBox, bCharsEx, Color.Gold);
-      ConsoleEx.WriteBorderEx(LegendBox, bCharsEx, Color.Gold);
+      StatusBox.WriteBorder(BChars, Color.Gold);
+      $"[ {Game.Title} - The {Game.CurrentDungeon} ]".WriteAlignedAt(HAlign.Center, VAlign.Top, Color.White);
+      MapBox.WriteBorder(BChars, Color.Gold);
+      OverlayBox.WriteBorder(BChars, Color.Gold);
+      MessageBox.WriteBorder(BChars, Color.Gold);
+      LegendBox.WriteBorder(BChars, Color.Gold);
 
       // now to clean up the corners
-       ConsoleEx.WriteAt(bCharsEx.midLeft, MapBox.Left, MapBox.Top, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx.midTop, OverlayBox.Left, MapBox.Top, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx.midRight, OverlayBox.Left + OverlayBox.Width - 1 , MapBox.Top, Color.Gold);
+       BChars.midLeft.WriteAt(MapBox.Left, MapBox.Top, Color.Gold);
+      BChars.midTop.WriteAt(OverlayBox.Left, MapBox.Top, Color.Gold);
+      BChars.midRight.WriteAt(OverlayBox.Left + OverlayBox.Width - 1 , MapBox.Top, Color.Gold);
 
-      ConsoleEx.WriteAt(bCharsEx.midLeft, LegendBox.Left, LegendBox.Top, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx.midRight, LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Color.Gold);
+      BChars.midLeft.WriteAt(LegendBox.Left, LegendBox.Top, Color.Gold);
+      BChars.midRight.WriteAt(LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Color.Gold);
 
-      ConsoleEx.WriteAt(bCharsEx.midLeft, MessageBox.Left, MessageBox.Top, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx.midRight, MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Color.Gold);
+      BChars.midLeft.WriteAt(MessageBox.Left, MessageBox.Top, Color.Gold);
+      BChars.midRight.WriteAt(MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Color.Gold);
        
-      ConsoleEx.WriteAt(bCharsEx.midBottom, LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
+      BChars.midBottom.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
 
     }
 
@@ -84,19 +93,19 @@ namespace ConsoleDungeonCrawler.Game.Screens
       //Player Stats
       int col = StatusBox.Left + 179;
       int row = StatusBox.Top + 1;
-      ConsoleEx.WriteAt(bCharsEx.midTop, col - 2, row - 1, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx.mid, col - 2, StatusBox.Height - 1, Color.Gold);
+      BChars.midTop.WriteAt(col - 2, row - 1, Color.Gold);
+      BChars.mid.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
       for (int index = row; index < row + 6; index++)
       {
-        ConsoleEx.WriteAt(bCharsEx.ver, col - 2, index, Color.Gold);
+        BChars.ver.WriteAt(col - 2, index, Color.Gold);
       }
-      ConsoleEx.WriteAt($"Player - Level: {Player.Level}", col, row, Color.Gold); row++;
-      ConsoleEx.WriteAt($"Class: {Player.Class}", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt($"Weapon: ", col, row, ConsoleColor.White);
-      ConsoleEx.WriteAt($"{Player.Weapon.Name}", col + 8, row, ColorEx.RarityColor(Player.Weapon.Rarity)); row++;
-      ConsoleEx.WriteAt($"Health: {Player.Health}/{Player.MaxHealth}", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt($"Mana: {Player.Mana}/{Player.MaxMana}", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt($"Gold: {Player.Gold}g", col, row, ConsoleColor.White);
+      $"Player - Level: {Player.Level}".WriteAt(col, row, Color.Gold); row++;
+      $"Class: {Player.Class}".WriteAt(col, row, ConsoleColor.White); row++;
+      $"Weapon: ".WriteAt(col, row, ConsoleColor.White);
+      $"{Player.Weapon.Name}".WriteAt(col + 8, row, ColorEx.RarityColor(Player.Weapon.Rarity)); row++;
+      $"Health: {Player.Health}/{Player.MaxHealth}".WriteAt(col, row, ConsoleColor.White); row++;
+      $"Mana: {Player.Mana}/{Player.MaxMana}".WriteAt(col, row, ConsoleColor.White); row++;
+      $"Gold: {Player.Gold}g".WriteAt(col, row, ConsoleColor.White);
     }
 
     internal static void SpellStats()
@@ -108,21 +117,21 @@ namespace ConsoleDungeonCrawler.Game.Screens
       col = StatusBox.Left + 140;
       row = StatusBox.Top + 1;
       int colWidth = 18;
-      ConsoleEx.WriteAt(bCharsEx.midTop, col - 2, row - 1, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx.midBottom, col - 2, StatusBox.Height - 1, Color.Gold);
+      BChars.midTop.WriteAt(col - 2, row - 1, Color.Gold);
+      BChars.midBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
       for (int index = row; index < row + 6; index++)
       {
-        ConsoleEx.WriteAt(bCharsEx.ver, col - 2, index, Color.Gold);
+        BChars.ver.WriteAt(col - 2, index, Color.Gold);
       }
-      ConsoleEx.WriteAt("Spells", col, row, Color.Gold);
+      "Spells".WriteAt(col, row, Color.Gold);
       row++;
       for (int index = 0; index < 10; index++) // 10 spells max
       {
-        if (index >= Player.Spells.Count) ConsoleEx.WriteAt($"None", col, row, Color.DimGray);
+        if (index >= Player.Spells.Count) $"None".WriteAt(col, row, Color.DimGray);
         else
         {
           Spell spell = Player.Spells[index];
-          ConsoleEx.WriteAt($"{spell.Name}: {spell.Description} ", col, row, ConsoleColor.White);
+          $"{spell.Name}: {spell.Description} ".WriteAt(col, row, ConsoleColor.White);
         }
         row++;
         count++;
@@ -144,28 +153,26 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int colWidth = 25;
       int count = 0;
       int totalBags = Inventory.Bags.Count;
-      ConsoleEx.WriteAt(bCharsEx.midTop, col - 2, row - 1, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx.midBottom, col - 2, StatusBox.Height - 1, Color.Gold);
+      BChars.midTop.WriteAt(col - 2, row - 1, Color.Gold);
+      BChars.midBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
       for (int index = row; index < row + 6; index++)
       {
-        ConsoleEx.WriteAt(bCharsEx.ver, col - 2, index, Color.Gold);
+        BChars.ver.WriteAt(col - 2, index, Color.Gold);
       }
 
       Bag bag = Inventory.Bags[currentBag - 1];
-      ConsoleEx.WriteAt($"Inventory - Bag: {currentBag} of {totalBags}  (< or > to switch bags)", col, row, Color.Gold);
+      $"Inventory - Bag: {currentBag} of {totalBags}  (< or > to switch bags)".WriteAt(col, row, Color.Gold);
       row++;
       for (int index = 0; index < bag.Capacity; index++)
       {
-        if (index >= bag.Items.Count) ConsoleEx.WriteAt("Empty".PadRight(colWidth), col, row, Color.DimGray);
+        if (index >= bag.Items.Count) "Empty".PadRight(colWidth).WriteAt(col, row, Color.DimGray);
         else
         {
           Item item = bag.Items[index];
-          ConsoleEx.WriteInventoryItem(item, col, row, colWidth);
+          item.WriteInventoryItem(col, row, colWidth);
         }
-
         row++;
         count++;
-
         if (count < 5) continue;
         count = 0;
         row = StatusBox.Top + 2;
@@ -179,12 +186,12 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int col = StatusBox.Left + 2;
 
       //Armor
-      ConsoleEx.WriteAt("Armor", col, row, Color.Gold);
+      "Armor".WriteAt(col, row, Color.Gold);
       row++;
       foreach (var armor in Player.ArmorSet)
       {
         string armorText = $"{armor.ArmorType}: {armor.Name} ".PadRight(col + 50);
-        ConsoleEx.WriteAt(armorText, col, row, ConsoleColor.White);
+        armorText.WriteAt(col, row, ConsoleColor.White);
         row++;
       }
     }
@@ -203,41 +210,40 @@ namespace ConsoleDungeonCrawler.Game.Screens
     {
       int col = OverlayBox.Left + 2;
       int row = OverlayBox.Top + 1;
-      ConsoleEx.WriteAt("Map objects: ", col, row, Color.Gold); row += 2;
+      "Map objects: ".WriteAt(col, row, Color.Gold); row += 2;
       foreach (char type in Map.LevelOverlayObjects[Game.CurrentLevel].Keys)
       {
         foreach (MapObject mapObject in Map.LevelOverlayObjects[Game.CurrentLevel][type])
         {
           if (!mapObject.IsVisible || mapObject.Type.Symbol == ' ') continue;
-          ConsoleEx.WriteLegendItem(mapObject, col, row, OverlayBox.Width - 2);
+          mapObject.WriteLegendItem(col, row, OverlayBox.Width - 2);
           row++;
         }
       }
       // clear the rest of the legend box
       if (row >= OverlayBox.Top + OverlayBox.Height - 1) return;
       for (int index = row; index < OverlayBox.Top + OverlayBox.Height - 1; index++)
-        ConsoleEx.WriteAt(" ", col, index, ConsoleColor.Black, ConsoleColor.Black, 0, OverlayBox.Width - 3);
+        " ".WriteAt(col, index, ConsoleColor.Black, ConsoleColor.Black, 0, OverlayBox.Width - 3);
     }
 
     internal static void LegendSection()
     {
       int col = LegendBox.Left + 2;
       int row = LegendBox.Top + 1;
-      ConsoleEx.WriteAt("Game Play Legend: ", col, row, Color.Gold); row += 2;
-      ConsoleEx.WriteAt("[W,A,S,D] - Move", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[Shift+W,A,S,D] - Jump", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[T] - Attack Enemy", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[1-0] - Cast Spell", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[H] - Use Healing Potion", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[M] - Use Mana Potion", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[G] - Use Bandage", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[O,C] - Open/Close Door", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[F7/F8] - Up/Down Stairs", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[< >] - Switch Bag Shown", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[Esc] - Pause Menu", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[Shift+I] - Inventory", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[Shift+S] - Spells", col, row, ConsoleColor.White); row++;
-      ConsoleEx.WriteAt("[Shift+Q] - Quit", col, row, ConsoleColor.White);
+      "Game Play Legend: ".WriteAt(col, row, Color.Gold); row += 2;
+      "[W,A,S,D] - Move".WriteAt(col, row, ConsoleColor.White); row++;
+      "[Shift+W,A,S,D] - Jump".WriteAt(col, row, ConsoleColor.White); row++;
+      "[T] - Attack Enemy".WriteAt(col, row, ConsoleColor.White); row++;
+      "[1-0] - Cast Spell".WriteAt(col, row, ConsoleColor.White); row++;
+      "[H] - Use Healing Potion".WriteAt(col, row, ConsoleColor.White); row++;
+      "[M] - Use Mana Potion".WriteAt(col, row, ConsoleColor.White); row++;
+      "[G] - Use Bandage".WriteAt(col, row, ConsoleColor.White); row++;
+      "[O,C] - Open/Close Door".WriteAt(col, row, ConsoleColor.White); row++;
+      "[< >] - Switch Bag Shown".WriteAt(col, row, ConsoleColor.White); row++;
+      "[Esc] - Pause Menu".WriteAt(col, row, ConsoleColor.White); row++;
+      "[Shift+I] - Inventory".WriteAt(col, row, ConsoleColor.White); row++;
+      "[Shift+S] - Spells".WriteAt(col, row, ConsoleColor.White); row++;
+      "[Shift+Q] - Quit".WriteAt(col, row, ConsoleColor.White);
     }
 
     internal static void MessageSection()
@@ -245,23 +251,23 @@ namespace ConsoleDungeonCrawler.Game.Screens
       // display the last 10 messages or less.  allow scrolling up or down through messages in pages of 8
       int col = MessageBox.Left + 2;
       int row = MessageBox.Top + 1;
-      int displaycount = MessageBox.Height - 2;
+      int displayCount = MessageBox.Height - 2;
       if (MessageOffset > 0) MessageOffset = 0;
       if (MessageOffset < -Messages.Count) MessageOffset = -Messages.Count;
       int end = Messages.Count + MessageOffset;
       if (Messages.Count < end) end = Messages.Count;
       int start = 0;
-      if (end > displaycount) start = end - displaycount;
-      if (end < displaycount && Messages.Count >= displaycount) end = displaycount;
+      if (end > displayCount) start = end - displayCount;
+      if (end < displayCount && Messages.Count >= displayCount) end = displayCount;
       for (int index = start; index < end; index++)
       {
-        Messages[index].WriteAt(col, row);
+        Messages[index].WriteMessageAt(col, row);
         row++;
       }
       // clear the rest of the message box
       if (row >= MessageBox.Top + MessageBox.Height - 1) return;
       for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
-        ConsoleEx.WriteAt(" ", col, index, Color.Black, Color.Black, MessageBox.Width - 33, 0);
+        " ".WriteAt(col, index, Color.Black, Color.Black, MessageWidth, 0);
     }
 
     internal static void MessageLegend()
@@ -269,18 +275,18 @@ namespace ConsoleDungeonCrawler.Game.Screens
       int col = MessageBox.Width - 30;
       int row = MessageBox.Top + 1;
       // draw the message Legend left border
-      ConsoleEx.WriteAt(bCharsEx.midTop, col, row - 1, Color.Gold);
-      ConsoleEx.WriteAt(bCharsEx.midBottom, col, MessageBox.Top + MessageBox.Height - 1, Color.Gold);
+      BChars.midTop.WriteAt(col, row - 1, Color.Gold);
+      BChars.midBottom.WriteAt(col, MessageBox.Top + MessageBox.Height - 1, Color.Gold);
       for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
-        ConsoleEx.WriteAt(bCharsEx.ver, col, index, Color.Gold);
+        BChars.ver.WriteAt(col, index, Color.Gold);
       col += 2;
-      ConsoleEx.WriteAt("Messages Legend: ", col, row, Color.Gold); row += 2;
-      ConsoleEx.WriteAt("[UpArrow] - Prev Message", col, row, Color.White); row++;
-      ConsoleEx.WriteAt("[DownArrow] - Next Message", col, row, Color.White); row++;
-      ConsoleEx.WriteAt("[PageUP] - Messages - 10", col, row, Color.White); row++;
-      ConsoleEx.WriteAt("[PageDown] - Messages + 10", col, row, Color.White); row++;
-      ConsoleEx.WriteAt("[Home] - First Message", col, row, Color.White); row++;
-      ConsoleEx.WriteAt("[End] - Last Message", col, row, Color.White);
+      "Messages Legend: ".WriteAt(col, row, Color.Gold); row += 2;
+      "[UpArrow] - Prev Message".WriteAt(col, row, Color.White); row++;
+      "[DownArrow] - Next Message".WriteAt(col, row, Color.White); row++;
+      "[PageUP] - Messages - 10".WriteAt(col, row, Color.White); row++;
+      "[PageDown] - Messages + 10".WriteAt(col, row, Color.White); row++;
+      "[Home] - First Message".WriteAt(col, row, Color.White); row++;
+      "[End] - Last Message".WriteAt(col, row, Color.White);
     }
 
     internal static bool AcceptableKeys()
@@ -389,6 +395,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
             break;
         }
       }
+      ConsoleEx.FlushInput();
     }
   }
 }
