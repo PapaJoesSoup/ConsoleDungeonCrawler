@@ -86,7 +86,7 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
       foreach (Bag bag in Inventory.Bags)
       {
         if (!bag.Items.Contains(this)) continue;
-        bag.Items.Remove(this);
+        bag.RemoveItem(this);
         GamePlay.MessageSection();
         return result;
       }

@@ -80,8 +80,8 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     internal static void MoveItem(Item item, int bag)
     {
       if (Inventory.Bags[bag].Items.Count >= Inventory.Bags[bag].Capacity) return;
-      Inventory.Bags[bag].Items.Add(item);
-      Inventory.Bags[activeBag].Items.Remove(item);
+      Inventory.Bags[bag].AddItem(item);
+      Inventory.Bags[activeBag].RemoveItem(item);
     }
 
     private static void SellItem()
@@ -148,12 +148,8 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 
     internal static void SellItem(Item item)
     {
-      if (item.Quantity > 0)
-      {
         Player.Gold += item.SellCost;
-        item.Quantity--;
-      }
-      if (item.Quantity == 0) Inventory.Bags[activeBag].Items.Remove(item);
+        Inventory.Bags[activeBag].RemoveItem(item);
     }
 
     internal static void KeyHandler()

@@ -50,7 +50,7 @@
       foreach (Bag bag in Inventory.Bags)
       {
         if (!bag.Items.Contains(this)) continue;
-        bag.Items.Remove(this);
+        bag.RemoveItem(this);
         Player.EquipArmor(this);
         return true;
       }
