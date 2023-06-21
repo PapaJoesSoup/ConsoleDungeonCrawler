@@ -164,8 +164,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     internal static void EquipWeapon(Weapon weapon)
     {
-
-      Inventory.AddItem(Player.Weapon);
+      // don't add fists to inventory
+      if (weapon.Name != "Fists") Inventory.AddItem(Player.Weapon);
       Weapon = weapon;
     }
 

@@ -190,8 +190,9 @@ namespace ConsoleDungeonCrawler.Game.Screens
       row++;
       foreach (var armor in Player.ArmorSet)
       {
-        string armorText = $"{armor.ArmorType}: {armor.Name} ".PadRight(col + 50);
+        string armorText = $"{armor.ArmorType}: ";
         armorText.WriteAt(col, row, ConsoleColor.White);
+        armor.Name.PadRight(50 - armorText.Length).WriteAt(col + armorText.Length, row, ColorEx.RarityColor(armor.Rarity));
         row++;
       }
     }
