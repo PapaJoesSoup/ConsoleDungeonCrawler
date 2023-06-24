@@ -2,207 +2,206 @@
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
 
-namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
+namespace ConsoleDungeonCrawler.Game.Screens.Dialogs;
+
+internal static class PlayerInventory
 {
-  internal static class PlayerInventory
+  private static Color color = Color.DarkOrange;
+  private static Color backgroundColor = Color.Black;
+  private static Color fillColor = Color.Olive;
+  private static Color textColor = Color.Bisque;
+  private static Color selectedColor = Color.Lime;
+  private static Color selectedBackgroundColor = Color.DarkOrange;
+
+  static int activeBag;
+  static int activeItem;
+  static bool dialogOpen;
+  private static int listWidth = 40;
+
+  private static Box legendBox = new(Dialog.Box.Left, Dialog.Box.Top + 8, 22, 10);
+
+
+  internal static void Draw()
   {
-    private static Color color = Color.DarkOrange;
-    private static Color backgroundColor = Color.Black;
-    private static Color fillColor = Color.Olive;
-    private static Color textColor = Color.Bisque;
-    private static Color selectedColor = Color.Lime;
-    private static Color selectedBackgroundColor = Color.DarkOrange;
+    dialogOpen = true;
+    Dialog.Draw(" Player Inventory Manager ");
 
-    static int activeBag;
-    static int activeItem;
-    static bool dialogOpen;
-    private static int listWidth = 40;
-
-    private static Box legendBox = new(Dialog.Box.Left, Dialog.Box.Top + 8, 22, 10);
-
-
-    internal static void Draw()
+    while (dialogOpen)
     {
-      dialogOpen = true;
-      Dialog.Draw(" Player Inventory Manager ");
-
-      while (dialogOpen)
-      {
-        // Create a new box for the player inventory
-        int x = 1;
-        int y = 1;
-        "Select Bag: ([x])".WriteAt(Dialog.Box.Left + 2, Dialog.Box.Top + 1, textColor, fillColor);
-        y += 2;
-        foreach (var bag in Inventory.Bags)
-        {
-          $"[{x}] Bag {x}".WriteAt(Dialog.Box.Left + 2, Dialog.Box.Top + y, textColor, activeBag == x - 1 ? selectedBackgroundColor : fillColor);
-          x++;
-          y++;
-        }
-        DrawLegend();
-        DrawBag(Inventory.Bags[activeBag]);
-        KeyHandler();
-      }
-    }
-
-    private static void DrawLegend()
-    {
-      int y = legendBox.Top + 1;
-      "Legend:".WriteAt(legendBox.Left + 2, legendBox.Top, textColor, fillColor); y++;
-
-      "[1-5] Select Bag".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.PageUp}] Prev Bag".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.PageDown}] Next Bag".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.UpArrow}] Prev Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.DownArrow}] Next Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.M}] Move Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.R}] Remove Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.S}] Sell Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.U}] Use Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(legendBox.Left + 2, y, textColor, fillColor);
-    }
-
-    private static void DrawBag(Bag bag)
-    {
-      int x = Dialog.Box.Left + 25;
-      int y = Dialog.Box.Top + 1;
-      $"Bag {activeBag + 1} Contents:".WriteAt(x, y, textColor, fillColor);
+      // Create a new box for the player inventory
+      int x = 1;
+      int y = 1;
+      "Select Bag: ([x])".WriteAt(Dialog.Box.Left + 2, Dialog.Box.Top + 1, textColor, fillColor);
       y += 2;
-      for (int i = 0; i < bag.Capacity; i++)
+      foreach (var bag in Inventory.Bags)
       {
-        if (i >= bag.Items.Count)
-          $"[{i + 1}]:  Empty".PadRight(listWidth).WriteAt(x, y, textColor, fillColor);
-        else
-          ($"[{i + 1}]:  ({bag.Items[i].Quantity}) {bag.Items[i].Name}".PadRight(listWidth - 7) +
-           $"${decimal.Round(bag.Items[i].SellCost, 2)}g".PadLeft(7))
-            .WriteAt(x, y, i == activeItem ? selectedColor : textColor, i == activeItem ? selectedBackgroundColor : fillColor);
+        $"[{x}] Bag {x}".WriteAt(Dialog.Box.Left + 2, Dialog.Box.Top + y, textColor, activeBag == x - 1 ? selectedBackgroundColor : fillColor);
+        x++;
         y++;
       }
+      DrawLegend();
+      DrawBag(Inventory.Bags[activeBag]);
+      KeyHandler();
     }
-
-    private static void MoveItem(Item item, int bag)
-    {
-      if (Inventory.Bags[bag].Items.Count >= Inventory.Bags[bag].Capacity) return;
-      Inventory.Bags[bag].AddItem(item);
-      Inventory.Bags[activeBag].RemoveItem(item);
-    }
-
-    private static void SellItem()
-    {
-      Dialog.Confirm("Sell Item",
-        $"Sell this item for {Inventory.Bags[activeBag].Items[activeItem].SellCost} gold? (Y or N)", out bool sell);
-      if (sell) SellItem(Inventory.Bags[activeBag].Items[activeItem]);
-      Draw();
-    }
-
-    private static void RemoveItem()
-    {
-      if (Inventory.Bags[activeBag].Items[activeItem].Quantity == 0)
-      {
-        Dialog.Notify("Can't Remove Item", "You don't have any of this item.");
-        Draw();
-        return;
-      }
-
-      Dialog.Confirm("Remove Item", "Are you sure you want to destroy this item? (Y or N)", out bool remove);
-      if (remove) Inventory.Bags[activeBag].Items.RemoveAt(activeItem);
-      Draw();
-    }
-
-    private static void MoveItem()
-    {
-      if (Inventory.Bags.Count == 1)
-      {
-        Dialog.Notify("Can't Move Item", "You only have one bag.");
-        Draw();
-        return;
-      }
-
-      Dialog.AskForInt("Move Item To Bag", "Enter a bag number: ", out int newBag);
-      newBag--; // Adjust for indexing.
-      if (newBag <= Inventory.Bags.Count && newBag >= 1 && newBag != activeBag)
-        MoveItem(Inventory.Bags[activeBag].Items[activeItem], newBag);
-      else
-      {
-        Dialog.Notify("Invalid Bag", "You entered an invalid bag number.");
-      }
-
-      Draw();
-    }
-
-    private static void UseItem()
-    {
-      Dialog.Confirm("Use Item", "Are you sure you want to use this item? (Y or N)", out bool use);
-      if (!use)
-      {
-        Draw();
-        return;
-      }
-      if (!Inventory.Bags[activeBag].Items[activeItem].Use())
-      {
-        Draw();
-        Dialog.Notify("Can't Use Item", "You can't use this item.");
-        Draw();
-        return;
-      }
-      GamePlay.StatusSection();
-      Draw();
-    }
-
-    private static void SellItem(Item item)
-    {
-        Player.Gold += item.SellCost;
-        Inventory.Bags[activeBag].RemoveItem(item);
-    }
-
-    private static void KeyHandler()
-    {
-      ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-      switch (keyInfo.Key)
-      {
-        case ConsoleKey.Escape:
-          dialogOpen = false;
-          Dialog.Close("GamePlay");
-          break;
-        case ConsoleKey.D1:
-        case ConsoleKey.D2:
-        case ConsoleKey.D3:
-        case ConsoleKey.D4:
-        case ConsoleKey.D5:
-          if (Inventory.Bags.Count < (int)keyInfo.Key - 48) return;
-          activeBag = (int)keyInfo.Key - 49;
-          DrawBag(Inventory.Bags[(int)keyInfo.Key - 49]);
-          break;
-        case ConsoleKey.PageUp:
-          if (activeBag == 0) activeBag = Inventory.Bags.Count - 1;
-          else activeBag--;
-          break;
-        case ConsoleKey.PageDown:
-          if (activeBag == Inventory.Bags.Count - 1) activeBag = 0;
-          else activeBag++;
-          break;
-        case ConsoleKey.UpArrow:
-          if (activeItem == 0) activeItem = Inventory.Bags[activeBag].Items.Count - 1;
-          else activeItem--;
-          break;
-        case ConsoleKey.DownArrow:
-          if (activeItem == Inventory.Bags[activeBag].Items.Count - 1) activeItem = 0;
-          else activeItem++;
-          break;
-        case ConsoleKey.M:
-          MoveItem();
-          break;
-        case ConsoleKey.R:
-          RemoveItem();
-          break;
-        case ConsoleKey.S:
-          SellItem();
-          break;
-        case ConsoleKey.U:
-          UseItem();
-          break;
-      }
-    }
-
   }
+
+  private static void DrawLegend()
+  {
+    int y = legendBox.Top + 1;
+    "Legend:".WriteAt(legendBox.Left + 2, legendBox.Top, textColor, fillColor); y++;
+
+    "[1-5] Select Bag".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+    $"[{ConsoleKey.PageUp}] Prev Bag".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+    $"[{ConsoleKey.PageDown}] Next Bag".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+    $"[{ConsoleKey.UpArrow}] Prev Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+    $"[{ConsoleKey.DownArrow}] Next Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+    $"[{ConsoleKey.M}] Move Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+    $"[{ConsoleKey.R}] Remove Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+    $"[{ConsoleKey.S}] Sell Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+    $"[{ConsoleKey.U}] Use Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+    $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(legendBox.Left + 2, y, textColor, fillColor);
+  }
+
+  private static void DrawBag(Bag bag)
+  {
+    int x = Dialog.Box.Left + 25;
+    int y = Dialog.Box.Top + 1;
+    $"Bag {activeBag + 1} Contents:".WriteAt(x, y, textColor, fillColor);
+    y += 2;
+    for (int i = 0; i < bag.Capacity; i++)
+    {
+      if (i >= bag.Items.Count)
+        $"[{i + 1}]:  Empty".PadRight(listWidth).WriteAt(x, y, textColor, fillColor);
+      else
+        ($"[{i + 1}]:  ({bag.Items[i].Quantity}) {bag.Items[i].Name}".PadRight(listWidth - 7) +
+         $"${decimal.Round(bag.Items[i].SellCost, 2)}g".PadLeft(7))
+          .WriteAt(x, y, i == activeItem ? selectedColor : textColor, i == activeItem ? selectedBackgroundColor : fillColor);
+      y++;
+    }
+  }
+
+  private static void MoveItem(Item item, int bag)
+  {
+    if (Inventory.Bags[bag].Items.Count >= Inventory.Bags[bag].Capacity) return;
+    Inventory.Bags[bag].AddItem(item);
+    Inventory.Bags[activeBag].RemoveItem(item);
+  }
+
+  private static void SellItem()
+  {
+    Dialog.Confirm("Sell Item",
+      $"Sell this item for {Inventory.Bags[activeBag].Items[activeItem].SellCost} gold? (Y or N)", out bool sell);
+    if (sell) SellItem(Inventory.Bags[activeBag].Items[activeItem]);
+    Draw();
+  }
+
+  private static void RemoveItem()
+  {
+    if (Inventory.Bags[activeBag].Items[activeItem].Quantity == 0)
+    {
+      Dialog.Notify("Can't Remove Item", "You don't have any of this item.");
+      Draw();
+      return;
+    }
+
+    Dialog.Confirm("Remove Item", "Are you sure you want to destroy this item? (Y or N)", out bool remove);
+    if (remove) Inventory.Bags[activeBag].Items.RemoveAt(activeItem);
+    Draw();
+  }
+
+  private static void MoveItem()
+  {
+    if (Inventory.Bags.Count == 1)
+    {
+      Dialog.Notify("Can't Move Item", "You only have one bag.");
+      Draw();
+      return;
+    }
+
+    Dialog.AskForInt("Move Item To Bag", "Enter a bag number: ", out int newBag);
+    newBag--; // Adjust for indexing.
+    if (newBag <= Inventory.Bags.Count && newBag >= 1 && newBag != activeBag)
+      MoveItem(Inventory.Bags[activeBag].Items[activeItem], newBag);
+    else
+    {
+      Dialog.Notify("Invalid Bag", "You entered an invalid bag number.");
+    }
+
+    Draw();
+  }
+
+  private static void UseItem()
+  {
+    Dialog.Confirm("Use Item", "Are you sure you want to use this item? (Y or N)", out bool use);
+    if (!use)
+    {
+      Draw();
+      return;
+    }
+    if (!Inventory.Bags[activeBag].Items[activeItem].Use())
+    {
+      Draw();
+      Dialog.Notify("Can't Use Item", "You can't use this item.");
+      Draw();
+      return;
+    }
+    GamePlay.StatusSection();
+    Draw();
+  }
+
+  private static void SellItem(Item item)
+  {
+    Player.Gold += item.SellCost;
+    Inventory.Bags[activeBag].RemoveItem(item);
+  }
+
+  private static void KeyHandler()
+  {
+    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+    switch (keyInfo.Key)
+    {
+      case ConsoleKey.Escape:
+        dialogOpen = false;
+        Dialog.Close("GamePlay");
+        break;
+      case ConsoleKey.D1:
+      case ConsoleKey.D2:
+      case ConsoleKey.D3:
+      case ConsoleKey.D4:
+      case ConsoleKey.D5:
+        if (Inventory.Bags.Count < (int)keyInfo.Key - 48) return;
+        activeBag = (int)keyInfo.Key - 49;
+        DrawBag(Inventory.Bags[(int)keyInfo.Key - 49]);
+        break;
+      case ConsoleKey.PageUp:
+        if (activeBag == 0) activeBag = Inventory.Bags.Count - 1;
+        else activeBag--;
+        break;
+      case ConsoleKey.PageDown:
+        if (activeBag == Inventory.Bags.Count - 1) activeBag = 0;
+        else activeBag++;
+        break;
+      case ConsoleKey.UpArrow:
+        if (activeItem == 0) activeItem = Inventory.Bags[activeBag].Items.Count - 1;
+        else activeItem--;
+        break;
+      case ConsoleKey.DownArrow:
+        if (activeItem == Inventory.Bags[activeBag].Items.Count - 1) activeItem = 0;
+        else activeItem++;
+        break;
+      case ConsoleKey.M:
+        MoveItem();
+        break;
+      case ConsoleKey.R:
+        RemoveItem();
+        break;
+      case ConsoleKey.S:
+        SellItem();
+        break;
+      case ConsoleKey.U:
+        UseItem();
+        break;
+    }
+  }
+
 }

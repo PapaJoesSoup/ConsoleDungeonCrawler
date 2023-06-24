@@ -1,12 +1,11 @@
-﻿namespace ConsoleDungeonCrawler.Extensions
+﻿namespace ConsoleDungeonCrawler.Extensions;
+
+internal static class StringEx
 {
-  internal static class StringEx
+  internal static string PadCenter(this string text, int width)
   {
-    internal static string PadCenter(this string text, int width)
-    {
-      int totalPad = width - text.Length;
-      int padLeft = totalPad / 2 + text.Length;
-      return text.PadLeft(padLeft).PadRight(width);
-    }
+    int totalPad = width - text.Length;
+    int padLeft = totalPad / 2 + text.Length;
+    return text.PadLeft(padLeft).PadRight(width);
   }
 }

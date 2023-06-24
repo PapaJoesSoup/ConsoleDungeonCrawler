@@ -1,74 +1,66 @@
 ﻿using System.Drawing;
 using ConsoleDungeonCrawler.Game.Screens;
 
-namespace ConsoleDungeonCrawler.Game.Entities.Items
+namespace ConsoleDungeonCrawler.Game.Entities.Items;
+
+internal class Food : Item
 {
-  internal class Food : Item
+  private readonly FoodType foodType = FoodType.Vegetable;
+  private readonly BuffType buffType = BuffType.Health;
+  private readonly int buffAmount = 1;
+
+  internal Food()
   {
-    internal readonly FoodType FoodType = FoodType.Vegetable;
-    internal readonly BuffType BuffType = BuffType.Health;
-    internal readonly int BuffAmount = 1;
 
-    internal Food()
+  }
+
+  internal Food(FoodType foodType, BuffType buffType, int quantity, decimal buyCost, decimal value)
+  {
+    Type = ItemType.Food;
+    this.foodType = foodType;
+    this.buffType = buffType;
+    Quantity = quantity;
+    StackSize = 20;
+
+    Name = $"{this.foodType}";
+    Description = this.buffType == BuffType.Health ? $"a {this.foodType}" : $"some {this.foodType}";
+    BuyCost = buyCost;
+    SellCost = 0;
+  }
+
+  internal override bool Use()
+  {
+    if (Player.Health == Player.MaxHealth)
     {
-
+      GamePlay.Messages.Add(new Message("You are already at full health.", Color.Orange, Color.Black));
+      return false;
     }
-
-    internal Food(FoodType foodType, BuffType bufftype, int quantity, decimal buyCost, decimal value)
+    switch (buffType)
     {
-      Type = ItemType.Food;
-      FoodType = foodType;
-      BuffType = bufftype;
-      Quantity = quantity;
-      StackSize = 20;
-
-      Name = $"{FoodType}";
-      if (BuffType == BuffType.Health)
-      {
-        Description = $"A {FoodType}";
-      }
-      else
-      {
-        Description = $"some {FoodType}";
-      }
-      BuyCost = buyCost;
-      SellCost = 0;
+      case BuffType.Health:
+        Player.Heal(buffAmount);
+        break;
+      case BuffType.Mana:
+        Player.RestoreMana(buffAmount);
+        break;
+      case BuffType.HealthAndMana:
+        Player.Heal(buffAmount);
+        Player.RestoreMana(buffAmount);
+        break;
     }
+    Quantity--;
+    GamePlay.Messages.Add(new Message(this.buffType == BuffType.Mana ? $"You drank {Description}." : $"You ate {Description}.", Color.Orange, Color.Black));
+    if (Quantity > 0) return true;
+    GamePlay.Messages.Add(new Message(this.buffType == BuffType.Mana ? $"You drank your last {Name}." : $"You ate your last {Name}.", Color.Orange, Color.Black));
+    Inventory.RemoveItem(this);
 
-    internal override bool Use()
-    {
-      if (Player.Health == Player.MaxHealth)
-      {
-        GamePlay.Messages.Add(new Message("You are already at full health.", Color.Orange, Color.Black));
-        return false;
-      }
-      switch (BuffType)
-      {
-        case BuffType.Health:
-          Player.Heal(BuffAmount);
-          break;
-        case BuffType.Mana:
-          Player.RestoreMana(BuffAmount);
-          break;
-        case BuffType.HealthAndMana:
-          Player.Heal(BuffAmount);
-          Player.RestoreMana(BuffAmount);
-          break;
-      }
-      Quantity--;
-      GamePlay.Messages.Add(new Message(this.BuffType == BuffType.Mana ? $"You drank {Description}." : $"You ate {Description}.", Color.Orange, Color.Black));
-      if (Quantity > 0) return true;
-      GamePlay.Messages.Add(new Message(this.BuffType == BuffType.Mana ? $"You drank your last {Name}." : $"You ate your last {Name}.", Color.Orange, Color.Black));
-      Inventory.RemoveItem(this);
+    return true;
+  }
 
-      return true;
-    }
-
-    internal new static Item GetRandomItem()
-    {
-      BuffType randomBuff = (BuffType)Dice.Roll(1, Inventory.Foods.Count - 1); // 0 is None
-      int randomFood = Dice.Roll(0, Inventory.Foods[randomBuff].Count - 1);
-      return Inventory.Foods[randomBuff][randomFood];
-    }
+  internal new static Item GetRandomItem()
+  {
+    BuffType randomBuff = (BuffType)Dice.Roll(1, Inventory.Foods.Count - 1); // 0 is None
+    int randomFood = Dice.Roll(0, Inventory.Foods[randomBuff].Count - 1);
+    return Inventory.Foods[randomBuff][randomFood];
   }
 }
