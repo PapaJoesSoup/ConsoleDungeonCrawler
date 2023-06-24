@@ -5,13 +5,11 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
 {
   internal class Potion : Item
   {
-    internal readonly BuffType BuffType = BuffType.Health;
-    internal readonly int BuffAmount = 1;
-
+    private readonly BuffType buffType = BuffType.Health;
+    private readonly int buffAmount = 1;
 
     internal Potion()
     {
-
     }
 
     internal Potion(BuffType potionType, ItemRarity rarity, int quantity, decimal buyCost, decimal sellCost)
@@ -23,9 +21,10 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
       BuyCost = buyCost;
       SellCost = sellCost;
 
-      Name = $"{Rarity} {BuffType} Potion";
-      Description = $"A {Rarity} {BuffType} Potion";
-      BuffType = potionType;
+      Name = $"{Rarity} {buffType} Potion";
+      Description = $"A {Rarity} {buffType} Potion";
+      buffType = potionType;
+      buffAmount = (int)rarity * 10;
     }
 
     internal override bool Use()
@@ -35,17 +34,17 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
         GamePlay.Messages.Add(new Message("You are already at full health.", Color.Orange, Color.Black));
         return false;
       }
-      switch (BuffType)
+      switch (buffType)
       {
         case BuffType.Health:
-          Player.Heal(BuffAmount);
+          Player.Heal(buffAmount);
           break;
         case BuffType.Mana:
-          Player.RestoreMana(BuffAmount);
+          Player.RestoreMana(buffAmount);
           break;
         case BuffType.HealthAndMana:
-          Player.Heal(BuffAmount);
-          Player.RestoreMana(BuffAmount);
+          Player.Heal(buffAmount);
+          Player.RestoreMana(buffAmount);
           break;
       }
       Quantity--;

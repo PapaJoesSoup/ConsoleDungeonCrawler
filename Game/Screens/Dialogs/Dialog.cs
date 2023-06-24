@@ -10,12 +10,12 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     internal static readonly Box Box = new(Console.WindowWidth / 2 - 52, Console.WindowHeight / 2 - 12, 100, 25);
 
     // These colors are for the default theme of a dialog box
-    internal static Color BackgroundColor = Color.Black;
-    internal static Color ForegroundColor = Color.DarkOrange;
-    internal static Color FillColor = Color.Olive;
-    internal static Color TextColor = Color.Bisque;
-    internal static Color selectedColor = Color.Lime;
-    internal static Color selectedBackgroundColor = Color.DarkOrange;
+    private static readonly Color BackgroundColor = Color.Black;
+    private static readonly Color ForegroundColor = Color.DarkOrange;
+    private static readonly Color FillColor = Color.Olive;
+    private static readonly Color TextColor = Color.Bisque;
+    private static readonly Color SelectedColor = Color.Lime;
+    internal static readonly Color SelectedBackgroundColor = Color.DarkOrange;
 
     /// <summary>
     /// Generic Dialog box with a title everything else is default
@@ -32,12 +32,11 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     /// </summary>
     /// <param name="title"></param>
     /// <param name="box"></param>
-    /// <param name="bchars"></param>
-    internal static void Draw(string title, Box? box = null, BoxChars? bchars = null)
+    /// <param name="bChars"></param>
+    internal static void Draw(string title, Box box, BoxChars? bChars = null)
     {
-      box ??= Box;
-      bchars ??= GamePlay.BChars;
-      box.Draw(bchars, ForegroundColor, BackgroundColor, FillColor);
+      bChars ??= GamePlay.BChars;
+      box.Draw(bChars, ForegroundColor, BackgroundColor, FillColor);
       $"[{title}]".WriteAlignedAt(box, HAlign.Center, VAlign.Top, Color.Bisque, Color.Black, 0, -1);
     }
 
@@ -48,13 +47,14 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     /// <param name="color"></param>
     /// <param name="backgroundColor"></param>
     /// <param name="fillColor"></param>
+    /// <param name="textColor"></param>
     /// <param name="box"></param>
-    /// <param name="bchars"></param>
-    internal static void Draw(string title, Color color, Color backgroundColor, Color fillColor, Color textColor, Box? box = null, BoxChars? bchars = null)
+    /// <param name="bChars"></param>
+    internal static void Draw(string title, Color color, Color backgroundColor, Color fillColor, Color textColor, Box? box = null, BoxChars? bChars = null)
     {
       box ??= Box;
-      bchars ??= GamePlay.BChars;
-      box.Draw(bchars, color, backgroundColor, fillColor);
+      bChars ??= GamePlay.BChars;
+      box.Draw(bChars, color, backgroundColor, fillColor);
       $"[{title}]".WriteAlignedAt(box, HAlign.Center, VAlign.Top, textColor, backgroundColor, 0, -1);
     }
 

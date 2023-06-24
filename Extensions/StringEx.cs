@@ -2,7 +2,6 @@
 {
   internal static class StringEx
   {
-
     internal static string PadCenter(this string text, int width)
     {
       int totalPad = width - text.Length;

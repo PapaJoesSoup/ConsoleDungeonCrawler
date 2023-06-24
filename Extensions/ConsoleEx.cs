@@ -460,7 +460,7 @@ namespace ConsoleDungeonCrawler.Extensions
     }
 
     internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, Color color,
-      Color backgroundColor, int xOffset, int yOffset)
+      Color bgColor, int xOffset, int yOffset)
     {
       int x = 0;
       int y = 0;
@@ -489,11 +489,11 @@ namespace ConsoleDungeonCrawler.Extensions
           y = Console.WindowHeight - 1;
           break;
       }
-      WriteAt(s, x + xOffset, y + yOffset, color, backgroundColor);
+      WriteAt(s, x + xOffset, y + yOffset, color, bgColor);
     }
 
     internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, Color color,
-      Color backgroundColor)
+      Color bgColor)
     {
       int x = 0;
       int y = 0;
@@ -522,11 +522,11 @@ namespace ConsoleDungeonCrawler.Extensions
           y = Console.WindowHeight - 1;
           break;
       }
-      WriteAt(s, x, y, color, backgroundColor);
+      WriteAt(s, x, y, color, bgColor);
     }
 
     internal static void WriteAlignedAt(this string s, Box box, HAlign hAlign, VAlign vAlign, Color color,
-      Color backgroundColor)
+      Color bgColor)
     {
       int x = 0;
       int y = 0;
@@ -555,11 +555,11 @@ namespace ConsoleDungeonCrawler.Extensions
           y = box.Height + box.Top - 1;
           break;
       }
-      WriteAt(s, x, y, color, backgroundColor);
+      WriteAt(s, x, y, color, bgColor);
     }
 
     internal static void WriteAlignedAt(this string s, Box box, HAlign hAlign, VAlign vAlign, Color color,
-      Color backgroundColor, int xOffset, int yOffset)
+      Color bgColor, int xOffset, int yOffset)
     {
       int x = 0;
       int y = 0;
@@ -588,7 +588,7 @@ namespace ConsoleDungeonCrawler.Extensions
           y = box.Height + box.Top - 1;
           break;
       }
-      WriteAt(s, x + xOffset, y + yOffset, color, backgroundColor);
+      WriteAt(s, x + xOffset, y + yOffset, color, bgColor);
     }
 
     // WriteAt string methods
@@ -622,13 +622,13 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor backgroundColor)
+    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor bgColor)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         Console.ForegroundColor = color;
-        Console.BackgroundColor = backgroundColor;
+        Console.BackgroundColor = bgColor;
         Console.Write(s);
         Console.ResetColor();
       }
@@ -639,13 +639,13 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay)
+    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor bgColor, int delay)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         Console.ForegroundColor = color;
-        Console.BackgroundColor = backgroundColor;
+        Console.BackgroundColor = bgColor;
         foreach (char c in s)
         {
           Console.Write(c);
@@ -700,14 +700,14 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay,
+    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor bgColor, int delay,
       int repeat)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         Console.ForegroundColor = color;
-        Console.BackgroundColor = backgroundColor;
+        Console.BackgroundColor = bgColor;
         for (int i = 0; i < repeat; i++)
         {
           foreach (char c in s)
@@ -747,14 +747,14 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay,
+    internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor bgColor, int delay,
       int repeat, int repeatDelay)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         Console.ForegroundColor = color;
-        Console.BackgroundColor = backgroundColor;
+        Console.BackgroundColor = bgColor;
         for (int i = 0; i < repeat; i++)
         {
           foreach (char c in s)
@@ -865,13 +865,13 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor)
+    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor bgColor)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         Console.ForegroundColor = color;
-        Console.BackgroundColor = backgroundColor;
+        Console.BackgroundColor = bgColor;
         Console.Write(c);
         Console.ResetColor();
       }
@@ -898,13 +898,13 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay)
+    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor bgColor, int delay)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         Console.ForegroundColor = color;
-        Console.BackgroundColor = backgroundColor;
+        Console.BackgroundColor = bgColor;
         Console.Write(c);
         Thread.Sleep(delay);
         Console.ResetColor();
@@ -969,14 +969,14 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int repeat,
+    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor bgColor, int repeat,
       int delay)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         Console.ForegroundColor = color;
-        Console.BackgroundColor = backgroundColor;
+        Console.BackgroundColor = bgColor;
         for (int i = 0; i < repeat; i++)
         {
           Console.Write(c);
@@ -1013,14 +1013,14 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor backgroundColor, int delay,
+    internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor bgColor, int delay,
       int repeat, int repeatDelay)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         Console.ForegroundColor = color;
-        Console.BackgroundColor = backgroundColor;
+        Console.BackgroundColor = bgColor;
         for (int i = 0; i < repeat; i++)
         {
           Console.Write(c);
@@ -1039,13 +1039,13 @@ namespace ConsoleDungeonCrawler.Extensions
 
 
     // Extended Color WriteAt Char Methods
-    internal static void WriteAt(this char c, int x, int y, Color color, Color backgroundColor)
+    internal static void WriteAt(this char c, int x, int y, Color color, Color bgColor)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         ConsoleEx.ForegroundColor = color;
-        ConsoleEx.BackgroundColor = backgroundColor;
+        ConsoleEx.BackgroundColor = bgColor;
         Console.Write(c);
         ConsoleEx.ResetColor();
       }
@@ -1087,14 +1087,14 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(this char c, int x, int y, Color color, Color backgroundColor, int repeat,
+    internal static void WriteAt(this char c, int x, int y, Color color, Color bgColor, int repeat,
       int delay = 0)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         ConsoleEx.ForegroundColor = color;
-        ConsoleEx.BackgroundColor = backgroundColor;
+        ConsoleEx.BackgroundColor = bgColor;
         for (int i = 0; i < repeat; i++)
         {
           Console.Write(c);
@@ -1128,13 +1128,13 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(this string s, int x, int y, Color color, Color backgroundColor)
+    internal static void WriteAt(this string s, int x, int y, Color color, Color bgColor)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         ConsoleEx.ForegroundColor = color;
-        ConsoleEx.BackgroundColor = backgroundColor;
+        ConsoleEx.BackgroundColor = bgColor;
         Console.Write(s);
         ConsoleEx.ResetColor();
       }
@@ -1145,13 +1145,13 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(this string s, int x, int y, Color color, Color backgroundColor, int delay)
+    internal static void WriteAt(this string s, int x, int y, Color color, Color bgColor, int delay)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         ConsoleEx.ForegroundColor = color;
-        ConsoleEx.BackgroundColor = backgroundColor;
+        ConsoleEx.BackgroundColor = bgColor;
         foreach (char c in s)
         {
           Console.Write(c);
@@ -1188,14 +1188,14 @@ namespace ConsoleDungeonCrawler.Extensions
       }
     }
 
-    internal static void WriteAt(this string s, int x, int y, Color color, Color backgroundColor, int repeat,
+    internal static void WriteAt(this string s, int x, int y, Color color, Color bgColor, int repeat,
       int delay)
     {
       try
       {
         Console.SetCursorPosition(x, y);
         ConsoleEx.ForegroundColor = color;
-        ConsoleEx.BackgroundColor = backgroundColor;
+        ConsoleEx.BackgroundColor = bgColor;
         for (int i = 0; i < repeat; i++)
         {
           foreach (char c in s)
@@ -1313,13 +1313,13 @@ namespace ConsoleDungeonCrawler.Extensions
 
     // make a char flash with a given color and background color and delay
     internal static void FlashAt(this char c, int x, int y, int flashCount, int flashDelay,
-      ConsoleColor color, ConsoleColor backgroundColor)
+      ConsoleColor color, ConsoleColor bgColor)
     {
       for (int i = 0; i < flashCount; i++)
       {
-        WriteAt(c, x, y, color, backgroundColor);
+        WriteAt(c, x, y, color, bgColor);
         Thread.Sleep(flashDelay);
-        WriteAt(c, x, y, backgroundColor, color);
+        WriteAt(c, x, y, bgColor, color);
         Thread.Sleep(flashDelay);
       }
     }
@@ -1351,23 +1351,23 @@ namespace ConsoleDungeonCrawler.Extensions
 
     // make a string flash with a given color and background color and delay
     internal static void FlashAt(this string s, int x, int y, int flashCount, int flashDelay,
-      ConsoleColor color, ConsoleColor backgroundColor)
+      ConsoleColor color, ConsoleColor bgColor)
     {
       for (int i = 0; i < flashCount; i++)
       {
-        WriteAt(s, x, y, color, backgroundColor);
+        WriteAt(s, x, y, color, bgColor);
         Thread.Sleep(flashDelay);
-        WriteAt(s, x, y, backgroundColor, color);
+        WriteAt(s, x, y, bgColor, color);
         Thread.Sleep(flashDelay);
       }
     }
 
 
     // Read Methods
-    internal static int ReadInt(int x, int y, Color foregroundColor, Color backgroundColor)
+    internal static int ReadInt(int x, int y, Color fgColor, Color bgColor)
     {
-      ForegroundColor = foregroundColor;
-      BackgroundColor = backgroundColor;
+      ForegroundColor = fgColor;
+      BackgroundColor = bgColor;
       bool valid = false;
       int result = -1;
       while (!valid)
@@ -1383,10 +1383,10 @@ namespace ConsoleDungeonCrawler.Extensions
       return result;
     }
 
-    internal static bool ReadBool(int x, int y, Color foregroundColor, Color backgroundColor)
+    internal static bool ReadBool(int x, int y, Color fgColor, Color bgColor)
     {
-      ForegroundColor = foregroundColor;
-      BackgroundColor = backgroundColor;
+      ForegroundColor = fgColor;
+      BackgroundColor = bgColor;
       bool valid = false;
       bool result = false;
       while (!valid)

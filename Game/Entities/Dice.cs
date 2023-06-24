@@ -3,7 +3,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
 {
   internal static class Dice
   {
-    private static Random random = new();
+    private static readonly Random Random = new();
 
     /// <summary>
     /// Returns a random number between 1 and sides
@@ -12,7 +12,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     /// <returns></returns>
     internal static int Roll(int sides)
     {
-      return random.Next(1, sides + 1);
+      return Random.Next(1, sides + 1);
     }
 
     /// <summary>
@@ -23,7 +23,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     /// <returns></returns>
     internal static int Roll(int min, int sides)
     {
-      return random.Next(min, sides + 1);
+      return Random.Next(min, sides + 1);
     }
 
     /// <summary>
@@ -34,7 +34,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     /// <returns></returns>
     internal static decimal Roll(decimal min, decimal max)
     {
-      return (decimal)random.NextDouble() * (max - min) + min;
+      return (decimal)Random.NextDouble() * (max - min) + min;
     }
 
 
@@ -53,7 +53,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       if (numbers.Count != weights.Count)
         throw new ArgumentException("The number of weights must match the number of numbers.");
       int totalWeight = weights.Sum();
-      int randomNumber = random.Next(0, totalWeight);
+      int randomNumber = Random.Next(0, totalWeight);
 
       for (int i = 0; i < numbers.Count; i++)
       {

@@ -7,30 +7,30 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 {
   internal static class Vendor
   {
-    private static Dictionary<int, Bag> storeInventory = new();
-    internal static VendorType VendorType = VendorType.General;
+    private static readonly Dictionary<int, Bag> StoreInventory = new();
+    private static VendorType vendorType = VendorType.General;
 
-    private static Color color = Color.DarkOrange;
-    private static Color backgroundColor = Color.Black;
-    private static Color fillColor = Color.SaddleBrown;
-    private static Color textColor = Color.Bisque;
-    private static Color selectedColor = Color.Lime;
-    private static Color selectedBackgroundColor = Color.DarkOrange;
+    private static readonly Color Color = Color.DarkOrange;
+    private static readonly Color BackgroundColor = Color.Black;
+    private static readonly Color FillColor = Color.SaddleBrown;
+    private static readonly Color TextColor = Color.Bisque;
+    private static readonly Color SelectedColor = Color.Lime;
+    private static readonly Color SelectedBackgroundColor = Color.DarkOrange;
 
     private static int activeBag;
     private static int activeItem;
     private static int activeVendorTab;
     private static int activeVendorItem;
     private static int listStart;
-    private static int listSize = 20;
-    private static int listWidth = 40;
+    private static readonly int ListSize = 20;
+    private static readonly int ListWidth = 40;
     private static bool storeIsActive = true;
-    static bool dialogOpen = false;
+    private static bool dialogOpen = false;
 
-    static Box dialogBox = new(Console.WindowWidth / 2 - 58, Console.WindowHeight / 2 - 13, 116, 26);
-    static Box legendBox = new(dialogBox.Left, dialogBox.Top + 11, 25, 12);
-    private static Position tabPosition = new(legendBox.Left + legendBox.Width + 4, dialogBox.Top + 1);
-    private static Position bagPosition = new(tabPosition.X + listWidth + 4, dialogBox.Top + 1);
+    private static readonly Box DialogBox = new(Console.WindowWidth / 2 - 58, Console.WindowHeight / 2 - 13, 116, 26);
+    private static readonly Box LegendBox = new(DialogBox.Left, DialogBox.Top + 11, 25, 12);
+    private static readonly Position TabPosition = new(LegendBox.Left + LegendBox.Width + 4, DialogBox.Top + 1);
+    private static readonly Position BagPosition = new(TabPosition.X + ListWidth + 4, DialogBox.Top + 1);
 
     static Vendor()
     {
@@ -40,35 +40,35 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     internal static void Draw()
     {
       dialogOpen = true;
-      Dialog.Draw($" {VendorType} {(VendorType == VendorType.General ? "Items" : "")} Merchant ", color, backgroundColor, fillColor, textColor, dialogBox);
+      Dialog.Draw($" {vendorType} {(vendorType == VendorType.General ? "Items" : "")} Merchant ", Color, BackgroundColor, FillColor, TextColor, DialogBox);
 
-      SelectVendorInventory(VendorType);
+      SelectVendorInventory(vendorType);
 
       while (dialogOpen)
       {
         // Create a new dialogBox for the player inventory
         int x = 1;
         int y = 1;
-        "Select Bag: ([x])".WriteAt(dialogBox.Left + 2, dialogBox.Top + 1, textColor, fillColor);
+        "Select Bag: ([x])".WriteAt(DialogBox.Left + 2, DialogBox.Top + 1, TextColor, FillColor);
         y += 2;
         foreach (var bag in Inventory.Bags)
         {
-          $"[{x}] Bag {x}".WriteAt(dialogBox.Left + 2, dialogBox.Top + y, textColor, activeBag == x - 1 ? selectedBackgroundColor : fillColor);
+          $"[{x}] Bag {x}".WriteAt(DialogBox.Left + 2, DialogBox.Top + y, TextColor, activeBag == x - 1 ? SelectedBackgroundColor : FillColor);
           x++;
           y++;
         }
         DrawLegend();
 
         // Draw the vendor inventory
-        DrawTab(storeInventory[activeVendorTab], tabPosition, listSize, listStart);
+        DrawTab(StoreInventory[activeVendorTab], TabPosition, ListSize, listStart);
         // Draw the player inventory
-        DrawBag(Inventory.Bags[activeBag], bagPosition);
+        DrawBag(Inventory.Bags[activeBag], BagPosition);
 
         KeyHandler();
       }
     }
 
-    internal static void BuildVendorInventory()
+    private static void BuildVendorInventory()
     {
       // General
       // potions
@@ -88,30 +88,30 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       foreach (Bandage bandage in Inventory.Bandages)
         generalItems.Add(bandage);
 
-      storeInventory.Add((int)VendorType.General, new Bag(generalItems.Count));
-      storeInventory[(int)VendorType.General].Items = generalItems;
+      StoreInventory.Add((int)VendorType.General, new Bag(generalItems.Count));
+      StoreInventory[(int)VendorType.General].Items = generalItems;
 
       // weapons
       List<Item> weapons = new ();
       foreach (KeyValuePair<WeaponType, List<Weapon>> weapon in Inventory.WeaponTypes)
         foreach (Weapon w in weapon.Value) weapons.Add(w);
 
-      storeInventory.Add((int)VendorType.Weapons, new Bag(weapons.Count));
-      storeInventory[(int)VendorType.Weapons].Items = weapons;
+      StoreInventory.Add((int)VendorType.Weapons, new Bag(weapons.Count));
+      StoreInventory[(int)VendorType.Weapons].Items = weapons;
 
       // armor
       List<Item> armor = new ();
       foreach (KeyValuePair<ArmorType, Dictionary<ArmorName, List<Armor>>> armorType in Inventory.ArmorDictionary)
-        foreach (KeyValuePair<ArmorName, List<Armor>> N in armorType.Value)
-          foreach (Armor a in N.Value) armor.Add(a);
+        foreach (KeyValuePair<ArmorName, List<Armor>> n in armorType.Value)
+          foreach (Armor a in n.Value) armor.Add(a);
 
-      storeInventory.Add((int)VendorType.Armor, new Bag(armor.Count));
-      storeInventory[(int)VendorType.Armor].Items = armor;
+      StoreInventory.Add((int)VendorType.Armor, new Bag(armor.Count));
+      StoreInventory[(int)VendorType.Armor].Items = armor;
     }
 
-    internal static void SelectVendorInventory(VendorType vendorType)
+    private static void SelectVendorInventory(VendorType vendorType)
     {
-      VendorType = vendorType;
+      Vendor.vendorType = vendorType;
       switch (vendorType)
       {
         case VendorType.General:
@@ -128,67 +128,67 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 
     private static void DrawLegend()
     {
-      int y = legendBox.Top + 1;
-      "Legend:".WriteAt(legendBox.Left + 2, legendBox.Top, textColor, fillColor); y++;
+      int y = LegendBox.Top + 1;
+      "Legend:".WriteAt(LegendBox.Left + 2, LegendBox.Top, TextColor, FillColor); y++;
 
-      "[1-5] Select Bag".WriteAt(dialogBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.PageUp}] Prev Bag".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.PageDown}] Next Bag".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.LeftArrow}] Vendor Items".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.RightArrow}] Bag Items".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.UpArrow}] Prev Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.DownArrow}] Next Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.B}] Buy Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.S}] Sell Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.R}] Remove Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
-      $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(legendBox.Left + 2, y, textColor, fillColor);
+      "[1-5] Select Bag".WriteAt(DialogBox.Left + 2, y, TextColor, FillColor); y++;
+      $"[{ConsoleKey.PageUp}] Prev Bag".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
+      $"[{ConsoleKey.PageDown}] Next Bag".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
+      $"[{ConsoleKey.LeftArrow}] Vendor Items".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
+      $"[{ConsoleKey.RightArrow}] Bag Items".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
+      $"[{ConsoleKey.UpArrow}] Prev Item".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
+      $"[{ConsoleKey.DownArrow}] Next Item".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
+      $"[{ConsoleKey.B}] Buy Item".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
+      $"[{ConsoleKey.S}] Sell Item".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
+      $"[{ConsoleKey.R}] Remove Item".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
+      $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor);
     }
 
-    internal static void DrawTab(Bag bag, Position position, int maxHeight, int scrollY)
+    private static void DrawTab(Bag bag, Position position, int maxHeight, int scrollY)
     {
       int x = position.X;
       int y = position.Y;
-      $"{VendorType} {(VendorType == VendorType.General? "items": "")} for sale:".WriteAt(x, y, storeIsActive? selectedColor : textColor, fillColor);
+      $"{vendorType} {(vendorType == VendorType.General? "items": "")} for sale:".WriteAt(x, y, storeIsActive? SelectedColor : TextColor, FillColor);
       y += 2;
-      ("Item".PadRight(listWidth - 7) + "Buy".PadLeft(7)).WriteAt(x, y, textColor, fillColor);
+      ("Item".PadRight(ListWidth - 7) + "Buy".PadLeft(7)).WriteAt(x, y, TextColor, FillColor);
       y++;
       // foreach loop to draw the items in the bag using the scrollY and maxHeight to determine which items to draw
       for (int i = scrollY; i < scrollY + maxHeight; i++)
       {
-        ($"[{i + 1}]:  {storeInventory[activeVendorTab].Items[i].Name}".PadRight(listWidth - 7) + 
-         $"${decimal.Round(storeInventory[activeVendorTab].Items[i].BuyCost, 2)}g".PadLeft(7))
-          .WriteAt(x, y, i == activeVendorItem ? selectedColor : textColor, i == activeVendorItem ? selectedBackgroundColor : fillColor);
+        ($"[{i + 1}]:  {StoreInventory[activeVendorTab].Items[i].Name}".PadRight(ListWidth - 7) + 
+         $"${decimal.Round(StoreInventory[activeVendorTab].Items[i].BuyCost, 2)}g".PadLeft(7))
+          .WriteAt(x, y, i == activeVendorItem ? SelectedColor : TextColor, i == activeVendorItem ? SelectedBackgroundColor : FillColor);
         y++;
       }
     }
 
-    internal static void DrawBag(Bag bag, Position position)
+    private static void DrawBag(Bag bag, Position position)
     {
       int x = position.X;
       int y = position.Y;
-      $"Bag {activeBag + 1} Contents:".WriteAt(x, y, !storeIsActive ? selectedColor : textColor, fillColor);
+      $"Bag {activeBag + 1} Contents:".WriteAt(x, y, !storeIsActive ? SelectedColor : TextColor, FillColor);
       y += 2;
-      ("Item".PadRight(listWidth - 7) + "Sell".PadLeft(7)).WriteAt(x, y, textColor, fillColor);
+      ("Item".PadRight(ListWidth - 7) + "Sell".PadLeft(7)).WriteAt(x, y, TextColor, FillColor);
       y++;
       for (int i = 0; i < bag.Capacity; i++)
       {
         if (i >= bag.Items.Count)
-          $"[{i + 1}]:  Empty".PadRight(listWidth).WriteAt(x, y, textColor, fillColor);
+          $"[{i + 1}]:  Empty".PadRight(ListWidth).WriteAt(x, y, TextColor, FillColor);
         else
-          ($"[{i + 1}]:  ({bag.Items[i].Quantity}) {bag.Items[i].Name}".PadRight(listWidth - 7) +
+          ($"[{i + 1}]:  ({bag.Items[i].Quantity}) {bag.Items[i].Name}".PadRight(ListWidth - 7) +
            $"${decimal.Round(bag.Items[i].SellCost, 2)}g".PadLeft(7))
-             .WriteAt(x, y, i == activeItem ? selectedColor : textColor, i == activeItem ? selectedBackgroundColor : fillColor);
+             .WriteAt(x, y, i == activeItem ? SelectedColor : TextColor, i == activeItem ? SelectedBackgroundColor : FillColor);
         y++;
       }
     }
-    
-    internal static void SellItem(Item item)
+
+    private static void SellItem(Item item)
     {
       Player.Gold += item.SellCost;
       Inventory.Bags[activeBag].RemoveItem(item);
     }
 
-    internal static void BuyItem(Item item)
+    private static void BuyItem(Item item)
     {
       if (Player.Gold < item.BuyCost)
       {
@@ -214,7 +214,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       Draw();
     }
 
-    internal static void KeyHandler()
+    private static void KeyHandler()
     {
       ConsoleKeyInfo keyInfo = Console.ReadKey(true);
       switch (keyInfo.Key)
@@ -230,7 +230,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
         case ConsoleKey.D5:
           if (Inventory.Bags.Count < (int)keyInfo.Key - 48) return;
           activeBag = (int)keyInfo.Key - 49;
-          DrawBag(Inventory.Bags[(int)keyInfo.Key - 49], bagPosition);
+          DrawBag(Inventory.Bags[(int)keyInfo.Key - 49], BagPosition);
           break;
           break;
         case ConsoleKey.PageUp:
@@ -241,11 +241,11 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
           if (storeIsActive)
           {
             if (activeVendorItem == 0) 
-              activeVendorItem = storeInventory[activeVendorTab].Items.Count - 1;
+              activeVendorItem = StoreInventory[activeVendorTab].Items.Count - 1;
             else activeVendorItem--; 
 
-            if (activeVendorItem > listSize - 1) listStart = activeVendorItem - (listSize - 1);
-            if (activeVendorItem < listSize - 1) listStart = 0;
+            if (activeVendorItem > ListSize - 1) listStart = activeVendorItem - (ListSize - 1);
+            if (activeVendorItem < ListSize - 1) listStart = 0;
           }
           else
           {
@@ -257,12 +257,12 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
         case ConsoleKey.DownArrow:
           if (storeIsActive)
           {
-            if (activeVendorItem == storeInventory[activeVendorTab].Items.Count - 1) 
+            if (activeVendorItem == StoreInventory[activeVendorTab].Items.Count - 1) 
               activeVendorItem = 0;
             else activeVendorItem++;
 
-            if (activeVendorItem > listSize - 1) listStart = activeVendorItem - (listSize - 1);
-            if (activeVendorItem < listSize - 1) listStart = 0;
+            if (activeVendorItem > ListSize - 1) listStart = activeVendorItem - (ListSize - 1);
+            if (activeVendorItem < ListSize - 1) listStart = 0;
           }
           else
           {
@@ -283,7 +283,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
           SellItem(Inventory.Bags[activeBag].Items[activeItem]);
           break;
         case ConsoleKey.B:
-          BuyItem(storeInventory[activeVendorTab].Items[activeVendorItem]);
+          BuyItem(StoreInventory[activeVendorTab].Items[activeVendorItem]);
           break;
       }
     }

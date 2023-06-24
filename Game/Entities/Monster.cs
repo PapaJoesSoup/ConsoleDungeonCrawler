@@ -120,7 +120,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       }
     }
 
-    internal static int SetOdds(Char type)
+    private static int SetOdds(Char type)
     {
       switch (type)
       {

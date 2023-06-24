@@ -496,7 +496,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       return quantity;
     }
 
-    internal static bool HasItem(Item item)
+    private static bool HasItem(Item item)
     {
       foreach(Bag bag in Bags)
       {
@@ -520,7 +520,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       return item;
     }
 
-    internal static Item GetRandomItem(ItemType type)
+    private static Item GetRandomItem(ItemType type)
     {
       //default result is gold, so set the quantity and value
       switch (type)

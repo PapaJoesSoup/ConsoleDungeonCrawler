@@ -6,24 +6,25 @@ namespace ConsoleDungeonCrawler.Game.Entities
 {
   internal class Message
   {
-    internal readonly string Text;
-    internal Color ForegroundColor = Color.White;
-    internal Color BackgroundColor = Color.Black;
+    private readonly string text;
+    private readonly Color foregroundColor = Color.White;
+    private readonly Color backgroundColor = Color.Black;
 
-    internal Message(string text, Color foregroundColor, Color backgroundColor)
+    internal Message(string text, Color fgColor, Color bgColor)
     {
-      Text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
-      ForegroundColor = foregroundColor;
-      BackgroundColor = backgroundColor;
+      this.text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
+      this.foregroundColor = fgColor;
+      this.backgroundColor = bgColor;
     }
 
     public Message(string text)
     {
-      Text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
+      this.text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
     }
+
     internal void WriteMessageAt(int x, int y)
     {
-      Text.PadRight(GamePlay.MessageWidth).WriteAt(x, y, ForegroundColor, BackgroundColor);
+      text.PadRight(GamePlay.MessageWidth).WriteAt(x, y, foregroundColor, backgroundColor);
     }
   }
 }

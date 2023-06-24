@@ -1,7 +1,6 @@
 ﻿namespace ConsoleDungeonCrawler.Game
 {
   // enums for the game
-
   internal enum Direction
   {
     None,

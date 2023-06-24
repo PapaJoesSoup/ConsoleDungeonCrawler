@@ -6,11 +6,11 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
   internal class Bandage : Item
   {
     BandageType bandageType = BandageType.Cloth;
-    internal readonly int BuffAmount = 1;
+    private readonly int buffAmount = 1;
 
     internal Bandage()
     {
-
+      this.buffAmount = (int)bandageType * buffAmount;
     }
 
     internal Bandage(BandageType bandageType, int buffAmount, int quantity, decimal buyCost, decimal sellCost)
@@ -23,7 +23,7 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
       BuyCost = buyCost;
       SellCost = sellCost;
       this.bandageType = bandageType;
-      BuffAmount = buffAmount;
+      this.buffAmount = buffAmount;
     }
 
     private void SetLevelFromType()
@@ -58,8 +58,8 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
       }
       else
       {
-        Player.Health += BuffAmount;
-        GamePlay.Messages.Add(new Message($"You were healed for {BuffAmount} health.", Color.Orange, Color.Black));
+        Player.Health += buffAmount;
+        GamePlay.Messages.Add(new Message($"You were healed for {buffAmount} health.", Color.Orange, Color.Black));
         if (Player.Health > Player.MaxHealth)
         {
           Player.Health = Player.MaxHealth;

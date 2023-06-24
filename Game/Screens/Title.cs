@@ -9,8 +9,8 @@ namespace ConsoleDungeonCrawler.Game.Screens
   {
     private static int activeItem = 0;
     static bool dialogOpen = false;
-    internal static readonly Box ScreenBorder = new(0, 0, Console.WindowWidth, Console.WindowHeight);
-    internal static readonly Box Box = new(Console.WindowWidth / 2 - 40, Console.WindowHeight / 2 - 8, 80, 17);
+    private static readonly Box ScreenBorder = new(0, 0, Console.WindowWidth, Console.WindowHeight);
+    private static readonly Box Box = new(Console.WindowWidth / 2 - 40, Console.WindowHeight / 2 - 8, 80, 17);
 
     // Create a method that displays the title screen in ascii art
     internal static void Draw()
@@ -42,7 +42,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       }
     }
 
-    internal static void LoadTitleArt()
+    private static void LoadTitleArt()
     {
       StringBuilder sb = new();
       sb.Append(File.ReadAllText("Game/Data/Art/TitleArt.txt"));
@@ -55,7 +55,7 @@ namespace ConsoleDungeonCrawler.Game.Screens
       }
     }
 
-    internal static void KeyHandler()
+    private static void KeyHandler()
     {
       ConsoleKeyInfo keyInfo = Console.ReadKey(true);
       switch (keyInfo.Key)
