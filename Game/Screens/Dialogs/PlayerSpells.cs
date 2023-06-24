@@ -90,7 +90,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       {
         case ConsoleKey.Escape:
           dialogOpen = false;
-          Dialog.Close();
+          Dialog.Close("GamePlay");
           break;
         case ConsoleKey.UpArrow:
           if (activeSpell - 1 < 1) activeSpell = 10;

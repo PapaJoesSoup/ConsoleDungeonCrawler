@@ -46,12 +46,13 @@ namespace ConsoleDungeonCrawler.Game.Entities
         new(ArmorType.Feet)
       };
 
-      // Add 5 initial slots to inventory
+      // Add a couple of bags and 5 initial slots to inventory
       Inventory.Bags.Add(new Bag());
-      Inventory.AddItem(new Potion(BuffType.Health, 1, 1, 0));
-      Inventory.AddItem(new Potion(BuffType.Health, 1, 1, 0));
-      Inventory.AddItem(new Food(FoodType.Bread, BuffType.Health, 1, 1, 0));
-      Inventory.AddItem(new Food(FoodType.Vegetable, BuffType.Health, 1, 1, 0));
+      Inventory.Bags.Add(new Bag());
+      Inventory.AddItem(new Potion(BuffType.Health, ItemRarity.Common, 1, 1, 0.1M));
+      Inventory.AddItem(new Potion(BuffType.Health, ItemRarity.Common, 1, 1, 0.1M));
+      Inventory.AddItem(new Food(FoodType.Bread, BuffType.Health, 1, 1, 0.1M));
+      Inventory.AddItem(new Food(FoodType.Vegetable, BuffType.Health, 1, 1, 0.1M));
     }
 
     public bool Move(ConsoleKey key)
@@ -79,6 +80,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
       Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
       Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
       Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
+      Map.Player.Draw();
       return true;
     }
 

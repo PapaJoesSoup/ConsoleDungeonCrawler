@@ -2,6 +2,7 @@
 using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Screens;
+using ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
 namespace ConsoleDungeonCrawler.Game
 {
@@ -22,6 +23,9 @@ namespace ConsoleDungeonCrawler.Game
           break;
         case '\u25bc':
           DownStairs();
+          break;
+        case 'V':
+          Vendor.Draw();
           break;
         case 'O':
         case 'k':

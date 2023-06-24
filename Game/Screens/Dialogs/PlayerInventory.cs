@@ -6,26 +6,36 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 {
   internal static class PlayerInventory
   {
-    static int activeBag = 0;
-    static int activeItem = 0;
-    static bool dialogOpen = false;
+    private static Color color = Color.DarkOrange;
+    private static Color backgroundColor = Color.Black;
+    private static Color fillColor = Color.Olive;
+    private static Color textColor = Color.Bisque;
+    private static Color selectedColor = Color.Lime;
+    private static Color selectedBackgroundColor = Color.DarkOrange;
+
+    static int activeBag;
+    static int activeItem;
+    static bool dialogOpen;
+    private static int listWidth = 40;
+
+    private static Box legendBox = new(Dialog.Box.Left, Dialog.Box.Top + 8, 22, 10);
+
 
     internal static void Draw()
     {
       dialogOpen = true;
-      Dialog.Draw("Player Inventory Manager");
+      Dialog.Draw(" Player Inventory Manager ");
 
       while (dialogOpen)
       {
         // Create a new box for the player inventory
         int x = 1;
         int y = 1;
-        "Select Bag: ([x])".WriteAt(Dialog.Box.Left + 2, Dialog.Box.Top + 1, Color.White, Color.Olive);
+        "Select Bag: ([x])".WriteAt(Dialog.Box.Left + 2, Dialog.Box.Top + 1, textColor, fillColor);
         y += 2;
         foreach (var bag in Inventory.Bags)
         {
-          $"[{y}] Bag {y}".WriteAt(Dialog.Box.Left + 2, Dialog.Box.Top + 1 + y, Color.White,
-            activeBag == y - 1 ? Color.Orange : Color.Olive);
+          $"[{x}] Bag {x}".WriteAt(Dialog.Box.Left + 2, Dialog.Box.Top + y, textColor, activeBag == x - 1 ? selectedBackgroundColor : fillColor);
           x++;
           y++;
         }
@@ -33,51 +43,44 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
         DrawBag(Inventory.Bags[activeBag]);
         KeyHandler();
       }
-
-
-
-      //ConsoleEx.WriteAlignedAt(Dialog.Box, "Press any key to continue", HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive);
-      Console.ReadKey(true);
-      Dialog.Close();
     }
 
     private static void DrawLegend()
     {
-      Box box = new(Dialog.Box.Left, Dialog.Box.Top + 8, 22, 10);
-      int y = box.Top + 1;
-      "Legend:".WriteAt(box.Left + 2, box.Top, Color.White, Color.Olive); y++;
+      int y = legendBox.Top + 1;
+      "Legend:".WriteAt(legendBox.Left + 2, legendBox.Top, textColor, fillColor); y++;
 
-      "[1-5] Select Bag".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
-      $"[{ConsoleKey.PageUp}] Prev Bag".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
-      $"[{ConsoleKey.PageDown}] Next Bag".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
-      $"[{ConsoleKey.UpArrow}] Prev Item".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
-      $"[{ConsoleKey.DownArrow}] Next Item".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
-      $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
-      $"[{ConsoleKey.M}] Move Item".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
-      $"[{ConsoleKey.R}] Remove Item".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
-      $"[{ConsoleKey.S}] Sell Item".WriteAt(box.Left + 2, y, Color.White, Color.Olive); y++;
-      $"[{ConsoleKey.U}] Use Item".WriteAt(box.Left + 2, y, Color.White, Color.Olive);
+      "[1-5] Select Bag".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+      $"[{ConsoleKey.PageUp}] Prev Bag".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+      $"[{ConsoleKey.PageDown}] Next Bag".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+      $"[{ConsoleKey.UpArrow}] Prev Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+      $"[{ConsoleKey.DownArrow}] Next Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+      $"[{ConsoleKey.M}] Move Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+      $"[{ConsoleKey.R}] Remove Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+      $"[{ConsoleKey.S}] Sell Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+      $"[{ConsoleKey.U}] Use Item".WriteAt(legendBox.Left + 2, y, textColor, fillColor); y++;
+      $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(legendBox.Left + 2, y, textColor, fillColor);
     }
 
-    internal static void DrawBag(Bag bag)
+    private static void DrawBag(Bag bag)
     {
       int x = Dialog.Box.Left + 25;
       int y = Dialog.Box.Top + 1;
-      $"Bag {activeBag + 1} Contents:".WriteAt(x, y, Color.White, Color.Olive);
+      $"Bag {activeBag + 1} Contents:".WriteAt(x, y, textColor, fillColor);
       y += 2;
-
       for (int i = 0; i < bag.Capacity; i++)
       {
         if (i >= bag.Items.Count)
-          $"[{i + 1}]:  Empty".WriteAt(x, y, Color.White, Color.Olive);
+          $"[{i + 1}]:  Empty".PadRight(listWidth).WriteAt(x, y, textColor, fillColor);
         else
-          $"[{i + 1}]:  ({bag.Items[i].Quantity}) {bag.Items[i].Name}".WriteAt(x, y, Color.White,
-          i == activeItem ? Color.DarkOrange : Color.Olive);
+          ($"[{i + 1}]:  ({bag.Items[i].Quantity}) {bag.Items[i].Name}".PadRight(listWidth - 7) +
+           $"${decimal.Round(bag.Items[i].SellCost, 2)}g".PadLeft(7))
+            .WriteAt(x, y, i == activeItem ? selectedColor : textColor, i == activeItem ? selectedBackgroundColor : fillColor);
         y++;
       }
     }
 
-    internal static void MoveItem(Item item, int bag)
+    private static void MoveItem(Item item, int bag)
     {
       if (Inventory.Bags[bag].Items.Count >= Inventory.Bags[bag].Capacity) return;
       Inventory.Bags[bag].AddItem(item);
@@ -146,20 +149,20 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       Draw();
     }
 
-    internal static void SellItem(Item item)
+    private static void SellItem(Item item)
     {
         Player.Gold += item.SellCost;
         Inventory.Bags[activeBag].RemoveItem(item);
     }
 
-    internal static void KeyHandler()
+    private static void KeyHandler()
     {
       ConsoleKeyInfo keyInfo = Console.ReadKey(true);
       switch (keyInfo.Key)
       {
         case ConsoleKey.Escape:
           dialogOpen = false;
-          Dialog.Close();
+          Dialog.Close("GamePlay");
           break;
         case ConsoleKey.D1:
         case ConsoleKey.D2:

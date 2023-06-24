@@ -66,6 +66,8 @@ namespace ConsoleDungeonCrawler.Game.Entities
       {
         new('S', "Start", "the Entrance", "the Entrance", Color.Black, Color.White, true, false, false),
         new('X', "Exit", "the Exit", "The Exit", Color.MidnightBlue, Color.Gold, true, false, false),
+        new('\u2640', "Player", "me", "am is seeing double?", Color.White, Color.DimGray, true, true, true),
+        new('V', "Vendor", "A Vendor", "Vendors", Color.MidnightBlue, Color.Lime, true, false, false),
         new('\u25b2', "UpStairs", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
         new('\u25bc', "DownStairs", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
         new('m', "Chest", "a Chest", "some Chests", Color.Silver, Color.DimGray, true, false, false),
@@ -73,7 +75,6 @@ namespace ConsoleDungeonCrawler.Game.Entities
         new('$', "Gold", "some Gold", "some stacks of Gold", Color.Gold, Color.DimGray, true, false, true),
         new('T', "Teleporter", "a Teleporter", "some Teleporters", Color.Gold, Color.DimGray, true, false, false),
         new('x', "Trap", "a Trap", "some Traps", Color.LightSalmon, Color.DimGray, false, false, false),
-        new('\u2640', "Player", "me", "am is seeing double?", Color.White, Color.DimGray, true, true, true),
         new('k', "Kobald", "a Kobald", "some Kobalds", Color.BlueViolet, Color.DimGray, false, true, true),
         new('z', "Ooze", "an Ooze", "some Oozes", Color.GreenYellow, Color.DimGray, false, true, true),
         new('g', "Goblin", " a Goblin", "some Goblins", Color.CadetBlue, Color.DimGray, false, true, true),
@@ -255,14 +256,14 @@ namespace ConsoleDungeonCrawler.Game.Entities
       }
     }
 
-    internal static void ClearMapArea()
+
+    // Utilities
+    internal static void Clear()
     {
       for (int y = Top + 1; y < (Top + Height); y++)
         new string(' ', Width - 2).WriteAt(Left + 1, y, ConsoleColor.Black, ConsoleColor.Black);
     }
 
-
-    // Utilities
     internal static bool CanMoveTo(int x, int y)
     {
       // check to see if there is an object there that is not passable
@@ -594,7 +595,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
         }
       }
       Console.ReadKey(true);
-      ClearMapArea();
+      Clear();
       DrawMap();
       DrawOverlay();
     }
@@ -611,7 +612,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
         }
       }
       Console.ReadKey(true);
-      ClearMapArea();
+      Clear();
       DrawMap();
       DrawOverlay();
     }

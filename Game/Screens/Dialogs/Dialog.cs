@@ -1,5 +1,6 @@
 ﻿using ConsoleDungeonCrawler.Extensions;
 using System.Drawing;
+using ConsoleDungeonCrawler.Game.Entities;
 
 namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 {
@@ -13,6 +14,8 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     internal static Color ForegroundColor = Color.DarkOrange;
     internal static Color FillColor = Color.Olive;
     internal static Color TextColor = Color.Bisque;
+    internal static Color selectedColor = Color.Lime;
+    internal static Color selectedBackgroundColor = Color.DarkOrange;
 
     /// <summary>
     /// Generic Dialog box with a title everything else is default
@@ -24,15 +27,13 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       $"[{title}]".WriteAlignedAt(Box, HAlign.Center, VAlign.Top, TextColor, BackgroundColor, 0, -1);
     }
 
-
     /// <summary>
     /// Generic Dialog box with a title, and default colors
     /// </summary>
     /// <param name="title"></param>
     /// <param name="box"></param>
     /// <param name="bchars"></param>
-    internal static void
-    Draw(string title, Box? box = null, BoxChars? bchars = null)
+    internal static void Draw(string title, Box? box = null, BoxChars? bchars = null)
     {
       box ??= Box;
       bchars ??= GamePlay.BChars;
@@ -60,7 +61,6 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     internal static void AskForInt(string question, string prompt, out int result)
     {
       int width = question.Length > prompt.Length ? question.Length : prompt.Length;
-
       Box box = new(Console.WindowWidth / 2 - (width + 8) / 2, Console.WindowHeight / 2 - 3, width + 8, 5);
       Draw(question, Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, box);
       prompt.WriteAlignedAt(box, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, -1, 0);
@@ -70,7 +70,6 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     internal static void Confirm(string question, string prompt, out bool result)
     {
       int width = question.Length > prompt.Length ? question.Length : prompt.Length;
-
       Box box = new(Console.WindowWidth / 2 - (width + 8) / 2, Console.WindowHeight / 2 - 3, width + 8, 5);
       Draw(question, Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, box);
       prompt.WriteAlignedAt(box, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, -1, 0);
@@ -86,11 +85,17 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       Console.ReadKey(true);
     }
 
-    internal static void Close()
+    internal static void Close(string parent)
     {
-      Game.IsPaused = false;
-      ConsoleEx.Clear();
-      GamePlay.Draw();
+      Map.Clear(); 
+      if (parent is "PlayerInventory") PlayerInventory.Draw();
+      if (parent is "PlayerSpells") PlayerSpells.Draw();
+      if (parent is "Vendor") Vendor.Draw();
+      if (parent is "GamePlay") GamePlay.Draw();
+      if (parent is "GamePaused") GamePaused.Draw();
+      if (parent is "GameCredits") GameCredits.Draw();
+      if (parent is "GameOver") GameOver.Draw();
+      if (parent is "GameWon") GameWon.Draw();
     }
   }
 }

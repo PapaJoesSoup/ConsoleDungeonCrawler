@@ -14,16 +14,17 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
 
     }
 
-    internal Potion(BuffType potionType, int quantity, decimal buyCost, decimal sellCost)
+    internal Potion(BuffType potionType, ItemRarity rarity, int quantity, decimal buyCost, decimal sellCost)
     {
       Type = ItemType.Potion;
+      Rarity = rarity;
       Quantity = quantity;
       StackSize = 20;
       BuyCost = buyCost;
       SellCost = sellCost;
 
-      Name = $"{BuffType} Potion";
-      Description = $"A {BuffType} Potion";
+      Name = $"{Rarity} {BuffType} Potion";
+      Description = $"A {Rarity} {BuffType} Potion";
       BuffType = potionType;
     }
 
@@ -61,13 +62,13 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items
       switch (randomPotion)
       {
         case 0:
-          return new Potion(BuffType.Health, 1, 1, 0.2M);
+          return new Potion(BuffType.Health, ItemRarity.Common, 1, 1, 0.1M);
         case 1:
-          return new Potion(BuffType.Mana, 1, 1, 0.3M);
+          return new Potion(BuffType.Mana, ItemRarity.Common, 1, 1, 0.1M);
         case 2:
-          return new Potion(BuffType.HealthAndMana, 1, 1, 0.5M);
+          return new Potion(BuffType.HealthAndMana, ItemRarity.Common, 1, 1, 0.1M);
         default:
-          return new Potion(BuffType.Health, 1, 1, 0.2M);
+          return new Potion(BuffType.Health, ItemRarity.Common, 1, 1, 0.1M);
       }
     }
   }

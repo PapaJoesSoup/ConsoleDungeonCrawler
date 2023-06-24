@@ -64,6 +64,13 @@
     Dragon
   }
 
+  internal enum VendorType
+  {
+    General,
+    Weapons,
+    Armor
+  }
+
   internal enum ItemType
   {
     None,

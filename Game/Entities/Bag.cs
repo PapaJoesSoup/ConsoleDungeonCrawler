@@ -3,7 +3,7 @@
   internal class Bag
   {
     internal readonly int Capacity = 20;
-    internal readonly List<Item> Items;
+    internal List<Item> Items;
 
     internal Bag()
     {
@@ -28,6 +28,11 @@
       if (Items.Count >= Capacity) return false;
       Items.Add(item);
       return true;
+    }
+
+    internal void AddItems(List<Item> items)
+    {
+      foreach (Item item in items) AddItem(item);
     }
 
     internal bool RemoveItem(Item item)

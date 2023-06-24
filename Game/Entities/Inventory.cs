@@ -19,7 +19,7 @@ namespace ConsoleDungeonCrawler.Game.Entities
     internal static readonly List<Bandage> Bandages = new();
     internal static readonly Dictionary<BuffType, List<Food>> Foods = new();
     internal static readonly Dictionary<SpellName, Spell> Spells = new();
-    internal static Dictionary<BuffType, Potion> Potions = new();
+    internal static readonly Dictionary<BuffType, List<Potion>> Potions = new();
 
 
     static Inventory()
@@ -429,7 +429,20 @@ namespace ConsoleDungeonCrawler.Game.Entities
 
     private static void InitPotionTypes()
     {
+      Potions.Add(BuffType.Health, new List<Potion>());
+      Potions[BuffType.Health].Add(new Potion(BuffType.Health, ItemRarity.Common, 1, 1M, 0.1M));
+      Potions[BuffType.Health].Add(new Potion(BuffType.Health, ItemRarity.Uncommon, 1, 5M, 0.5M));
+      Potions[BuffType.Health].Add(new Potion(BuffType.Health, ItemRarity.Rare, 1, 10M, 1M));
 
+      Potions.Add(BuffType.Mana, new List<Potion>());
+      Potions[BuffType.Mana].Add(new Potion(BuffType.Mana, ItemRarity.Common, 1, 1M, 0.1M));
+      Potions[BuffType.Mana].Add(new Potion(BuffType.Mana, ItemRarity.Uncommon, 1, 5M, 0.5M));
+      Potions[BuffType.Mana].Add(new Potion(BuffType.Mana, ItemRarity.Rare, 1, 10M, 1M));
+
+      Potions.Add(BuffType.HealthAndMana, new List<Potion>());
+      Potions[BuffType.HealthAndMana].Add(new Potion(BuffType.HealthAndMana, ItemRarity.Common, 1, 1M, 0.1M));
+      Potions[BuffType.HealthAndMana].Add(new Potion(BuffType.HealthAndMana, ItemRarity.Uncommon, 1, 5M, .5M));
+      Potions[BuffType.HealthAndMana].Add(new Potion(BuffType.HealthAndMana, ItemRarity.Rare, 1, 10M, 1M));
     }
 
     internal static bool AddItem(Item item)
