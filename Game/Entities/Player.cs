@@ -118,9 +118,9 @@ namespace ConsoleDungeonCrawler.Game.Entities
         case WeaponType.Dagger:
         case WeaponType.Staff:
           if (IsNextToOverlay(out MapObject objM) == ' ') return;
-          Monster meelee = (Monster)objM;
-          GamePlay.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {meelee.Type.Name}!"));
-          meelee.TakeDamage(Weapon.Damage);
+          Monster melee = (Monster)objM;
+          GamePlay.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {melee.Type.Name}!"));
+          melee.TakeDamage(Weapon.Damage);
           break;
         case WeaponType.Bow:
         case WeaponType.Wand:
@@ -266,28 +266,32 @@ namespace ConsoleDungeonCrawler.Game.Entities
       if (X > 0 && Map.LevelOverlayGrids[Game.CurrentLevel][X - 1][Y].Type.Symbol != ' ')
       {
         obj = Map.LevelOverlayGrids[Game.CurrentLevel][X - 1][Y];
-        return obj.Type.Symbol;
+        if (obj is not Monster monster || monster.IsAlive)
+          return obj.Type.Symbol;
       }
 
       // look right
       if (X < GamePlay.MapBox.Width && Map.LevelOverlayGrids[Game.CurrentLevel][X + 1][Y].Type.Symbol != ' ')
       {
         obj = Map.LevelOverlayGrids[Game.CurrentLevel][X + 1][Y];
-        return obj.Type.Symbol;
+        if (obj is not Monster monster || monster.IsAlive)
+          return obj.Type.Symbol;
       }
 
       // look up
       if (Y > 0 && Map.LevelOverlayGrids[Game.CurrentLevel][X][Y - 1].Type.Symbol != ' ')
       {
         obj = Map.LevelOverlayGrids[Game.CurrentLevel][X][Y - 1];
-        return obj.Type.Symbol;
+        if (obj is not Monster monster || monster.IsAlive)
+          return obj.Type.Symbol;
       }
 
       // look down
       if (Y >= GamePlay.MapBox.Height || Map.LevelOverlayGrids[Game.CurrentLevel][X][Y + 1].Type.Symbol != ' ')
       {
         obj = Map.LevelOverlayGrids[Game.CurrentLevel][X][Y + 1];
-        return obj.Type.Symbol;
+        if (obj is not Monster monster || monster.IsAlive)
+          return obj.Type.Symbol;
       }
 
       // not found
