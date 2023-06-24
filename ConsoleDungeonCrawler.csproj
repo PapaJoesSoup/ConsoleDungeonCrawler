@@ -71,7 +71,7 @@
     <Content Include="Game\Data\Art\TitleArt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Screens\Title.cs">
+    <Content Include="Game\Screens\GameTitle.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

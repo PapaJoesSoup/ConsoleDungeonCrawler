@@ -7,9 +7,9 @@ namespace ConsoleDungeonCrawler.Game;
 
 internal static class Game
 {
-  internal static readonly string Title = "Console Dungeon Crawler";
-  internal static readonly string MapPath = "Game/Data/Maps/";
-  internal static string DataPath = "Game/Data/";
+  internal const string Title = "Console Dungeon Crawler";
+  private const string MapPath = "Game/Data/Maps/";
+  internal const string DataPath = "Game/Data/";
   internal static bool IsOver { get; set; }
   internal static bool IsWon { get; set; }
   internal static bool IsPaused { get; set; }
@@ -18,7 +18,7 @@ internal static class Game
 
   internal static readonly Dictionary<string, Dictionary<string, string>> Dungeons = new();
 
-  internal static void LoadDungeons()
+  private static void LoadDungeons()
   {
     string[] folders = Directory.GetDirectories(MapPath);
     Dungeons.Clear();
@@ -36,10 +36,10 @@ internal static class Game
     CurrentDungeon = Dungeons.Keys.First();
   }
 
-  public static void Run()
+  internal static void Run()
   {
     LoadDungeons();
-    Screens.Title.Draw();
+    Screens.GameTitle.Draw();
     Map.Instance = new Map(GamePlay.MapBox);
     PlayGame();
   }

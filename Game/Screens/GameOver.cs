@@ -15,6 +15,4 @@ internal static class GameOver
     Environment.Exit(0);
 
   }
-
-
 }

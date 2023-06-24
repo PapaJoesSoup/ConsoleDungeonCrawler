@@ -5,10 +5,10 @@ using System.Text;
 
 namespace ConsoleDungeonCrawler.Game.Screens;
 
-internal static class Title
+internal static class GameTitle
 {
-  private static int activeItem = 0;
-  static bool dialogOpen = false;
+  private static int activeItem;
+  private static bool dialogOpen;
   private static readonly Box ScreenBorder = new(0, 0, Console.WindowWidth, Console.WindowHeight);
   private static readonly Box Box = new(Console.WindowWidth / 2 - 40, Console.WindowHeight / 2 - 8, 80, 17);
 
@@ -45,7 +45,7 @@ internal static class Title
   private static void LoadTitleArt()
   {
     StringBuilder sb = new();
-    sb.Append(File.ReadAllText("Game/Data/Art/TitleArt.txt"));
+    sb.Append(File.ReadAllText($"{Game.DataPath}/Art/TitleArt.txt"));
     // write the title art to the console
     string[] lines = sb.ToString().Split('\n');
     for (int y = 1; y < 52; y++)
