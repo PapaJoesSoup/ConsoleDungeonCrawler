@@ -14,6 +14,7 @@ internal class ObjectType
   internal readonly bool IsVisible = true;
   internal readonly bool IsAttackable = false;
   internal readonly bool IsLootable = false;
+  internal readonly bool IsTransparent = false;
 
   internal ObjectType()
   {
@@ -25,7 +26,7 @@ internal class ObjectType
     IsVisible = isVisible;
   }
 
-  public ObjectType(char symbol, string name, string singular, string plural, Color foregroundColor, Color backgroundColor, bool isPassable, bool isAttackable, bool isLootable) : this()
+  public ObjectType(char symbol, string name, string singular, string plural, Color foregroundColor, Color backgroundColor, bool isPassable, bool isAttackable, bool isLootable, bool isTransparent = false) : this()
   {
     Symbol = symbol;
     Name = name;
@@ -36,5 +37,6 @@ internal class ObjectType
     IsPassable = isPassable;
     IsAttackable = isAttackable;
     IsLootable = isLootable;
+    IsTransparent = isTransparent;
   }
 }

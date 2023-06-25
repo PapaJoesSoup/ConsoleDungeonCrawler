@@ -8,6 +8,7 @@ internal class MapObject : Position
   internal ObjectType Type = new();
   internal bool IsVisible = false;
   internal bool IsPassable = false;
+  internal bool IsTransparent = false;
   internal bool IsLootable = false;
   internal bool IsAttackable = false;
   internal Color ForegroundColor = Color.White;

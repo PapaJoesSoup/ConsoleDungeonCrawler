@@ -56,10 +56,10 @@ internal class Map
       new('\u25b2', "UpStairs", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
       new('\u25bc', "DownStairs", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
       new('!', "Fire", "a fire", "some fire", Color.OrangeRed, Color.DimGray, false, false, false),
-      new('~', "Water", "some water", "some patches of water", Color.Aqua, Color.Aqua, false, false, false),
-      new('a', "Acid", "some acid", "some patches of acid", Color.SaddleBrown, Color.Chartreuse, false, false, false),
-      new('L', "Lava", "some lava", "some patches of lava", Color.PapayaWhip, Color.Goldenrod, false, false, false),
-      new('I', "Ice", "some ice", "some patches of ice", Color.Blue, Color.DeepSkyBlue, false, false, false)
+      new('~', "Water", "some water", "some patches of water", Color.Aqua, Color.Aqua, false, false, false, true),
+      new('a', "Acid", "some acid", "some patches of acid", Color.SaddleBrown, Color.Chartreuse, false, false, false, true),
+      new('L', "Lava", "some lava", "some patches of lava", Color.PapayaWhip, Color.Goldenrod, false, false, false, true),
+      new('I', "Ice", "some ice", "some patches of ice", Color.Blue, Color.DeepSkyBlue, false, false, false, true)
     };
 
     // These are for placing objects on the map.
@@ -309,7 +309,8 @@ internal class Map
 
   private static void SetVisibleYObjects(int x, int y, ref int yLimit)
   {
-    if (LevelMapGrids[Game.CurrentLevel][x][y].IsPassable)
+    MapObject obj = LevelMapGrids[Game.CurrentLevel][x][y];
+    if (obj.IsPassable || obj.IsTransparent)
     {
       LevelMapGrids[Game.CurrentLevel][x][y].IsVisible = true;
       AddToMapObjects(LevelMapGrids[Game.CurrentLevel][x][y]);
@@ -331,7 +332,8 @@ internal class Map
 
   private static void SetVisibleXObjects(int x, int y, ref int xLimit)
   {
-    if (LevelMapGrids[Game.CurrentLevel][x][y].IsPassable)
+    MapObject obj = LevelMapGrids[Game.CurrentLevel][x][y];
+    if (obj.IsPassable || obj.IsTransparent)
     {
       LevelMapGrids[Game.CurrentLevel][x][y].IsVisible = true;
       AddToMapObjects(LevelMapGrids[Game.CurrentLevel][x][y]);

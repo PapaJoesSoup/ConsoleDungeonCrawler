@@ -127,12 +127,12 @@ internal static class ConsoleEx
   internal static void WriteLegendItem(this MapObject mapObject, int col, int row, int width)
   {
     // create a formatted line containing the symbol and the type of the map object
-    int padding = width - mapObject.Type.Name.Length - 5;
-    int paddingStart = col + mapObject.Type.Name.Length + 3;
+    int padding = width - mapObject.Type.Name.Length - 6;
+    int paddingStart = col + mapObject.Type.Name.Length + 4;
     WriteAt(' ', col, row, Color.White, Color.DimGray);
     WriteAt(mapObject.Type.Symbol.ToString(), col + 1, row, mapObject.Type.ForegroundColor, mapObject.Type.BackgroundColor);
-    WriteAt(':', col + 2, row, Color.White, Color.DimGray);
-    WriteAt(mapObject.Type.Name, col + 3, row, mapObject.Type.ForegroundColor, Color.DimGray);
+    WriteAt(": ", col + 2, row, Color.White, Color.DimGray);
+    WriteAt(mapObject.Type.Name, col + 4, row, mapObject.Type.ForegroundColor, Color.DimGray);
     WriteAt(new string(' ', padding), paddingStart, row, Color.White, Color.DimGray);
   }
 
