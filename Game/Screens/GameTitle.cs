@@ -18,7 +18,7 @@ internal static class GameTitle
     ConsoleEx.Clear();
     ScreenBorder.WriteBorder(GamePlay.BChars, Color.DarkOrange);
     LoadTitleArt();
-    Dialog.Draw("Welcome to the Dungeon Crawler!", Box, GamePlay.BChars);
+    Dialog.Draw(" Welcome to the Dungeon Crawler! ", Box, GamePlay.BChars);
     dialogOpen = true;
 
     while (dialogOpen)
@@ -45,7 +45,7 @@ internal static class GameTitle
   private static void LoadTitleArt()
   {
     StringBuilder sb = new();
-    sb.Append(File.ReadAllText($"{Game.DataPath}/Art/TitleArt.txt"));
+    sb.Append(File.ReadAllText($"{Game.ArtPath}/TitleArt.txt"));
     // write the title art to the console
     string[] lines = sb.ToString().Split('\n');
     for (int y = 1; y < 52; y++)

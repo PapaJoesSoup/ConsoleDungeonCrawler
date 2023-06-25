@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Game\Data\Art\TitleArt2.txt" />
     <None Remove="Game\Data\Maps\CastleMania\LevelMap_-1.txt" />
     <None Remove="Game\Data\Maps\CastleMania\LevelMap_0.txt" />
     <None Remove="Game\Data\Maps\CastleMania\LevelMap_1.txt" />
@@ -73,6 +74,12 @@
     </Content>
     <Content Include="Game\Screens\GameTitle.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Game\Data\Art\TitleArt2.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 

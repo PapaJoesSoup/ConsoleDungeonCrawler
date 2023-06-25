@@ -10,6 +10,7 @@ internal static class Game
   internal const string Title = "Console Dungeon Crawler";
   private const string MapPath = "Game/Data/Maps/";
   internal const string DataPath = "Game/Data/";
+  internal const string ArtPath = "Game/Data/Art/";
   internal static bool IsOver { get; set; }
   internal static bool IsWon { get; set; }
   internal static bool IsPaused { get; set; }
