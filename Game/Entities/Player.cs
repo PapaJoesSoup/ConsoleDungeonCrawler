@@ -166,7 +166,7 @@ internal class Player : MapObject
   internal static void EquipWeapon(Weapon weapon)
   {
     // don't add fists to inventory
-    if (weapon.Name != "Fists") Inventory.AddItem(Player.Weapon);
+    if (Weapon.Name != "Fists") Inventory.AddItem(Weapon);
     Weapon = weapon;
   }
 

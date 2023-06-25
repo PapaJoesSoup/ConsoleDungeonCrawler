@@ -105,7 +105,7 @@ internal static class GamePlay
     $"{Player.Weapon.Name}".WriteAt(col + 8, row, ColorEx.RarityColor(Player.Weapon.Rarity)); row++;
     $"Health: {Player.Health}/{Player.MaxHealth}".WriteAt(col, row, ConsoleColor.White); row++;
     $"Mana: {Player.Mana}/{Player.MaxMana}".WriteAt(col, row, ConsoleColor.White); row++;
-    $"Gold: {Player.Gold}g".WriteAt(col, row, ConsoleColor.White);
+    $"Gold: {Player.Gold:C}g".WriteAt(col, row, ConsoleColor.White);
   }
 
   private static void SpellStats()

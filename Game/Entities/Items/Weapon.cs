@@ -18,8 +18,7 @@ internal class Weapon : Item
     StackSize = 1;
     BuyCost = 1M;
     SellCost = 0.10M;
-
-
+    
     WeaponType = WeaponType.Fists;
     Damage = 1;
     Durability = 100;

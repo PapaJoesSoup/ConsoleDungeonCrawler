@@ -13,7 +13,7 @@ internal class Food : Item
 
   }
 
-  internal Food(FoodName foodName, BuffType buffType, int quantity, decimal buyCost, decimal value)
+  internal Food(FoodName foodName, BuffType buffType, int quantity, decimal buyCost, decimal sellCost)
   {
     Type = ItemType.Food;
     this.buffType = buffType;
@@ -23,7 +23,7 @@ internal class Food : Item
     Name = $"{foodName}";
     Description = this.buffType == BuffType.Health ? $"a {foodName}" : $"some {foodName}";
     BuyCost = buyCost;
-    SellCost = 0;
+    SellCost = sellCost;
   }
 
   internal override bool Use()

@@ -156,7 +156,7 @@ internal static class Vendor
     for (int i = scrollY; i < scrollY + maxHeight; i++)
     {
       ($"[{i + 1}]:  {StoreInventory[activeVendorTab].Items[i].Name}".PadRight(ListWidth - 7) + 
-       $"${decimal.Round(StoreInventory[activeVendorTab].Items[i].BuyCost, 2)}g".PadLeft(7))
+       $"{decimal.Round(StoreInventory[activeVendorTab].Items[i].BuyCost, 2):C}g".PadLeft(7))
         .WriteAt(x, y, i == activeVendorItem ? SelectedColor : TextColor, i == activeVendorItem ? SelectedBackgroundColor : FillColor);
       y++;
     }
@@ -166,6 +166,7 @@ internal static class Vendor
   {
     int x = position.X;
     int y = position.Y;
+    if (activeItem >= bag.Items.Count) activeItem = bag.Items.Count - 1;
     $"Bag {activeBag + 1} Contents:".WriteAt(x, y, !storeIsActive ? SelectedColor : TextColor, FillColor);
     y += 2;
     ("Item".PadRight(ListWidth - 7) + "Sell".PadLeft(7)).WriteAt(x, y, TextColor, FillColor);
@@ -176,7 +177,7 @@ internal static class Vendor
         $"[{i + 1}]:  Empty".PadRight(ListWidth).WriteAt(x, y, TextColor, FillColor);
       else
         ($"[{i + 1}]:  ({bag.Items[i].Quantity}) {bag.Items[i].Name}".PadRight(ListWidth - 7) +
-         $"${decimal.Round(bag.Items[i].SellCost, 2)}g".PadLeft(7))
+         $"{decimal.Round(bag.Items[i].SellCost, 2):C}g".PadLeft(7))
           .WriteAt(x, y, i == activeItem ? SelectedColor : TextColor, i == activeItem ? SelectedBackgroundColor : FillColor);
       y++;
     }

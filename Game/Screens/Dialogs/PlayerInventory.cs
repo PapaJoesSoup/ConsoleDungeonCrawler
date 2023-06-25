@@ -69,6 +69,7 @@ internal static class PlayerInventory
   {
     int x = ListPosition.X;
     int y = ListPosition.Y;
+    if (activeItem >= bag.Items.Count) activeItem = bag.Items.Count - 1;
     $"Bag {activeBag + 1} Contents:".WriteAt(x, y, TextColor, FillColor);
     y += 2;
     for (int i = 0; i < (bag.Capacity < ListHeight? bag.Capacity: ListHeight); i++)
@@ -77,7 +78,7 @@ internal static class PlayerInventory
         $"[{i + 1}]:  Empty".PadRight(ListWidth).WriteAt(x, y, TextColor, FillColor);
       else
         ($"[{i + 1}]:  ({bag.Items[i].Quantity}) {bag.Items[i].Name}".PadRight(ListWidth - 7) +
-         $"${decimal.Round(bag.Items[i].SellCost, 2)}g".PadLeft(7))
+         $"{decimal.Round(bag.Items[i].SellCost, 2):C}g".PadLeft(7))
           .WriteAt(x, y, i == activeItem ? SelectedColor : TextColor, i == activeItem ? SelectedBackgroundColor : FillColor);
       y++;
     }
