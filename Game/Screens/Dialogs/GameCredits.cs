@@ -19,8 +19,8 @@ internal static class GameCredits
     Dialog.Draw($" {Game.Title} - Credits", Color, BackgroundColor, FillColor, TextColor, Box);
     $"Thanks for playing {Game.Title}!".WriteAlignedAt(HAlign.Center, VAlign.Middle, TextColor, FillColor, 0, -4);
     "Designed and built by Joe Korinek For educational purposes.".WriteAlignedAt(HAlign.Center, VAlign.Middle, TextColor, FillColor);
-    "Thanks to Indi Odegard for her inspiration in the creation of this project.".WriteAlignedAt(HAlign.Center, VAlign.Middle, TextColor, FillColor, 0, 1);
-    "Best wishes to you, Indi, as you go forward into the future.".WriteAlignedAt(HAlign.Center, VAlign.Middle, TextColor, FillColor, 0, 2);
+    "Thanks to Indi O. for her inspiration in the creation of this project.".WriteAlignedAt(HAlign.Center, VAlign.Middle, TextColor, FillColor, 0, 1);
+    "Best wishes to you Indi as you go forward into the future.".WriteAlignedAt(HAlign.Center, VAlign.Middle, TextColor, FillColor, 0, 2);
     "Press any key to continue...".WriteAlignedAt(Box, HAlign.Center, VAlign.Bottom, TextColor, FillColor, 0, -3);
     Console.ReadKey();
   }

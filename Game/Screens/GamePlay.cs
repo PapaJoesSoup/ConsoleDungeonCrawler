@@ -27,7 +27,7 @@ internal static class GamePlay
   private static int currentBag = 1;
 
   // MessageOffset is a negative number that decrements the index of the first message to display in the message Section
-  private static int messageOffset = 0;
+  private static int messageOffset;
 
   // LastKey is used to help with player combat state management
   private static ConsoleKeyInfo lastKey;

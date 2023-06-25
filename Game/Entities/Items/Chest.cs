@@ -5,37 +5,24 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items;
 
 internal class Chest : Item
 {
-  internal readonly ItemRarity ItemRarity = ItemRarity.Common;
-  internal readonly List<Item> Items = new();
+  private readonly ItemRarity itemRarity;
+  private readonly List<Item> items;
 
-  internal Chest()
+  private Chest(int quantity, ItemRarity rarity, decimal buyCost, decimal sellCost)
   {
     Type = ItemType.Chest;
-    Name = $"{ItemRarity} Chest";
-    Description = $"A {ItemRarity} Chest";
-    Quantity = 1;
-    StackSize = 1;
-    BuyCost = 1M;
-    SellCost = 0.10M;
-
-    Items = GetChestItems();
-  }
-
-  internal Chest(int quantity, ItemRarity rarity, decimal buyCost, decimal sellCost)
-  {
-    Type = ItemType.Chest;
-    Name = "Chest";
+    Name = Type.ToString();
     Description = "A Chest";
-    ItemRarity = rarity;
+    itemRarity = rarity;
     Quantity = quantity;
     StackSize = 1;
     BuyCost = buyCost;
     SellCost = sellCost;
 
-    Items = GetChestItems();
+    items = GetChestItems();
   }
 
-  private List<Item> GetChestItems()
+  private static List<Item> GetChestItems()
   {
     int randomItems = Dice.Roll(0, 10);
     switch (randomItems)
@@ -72,9 +59,9 @@ internal class Chest : Item
       
     bool result = true;
     GamePlay.Messages.Add(new Message("You open the chest...", Color.DarkOrange, Color.Black));
-    if (Items.Count > 0)
+    if (items.Count > 0)
     {
-      foreach (Item item in Items)
+      foreach (Item item in items)
       {
         Inventory.AddItem(item);
         GamePlay.Messages.Add(item.Type == ItemType.Gold
@@ -95,26 +82,16 @@ internal class Chest : Item
     
   internal new static Item GetRandomItem()
   {
-    int min = 0;
-    int max = 5;
-
-    int randomChest = Dice.Roll(min, max);
-    switch (randomChest)
+    int randomChest = Dice.Roll(0, 5);
+    return randomChest switch
     {
-      case 0:
-        return new Chest(1, ItemRarity.Poor, 0.5M, 0.1M);
-      case 1:
-        return new Chest(1, ItemRarity.Common, 1, 0.5M);
-      case 2:
-        return new Chest(1, ItemRarity.Uncommon, 5, 1M);
-      case 3:
-        return new Chest(1, ItemRarity.Rare, 10, 1.5M);
-      case 4:
-        return new Chest(1, ItemRarity.Epic, 20, 4M);
-      case 5:
-        return new Chest(1, ItemRarity.Legendary, 50, 7.5M);
-      default:
-        return new Chest(1, ItemRarity.Common, 1, 0.5M);
-    }
+      0 => new Chest(1, ItemRarity.Poor, 0.5M, 0.1M),
+      1 => new Chest(1, ItemRarity.Common, 1, 0.5M),
+      2 => new Chest(1, ItemRarity.Uncommon, 5, 1M),
+      3 => new Chest(1, ItemRarity.Rare, 10, 1.5M),
+      4 => new Chest(1, ItemRarity.Epic, 20, 4M),
+      5 => new Chest(1, ItemRarity.Legendary, 50, 7.5M),
+      _ => new Chest(1, ItemRarity.Common, 1, 0.5M)
+    };
   }
 }

@@ -25,7 +25,7 @@ internal static class Vendor
   private static readonly int ListSize = 20;
   private static readonly int ListWidth = 40;
   private static bool storeIsActive = true;
-  private static bool dialogOpen = false;
+  private static bool dialogOpen;
 
   private static readonly Box DialogBox = new(Console.WindowWidth / 2 - 58, Console.WindowHeight / 2 - 13, 116, 26);
   private static readonly Box LegendBox = new(DialogBox.Left, DialogBox.Top + 11, 25, 12);
@@ -51,12 +51,14 @@ internal static class Vendor
       int y = 1;
       "Select Bag: ([x])".WriteAt(DialogBox.Left + 2, DialogBox.Top + 1, TextColor, FillColor);
       y += 2;
-      foreach (var bag in Inventory.Bags)
+      for (int index = 0; index < Inventory.Bags.Count; index++)
       {
-        $"[{x}] Bag {x}".WriteAt(DialogBox.Left + 2, DialogBox.Top + y, TextColor, activeBag == x - 1 ? SelectedBackgroundColor : FillColor);
+        $"[{x}] Bag {x}".WriteAt(DialogBox.Left + 2, DialogBox.Top + y, TextColor,
+          activeBag == x - 1 ? SelectedBackgroundColor : FillColor);
         x++;
         y++;
       }
+
       DrawLegend();
 
       // Draw the vendor inventory
@@ -74,17 +76,15 @@ internal static class Vendor
     // potions
     List<Item> generalItems = new ();
     foreach (KeyValuePair<BuffType, List<Potion>> potions in Inventory.Potions)
-    foreach (Potion potion in potions.Value)
+      foreach (Potion potion in potions.Value)
       generalItems.Add(potion);
 
     // Food and Drink
-    Bag food = new(Inventory.Foods.Count);
     foreach (KeyValuePair<BuffType, List<Food>> foodType in Inventory.Foods)
-    foreach (Food f in foodType.Value) 
+      foreach (Food f in foodType.Value) 
       generalItems.Add(f);
 
     // Bandages
-    Bag bandages = new(Inventory.Bandages.Count);
     foreach (Bandage bandage in Inventory.Bandages)
       generalItems.Add(bandage);
 
@@ -109,10 +109,10 @@ internal static class Vendor
     StoreInventory[(int)VendorType.Armor].Items = armor;
   }
 
-  private static void SelectVendorInventory(VendorType vendorType)
+  private static void SelectVendorInventory(VendorType type)
   {
-    Vendor.vendorType = vendorType;
-    switch (vendorType)
+    Vendor.vendorType = type;
+    switch (type)
     {
       case VendorType.General:
         activeVendorTab = 0;
@@ -231,7 +231,6 @@ internal static class Vendor
         if (Inventory.Bags.Count < (int)keyInfo.Key - 48) return;
         activeBag = (int)keyInfo.Key - 49;
         DrawBag(Inventory.Bags[(int)keyInfo.Key - 49], BagPosition);
-        break;
         break;
       case ConsoleKey.PageUp:
         break;

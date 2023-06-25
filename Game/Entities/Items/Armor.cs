@@ -4,10 +4,10 @@ internal class Armor : Item
 {
   internal readonly ArmorType ArmorType = ArmorType.None;
   internal readonly ArmorName ArmorName = ArmorName.None;
-  internal int ArmorValue = 0;
-  internal int ArmorBonus = 0;
-  internal int Durability = 0;
-  internal int MaxDurability = 0;
+  internal int ArmorValue;
+  internal int ArmorBonus;
+  internal int Durability;
+  internal int MaxDurability;
   internal BuffType BuffType = BuffType.None;
 
   internal static float ArmorValueMultiplier = 1.0f;

@@ -212,7 +212,7 @@ internal static class ConsoleEx
   }
 
   internal static void WriteAlignedAt(this string s, HAlign hAlign, int y, ConsoleColor color,
-    ConsoleColor backgroundColor)
+    ConsoleColor bgColor)
   {
     int x = 0;
     switch (hAlign)
@@ -227,7 +227,7 @@ internal static class ConsoleEx
         x = Console.WindowWidth - s.Length;
         break;
     }
-    WriteAt(s, x, y, color, backgroundColor);
+    WriteAt(s, x, y, color, bgColor);
   }
 
   internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign)
@@ -295,7 +295,7 @@ internal static class ConsoleEx
   }
 
   internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, ConsoleColor color,
-    ConsoleColor backgroundColor)
+    ConsoleColor bgColor)
   {
     int x = 0;
     int y = 0;
@@ -324,7 +324,7 @@ internal static class ConsoleEx
         y = Console.WindowHeight - 1;
         break;
     }
-    WriteAt(s, x, y, color, backgroundColor);
+    WriteAt(s, x, y, color, bgColor);
   }
 
   internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, int xOffset, int yOffset)
@@ -393,7 +393,7 @@ internal static class ConsoleEx
   }
 
   internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, ConsoleColor color,
-    ConsoleColor backgroundColor, int xOffset, int yOffset)
+    ConsoleColor bgColor, int xOffset, int yOffset)
   {
     int x = 0;
     int y = 0;
@@ -422,7 +422,7 @@ internal static class ConsoleEx
         y = Console.WindowHeight - 1;
         break;
     }
-    WriteAt(s, x + xOffset, y + yOffset, color, backgroundColor);
+    WriteAt(s, x + xOffset, y + yOffset, color, bgColor);
   }
 
   // Extended Color WriteAlignedAt Methods

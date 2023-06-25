@@ -15,28 +15,9 @@ internal class Item
   internal decimal SellCost;
 
   /// <summary>
-  /// the default constructor is an item of type Gold with a quantity of 1 and a value of 0.1
+  /// the default constructor is an item of type Gold with a quantity of 1 and a sell of 0.1
   /// </summary>
   internal Item() { }
-
-  /// <summary>
-  /// this constructor is used for creating items of a specific ItemType
-  /// </summary>
-  /// <param name="type"></param>
-  /// <param name="level"></param>
-  /// <param name="qty"></param>
-  /// <param name="cost"></param>
-  /// <param name="value"></param>
-  internal Item(ItemType type, int level, int qty, decimal cost, decimal value)
-  {
-    Type = type;
-    Name = type.ToString();
-    Level = level;
-    Description = Type == ItemType.Gold ? $"some {Name}" : $"a {Name}";
-    Quantity = qty;
-    BuyCost = cost;
-    SellCost = value;
-  }
 
   /// <summary>
   /// override method to Use an item.  This is overriden in the subtypes with a method uses the item of that type.

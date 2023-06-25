@@ -8,6 +8,13 @@ internal static class PlayerSpells
 {
   private static readonly Box Box = new(Console.WindowWidth / 2 - 40, Console.WindowHeight / 2 - 8, 80, 17);
 
+  private static readonly Color Color = Color.DarkOrange;
+  private static readonly Color BackgroundColor = Color.Black;
+  private static readonly Color FillColor = Color.SaddleBrown;
+  private static readonly Color TextColor = Color.Bisque;
+  private static readonly Color SelectedColor = Color.Lime;
+  private static readonly Color SelectedBackgroundColor = Color.DarkOrange;
+
   static int activeSpell = 1;
   static bool dialogOpen = false;
 

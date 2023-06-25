@@ -92,7 +92,7 @@ internal enum ItemRarity
   Legendary
 }
 
-internal enum FoodType
+internal enum FoodName
 {
   Ration,
   BearSteak,

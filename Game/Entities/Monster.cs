@@ -17,11 +17,6 @@ internal class Monster : MapObject
   internal bool IsAlive = true;
   internal bool InCombat = false;
 
-  internal Monster()
-  {
-
-  }
-
   internal Monster(MapObject obj, int level)
   {
     // set Base MapObject properties
@@ -44,16 +39,6 @@ internal class Monster : MapObject
     Gold = Decimal.Round(level * Dice.Roll(.01M, 1.1M), 2);
     Weapon = new Weapon();
     Level = level;
-  }
-
-  private void InitInventory()
-  {
-    // get a random number and check to see if any inventory items should be added
-    // 1 in 3 chance of adding an item
-    if (Dice.Roll(1, 3) != 1) return;
-    // now randomly select an item to add
-    int item = Dice.Roll(1, Enum.GetNames<ItemType>().Length);
-    Gold = Dice.Roll(1, Level * 2);
   }
 
   internal void DetectPlayer()
@@ -120,7 +105,7 @@ internal class Monster : MapObject
     }
   }
 
-  private static int SetOdds(Char type)
+  private static int SetOdds(char type)
   {
     switch (type)
     {
@@ -138,11 +123,8 @@ internal class Monster : MapObject
 
   internal static Item Loot(Monster monster)
   {
-    if (Dice.Roll(SetOdds(monster.Type.Symbol)) != 1) return new Item(); //chance of dropping an item
-    Item item = Inventory.GetRandomItem();
-    Inventory.AddItem(item);
-    GamePlay.Messages.Add(new Message($"You gained {item.Description}!", Color.DarkOrange, Color.Black));
+    if (Dice.Roll(SetOdds(monster.Type.Symbol)) != 1) return new Item(); //chance of dropping an item other than gold
     monster.IsLootable = false;
-    return item;
+    return Inventory.GetRandomItem();
   }
 }

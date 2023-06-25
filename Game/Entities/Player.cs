@@ -19,7 +19,6 @@ internal class Player : MapObject
   internal static List<Armor> ArmorSet = new();
   internal static Weapon Weapon = new();
   internal static readonly Dictionary<int, Spell> Spells = new();
-  internal static bool IsAlive = true;
   internal static bool InCombat = false;
 
   internal Player()
@@ -51,8 +50,8 @@ internal class Player : MapObject
     Inventory.Bags.Add(new Bag());
     Inventory.AddItem(new Potion(BuffType.Health, ItemRarity.Common, 1, 1, 0.1M));
     Inventory.AddItem(new Potion(BuffType.Health, ItemRarity.Common, 1, 1, 0.1M));
-    Inventory.AddItem(new Food(FoodType.Bread, BuffType.Health, 1, 1, 0.1M));
-    Inventory.AddItem(new Food(FoodType.Vegetable, BuffType.Health, 1, 1, 0.1M));
+    Inventory.AddItem(new Food(FoodName.Bread, BuffType.Health, 1, 1, 0.1M));
+    Inventory.AddItem(new Food(FoodName.Vegetable, BuffType.Health, 1, 1, 0.1M));
   }
 
   public bool Move(ConsoleKey key)
@@ -189,7 +188,6 @@ internal class Player : MapObject
       Player.Health = 0;
       GamePlay.Messages.Add(new Message("You died!", Color.Red, Color.Black));
       Player.InCombat = false;
-      Player.IsAlive = false;
     }
     else
     {

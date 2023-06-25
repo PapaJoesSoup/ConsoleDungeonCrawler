@@ -359,33 +359,33 @@ internal static class Inventory
   private static void InitFoodTypes()
   {
     Foods.Add(BuffType.Health, new List<Food>());
-    Foods[BuffType.Health].Add(new Food(FoodType.Ration, BuffType.Health, 1, 1, 0));
-    Foods[BuffType.Health].Add(new Food(FoodType.Vegetable, BuffType.Health, 1, 1, 0));
-    Foods[BuffType.Health].Add(new Food(FoodType.Fruit, BuffType.Health, 1, 1, 0));
-    Foods[BuffType.Health].Add(new Food(FoodType.BearSteak, BuffType.Health, 1, 1, 0));
-    Foods[BuffType.Health].Add(new Food(FoodType.Bread, BuffType.Health, 1, 1, 0));
-    Foods[BuffType.Health].Add(new Food(FoodType.WolfSteak, BuffType.Health, 1, 1, 0));
-    Foods[BuffType.Health].Add(new Food(FoodType.DeerSteak, BuffType.Health, 1, 1, 0));
-    Foods[BuffType.Health].Add(new Food(FoodType.BoarChop, BuffType.Health, 1, 1, 0));
+    Foods[BuffType.Health].Add(new Food(FoodName.Ration, BuffType.Health, 1, 1, 0));
+    Foods[BuffType.Health].Add(new Food(FoodName.Vegetable, BuffType.Health, 1, 1, 0));
+    Foods[BuffType.Health].Add(new Food(FoodName.Fruit, BuffType.Health, 1, 1, 0));
+    Foods[BuffType.Health].Add(new Food(FoodName.BearSteak, BuffType.Health, 1, 1, 0));
+    Foods[BuffType.Health].Add(new Food(FoodName.Bread, BuffType.Health, 1, 1, 0));
+    Foods[BuffType.Health].Add(new Food(FoodName.WolfSteak, BuffType.Health, 1, 1, 0));
+    Foods[BuffType.Health].Add(new Food(FoodName.DeerSteak, BuffType.Health, 1, 1, 0));
+    Foods[BuffType.Health].Add(new Food(FoodName.BoarChop, BuffType.Health, 1, 1, 0));
 
     Foods.Add(BuffType.HealthAndMana, new List<Food>());
-    Foods[BuffType.HealthAndMana].Add(new Food(FoodType.Salmon, BuffType.HealthAndMana, 1, 1, 0));
-    Foods[BuffType.HealthAndMana].Add(new Food(FoodType.Trout, BuffType.HealthAndMana, 1, 1, 0));
-    Foods[BuffType.HealthAndMana].Add(new Food(FoodType.Snapper, BuffType.HealthAndMana, 1, 1, 0));
-    Foods[BuffType.HealthAndMana].Add(new Food(FoodType.Feast, BuffType.HealthAndMana, 1, 1, 0));
+    Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Salmon, BuffType.HealthAndMana, 1, 1, 0));
+    Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Trout, BuffType.HealthAndMana, 1, 1, 0));
+    Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Snapper, BuffType.HealthAndMana, 1, 1, 0));
+    Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Feast, BuffType.HealthAndMana, 1, 1, 0));
       
     Foods.Add(BuffType.Mana, new List<Food>());
-    Foods[BuffType.Mana].Add(new Food(FoodType.MelonJuice, BuffType.Mana, 1, 1, 0));
-    Foods[BuffType.Mana].Add(new Food(FoodType.FruitJuice, BuffType.Mana, 1, 1, 0));
-    Foods[BuffType.Mana].Add(new Food(FoodType.Water, BuffType.Mana, 1, 1, 0));
-    Foods[BuffType.Mana].Add(new Food(FoodType.Tea, BuffType.Mana, 1, 1, 0));
-    Foods[BuffType.Mana].Add(new Food(FoodType.Coffee, BuffType.Mana, 1, 1, 0));
-    Foods[BuffType.Mana].Add(new Food(FoodType.Milk, BuffType.Mana, 1, 1, 0));
-    Foods[BuffType.Mana].Add(new Food(FoodType.Wine, BuffType.Mana, 1, 1, 0));
-    Foods[BuffType.Mana].Add(new Food(FoodType.Beer, BuffType.Mana, 1, 1, 0));
-    Foods[BuffType.Mana].Add(new Food(FoodType.Ale, BuffType.Mana, 1, 1, 0));
-    Foods[BuffType.Mana].Add(new Food(FoodType.Whiskey, BuffType.Mana, 1, 1, 0));
-    Foods[BuffType.Mana].Add(new Food(FoodType.Cider, BuffType.Mana, 1, 1, 0));
+    Foods[BuffType.Mana].Add(new Food(FoodName.MelonJuice, BuffType.Mana, 1, 1, 0));
+    Foods[BuffType.Mana].Add(new Food(FoodName.FruitJuice, BuffType.Mana, 1, 1, 0));
+    Foods[BuffType.Mana].Add(new Food(FoodName.Water, BuffType.Mana, 1, 1, 0));
+    Foods[BuffType.Mana].Add(new Food(FoodName.Tea, BuffType.Mana, 1, 1, 0));
+    Foods[BuffType.Mana].Add(new Food(FoodName.Coffee, BuffType.Mana, 1, 1, 0));
+    Foods[BuffType.Mana].Add(new Food(FoodName.Milk, BuffType.Mana, 1, 1, 0));
+    Foods[BuffType.Mana].Add(new Food(FoodName.Wine, BuffType.Mana, 1, 1, 0));
+    Foods[BuffType.Mana].Add(new Food(FoodName.Beer, BuffType.Mana, 1, 1, 0));
+    Foods[BuffType.Mana].Add(new Food(FoodName.Ale, BuffType.Mana, 1, 1, 0));
+    Foods[BuffType.Mana].Add(new Food(FoodName.Whiskey, BuffType.Mana, 1, 1, 0));
+    Foods[BuffType.Mana].Add(new Food(FoodName.Cider, BuffType.Mana, 1, 1, 0));
   }
 
   private static void InitSpellTypes()
@@ -445,22 +445,21 @@ internal static class Inventory
     Potions[BuffType.HealthAndMana].Add(new Potion(BuffType.HealthAndMana, ItemRarity.Rare, 1, 10M, 1M));
   }
 
-  internal static bool AddItem(Item item)
+  internal static void AddItem(Item item)
   {
     if (item.Type == ItemType.Gold)
     {
       Player.Gold += ((Gold)item).GetValue();
-      return true;
+      return;
     }
     foreach (Bag bag in Bags)
     {
       if (bag.AddItem(item))
       {
-        return true;
+        return;
       }
     }
     GamePlay.Messages.Add(new Message("Your bags are full", Color.Red, Color.Black));
-    return false;
   }
 
   internal static BuffType GetRandomBuffType(int min = 1)

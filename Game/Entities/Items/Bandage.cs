@@ -7,11 +7,7 @@ internal class Bandage : Item
 {
   BandageType bandageType = BandageType.Cloth;
   private readonly int buffAmount = 1;
-
-  internal Bandage()
-  {
-    this.buffAmount = (int)bandageType * buffAmount;
-  }
+  internal int Level { get; private set; }
 
   internal Bandage(BandageType bandageType, int buffAmount, int quantity, decimal buyCost, decimal sellCost)
   {
@@ -24,6 +20,7 @@ internal class Bandage : Item
     SellCost = sellCost;
     this.bandageType = bandageType;
     this.buffAmount = buffAmount;
+    SetLevelFromType();
   }
 
   private void SetLevelFromType()

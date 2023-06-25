@@ -2,11 +2,11 @@
 
 internal class Weapon : Item
 {
-  internal readonly WeaponType WeaponType = WeaponType.Fists;
-  internal readonly int Damage = 1;
-  internal int Durability = 100;
-  internal int MaxDurability = 100;
-  internal readonly int Range = 1;
+  internal readonly WeaponType WeaponType;
+  internal readonly int Damage;
+  internal int Durability;
+  internal int MaxDurability;
+  internal readonly int Range;
 
 
   internal Weapon()

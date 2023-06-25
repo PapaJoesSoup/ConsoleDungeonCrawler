@@ -30,11 +30,6 @@ internal class Bag
     return true;
   }
 
-  internal void AddItems(List<Item> items)
-  {
-    foreach (Item item in items) AddItem(item);
-  }
-
   internal bool RemoveItem(Item item)
   {
     // lambda expression for all items in the bag that match the item.name

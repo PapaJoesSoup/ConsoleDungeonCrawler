@@ -40,7 +40,7 @@ internal static class Game
   internal static void Run()
   {
     LoadDungeons();
-    Screens.GameTitle.Draw();
+    GameTitle.Draw();
     Map.Instance = new Map(GamePlay.MapBox);
     PlayGame();
   }

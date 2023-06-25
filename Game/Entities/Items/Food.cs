@@ -5,7 +5,6 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items;
 
 internal class Food : Item
 {
-  private readonly FoodType foodType = FoodType.Vegetable;
   private readonly BuffType buffType = BuffType.Health;
   private readonly int buffAmount = 1;
 
@@ -14,16 +13,15 @@ internal class Food : Item
 
   }
 
-  internal Food(FoodType foodType, BuffType buffType, int quantity, decimal buyCost, decimal value)
+  internal Food(FoodName foodName, BuffType buffType, int quantity, decimal buyCost, decimal value)
   {
     Type = ItemType.Food;
-    this.foodType = foodType;
     this.buffType = buffType;
     Quantity = quantity;
     StackSize = 20;
 
-    Name = $"{this.foodType}";
-    Description = this.buffType == BuffType.Health ? $"a {this.foodType}" : $"some {this.foodType}";
+    Name = $"{foodName}";
+    Description = this.buffType == BuffType.Health ? $"a {foodName}" : $"some {foodName}";
     BuyCost = buyCost;
     SellCost = 0;
   }
