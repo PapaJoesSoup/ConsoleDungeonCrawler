@@ -299,7 +299,7 @@ internal static class GamePlay
   {
     // Capture and hide the key the user pressed
     ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-    GamePlay.lastKey = keyInfo;
+    lastKey = keyInfo;
     if ((keyInfo.Modifiers & ConsoleModifiers.Shift) != 0)
     {
       switch (keyInfo.Key)
@@ -330,7 +330,7 @@ internal static class GamePlay
         case ConsoleKey.S:
         case ConsoleKey.D:
           if (!Map.Player.Move(keyInfo.Key)) break;
-          GamePlay.Messages.Add(new Message($"You moved {Map.GetDirection(keyInfo.Key)}..."));
+          Messages.Add(new Message($"You moved {Map.GetDirection(keyInfo.Key)}..."));
           Actions.PickupOverlayItem();
           break;
         case ConsoleKey.D0:
@@ -349,30 +349,30 @@ internal static class GamePlay
           Game.IsPaused = true;
           break;
         case ConsoleKey.PageUp:
-          GamePlay.messageOffset -= 8;
+          messageOffset -= 8;
           break;
         case ConsoleKey.PageDown:
-          GamePlay.messageOffset += 8;
+          messageOffset += 8;
           break;
         case ConsoleKey.UpArrow:
-          GamePlay.messageOffset--;
+          messageOffset--;
           break;
         case ConsoleKey.DownArrow:
-          GamePlay.messageOffset++;
+          messageOffset++;
           break;
         case ConsoleKey.Home:
-          GamePlay.messageOffset = -GamePlay.Messages.Count;
+          messageOffset = -Messages.Count;
           break;
         case ConsoleKey.End:
-          GamePlay.messageOffset = 0;
+          messageOffset = 0;
           break;
         case ConsoleKey.OemComma:
           if (Inventory.Bags.Count > 1)
-            GamePlay.currentBag--;
+            currentBag--;
           break;
         case ConsoleKey.OemPeriod:
-          if (GamePlay.currentBag < Inventory.Bags.Count)
-            GamePlay.currentBag++;
+          if (currentBag < Inventory.Bags.Count)
+            currentBag++;
           break;
         case ConsoleKey.O:
           Actions.OpenDoor();

@@ -16,7 +16,6 @@ internal static class PathFinding
     List<Position> path = new List<Position>(); // path is a list of positions that are passable
     List<Position> openList = new List<Position>(); // open list is a list of positions that have not been checked yet
     List<Position> checkedList = new List<Position>(); // closed list is a list of positions that have been checked
-    bool destinationFound = false;
 
     start.SetDistance(destination);
     openList.Add(start);
@@ -26,8 +25,6 @@ internal static class PathFinding
       Position currentPos = openList.OrderByDescending(x => x.CostDistance).Last();
       if (currentPos.X == destination.X && currentPos.Y == destination.Y)
       {
-        destinationFound = true;
-
         Position? pathPosition = currentPos;
         while (true) // work backwards from destination to start
         {
@@ -39,7 +36,7 @@ internal static class PathFinding
       checkedList.Add(currentPos);
       openList.Remove(currentPos);
 
-      List<Position>? positions = GetPassableArea(Map.LevelMapGrids[Game.CurrentLevel], currentPos, destination);
+      List<Position>? positions = GetPassableArea(currentPos, destination);
       foreach (Position passablePos in positions)
       {
         //We have already visited this tile so we don't need to do so again!
@@ -73,9 +70,11 @@ internal static class PathFinding
   /// <param name="currentPos"></param>
   /// <param name="targetPos"></param>
   /// <returns>adjacent coords that are passable</returns>
-  private static List<Position> GetPassableArea(Dictionary<int, Dictionary<int, MapObject>> map,
-    Position currentPos, Position targetPos)
+  private static List<Position> GetPassableArea(Position currentPos, Position targetPos)
   {
+    Dictionary<int, Dictionary<int, MapObject>> map = Map.LevelMapGrids[Game.CurrentLevel];
+    Dictionary<int, Dictionary<int, MapObject>> overlay = Map.LevelOverlayGrids[Game.CurrentLevel];
+
     List<Position> possiblePositions = new List<Position>()
     {
       new Position { X = currentPos.X, Y = currentPos.Y - 1, Parent = currentPos, Cost = currentPos.Cost + 1 },
@@ -92,7 +91,7 @@ internal static class PathFinding
     return possiblePositions
       .Where(pos => pos.X >= 0 && pos.X <= maxX)
       .Where(pos => pos.Y >= 0 && pos.Y <= maxY)
-      .Where(pos => map[pos.X][pos.Y].IsPassable || map[pos.X][pos.Y] == targetPos)
+      .Where(pos => (map[pos.X][pos.Y].IsPassable && overlay[pos.X][pos.Y] is not Monster) || map[pos.X][pos.Y] == targetPos)
       .ToList();
   }
 }

@@ -83,16 +83,16 @@ internal class BoxChars
   internal BoxChars(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver,
     string midLeft, string midRight, string midTop, string midBottom, string mid)
   {
-    this.TopLeft = topLeft;
-    this.TopRight = topRight;
-    this.BotLeft = botLeft;
-    this.BotRight = botRight;
-    this.Hor = hor;
-    this.Ver = ver;
-    this.MidLeft = midLeft;
-    this.MidRight = midRight;
-    this.MidTop = midTop;
-    this.MidBottom = midBottom;
-    this.Mid = mid;
+    TopLeft = topLeft;
+    TopRight = topRight;
+    BotLeft = botLeft;
+    BotRight = botRight;
+    Hor = hor;
+    Ver = ver;
+    MidLeft = midLeft;
+    MidRight = midRight;
+    MidTop = midTop;
+    MidBottom = midBottom;
+    Mid = mid;
   }
 }

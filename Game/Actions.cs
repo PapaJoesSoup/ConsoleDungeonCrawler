@@ -88,16 +88,21 @@ internal static class Actions
 
   public static void MonsterActions()
   {
-    foreach (char symbol in Map.LevelOverlayObjects[Game.CurrentLevel].Keys)
+    for (int charIdx = 0; charIdx < Map.LevelOverlayObjects[Game.CurrentLevel].Count; charIdx++)
     {
-      foreach (MapObject obj in Map.LevelOverlayObjects[Game.CurrentLevel][symbol])
+      char symbol = Map.LevelOverlayObjects[Game.CurrentLevel].Keys.ElementAt(charIdx);
+      for (int index = 0; index < Map.LevelOverlayObjects[Game.CurrentLevel][symbol].Count; index++)
       {
+        MapObject obj = Map.LevelOverlayObjects[Game.CurrentLevel][symbol][index];
         if (obj is not Monster monster) continue;
         if (!monster.IsVisible || !monster.IsAlive) continue;
+        // remember monster state before detecting player so we can delay attack one turn.
+        bool inCombat = monster.InCombat;
         monster.DetectPlayer();
         if (!monster.InCombat) continue;
         Player.InCombat = true;
-        monster.Attack();
+        // if we just detected player, don't attack yet.
+        if (inCombat == monster.InCombat) monster.Attack();
       }
     }
   }

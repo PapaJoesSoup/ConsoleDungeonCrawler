@@ -111,7 +111,7 @@ internal static class Vendor
 
   private static void SelectVendorInventory(VendorType type)
   {
-    Vendor.vendorType = type;
+    vendorType = type;
     switch (type)
     {
       case VendorType.General:

@@ -175,6 +175,11 @@ internal class Map
     GamePlay.Draw();
   }
 
+  /// <summary>
+  /// Populates the map grid from the file, updating those cells that contain Map type objects
+  /// </summary>
+  /// <param name="level"></param>
+  /// <param name="filename"></param>
   private static void LoadMapGridFromFile(int level, string filename)
   {
     StringBuilder sb = new();
@@ -195,6 +200,11 @@ internal class Map
     }
   }
 
+  /// <summary>
+  /// Populates the overlay grid from the file, updating only those cells that contain an overlay object type.
+  /// </summary>
+  /// <param name="level"></param>
+  /// <param name="filename"></param>
   private static void LoadOverlayGridFromFile(int level, string filename)
   {
     StringBuilder sb = new();
@@ -262,12 +272,6 @@ internal class Map
   {
     for (int y = Top + 1; y < (Top + Height); y++)
       new string(' ', Width - 2).WriteAt(Left + 1, y, ConsoleColor.Black, ConsoleColor.Black);
-  }
-
-  internal static bool CanMoveTo(int x, int y)
-  {
-    // check to see if there is an object there that is not passable
-    return LevelMapGrids[Game.CurrentLevel][x][y].IsPassable && LevelOverlayGrids[Game.CurrentLevel][x][y].IsPassable;
   }
 
   internal static bool CanJumpTo(int oldX, int oldY, int x, int y)

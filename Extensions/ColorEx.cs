@@ -61,7 +61,7 @@ internal static class ColorEx
     // Print all 256 colors
     for (int i = 0; i < 255; i++)
     {
-      Console.Write($"{ColorEx.BgColor}{i}m*");
+      Console.Write($"{BgColor}{i}m*");
     }
   }
 
@@ -74,7 +74,7 @@ internal static class ColorEx
       {
         for (int b = 0; b < 255; b++)
         {
-          Console.Write($"{ColorEx.BgHiColor}{r};{g};{b}m*");
+          Console.Write($"{BgHiColor}{r};{g};{b}m*");
         }
       }
     }

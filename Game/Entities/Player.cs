@@ -7,14 +7,14 @@ namespace ConsoleDungeonCrawler.Game.Entities;
 internal class Player : MapObject
 {
   internal static int Level = 1;
-  internal static int Experience = 0;
-  internal static int ExperienceToLevel = 100;
+  private static int experience;
+  private static int experienceToLevel = 100;
   internal static readonly PlayerClass Class = PlayerClass.Rogue;
   internal static int Health = 100;
   internal static int MaxHealth = 100;
-  internal static int Mana = 0;
-  internal static int MaxMana = 0;
-  internal static decimal Gold = 0;
+  internal static int Mana;
+  internal static int MaxMana;
+  internal static decimal Gold;
 
   internal static List<Armor> ArmorSet = new();
   internal static Weapon Weapon = new();
@@ -66,7 +66,7 @@ internal class Player : MapObject
     Position oldPos = new(X, Y);
     Position newPos = new(X + x, Y + y);
 
-    if (!Map.CanMoveTo(newPos.X, newPos.Y)) return false;
+    if (!CanMoveTo(newPos)) return false;
     X = newPos.X;
     Y = newPos.Y;
     // Check needed for level changes.
@@ -184,17 +184,17 @@ internal class Player : MapObject
 
   internal static void TakeDamage(int damage)
   {
-    Player.Health -= damage;
-    if (Player.Health <= 0)
+    Health -= damage;
+    if (Health <= 0)
     {
-      Player.Health = 0;
+      Health = 0;
       GamePlay.Messages.Add(new Message("You died!", Color.Red, Color.Black));
-      Player.InCombat = false;
+      InCombat = false;
     }
     else
     {
       GamePlay.Messages.Add(
-        new Message($"You have {Player.Health} health left!", Color.DarkOrange, Color.Black));
+        new Message($"You have {Health} health left!", Color.DarkOrange, Color.Black));
     }
   }
 
@@ -221,10 +221,10 @@ internal class Player : MapObject
     return true;
   }
 
-  internal static void LevelUp()
+  private static void LevelUp()
   {
     Level++;
-    ExperienceToLevel = (int)(ExperienceToLevel * 1.5);
+    experienceToLevel = (int)(experienceToLevel * 1.5);
     MaxHealth += 10;
     if (MaxMana > 0) MaxMana += 5;
     Health = MaxHealth;
@@ -234,10 +234,10 @@ internal class Player : MapObject
 
   internal static void AddExperience(int amount)
   {
-    Experience += amount;
-    if (Experience >= ExperienceToLevel)
+    experience += amount;
+    if (experience >= experienceToLevel)
     {
-      Experience -= ExperienceToLevel;
+      experience -= experienceToLevel;
       LevelUp();
     }
   }
@@ -260,7 +260,7 @@ internal class Player : MapObject
     return false;
   }
 
-  internal char IsNextToOverlay(out MapObject obj)
+  private char IsNextToOverlay(out MapObject obj)
   {
     // look left
     if (X > 0 && Map.LevelOverlayGrids[Game.CurrentLevel][X - 1][Y].Type.Symbol != ' ')
@@ -369,7 +369,7 @@ internal class Player : MapObject
     return false;
   }
 
-  internal bool IsInRange(int radius, out MapObject obj)
+  private bool IsInRange(int radius, out MapObject obj)
   {
     // find the closest object within the radius
     for (int i = 0; i < radius; i++)
@@ -406,5 +406,12 @@ internal class Player : MapObject
     // not found
     obj = new MapObject();
     return false;
+  }
+
+  private static bool CanMoveTo(Position pos)
+  {
+    // check to see if there is an object there that is not passable
+    return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable 
+           && Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable;
   }
 }

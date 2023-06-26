@@ -40,7 +40,7 @@ internal static class ConsoleEx
 
   internal static void InitializeConsole()
   {
-    ConsoleEx.Clear();
+    Clear();
     Console.OutputEncoding = System.Text.Encoding.Unicode;
     // Maximize console window  Use if you have a console window set to a specific size and is not maximized (fullscreen focused
     //MaximizeConsoleWindow();
@@ -1044,10 +1044,10 @@ internal static class ConsoleEx
     try
     {
       Console.SetCursorPosition(x, y);
-      ConsoleEx.ForegroundColor = color;
-      ConsoleEx.BackgroundColor = bgColor;
+      ForegroundColor = color;
+      BackgroundColor = bgColor;
       Console.Write(c);
-      ConsoleEx.ResetColor();
+      ResetColor();
     }
     catch (ArgumentOutOfRangeException e)
     {
@@ -1061,9 +1061,9 @@ internal static class ConsoleEx
     try
     {
       Console.SetCursorPosition(x, y);
-      ConsoleEx.ForegroundColor = color;
+      ForegroundColor = color;
       Console.Write(c);
-      ConsoleEx.ResetColor();
+      ResetColor();
     }
     catch (ArgumentOutOfRangeException e)
     {
@@ -1076,9 +1076,9 @@ internal static class ConsoleEx
     try
     {
       Console.SetCursorPosition(x, y);
-      ConsoleEx.ForegroundColor = color;
+      ForegroundColor = color;
       Console.Write(new string(c, repeat));
-      ConsoleEx.ResetColor();
+      ResetColor();
     }
     catch (ArgumentOutOfRangeException e)
     {
@@ -1093,8 +1093,8 @@ internal static class ConsoleEx
     try
     {
       Console.SetCursorPosition(x, y);
-      ConsoleEx.ForegroundColor = color;
-      ConsoleEx.BackgroundColor = bgColor;
+      ForegroundColor = color;
+      BackgroundColor = bgColor;
       for (int i = 0; i < repeat; i++)
       {
         Console.Write(c);
@@ -1117,13 +1117,13 @@ internal static class ConsoleEx
     try
     {
       Console.SetCursorPosition(x, y);
-      ConsoleEx.ForegroundColor = color;
+      ForegroundColor = color;
       Console.Write(s);
-      ConsoleEx.ResetColor();
+      ResetColor();
     }
     catch (ArgumentOutOfRangeException e)
     {
-      ConsoleEx.Clear();
+      Clear();
       Console.WriteLine(e.Message);
     }
   }
@@ -1133,14 +1133,14 @@ internal static class ConsoleEx
     try
     {
       Console.SetCursorPosition(x, y);
-      ConsoleEx.ForegroundColor = color;
-      ConsoleEx.BackgroundColor = bgColor;
+      ForegroundColor = color;
+      BackgroundColor = bgColor;
       Console.Write(s);
-      ConsoleEx.ResetColor();
+      ResetColor();
     }
     catch (ArgumentOutOfRangeException e)
     {
-      ConsoleEx.Clear();
+      Clear();
       Console.WriteLine(e.Message);
     }
   }
@@ -1150,19 +1150,19 @@ internal static class ConsoleEx
     try
     {
       Console.SetCursorPosition(x, y);
-      ConsoleEx.ForegroundColor = color;
-      ConsoleEx.BackgroundColor = bgColor;
+      ForegroundColor = color;
+      BackgroundColor = bgColor;
       foreach (char c in s)
       {
         Console.Write(c);
         Thread.Sleep(delay);
       }
 
-      ConsoleEx.ResetColor();
+      ResetColor();
     }
     catch (ArgumentOutOfRangeException e)
     {
-      ConsoleEx.Clear();
+      Clear();
       Console.WriteLine(e.Message);
     }
   }
@@ -1172,18 +1172,18 @@ internal static class ConsoleEx
     try
     {
       Console.SetCursorPosition(x, y);
-      ConsoleEx.ForegroundColor = color;
+      ForegroundColor = color;
       foreach (char c in s)
       {
         Console.Write(c);
         Thread.Sleep(delay);
       }
 
-      ConsoleEx.ResetColor();
+      ResetColor();
     }
     catch (ArgumentOutOfRangeException e)
     {
-      ConsoleEx.Clear();
+      Clear();
       Console.WriteLine(e.Message);
     }
   }
@@ -1194,8 +1194,8 @@ internal static class ConsoleEx
     try
     {
       Console.SetCursorPosition(x, y);
-      ConsoleEx.ForegroundColor = color;
-      ConsoleEx.BackgroundColor = bgColor;
+      ForegroundColor = color;
+      BackgroundColor = bgColor;
       for (int i = 0; i < repeat; i++)
       {
         foreach (char c in s)
@@ -1275,11 +1275,11 @@ internal static class ConsoleEx
         }
       }
 
-      ConsoleEx.ResetColor();
+      ResetColor();
     }
     catch (ArgumentOutOfRangeException e)
     {
-      ConsoleEx.Clear();
+      Clear();
       Console.WriteLine(e.Message);
     }
   }

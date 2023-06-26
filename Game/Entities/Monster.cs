@@ -6,16 +6,16 @@ namespace ConsoleDungeonCrawler.Game.Entities;
 
 internal class Monster : MapObject
 {
-  internal int Health = 10;
+  private int health = 10;
   internal int MaxHealth = 10;
-  internal int Mana = 0;
-  internal int MaxMana = 0;
-  internal readonly int Level = 1;
-  internal decimal Gold = (decimal)0.00;
-  internal readonly Weapon Weapon = new();
+  internal int Mana;
+  internal int MaxMana;
+  private readonly int level = 1;
+  internal readonly decimal Gold;
+  private readonly Weapon weapon = new();
   internal Spell Spell = new();
   internal bool IsAlive = true;
-  internal bool InCombat = false;
+  internal bool InCombat;
 
   internal Monster(MapObject obj, int level)
   {
@@ -31,14 +31,14 @@ internal class Monster : MapObject
     IsLootable = Type.IsLootable;
 
     // set Monster properties
-    Health = level * 2;
+    health = level * 2;
     MaxHealth = level * 2;
     Mana = level * 2;
     MaxMana = level * 2;
-    Level = level * 2;
+    this.level = level * 2;
     Gold = Decimal.Round(level * Dice.Roll(.01M, 1.1M), 2);
-    Weapon = new Weapon();
-    Level = level;
+    weapon = new Weapon();
+    this.level = level;
   }
 
   internal void DetectPlayer()
@@ -50,30 +50,56 @@ internal class Monster : MapObject
     InCombat = true;
     Player.InCombat = true;
     BackgroundColor = Color.DarkOrange;
-    this.Draw();
+    Draw();
     GamePlay.Messages.Add(new Message($"A {Type.Name} spots you!  You are in combat!", Color.Red, Color.Black));
   }
 
   internal void Attack()
   {
     if (!InCombat) return;
+
+    // Find path to player
     List<Position> path = PathFinding.FindPath(this, Map.Player);
+    if (path.Count == 0) return;
+
+    // display path to player (testing)
     //foreach (Position pos in path) Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].Highlight();
+    //this.Draw();
+    //Map.Player.Draw();
 
     // check if player is within radius of Weapon range
-    if (Map.Player.X < X - Weapon.Range || Map.Player.X > X + Weapon.Range ||
-        Map.Player.Y < Y - Weapon.Range || Map.Player.Y > Y + Weapon.Range) return;
-    // roll to hit
-    if (Dice.Roll(1, 20) < 10) return;
-    // roll for damage
-    int damage = Dice.Roll(Weapon.Damage);
-    if (damage == 0)
-      GamePlay.Messages.Add(new Message($"The {Type.Name} attacks and misses you!", Color.DarkOrange, Color.Black));
-    else
+    if (GetDistance(Map.Player) <= weapon.Range)
     {
-      GamePlay.Messages.Add(new Message($"The {Type.Name} attacks and hits you for {damage} damage!", Color.DarkOrange, Color.Black));
-      Player.TakeDamage(damage);
+      // roll to hit
+      if (Dice.Roll(1, 20) < 10) return;
+      // roll for damage
+      int damage = Dice.Roll(weapon.Damage);
+      if (damage == 0)
+        GamePlay.Messages.Add(new Message($"The {Type.Name} attacks and misses you!", Color.DarkOrange, Color.Black));
+      else
+      {
+        GamePlay.Messages.Add(new Message($"The {Type.Name} attacks and hits you for {damage} damage!", Color.DarkOrange, Color.Black));
+        Player.TakeDamage(damage);
+      }
+      return;
     }
+
+    if (GetDistance(Map.Player) <= weapon.Range) return;
+    // move towards player  Path is in reverse order, so move to second to last position
+    if (path.Count > 2) MoveTo(path[^2]);
+  }
+
+  private void MoveTo(Position newPos)
+  {
+    if (!CanMoveTo(newPos)) return;
+    Position oldPos = new(X, Y);
+    X = newPos.X;
+    Y = newPos.Y;
+
+    Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y] = new MapObject(oldPos.X, oldPos.Y, new ObjectType(true));
+    Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+    Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y] = this;
+    Draw();
   }
 
   internal void TakeDamage(int damage)
@@ -81,32 +107,41 @@ internal class Monster : MapObject
     if (damage <= 0)
     {
       GamePlay.Messages.Add(new Message($"You missed the {Type.Name}!", Color.DarkOrange, Color.Black));
-      GamePlay.Messages.Add(new Message($"{Type.Name} has {Health} health left!", Color.DarkOrange, Color.Black));
+      GamePlay.Messages.Add(new Message($"{Type.Name} has {health} health left!", Color.DarkOrange, Color.Black));
     }
     else
     {
       GamePlay.Messages.Add(new Message($"You hit the {Type.Name} for {damage} damage!", Color.DarkOrange, Color.Black));
-      Health -= damage;
-      if (Health <= 0)
+      health -= damage;
+      if (health <= 0)
       {
-        Health = 0;
+        health = 0;
         IsAlive = false;
         GamePlay.Messages.Add(new Message($"You killed the {Type.Name}!", Color.DarkOrange, Color.Black));
-        int xp = Dice.Roll(Level *2 );
+        int xp = Dice.Roll(level * 2);
         GamePlay.Messages.Add(new Message($"You gained {xp} experience!", Color.DarkOrange, Color.Black));
         Player.AddExperience(xp);
         BackgroundColor = Type.BackgroundColor;
         ForegroundColor = Color.Gray;
         IsPassable = true;
         InCombat = false;
-        this.Draw();
+        Draw();
         Map.RemoveFromOverlayObjects(this);
         Player.InCombat = Player.IsInCombat();
       }
       else
-        GamePlay.Messages.Add(new Message($"{Type.Name} has {Health} health left!", Color.DarkOrange, Color.Black));
+        GamePlay.Messages.Add(new Message($"{Type.Name} has {health} health left!", Color.DarkOrange, Color.Black));
     }
   }
+
+  private static bool CanMoveTo(Position pos)
+  {
+    // check to see if there is an object there that is not passable
+    return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable 
+           && Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable 
+           && Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y] is not Monster;
+  }
+
 
   private static int SetOdds(char type)
   {

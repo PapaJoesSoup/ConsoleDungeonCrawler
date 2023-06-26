@@ -47,9 +47,9 @@ internal class Food : Item
         break;
     }
     Quantity--;
-    GamePlay.Messages.Add(new Message(this.buffType == BuffType.Mana ? $"You drank {Description}." : $"You ate {Description}.", Color.Orange, Color.Black));
+    GamePlay.Messages.Add(new Message(buffType == BuffType.Mana ? $"You drank {Description}." : $"You ate {Description}.", Color.Orange, Color.Black));
     if (Quantity > 0) return true;
-    GamePlay.Messages.Add(new Message(this.buffType == BuffType.Mana ? $"You drank your last {Name}." : $"You ate your last {Name}.", Color.Orange, Color.Black));
+    GamePlay.Messages.Add(new Message(buffType == BuffType.Mana ? $"You drank your last {Name}." : $"You ate your last {Name}.", Color.Orange, Color.Black));
     Inventory.RemoveItem(this);
 
     return true;

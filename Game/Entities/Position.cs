@@ -23,8 +23,13 @@ internal class Position
 
   }
 
+  internal int GetDistance(Position target)
+  {
+    return Math.Abs(target.X - X) + Math.Abs(target.Y - Y);
+  }
+
   internal void SetDistance(Position target)
   {
-    this.Distance = Math.Abs(target.X - X) + Math.Abs(target.Y - Y);
+    Distance = Math.Abs(target.X - X) + Math.Abs(target.Y - Y);
   }
 }

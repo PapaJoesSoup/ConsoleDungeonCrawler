@@ -13,8 +13,8 @@ internal class Message
   internal Message(string text, Color fgColor, Color bgColor)
   {
     this.text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
-    this.foregroundColor = fgColor;
-    this.backgroundColor = bgColor;
+    foregroundColor = fgColor;
+    backgroundColor = bgColor;
   }
 
   public Message(string text)
