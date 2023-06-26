@@ -308,7 +308,6 @@ internal static class GamePlay
         case ConsoleKey.A:
         case ConsoleKey.S:
         case ConsoleKey.D:
-          GamePlay.Messages.Add(new Message($"You jumped {Map.GetDirection(keyInfo.Key)}..."));
           Map.Player.Jump(keyInfo.Key);
           break;
         case ConsoleKey.I:

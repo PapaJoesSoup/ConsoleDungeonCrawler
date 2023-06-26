@@ -73,4 +73,10 @@ internal class MapObject : Position
     if (Type.Symbol == ' ') return;
     Type.Symbol.WriteAt(X + Map.Left, Y + Map.Top, ForegroundColor, BackgroundColor);
   }
+
+  internal void Highlight()
+  {
+    if (!IsVisible || Type.Symbol == ' ') return;
+    Type.Symbol.WriteAt(X + Map.Left, Y + Map.Top, Color.HotPink, BackgroundColor);
+  }
 }

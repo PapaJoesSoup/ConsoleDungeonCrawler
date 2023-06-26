@@ -1,0 +1,99 @@
+﻿namespace ConsoleDungeonCrawler.Game.Entities;
+
+internal static class PathFinding
+{
+  /// <summary>
+  /// A* path finding algorithm 
+  /// https://en.wikipedia.org/wiki/A*_search_algorithm
+  /// https://gist.github.com/DotNetCoreTutorials/08b0210616769e81034f53a6a420a6d9
+  /// https://www.youtube.com/watch?v=-L-WgKMFuhE
+  /// </summary>
+  /// <param name="start"></param>
+  /// <param name="destination"></param>
+  /// <returns>a path list of non-subClassed Positions that are passable</returns>
+  internal static List<Position> FindPath(Position start, Position destination)
+  {
+    List<Position> path = new List<Position>(); // path is a list of positions that are passable
+    List<Position> openList = new List<Position>(); // open list is a list of positions that have not been checked yet
+    List<Position> checkedList = new List<Position>(); // closed list is a list of positions that have been checked
+    bool destinationFound = false;
+
+    start.SetDistance(destination);
+    openList.Add(start);
+
+    while (openList.Any())
+    {
+      Position currentPos = openList.OrderByDescending(x => x.CostDistance).Last();
+      if (currentPos.X == destination.X && currentPos.Y == destination.Y)
+      {
+        destinationFound = true;
+
+        Position? pathPosition = currentPos;
+        while (true) // work backwards from destination to start
+        {
+          if (!path.Contains(pathPosition)) path.Add(pathPosition);
+          pathPosition = pathPosition.Parent;
+          if (pathPosition == null) return path;
+        }
+      }
+      checkedList.Add(currentPos);
+      openList.Remove(currentPos);
+
+      List<Position>? positions = GetPassableArea(Map.LevelMapGrids[Game.CurrentLevel], currentPos, destination);
+      foreach (Position passablePos in positions)
+      {
+        //We have already visited this tile so we don't need to do so again!
+        if (checkedList.Any(x => x.X == passablePos.X && x.Y == passablePos.Y)) continue;
+
+        //It's already in the open list, but that's OK, maybe this new tile has a better value (e.g. We might zigzag earlier but this is now straighter). 
+        if (openList.Any(x => x.X == passablePos.X && x.Y == passablePos.Y))
+        {
+          Position existingPos = openList.First(x => x.X == passablePos.X && x.Y == passablePos.Y);
+          if (existingPos.CostDistance > currentPos.CostDistance)
+          {
+            openList.Remove(existingPos);
+            openList.Add(passablePos);
+          }
+        }
+        else
+        {
+          //We've never seen this tile before so add it to the list. 
+          openList.Add(passablePos);
+        }
+      }
+
+    }
+    return path;
+  }
+
+  /// <summary>
+  /// Search immediate area for passable positions
+  /// </summary>
+  /// <param name="map"></param>
+  /// <param name="currentPos"></param>
+  /// <param name="targetPos"></param>
+  /// <returns>adjacent coords that are passable</returns>
+  private static List<Position> GetPassableArea(Dictionary<int, Dictionary<int, MapObject>> map,
+    Position currentPos, Position targetPos)
+  {
+    List<Position> possiblePositions = new List<Position>()
+    {
+      new Position { X = currentPos.X, Y = currentPos.Y - 1, Parent = currentPos, Cost = currentPos.Cost + 1 },
+      new Position { X = currentPos.X, Y = currentPos.Y + 1, Parent = currentPos, Cost = currentPos.Cost + 1},
+      new Position { X = currentPos.X - 1, Y = currentPos.Y, Parent = currentPos, Cost = currentPos.Cost + 1 },
+      new Position { X = currentPos.X + 1, Y = currentPos.Y, Parent = currentPos, Cost = currentPos.Cost + 1 },
+    };
+
+    possiblePositions.ForEach(pos => pos.SetDistance(targetPos));
+
+    int maxX = map.Count - 1;
+    int maxY = map[0].Count - 1;
+
+    return possiblePositions
+      .Where(pos => pos.X >= 0 && pos.X <= maxX)
+      .Where(pos => pos.Y >= 0 && pos.Y <= maxY)
+      .Where(pos => map[pos.X][pos.Y].IsPassable || map[pos.X][pos.Y] == targetPos)
+      .ToList();
+  }
+}
+

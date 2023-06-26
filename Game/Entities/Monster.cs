@@ -57,6 +57,9 @@ internal class Monster : MapObject
   internal void Attack()
   {
     if (!InCombat) return;
+    List<Position> path = PathFinding.FindPath(this, Map.Player);
+    //foreach (Position pos in path) Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].Highlight();
+
     // check if player is within radius of Weapon range
     if (Map.Player.X < X - Weapon.Range || Map.Player.X > X + Weapon.Range ||
         Map.Player.Y < Y - Weapon.Range || Map.Player.Y > Y + Weapon.Range) return;

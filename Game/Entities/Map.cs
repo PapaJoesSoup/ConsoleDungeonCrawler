@@ -17,6 +17,7 @@ internal class Map
   private static List<ObjectType> overlayTypes = new();
 
   // Dictionary storage and retrieval is faster than a DataSet/DataTables and not as heavy as a database.
+  // expressed as:  LevelMapGrids[level][x][y];
   internal static readonly Dictionary<int, Dictionary<int, Dictionary<int, MapObject>>> LevelMapGrids = new();
   internal static readonly Dictionary<int, Dictionary<int, Dictionary<int, MapObject>>> LevelOverlayGrids = new();
 
@@ -49,13 +50,13 @@ internal class Map
     // These are for building the map
     MapTypes = new List<ObjectType>
     {
-      new('#', "Wall", "a wall", "some walls", Color.FromArgb(255, 40, 40, 40), Color.FromArgb(255, 40, 40, 40), false, false, false),
-      new('.', "Floor", "a floor", "some flooring", Color.Gray, Color.DimGray, true, false, false),
-      new('+', "DoorC", "a closed door", "some closed doors", Color.Yellow, Color.DimGray, false, false, false),
-      new('-', "DoorO", "an open door", "some open doors", Color.Yellow, Color.DimGray, true, false, false),
-      new('\u25b2', "UpStairs", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
-      new('\u25bc', "DownStairs", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false),
-      new('!', "Fire", "a fire", "some fire", Color.OrangeRed, Color.DimGray, false, false, false),
+      new('#', "Wall", "a wall", "some walls", Color.FromArgb(255, 40, 40, 40), Color.FromArgb(255, 40, 40, 40), false, false, false, false),
+      new('.', "Floor", "a floor", "some flooring", Color.Gray, Color.DimGray, true, false, false, false),
+      new('+', "DoorC", "a closed door", "some closed doors", Color.Yellow, Color.DimGray, false, false, false, false),
+      new('-', "DoorO", "an open door", "some open doors", Color.Yellow, Color.DimGray, true, false, false, false),
+      new('\u25b2', "UpStairs", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false, true),
+      new('\u25bc', "DownStairs", "stairs going down", "multiple stairs going down", Color.White, Color.DimGray, true, false, false, true),
+      new('\u1f62', "Fire", "a fire", "some fire", Color.Khaki, Color.DimGray, false, false, false, true),
       new('~', "Water", "some water", "some patches of water", Color.Aqua, Color.Aqua, false, false, false, true),
       new('a', "Acid", "some acid", "some patches of acid", Color.SaddleBrown, Color.Chartreuse, false, false, false, true),
       new('L', "Lava", "some lava", "some patches of lava", Color.PapayaWhip, Color.Goldenrod, false, false, false, true),

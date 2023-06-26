@@ -96,6 +96,7 @@ internal class Player : MapObject
     Position newPos = new(X + x, Y + y);
 
     if (!Map.CanJumpTo(oldPos.X, oldPos.Y, newPos.X, newPos.Y)) return;
+
     X = newPos.X;
     Y = newPos.Y;
     Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol][0] = this;
@@ -103,6 +104,7 @@ internal class Player : MapObject
     Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
     Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
     Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
+    GamePlay.Messages.Add(new Message($"You jumped {Map.GetDirection(key)}..."));
   }
 
   public void Attack()
