@@ -3,7 +3,7 @@
 internal static class PathFinding
 {
   /// <summary>
-  /// A* path finding algorithm 
+  /// This is an A* path finding algorithm 
   /// https://en.wikipedia.org/wiki/A*_search_algorithm
   /// https://gist.github.com/DotNetCoreTutorials/08b0210616769e81034f53a6a420a6d9
   /// https://www.youtube.com/watch?v=-L-WgKMFuhE
@@ -13,7 +13,7 @@ internal static class PathFinding
   /// <returns>a path list of non-subClassed Positions that are passable</returns>
   internal static List<Position> FindPath(Position start, Position destination)
   {
-    List<Position> path = new List<Position>(); // path is a list of positions that are passable
+    List<Position> path = new List<Position>(); // path is the list of positions that lead from the destination to the start
     List<Position> openList = new List<Position>(); // open list is a list of positions that have not been checked yet
     List<Position> checkedList = new List<Position>(); // closed list is a list of positions that have been checked
 
@@ -46,11 +46,9 @@ internal static class PathFinding
         if (openList.Any(x => x.X == passablePos.X && x.Y == passablePos.Y))
         {
           Position existingPos = openList.First(x => x.X == passablePos.X && x.Y == passablePos.Y);
-          if (existingPos.CostDistance > currentPos.CostDistance)
-          {
-            openList.Remove(existingPos);
-            openList.Add(passablePos);
-          }
+          if (existingPos.CostDistance <= currentPos.CostDistance) continue;
+          openList.Remove(existingPos);
+          openList.Add(passablePos);
         }
         else
         {
@@ -64,7 +62,7 @@ internal static class PathFinding
   }
 
   /// <summary>
-  /// Search immediate area for passable positions
+  /// Search the immediate surrounding area for passable positions
   /// </summary>
   /// <param name="map"></param>
   /// <param name="currentPos"></param>
@@ -75,6 +73,8 @@ internal static class PathFinding
     Dictionary<int, Dictionary<int, MapObject>> map = Map.LevelMapGrids[Game.CurrentLevel];
     Dictionary<int, Dictionary<int, MapObject>> overlay = Map.LevelOverlayGrids[Game.CurrentLevel];
 
+    // get the 4 adjacent positions (non subClassed to treat them like value types)
+    // this ensures the parent position values of each position are not overwritten
     List<Position> possiblePositions = new List<Position>()
     {
       new Position { X = currentPos.X, Y = currentPos.Y - 1, Parent = currentPos, Cost = currentPos.Cost + 1 },
@@ -91,8 +91,7 @@ internal static class PathFinding
     return possiblePositions
       .Where(pos => pos.X >= 0 && pos.X <= maxX)
       .Where(pos => pos.Y >= 0 && pos.Y <= maxY)
-      .Where(pos => (map[pos.X][pos.Y].IsPassable && overlay[pos.X][pos.Y] is not Monster) || map[pos.X][pos.Y] == targetPos)
+      .Where(pos => Monster.CanMoveTo(pos) || map[pos.X][pos.Y] == targetPos)
       .ToList();
   }
 }
-

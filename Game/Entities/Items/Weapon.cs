@@ -31,7 +31,7 @@ internal class Weapon : Item
     int maxDurability, int range)
   {
     Type = ItemType.Weapon;
-    Name = name;
+    Name = $"{rarity} {name}";
     Description = description;
     Quantity = 1;
     StackSize = 1;

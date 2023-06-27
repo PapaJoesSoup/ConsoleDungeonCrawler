@@ -75,7 +75,7 @@ internal class Monster : MapObject
       // roll for damage
       int damage = Dice.Roll(weapon.Damage);
       if (damage == 0)
-        GamePlay.Messages.Add(new Message($"The {Type.Name} attacks and misses you!", Color.DarkOrange, Color.Black));
+        GamePlay.Messages.Add(new Message($"The {Type.Name} attacks and misses you!", Color.Gold, Color.Black));
       else
       {
         GamePlay.Messages.Add(new Message($"The {Type.Name} attacks and hits you for {damage} damage!", Color.DarkOrange, Color.Black));
@@ -134,12 +134,11 @@ internal class Monster : MapObject
     }
   }
 
-  private static bool CanMoveTo(Position pos)
+  internal static bool CanMoveTo(Position pos)
   {
-    // check to see if there is an object there that is not passable
-    return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable 
-           && Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable 
-           && Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y] is not Monster;
+    // check to see if there is an object that is not passable or some other immovable object
+    return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable
+           && Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].Type.Symbol == ' ';
   }
 
 

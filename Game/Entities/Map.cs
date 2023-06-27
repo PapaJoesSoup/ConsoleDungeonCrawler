@@ -19,7 +19,9 @@ internal class Map
   // Dictionary storage and retrieval is faster than a DataSet/DataTables and not as heavy as a database.
   // expressed as:  LevelMapGrids[level][x][y];
   internal static readonly Dictionary<int, Dictionary<int, Dictionary<int, MapObject>>> LevelMapGrids = new();
-  internal static readonly Dictionary<int, Dictionary<int, Dictionary<int, MapObject>>> LevelOverlayGrids = new();
+
+  // This allows for multiple overlay objects on a single tile.
+  internal static readonly Dictionary<int, Dictionary<int, Dictionary<int, List<MapObject>>>> LevelOverlayGrids = new();
 
   private static Dictionary<int, Dictionary<char, List<MapObject>>> levelMapObjects = new();
   internal static Dictionary<int, Dictionary<char, List<MapObject>>> LevelOverlayObjects = new();
@@ -114,14 +116,15 @@ internal class Map
 
       if (!level.Contains("LevelOverlay_")) continue;
       // create empty overlay grid
-      Dictionary<int, Dictionary<int, MapObject>> overlayGrid = new();
+      Dictionary<int, Dictionary<int, List<MapObject>>> overlayGrid = new();
       ObjectType empty = new(true);
       for (int x = 0; x <= Width; x++)
       {
-        overlayGrid.Add(x, new Dictionary<int, MapObject>());
+        overlayGrid.Add(x, new Dictionary<int, List<MapObject>>());
         for (int y = 0; y <= Width; y++)
         {
-          overlayGrid[x].Add(y, new MapObject(x, y, empty));
+          overlayGrid[x].Add(y, new List<MapObject>());
+          overlayGrid[x][y].Add(new MapObject(x, y, empty));
         }
       }
       // Add OverlayGrid to LevelOverlayGrids
@@ -228,12 +231,12 @@ internal class Map
         else if (obj.IsAttackable)
         {
           Monster monster = new(obj, 1);
-          LevelOverlayGrids[level][x - 1][y - 1] = monster;
+          LevelOverlayGrids[level][x - 1][y - 1][0] = monster;
           LevelOverlayObjects[level][type.Symbol].Add(monster);
         }
         else
         {
-          LevelOverlayGrids[level][x - 1][y - 1] = obj;
+          LevelOverlayGrids[level][x - 1][y - 1][0] = obj;
           LevelOverlayObjects[level][type.Symbol].Add(obj);
         }
       }
@@ -259,7 +262,7 @@ internal class Map
     {
       foreach (int y in LevelOverlayGrids[Game.CurrentLevel][x].Keys)
       {
-        MapObject obj = LevelOverlayGrids[Game.CurrentLevel][x][y];
+        MapObject obj = LevelOverlayGrids[Game.CurrentLevel][x][y][0];
         if (!obj.IsVisible || obj.Type.Symbol == ' ') continue;
         obj.Draw();
       }
@@ -284,7 +287,7 @@ internal class Map
       int maxY = Math.Max(oldY, y);
       for (int i = minY; i <= maxY; i++)
       {
-        if ((!LevelMapGrids[Game.CurrentLevel][x][i].IsPassable && !LevelMapGrids[Game.CurrentLevel][x][i].Type.IsTransparent) || !LevelOverlayGrids[Game.CurrentLevel][x][i].IsPassable) return false;
+        if ((!LevelMapGrids[Game.CurrentLevel][x][i].IsPassable && !LevelMapGrids[Game.CurrentLevel][x][i].Type.IsTransparent) || !LevelOverlayGrids[Game.CurrentLevel][x][i][0].IsPassable) return false;
       }
     }
     else if (oldY == y)
@@ -294,7 +297,7 @@ internal class Map
       int maxX = Math.Max(oldX, x);
       for (int i = minX; i <= maxX; i++)
       {
-        if ((!LevelMapGrids[Game.CurrentLevel][i][y].IsPassable && !LevelMapGrids[Game.CurrentLevel][i][y].Type.IsTransparent) || !LevelOverlayGrids[Game.CurrentLevel][i][y].IsPassable) return false;
+        if ((!LevelMapGrids[Game.CurrentLevel][i][y].IsPassable && !LevelMapGrids[Game.CurrentLevel][i][y].Type.IsTransparent) || !LevelOverlayGrids[Game.CurrentLevel][i][y][0].IsPassable) return false;
       }
     }
     return true;
@@ -303,13 +306,13 @@ internal class Map
   internal static bool CanAttack(int x, int y)
   {
     // check to see if there is an object there that is attackable
-    return LevelOverlayGrids[Game.CurrentLevel][x][y].Type.IsAttackable;
+    return LevelOverlayGrids[Game.CurrentLevel][x][y][0].Type.IsAttackable;
   }
 
   internal static bool CanLoot(int x, int y)
   {
     // check to see if there is an object there that is not passable
-    return LevelOverlayGrids[Game.CurrentLevel][x][y].Type.IsLootable;
+    return LevelOverlayGrids[Game.CurrentLevel][x][y][0].Type.IsLootable;
   }
 
   private static void SetVisibleYObjects(int x, int y, ref int yLimit)
@@ -329,10 +332,10 @@ internal class Map
       yLimit = y;
     }
 
-    if (LevelOverlayGrids[Game.CurrentLevel][x][y].Type.Symbol == ' ') return;
-    LevelOverlayGrids[Game.CurrentLevel][x][y].IsVisible = true;
+    if (LevelOverlayGrids[Game.CurrentLevel][x][y][0].Type.Symbol == ' ') return;
+    LevelOverlayGrids[Game.CurrentLevel][x][y][0].IsVisible = true;
     AddToMapObjects(LevelMapGrids[Game.CurrentLevel][x][y]);
-    LevelOverlayGrids[Game.CurrentLevel][x][y].Draw();
+    LevelOverlayGrids[Game.CurrentLevel][x][y][0].Draw();
   }
 
   private static void SetVisibleXObjects(int x, int y, ref int xLimit)
@@ -352,9 +355,9 @@ internal class Map
       xLimit = x;
     }
 
-    if (LevelOverlayGrids[Game.CurrentLevel][x][y].Type.Symbol == ' ') return;
-    LevelOverlayGrids[Game.CurrentLevel][x][y].IsVisible = true;
-    LevelOverlayGrids[Game.CurrentLevel][x][y].Draw();
+    if (LevelOverlayGrids[Game.CurrentLevel][x][y][0].Type.Symbol == ' ') return;
+    LevelOverlayGrids[Game.CurrentLevel][x][y][0].IsVisible = true;
+    LevelOverlayGrids[Game.CurrentLevel][x][y][0].Draw();
   }
 
   internal static void SetVisibleArea(int range)
@@ -569,7 +572,7 @@ internal class Map
   {
     if (obj is Monster) return;
     MapObject newObj = new(obj.X, obj.Y, new ObjectType(true));
-    LevelOverlayGrids[Game.CurrentLevel][obj.X][obj.Y] = newObj;
+    LevelOverlayGrids[Game.CurrentLevel][obj.X][obj.Y][0] = newObj;
   }
 
   internal static Direction GetDirection(ConsoleKey key)
@@ -612,7 +615,7 @@ internal class Map
     {
       foreach (int y in LevelOverlayGrids[Game.CurrentLevel][x].Keys)
       {
-        MapObject obj = LevelOverlayGrids[Game.CurrentLevel][x][y];
+        MapObject obj = LevelOverlayGrids[Game.CurrentLevel][x][y][0];
         if (obj.Type.Symbol == ' ') continue;
         obj.Draw(true);
       }

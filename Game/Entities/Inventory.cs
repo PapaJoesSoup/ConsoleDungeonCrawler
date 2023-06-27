@@ -116,38 +116,38 @@ internal static class Inventory
     WeaponTypes[WeaponType.Staff].Add(new Weapon("Great Staff", "A great staff", WeaponType.Staff, ItemRarity.Legendary, 11, 100, 100, 1));
 
     WeaponTypes.Add(WeaponType.Wand, new List<Weapon>());
-    WeaponTypes[WeaponType.Wand].Add(new Weapon("Wand", "A wand", WeaponType.Wand, ItemRarity.Poor, 12, 100, 100, 1));
-    WeaponTypes[WeaponType.Wand].Add(new Weapon("Great Wand", "A great wand", WeaponType.Wand, ItemRarity.Poor, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Wand].Add(new Weapon("Wand", "A wand", WeaponType.Wand, ItemRarity.Common, 12, 100, 100, 1));
-    WeaponTypes[WeaponType.Wand].Add(new Weapon("Great Wand", "A great wand", WeaponType.Wand, ItemRarity.Common, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Wand].Add(new Weapon("Wand", "A wand", WeaponType.Wand, ItemRarity.Uncommon, 12, 100, 100, 1));
-    WeaponTypes[WeaponType.Wand].Add(new Weapon("Great Wand", "A great wand", WeaponType.Wand, ItemRarity.Uncommon, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Wand].Add(new Weapon("Wand", "A wand", WeaponType.Wand, ItemRarity.Rare, 12, 100, 100, 1));
-    WeaponTypes[WeaponType.Wand].Add(new Weapon("Great Wand", "A great wand", WeaponType.Wand, ItemRarity.Rare, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Wand].Add(new Weapon("Wand", "A wand", WeaponType.Wand, ItemRarity.Epic, 12, 100, 100, 1));
-    WeaponTypes[WeaponType.Wand].Add(new Weapon("Great Wand", "A great wand", WeaponType.Wand, ItemRarity.Epic, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Wand].Add(new Weapon("Wand", "A wand", WeaponType.Wand, ItemRarity.Legendary, 12, 100, 100, 1));
-    WeaponTypes[WeaponType.Wand].Add(new Weapon("Great Wand", "A great wand", WeaponType.Wand, ItemRarity.Legendary, 13, 100, 100, 1));
+    WeaponTypes[WeaponType.Wand].Add(new Weapon("Wand", "A wand", WeaponType.Wand, ItemRarity.Poor, 12, 100, 100, 6));
+    WeaponTypes[WeaponType.Wand].Add(new Weapon("Great Wand", "A great wand", WeaponType.Wand, ItemRarity.Poor, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Wand].Add(new Weapon("Wand", "A wand", WeaponType.Wand, ItemRarity.Common, 12, 100, 100, 6));
+    WeaponTypes[WeaponType.Wand].Add(new Weapon("Great Wand", "A great wand", WeaponType.Wand, ItemRarity.Common, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Wand].Add(new Weapon("Wand", "A wand", WeaponType.Wand, ItemRarity.Uncommon, 12, 100, 100, 6));
+    WeaponTypes[WeaponType.Wand].Add(new Weapon("Great Wand", "A great wand", WeaponType.Wand, ItemRarity.Uncommon, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Wand].Add(new Weapon("Wand", "A wand", WeaponType.Wand, ItemRarity.Rare, 12, 100, 100, 6));
+    WeaponTypes[WeaponType.Wand].Add(new Weapon("Great Wand", "A great wand", WeaponType.Wand, ItemRarity.Rare, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Wand].Add(new Weapon("Wand", "A wand", WeaponType.Wand, ItemRarity.Epic, 12, 100, 100, 6));
+    WeaponTypes[WeaponType.Wand].Add(new Weapon("Great Wand", "A great wand", WeaponType.Wand, ItemRarity.Epic, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Wand].Add(new Weapon("Wand", "A wand", WeaponType.Wand, ItemRarity.Legendary, 12, 100, 100, 6));
+    WeaponTypes[WeaponType.Wand].Add(new Weapon("Great Wand", "A great wand", WeaponType.Wand, ItemRarity.Legendary, 13, 100, 100, 6));
 
     WeaponTypes.Add(WeaponType.Bow, new List<Weapon>());
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Bow", "A bow", WeaponType.Bow, ItemRarity.Poor, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Long Bow", "A Long bow", WeaponType.Bow, ItemRarity.Poor, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Poor, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Bow", "A bow", WeaponType.Bow, ItemRarity.Common, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Long Bow", "A Long bow", WeaponType.Bow, ItemRarity.Common, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Common, 13, 100, 100, 1));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Bow", "A bow", WeaponType.Bow, ItemRarity.Poor, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Long Bow", "A Long bow", WeaponType.Bow, ItemRarity.Poor, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Poor, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Bow", "A bow", WeaponType.Bow, ItemRarity.Common, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Long Bow", "A Long bow", WeaponType.Bow, ItemRarity.Common, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Common, 13, 100, 100, 6));
     WeaponTypes[WeaponType.Bow].Add(new Weapon("Bow", "A bow", WeaponType.Bow, ItemRarity.Uncommon, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Long Bow", "A Long bow", WeaponType.Bow, ItemRarity.Uncommon, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Uncommon, 13, 100, 100, 1));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Long Bow", "A Long bow", WeaponType.Bow, ItemRarity.Uncommon, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Uncommon, 13, 100, 100, 6));
     WeaponTypes[WeaponType.Bow].Add(new Weapon("Bow", "A bow", WeaponType.Bow, ItemRarity.Rare, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Long Bow", "A Long bow", WeaponType.Bow, ItemRarity.Rare, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Rare, 13, 100, 100, 1));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Long Bow", "A Long bow", WeaponType.Bow, ItemRarity.Rare, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Rare, 13, 100, 100, 6));
     WeaponTypes[WeaponType.Bow].Add(new Weapon("Bow", "A bow", WeaponType.Bow, ItemRarity.Epic, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Long Bow", "A Long bow", WeaponType.Bow, ItemRarity.Epic, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Epic, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Bow", "A bow", WeaponType.Bow, ItemRarity.Legendary, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Long Bow", "A Long bow", WeaponType.Bow, ItemRarity.Legendary, 13, 100, 100, 1));
-    WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Legendary, 13, 100, 100, 1));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Long Bow", "A Long bow", WeaponType.Bow, ItemRarity.Epic, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Epic, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Bow", "A bow", WeaponType.Bow, ItemRarity.Legendary, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Long Bow", "A Long bow", WeaponType.Bow, ItemRarity.Legendary, 13, 100, 100, 6));
+    WeaponTypes[WeaponType.Bow].Add(new Weapon("Cross Bow", "A Cross bow", WeaponType.Bow, ItemRarity.Legendary, 13, 100, 100, 6));
   }
 
   private static void InitArmorDictionary()

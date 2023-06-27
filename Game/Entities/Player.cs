@@ -109,7 +109,7 @@ internal class Player : MapObject
 
   public void Attack()
   {
-    if (!InCombat) return;
+    //if (!InCombat) return;
     switch (Weapon.WeaponType)
     {
       case WeaponType.Fists:
