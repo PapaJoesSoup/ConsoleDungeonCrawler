@@ -96,9 +96,9 @@ internal class Monster : MapObject
     X = newPos.X;
     Y = newPos.Y;
 
-    Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y] = new MapObject(oldPos.X, oldPos.Y, new ObjectType(true));
+    Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][0] = new MapObject(oldPos.X, oldPos.Y, new ObjectType(true));
     Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
-    Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y] = this;
+    Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][0] = this;
     Draw();
   }
 
@@ -138,7 +138,7 @@ internal class Monster : MapObject
   {
     // check to see if there is an object that is not passable or some other immovable object
     return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable
-           && Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].Type.Symbol == ' ';
+           && Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][0].Type.Symbol == ' ';
   }
 
 

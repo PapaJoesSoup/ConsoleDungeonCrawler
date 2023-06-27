@@ -71,7 +71,7 @@ internal static class PathFinding
   private static List<Position> GetPassableArea(Position currentPos, Position targetPos)
   {
     Dictionary<int, Dictionary<int, MapObject>> map = Map.LevelMapGrids[Game.CurrentLevel];
-    Dictionary<int, Dictionary<int, MapObject>> overlay = Map.LevelOverlayGrids[Game.CurrentLevel];
+    Dictionary<int, Dictionary<int, List<MapObject>>> overlay = Map.LevelOverlayGrids[Game.CurrentLevel];
 
     // get the 4 adjacent positions (non subClassed to treat them like value types)
     // this ensures the parent position values of each position are not overwritten

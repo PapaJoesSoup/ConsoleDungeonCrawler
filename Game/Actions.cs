@@ -13,8 +13,8 @@ internal static class Actions
   /// </summary>
   public static void PickupOverlayItem()
   {
-    if (Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y].Type.Symbol == ' ') return;
-    MapObject obj = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y];
+    if (Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][0].Type.Symbol == ' ') return;
+    MapObject obj = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][0];
     Item item = new();
     switch (obj.Type.Symbol)
     {
