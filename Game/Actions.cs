@@ -13,51 +13,59 @@ internal static class Actions
   /// </summary>
   public static void PickupOverlayItem()
   {
-    if (Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][0].Type.Symbol == ' ') return;
-    MapObject obj = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][0];
-    Item item = new();
-    switch (obj.Type.Symbol)
+    // search cell from the top down for items
+    for (int i = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y].Count - 1; i < 0; i--)
     {
-      case '\u25b2':
-        UpStairs();
-        break;
-      case '\u25bc':
-        DownStairs();
-        break;
-      case 'V':
-        Vendor.Draw();
-        break;
-      case 'O':
-      case 'k':
-      case 'z':
-      case 'g':
-      case 'B':
-        if (obj.IsLootable)
-        {
-          Player.Gold += ((Monster)obj).Gold;
-          GamePlay.Messages.Add(new Message($"You gained {((Monster)obj).Gold} gold!", Color.DarkOrange, Color.Black));
-          item = Monster.Loot((Monster)obj);
-          obj.IsLootable = false;
-        }
-        break;
-      case 'i':
-        item = Inventory.GetRandomItem();
-        break;
-      case 'm':
-        item = Chest.GetRandomItem();
-        break;
-      case '$':
-        item = Gold.GetRandomItem();
-        break;
-      default:
-        return;
-    }
-    if (item.Type == ItemType.None) return;
-    Inventory.AddItem(item);
-    string message = item.Type == ItemType.Gold ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!" : $"You Picked up {item.Description}!";
-    GamePlay.Messages.Add(new Message(message, Color.DarkGoldenrod, Color.Black));
-    Map.UpdateOverlayObject(obj);
+      if (Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i].Type.Symbol == ' ') continue;
+      MapObject obj = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i];
+      Item item = new();
+      switch (obj.Type.Symbol)
+      {
+        case '\u25b2':
+          UpStairs();
+          break;
+        case '\u25bc':
+          DownStairs();
+          break;
+        case 'V':
+          Vendor.Draw();
+          break;
+        case 'O':
+        case 'k':
+        case 'z':
+        case 'g':
+        case 'B':
+          if (obj.IsLootable)
+          {
+            Player.Gold += ((Monster)obj).Gold;
+            GamePlay.Messages.Add(new Message($"You gained {((Monster)obj).Gold} gold!", Color.DarkOrange,
+              Color.Black));
+            item = Monster.Loot((Monster)obj);
+            obj.IsLootable = false;
+          }
 
+          break;
+        case 'i':
+          item = Inventory.GetRandomItem();
+          break;
+        case 'm':
+          item = Chest.GetRandomItem();
+          break;
+        case '$':
+          item = Gold.GetRandomItem();
+          break;
+        default:
+          return;
+      }
+
+      if (item.Type == ItemType.None) return;
+      Inventory.AddItem(item);
+      string message = item.Type == ItemType.Gold
+        ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!"
+        : $"You Picked up {item.Description}!";
+      GamePlay.Messages.Add(new Message(message, Color.DarkGoldenrod, Color.Black));
+      Map.UpdateOverlayObject(obj);
+    }
   }
 
   public static void OpenDoor()

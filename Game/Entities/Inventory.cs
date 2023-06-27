@@ -464,7 +464,7 @@ internal static class Inventory
 
   internal static BuffType GetRandomBuffType(int min = 1)
   {
-    int index = Dice.Roll(min, Enum.GetNames(typeof(BuffType)).Length);
+    int index = Dice.Roll(min, Enum.GetNames(typeof(BuffType)).Length - 1);
     return (BuffType)index;
   }
 
@@ -514,7 +514,7 @@ internal static class Inventory
 
   internal static Item GetRandomItem()
   {
-    int itemIdx = Dice.Roll(1, Enum.GetNames(typeof(ItemType)).Length);
+    int itemIdx = Dice.Roll(1, Enum.GetNames(typeof(ItemType)).Length - 1);
     Item item = GetRandomItem((ItemType)itemIdx);
     return item;
   }

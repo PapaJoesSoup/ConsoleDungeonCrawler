@@ -137,11 +137,11 @@ internal class Monster : MapObject
   internal static bool CanMoveTo(Position pos)
   {
     // check to see if there is an object that is not passable or some other immovable object
-    return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable
-           && Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][0].Type.Symbol == ' ';
+    foreach (MapObject obj in Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y])
+      if (!obj.IsPassable) return false;
+    return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable;
   }
-
-
+  
   private static int SetOdds(char type)
   {
     switch (type)
