@@ -77,10 +77,10 @@ internal static class PathFinding
     // this ensures the parent position values of each position are not overwritten
     List<Position> possiblePositions = new List<Position>()
     {
-      new Position { X = currentPos.X, Y = currentPos.Y - 1, Parent = currentPos, Cost = currentPos.Cost + 1 },
-      new Position { X = currentPos.X, Y = currentPos.Y + 1, Parent = currentPos, Cost = currentPos.Cost + 1},
-      new Position { X = currentPos.X - 1, Y = currentPos.Y, Parent = currentPos, Cost = currentPos.Cost + 1 },
-      new Position { X = currentPos.X + 1, Y = currentPos.Y, Parent = currentPos, Cost = currentPos.Cost + 1 },
+      new Position(currentPos.X, currentPos.North.Y, currentPos, currentPos.Cost + 1),
+      new Position(currentPos.X, currentPos.South.Y, currentPos, currentPos.Cost + 1),
+      new Position(currentPos.West.X, currentPos.Y, currentPos, currentPos.Cost + 1),
+      new Position(currentPos.East.X, currentPos.Y, currentPos, currentPos.Cost + 1)
     };
 
     possiblePositions.ForEach(pos => pos.SetDistance(targetPos));

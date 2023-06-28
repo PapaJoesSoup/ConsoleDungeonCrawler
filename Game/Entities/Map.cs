@@ -277,32 +277,6 @@ internal class Map
       new string(' ', Width - 2).WriteAt(Left + 1, y, ConsoleColor.Black, ConsoleColor.Black);
   }
 
-  internal static bool CanJumpTo(int oldX, int oldY, int x, int y)
-  {
-    // check to see if there is an object in between old and new location that is not passable and not transparent
-    if (oldX == x)
-    {
-      // moving up or down
-      int minY = Math.Min(oldY, y);
-      int maxY = Math.Max(oldY, y);
-      for (int i = minY; i <= maxY; i++)
-      {
-        if ((!LevelMapGrids[Game.CurrentLevel][x][i].IsPassable && !LevelMapGrids[Game.CurrentLevel][x][i].Type.IsTransparent) || !LevelOverlayGrids[Game.CurrentLevel][x][i][0].IsPassable) return false;
-      }
-    }
-    else if (oldY == y)
-    {
-      // moving left or right
-      int minX = Math.Min(oldX, x);
-      int maxX = Math.Max(oldX, x);
-      for (int i = minX; i <= maxX; i++)
-      {
-        if ((!LevelMapGrids[Game.CurrentLevel][i][y].IsPassable && !LevelMapGrids[Game.CurrentLevel][i][y].Type.IsTransparent) || !LevelOverlayGrids[Game.CurrentLevel][i][y][0].IsPassable) return false;
-      }
-    }
-    return true;
-  }
-
   internal static bool CanAttack(int x, int y)
   {
     // check to see if there is an object there that is attackable
@@ -369,7 +343,7 @@ internal class Map
     {
       if (y < yLimit) break;
       SetVisibleYObjects(Player.X, y, ref yLimit);
-      for (int x = Player.X - 1; x > Player.X - range; x--)
+      for (int x = Player.West.X; x > Player.X - range; x--)
       {
         if (x < xLimit) break;
         SetVisibleXObjects(x, y, ref xLimit);
@@ -382,7 +356,7 @@ internal class Map
     {
       if (x < xLimit) break;
       SetVisibleXObjects(x, Player.Y, ref xLimit);
-      for (int y = Player.Y - 1; y > Player.Y - range; y--)
+      for (int y = Player.North.Y; y > Player.Y - range; y--)
       {
         if (y < yLimit) break;
         SetVisibleYObjects(x, y, ref yLimit);
@@ -395,7 +369,7 @@ internal class Map
     {
       if (y < yLimit) break;
       SetVisibleYObjects(Player.X, y, ref yLimit);
-      for (int x = Player.X + 1; x < Player.X + range; x++)
+      for (int x = Player.East.X; x < Player.X + range; x++)
       {
         if (x > xLimit) break;
         SetVisibleXObjects(x, y, ref xLimit);
@@ -408,7 +382,7 @@ internal class Map
     {
       if (x > xLimit) break;
       SetVisibleXObjects(x, Player.Y, ref xLimit);
-      for (int y = Player.Y - 1; y > Player.Y - range; y--)
+      for (int y = Player.North.Y; y > Player.Y - range; y--)
       {
         if (y < yLimit) break;
         SetVisibleYObjects(x, y, ref yLimit);
@@ -421,7 +395,7 @@ internal class Map
     {
       if (y > yLimit) break;
       SetVisibleYObjects(Player.X, y, ref yLimit);
-      for (int x = Player.X - 1; x > Player.X - range; x--)
+      for (int x = Player.West.X; x > Player.X - range; x--)
       {
         if (x < xLimit) break;
         SetVisibleXObjects(x, y, ref xLimit);
@@ -434,7 +408,7 @@ internal class Map
     {
       if (x < xLimit) break;
       SetVisibleXObjects(x, Player.Y, ref xLimit);
-      for (int y = Player.Y + 1; y < Player.Y + range; y++)
+      for (int y = Player.South.Y; y < Player.Y + range; y++)
       {
         if (y > yLimit) break;
         SetVisibleYObjects(x, y, ref yLimit);
@@ -447,7 +421,7 @@ internal class Map
     {
       if (y > yLimit) break;
       SetVisibleYObjects(Player.X, y, ref yLimit);
-      for (int x = Player.X + 1; x < Player.X + range; x++)
+      for (int x = Player.East.X; x < Player.X + range; x++)
       {
         if (x > xLimit) break;
         SetVisibleXObjects(x, y, ref xLimit);
@@ -460,7 +434,7 @@ internal class Map
     {
       if (x > xLimit) break;
       SetVisibleXObjects(x, Player.Y, ref xLimit);
-      for (int y = Player.Y + 1; y < Player.Y + range; y++)
+      for (int y = Player.East.X; y < Player.Y + range; y++)
       {
         if (y > yLimit) break;
         SetVisibleYObjects(x, y, ref yLimit);
@@ -572,7 +546,10 @@ internal class Map
   {
     if (obj is Monster) return;
     MapObject newObj = new(obj.X, obj.Y, new ObjectType(true));
-    LevelOverlayGrids[Game.CurrentLevel][obj.X][obj.Y][0] = newObj;
+    if (!LevelOverlayGrids[Game.CurrentLevel][obj.X][obj.Y].Contains(obj)) return;
+    LevelOverlayGrids[Game.CurrentLevel][obj.X][obj.Y].Remove(obj);
+    if (LevelOverlayGrids[Game.CurrentLevel][obj.X][obj.Y].Count < 1)
+      LevelOverlayGrids[Game.CurrentLevel][obj.X][obj.Y].Add(newObj);
   }
 
   internal static Direction GetDirection(ConsoleKey key)

@@ -95,15 +95,20 @@ internal class Player : MapObject
     Position oldPos = new(X, Y);
     Position newPos = new(X + x, Y + y);
 
-    if (!Map.CanJumpTo(oldPos.X, oldPos.Y, newPos.X, newPos.Y)) return;
+    if (!CanJumpTo(oldPos, newPos)) return;
 
     X = newPos.X;
     Y = newPos.Y;
-    Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol][0] = this;
-    Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
-    Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
-    Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][0].Draw();
-    Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][0].Draw();
+    for (int i = 0; i < Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Count; i++)
+    {
+      Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol][0] = this;
+      Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+      Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
+
+      Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][i].Draw();
+      Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][i].Draw();
+      Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][i].Draw();
+    }
     GamePlay.Messages.Add(new Message($"You jumped {Map.GetDirection(key)}..."));
   }
 
@@ -118,7 +123,7 @@ internal class Player : MapObject
       case WeaponType.Mace:
       case WeaponType.Dagger:
       case WeaponType.Staff:
-        if (IsNextToOverlay(out MapObject objM) == ' ') return;
+        if (IsNextToOverlayGrid(out MapObject objM) == ' ') return;
         Monster melee = (Monster)objM;
         GamePlay.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {melee.Type.Name}!"));
         melee.TakeDamage(Weapon.Damage);
@@ -252,81 +257,51 @@ internal class Player : MapObject
       if (!objs[0].Type.IsAttackable) continue;
       foreach (MapObject obj in objs)
       {
-        if (obj is Player) continue;
-        if (obj is Monster == false) continue;
+        if (obj is Player || obj is Monster == false) continue;
         if (((Monster)obj).InCombat) return true;
       }
     }
     return false;
   }
 
-  private char IsNextToOverlay(out MapObject obj)
+  private char IsNextToOverlayGrid(out MapObject obj)
   {
-    // look left
-    if (X > 0 && Map.LevelOverlayGrids[Game.CurrentLevel][X - 1][Y][0].Type.Symbol != ' ')
-    {
-      obj = Map.LevelOverlayGrids[Game.CurrentLevel][X - 1][Y][0];
-      if (obj is not Monster monster || monster.IsAlive)
-        return obj.Type.Symbol;
-    }
-
-    // look right
-    if (X < GamePlay.MapBox.Width && Map.LevelOverlayGrids[Game.CurrentLevel][X + 1][Y][0].Type.Symbol != ' ')
-    {
-      obj = Map.LevelOverlayGrids[Game.CurrentLevel][X + 1][Y][0];
-      if (obj is not Monster monster || monster.IsAlive)
-        return obj.Type.Symbol;
-    }
-
-    // look up
-    if (Y > 0 && Map.LevelOverlayGrids[Game.CurrentLevel][X][Y - 1][0].Type.Symbol != ' ')
-    {
-      obj = Map.LevelOverlayGrids[Game.CurrentLevel][X][Y - 1][0];
-      if (obj is not Monster monster || monster.IsAlive)
-        return obj.Type.Symbol;
-    }
-
-    // look down
-    if (Y >= GamePlay.MapBox.Height || Map.LevelOverlayGrids[Game.CurrentLevel][X][Y + 1][0].Type.Symbol != ' ')
-    {
-      obj = Map.LevelOverlayGrids[Game.CurrentLevel][X][Y + 1][0];
-      if (obj is not Monster monster || monster.IsAlive)
-        return obj.Type.Symbol;
-    }
+    // we need to account for monsters on a different overlay level
+    if (IsNextToOverlay(West, out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(East, out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(North, out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(South, out obj)) return obj.Type.Symbol;
 
     // not found
     obj = new MapObject();
     return ' ';
   }
 
-  internal bool IsNextToOverlay(char symbol, out MapObject obj)
+  internal bool IsNextToOverlayGrid(char symbol, out MapObject obj)
   {
-    // look left
-    if (X > 0 && Map.LevelOverlayGrids[Game.CurrentLevel][X - 1][Y][0].Type.Symbol == symbol)
-    {
-      obj = Map.LevelOverlayGrids[Game.CurrentLevel][X - 1][Y][0];
-      return true;
-    }
+    // we need to account for monsters on a different overlay level
+    if (IsNextToOverlay(West, symbol, out obj)) return true;
+    if (IsNextToOverlay(East, symbol, out obj)) return true;
+    if (IsNextToOverlay(North, symbol, out obj)) return true;
+    if (IsNextToOverlay(South, symbol, out obj)) return true;
 
-    // look right
-    if (X < GamePlay.MapBox.Width && Map.LevelOverlayGrids[Game.CurrentLevel][X + 1][Y][0].Type.Symbol == symbol)
-    {
-      obj = Map.LevelOverlayGrids[Game.CurrentLevel][X + 1][Y][0];
-      return true;
-    }
+    // not found
+    obj = new MapObject();
+    return false;
+  }
 
-    // look up
-    if (Y > 0 && Map.LevelOverlayGrids[Game.CurrentLevel][X][Y - 1][0].Type.Symbol == symbol)
+  private bool IsNextToOverlay(Position pos, char symbol, out MapObject obj)
+  {
+    // if we have any monsters, we want to get them first, so we work our way down from the top layer.
+    if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
     {
-      obj = Map.LevelOverlayGrids[Game.CurrentLevel][X][Y - 1][0];
-      return true;
-    }
-
-    // look down
-    if (Y >= GamePlay.MapBox.Height || Map.LevelOverlayGrids[Game.CurrentLevel][X][Y + 1][0].Type.Symbol == symbol)
-    {
-      obj = Map.LevelOverlayGrids[Game.CurrentLevel][X][Y + 1][0];
-      return true;
+      for (int layer = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].Count - 1; layer >= 0; layer--)
+      {
+        if (Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer].Type.Symbol != symbol) continue;
+        obj = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer];
+        if (obj is Monster { IsAlive: false }) continue;
+        return true;
+      }
     }
 
     // not found
@@ -334,37 +309,63 @@ internal class Player : MapObject
     return false;
   }
 
-  internal bool IsNextToMap(char symbol, out MapObject obj)
+  private bool IsNextToOverlay(Position pos, out MapObject obj)
   {
-    // look left
-    if (X > 0 && Map.LevelMapGrids[Game.CurrentLevel][X - 1][Y].Type.Symbol == symbol)
+    if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
     {
-      obj = Map.LevelMapGrids[Game.CurrentLevel][X - 1][Y];
-      return true;
-    }
-
-    // look right
-    if (X < GamePlay.MapBox.Width && Map.LevelMapGrids[Game.CurrentLevel][X + 1][Y].Type.Symbol == symbol)
-    {
-      obj = Map.LevelMapGrids[Game.CurrentLevel][X + 1][Y];
-      return true;
-    }
-
-    // look up
-    if (Y > 0 && Map.LevelMapGrids[Game.CurrentLevel][X][Y - 1].Type.Symbol == symbol)
-    {
-      obj = Map.LevelMapGrids[Game.CurrentLevel][X][Y - 1];
-      return true;
-    }
-
-    // look down
-    if (Y >= GamePlay.MapBox.Height || Map.LevelMapGrids[Game.CurrentLevel][X][Y + 1].Type.Symbol == symbol)
-    {
-      obj = Map.LevelMapGrids[Game.CurrentLevel][X][Y + 1];
-      return true;
+      // if we have any live monsters, we want to get them first, so we work our way down from the top layer.
+      for (int layer = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].Count - 1; layer >= 0; layer--)
+      {
+        if (Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer].Type.Symbol == ' ') continue;
+        obj = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer];
+        if (obj is Monster { IsAlive: false }) continue;
+        return true;
+      }
     }
 
     // not found
+    obj = new MapObject();
+    return false;
+  }
+
+  internal bool IsNextToMapGrid(char symbol, out MapObject obj)
+  {
+    if (IsNextToMap(symbol, West,out obj)) return true;
+    if (IsNextToMap(symbol, East, out obj)) return true;
+    if (IsNextToMap(symbol, North, out obj)) return true;
+    if (IsNextToMap(symbol, South, out obj)) return true;
+
+    // not found
+    obj = new MapObject();
+    return false;
+  }
+
+  private bool IsNextToMap(char symbol, Position pos, out MapObject obj)
+  {
+    if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
+    {
+      if (Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].Type.Symbol == symbol)
+      {
+        obj = Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y];
+        return true;
+      }
+    }
+
+    obj = new MapObject();
+    return false;
+  }
+
+  private bool IsNextToMap(Position pos, out MapObject obj)
+  {
+    if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
+    {
+      if (Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].Type.Symbol != ' ')
+      {
+        obj = Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y];
+        return true;
+      }
+    }
+
     obj = new MapObject();
     return false;
   }
@@ -372,35 +373,17 @@ internal class Player : MapObject
   private bool IsInRange(int radius, out MapObject obj)
   {
     // find the closest object within the radius
-    for (int i = 0; i < radius; i++)
+    for (int i = 1; i <= radius; i++)
     {
-      // look left
-      if (X > 0 && Map.LevelMapGrids[Game.CurrentLevel][X - 1][Y].Type.Symbol != ' ')
-      {
-        obj = Map.LevelMapGrids[Game.CurrentLevel][X - 1][Y];
-        return true;
-      }
+      Position left = new Position(X - i, Y);
+      Position right = new Position(X + i, Y);
+      Position up = new Position(X, Y - i);
+      Position down = new Position(X, Y + i);
 
-      // look right
-      if (X < GamePlay.MapBox.Width && Map.LevelMapGrids[Game.CurrentLevel][X + 1][Y].Type.Symbol != ' ')
-      {
-        obj = Map.LevelMapGrids[Game.CurrentLevel][X + 1][Y];
-        return true;
-      }
-
-      // look up
-      if (Y > 0 && Map.LevelMapGrids[Game.CurrentLevel][X][Y - 1].Type.Symbol != ' ')
-      {
-        obj = Map.LevelMapGrids[Game.CurrentLevel][X][Y - 1];
-        return true;
-      }
-
-      // look down
-      if (Y >= GamePlay.MapBox.Height || Map.LevelMapGrids[Game.CurrentLevel][X][Y + 1].Type.Symbol != ' ')
-      {
-        obj = Map.LevelMapGrids[Game.CurrentLevel][X][Y + 1];
-        return true;
-      }
+      if (IsNextToMap(left, out obj)) return true;
+      if (IsNextToMap(right, out obj)) return true;
+      if (IsNextToMap(up, out obj)) return true;
+      if (IsNextToMap(down, out obj)) return true;
     }
 
     // not found
@@ -411,7 +394,31 @@ internal class Player : MapObject
   private static bool CanMoveTo(Position pos)
   {
     // check to see if there is an object there that is not passable
-    return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable 
-           && Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][0].IsPassable;
+    for (int layer = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].Count - 1; layer >= 0; layer--)
+      if (!Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer].IsPassable) return false;
+    return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable;
+  }
+
+  private static bool CanJumpTo(Position oldPos, Position newPos)
+  {
+      Direction dir = GetDirection(oldPos, newPos);
+    // check to see if there is an object in between old and new location that is not passable and not transparent
+    for (int radius = 1; radius <= 2; radius++)
+    {
+      Position curPos = oldPos;
+      if (dir == Direction.West) curPos = new Position(oldPos.X - radius, oldPos.Y);
+      if (dir == Direction.East) curPos = new Position(oldPos.X + radius, oldPos.Y);
+      if (dir == Direction.North) curPos = new Position(oldPos.X, oldPos.Y - radius);
+      if (dir == Direction.South) curPos = new Position(oldPos.X, oldPos.Y + radius);
+      if (curPos == oldPos) return false;
+
+      List<MapObject> overlayObjs = Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y];
+      MapObject mapObj = Map.LevelMapGrids[Game.CurrentLevel][curPos.X][curPos.Y];
+
+      for (int i = 0; i < overlayObjs.Count - 1; i++)
+        if (!overlayObjs[i].IsPassable) return false;
+      if (mapObj is { IsPassable: false, Type.IsTransparent: false }) return false;
+    }
+    return true;
   }
 }

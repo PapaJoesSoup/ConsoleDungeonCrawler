@@ -59,7 +59,7 @@ internal class MapObject : Position
 
   internal void Draw()
   {
-    if (!IsVisible || Type.Symbol == ' ') return;
+    if (!IsVisible) return;
     Type.Symbol.WriteAt(X + Map.Left, Y + Map.Top, ForegroundColor, BackgroundColor);
   }
 
@@ -78,5 +78,10 @@ internal class MapObject : Position
   {
     if (!IsVisible || Type.Symbol == ' ') return;
     Type.Symbol.WriteAt(X + Map.Left, Y + Map.Top, Color.HotPink, BackgroundColor);
+  }
+
+  internal bool ContainsItem()
+  {
+    return Type.Symbol != ' ';
   }
 }

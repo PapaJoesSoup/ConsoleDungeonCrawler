@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Reflection.Emit;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Screens;
 
@@ -91,14 +92,32 @@ internal class Monster : MapObject
 
   private void MoveTo(Position newPos)
   {
+    // Monsters can step on overlay items (items/dead monsters on the ground).  Layers are used to preserve items and dead monsters.
+    // This will move a monter to a new position, moving them to another layer if needed to preserve items on the ground.
+    // Layer 0 is reserved to the Map overlay object when the overlays are loaded.  The top most layer is the last layer in the list.
+
     if (!CanMoveTo(newPos)) return;
     Position oldPos = new(X, Y);
     X = newPos.X;
     Y = newPos.Y;
 
-    Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][0] = new MapObject(oldPos.X, oldPos.Y, new ObjectType(true));
-    Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
-    Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][0] = this;
+    if (Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][0].ContainsItem())
+      Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y].Add(this);
+    else 
+      Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][0] = this;
+
+    for (int layer = 0; layer < Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Count; layer++)
+    {
+      if (Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][layer] != this) continue;
+      Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].RemoveAt(layer);
+      if (Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Count == 0)
+      {
+        Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Add(new MapObject(oldPos.X, oldPos.Y, new ObjectType(true)));
+        Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+      }
+      break;
+    }
+
     Draw();
   }
 

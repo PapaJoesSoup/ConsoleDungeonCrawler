@@ -13,8 +13,8 @@ internal static class Actions
   /// </summary>
   public static void PickupOverlayItem()
   {
-    // search cell from the top down for items
-    for (int i = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y].Count - 1; i < 0; i--)
+    // search MapObject location from the top down for items to pick up
+    for (int i = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y].Count - 1; i >= 0; i--)
     {
       if (Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i].Type.Symbol == ' ') continue;
       MapObject obj = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i];
@@ -70,7 +70,7 @@ internal static class Actions
 
   public static void OpenDoor()
   {
-    if (!Map.Player.IsNextToMap('+', out MapObject door)) return;
+    if (!Map.Player.IsNextToMapGrid('+', out MapObject door)) return;
     ObjectType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new ObjectType();
     if (type.Symbol == ' ') return;
     GamePlay.Messages.Add(new Message("Opening Door...", Color.Yellow, Color.Black));
@@ -83,7 +83,7 @@ internal static class Actions
 
   public static void CloseDoor()
   {
-    if (!Map.Player.IsNextToMap('-', out MapObject door)) return;
+    if (!Map.Player.IsNextToMapGrid('-', out MapObject door)) return;
     ObjectType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new ObjectType();
     if (type.Symbol == ' ') return;
     GamePlay.Messages.Add(new Message("Closing Door...", Color.Yellow, Color.Black));
@@ -137,7 +137,7 @@ internal static class Actions
       GamePlay.Messages.Add(new Message("You can't go up any further!", Color.Red, Color.Black));
       return;
     }
-    GamePlay.Messages.Add(new Message("You have gone Up stairs to the floor! above", Color.DarkOrange, Color.Black));
+    GamePlay.Messages.Add(new Message("You have gone North stairs to the floor! above", Color.DarkOrange, Color.Black));
     Game.CurrentLevel++;
     Map.LoadLevel();
   }
@@ -149,7 +149,7 @@ internal static class Actions
       GamePlay.Messages.Add(new Message("You can't go down any further!", Color.Red, Color.Black));
       return;
     }
-    GamePlay.Messages.Add(new Message("You have gone Down stairs to the floor below!", Color.DarkOrange, Color.Black));
+    GamePlay.Messages.Add(new Message("You have gone South stairs to the floor below!", Color.DarkOrange, Color.Black));
     Game.CurrentLevel--;
     Map.LoadLevel();
   }

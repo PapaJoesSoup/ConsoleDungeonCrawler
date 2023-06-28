@@ -25,7 +25,7 @@ internal static class GameTitle
     {
       int rowCount = 4 + Game.Dungeons.Keys.Count;
       int row = -(rowCount / 2) + 1;
-      "Please select a Game Map (Up or Down Arrow):".WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, row);
+      "Please select a Game Map (North or South Arrow):".WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, row);
       row += 2;
       for (int i = 0; i < Game.Dungeons.Keys.Count; i++)
       {
@@ -53,6 +53,7 @@ internal static class GameTitle
       string line = lines[y];
       line.WriteAt(1, y, Color.DarkOrange);
     }
+    "Courtesy of: https://textart.sh".WriteAlignedAt(HAlign.Right, VAlign.Bottom, Color.Bisque, Color.DarkOrange, 0, 0);
   }
 
   private static void KeyHandler()

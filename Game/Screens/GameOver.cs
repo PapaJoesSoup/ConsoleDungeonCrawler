@@ -23,7 +23,7 @@ internal static class GameOver
   private static void LoadArt()
   {
     StringBuilder sb = new();
-    sb.Append(File.ReadAllText($"{Game.ArtPath}/TitleArt2.txt"));
+    sb.Append(File.ReadAllText($"{Game.ArtPath}/TitleArt3.txt"));
     // write the title art to the console
     string[] lines = sb.ToString().Split('\n');
     for (int y = 1; y < 52; y++)
@@ -31,5 +31,6 @@ internal static class GameOver
       string line = lines[y];
       line.WriteAt(1, y, Color.DarkOrange);
     }
+    "Courtesy of: https://textart.sh".WriteAlignedAt(HAlign.Right, VAlign.Bottom, Color.Bisque, Color.DarkOrange, 0, 0);
   }
 }
