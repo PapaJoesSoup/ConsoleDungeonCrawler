@@ -37,7 +37,7 @@ internal static class Actions
         case 'B':
           if (obj.IsLootable)
           {
-            GamePlay.Messages.Add(new Message($"You loot  {((Monster)obj).Type.Name}...", Color.BlanchedAlmond, Color.Black));
+            GamePlay.Messages.Add(new Message($"You loot  {((Monster)obj).Type.Name}...", Color.BurlyWood, Color.Black));
             Player.Gold += ((Monster)obj).Gold;
             GamePlay.Messages.Add(new Message($"You gained {((Monster)obj).Gold} gold!", Color.LimeGreen, Color.Black));
             item = Monster.Loot((Monster)obj);
@@ -137,7 +137,7 @@ internal static class Actions
       GamePlay.Messages.Add(new Message("You can't go up any further!", Color.Red, Color.Black));
       return;
     }
-    GamePlay.Messages.Add(new Message("You have gone North stairs to the floor! above", Color.DarkOrange, Color.Black));
+    GamePlay.Messages.Add(new Message("You have gone up stairs to the floor! above", Color.DarkOrange, Color.Black));
     Game.CurrentLevel++;
     Map.LoadLevel();
   }
@@ -149,7 +149,7 @@ internal static class Actions
       GamePlay.Messages.Add(new Message("You can't go down any further!", Color.Red, Color.Black));
       return;
     }
-    GamePlay.Messages.Add(new Message("You have gone South stairs to the floor below!", Color.DarkOrange, Color.Black));
+    GamePlay.Messages.Add(new Message("You have gone down stairs to the floor below!", Color.DarkOrange, Color.Black));
     Game.CurrentLevel--;
     Map.LoadLevel();
   }
