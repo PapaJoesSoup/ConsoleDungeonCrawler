@@ -10,6 +10,7 @@ namespace ConsoleDungeonCrawler.Game.Screens;
 /// </summary>
 internal static class GamePlay
 {
+  #region Properties
   private static readonly Box StatusBox = new(1, 0, 208, 8);
   internal static readonly Box MapBox = new(1, 7, 178, 35);
   private static readonly Box OverlayBox = new(178, 7, 31, 30);
@@ -31,6 +32,7 @@ internal static class GamePlay
 
   // LastKey is used to help with player combat state management
   private static ConsoleKeyInfo lastKey;
+  #endregion Properties
 
   internal static void Draw()
   {

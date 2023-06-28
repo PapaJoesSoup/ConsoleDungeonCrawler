@@ -122,8 +122,19 @@ internal static class ConsoleEx
     while (Console.KeyAvailable) Console.ReadKey(true);
   }
 
-  // Extension methods for char and string console writes
+  //Utility Methods
+  internal static void ResetColor()
+  {
+    Console.Write(ColorEx.ResetColor);
+  }
 
+  internal static void Clear()
+  {
+    ResetColor();
+    Console.Clear();
+  }
+
+  // string Extension methods for custom screen and dialog writes
   internal static void WriteLegendItem(this MapObject mapObject, int col, int row, int width)
   {
     // create a formatted line containing the symbol and the type of the map object
@@ -144,7 +155,10 @@ internal static class ConsoleEx
     WriteAt(item.Name.PadRight(col + colWidth), col + 5, row, ColorEx.RarityColor(item.Rarity));
   }
 
+  // string and char extension methods
+
   // WriteAlignedAt Methods
+  #region WriteAlignedAt Methods
   internal static void WriteAlignedAt(this string s, HAlign hAlign)
   {
     int x = hAlign switch
@@ -590,8 +604,10 @@ internal static class ConsoleEx
     }
     WriteAt(s, x + xOffset, y + yOffset, color, bgColor);
   }
+  #endregion WriteAlignedAt Methods
 
   // WriteAt string methods
+  #region WriteAt string methods
   private static void WriteAt(this string s, int x, int y)
   {
     try
@@ -847,8 +863,10 @@ internal static class ConsoleEx
       Console.WriteLine(e.Message);
     }
   }
+  #endregion WriteAt string methods
 
   //WriteAt Char Methods
+  #region WriteAt char methods
   internal static void WriteAt(this char c, int x, int y, ConsoleColor color)
   {
     try
@@ -1036,8 +1054,9 @@ internal static class ConsoleEx
       Console.WriteLine(e.Message);
     }
   }
+  #endregion WriteAt char methods
 
-
+  #region Extended Color WriteAt Char Methods
   // Extended Color WriteAt Char Methods
   internal static void WriteAt(this char c, int x, int y, Color color, Color bgColor)
   {
@@ -1109,9 +1128,10 @@ internal static class ConsoleEx
       Console.WriteLine(e.Message);
     }
   }
-
+  #endregion Extended Color WriteAt Char Methods
 
   // Extended Color WriteAt String Methods
+  #region Extended Color WriteAt String Methods
   internal static void WriteAt(this string s, int x, int y, Color color)
   {
     try
@@ -1213,9 +1233,10 @@ internal static class ConsoleEx
       Console.WriteLine(e.Message);
     }
   }
-
+#endregion Extended Color WriteAt String Methods
 
   // WriteBorder Methods
+  #region WriteBorder Methods
   internal static void WriteBorder(this Box box, BoxChars bChars, ConsoleColor color)
   {
     try
@@ -1283,85 +1304,7 @@ internal static class ConsoleEx
       Console.WriteLine(e.Message);
     }
   }
-
-
-  // Flashing Methods
-  // make a char flash
-  internal static void FlashAt(this char c, int x, int y, int flashCount, int flashDelay)
-  {
-    for (int i = 0; i < flashCount; i++)
-    {
-      WriteAt(c, x, y, ConsoleColor.Black, ConsoleColor.White);
-      Thread.Sleep(flashDelay);
-      WriteAt(c, x, y, ConsoleColor.White, ConsoleColor.Black);
-      Thread.Sleep(flashDelay);
-    }
-  }
-
-  // make a char flash with a given color and delay
-  internal static void FlashAt(this char c, int x, int y, int flashCount, int flashDelay,
-    ConsoleColor color)
-  {
-    for (int i = 0; i < flashCount; i++)
-    {
-      WriteAt(c, x, y, color, ConsoleColor.Black);
-      Thread.Sleep(flashDelay);
-      WriteAt(c, x, y, ConsoleColor.Black, color);
-      Thread.Sleep(flashDelay);
-    }
-  }
-
-  // make a char flash with a given color and background color and delay
-  internal static void FlashAt(this char c, int x, int y, int flashCount, int flashDelay,
-    ConsoleColor color, ConsoleColor bgColor)
-  {
-    for (int i = 0; i < flashCount; i++)
-    {
-      WriteAt(c, x, y, color, bgColor);
-      Thread.Sleep(flashDelay);
-      WriteAt(c, x, y, bgColor, color);
-      Thread.Sleep(flashDelay);
-    }
-  }
-
-  // make a string flash
-  internal static void FlashAt(this string s, int x, int y, int flashCount, int flashDelay)
-  {
-    for (int i = 0; i < flashCount; i++)
-    {
-      WriteAt(s, x, y, ConsoleColor.Black, ConsoleColor.White);
-      Thread.Sleep(flashDelay);
-      WriteAt(s, x, y, ConsoleColor.White, ConsoleColor.Black);
-      Thread.Sleep(flashDelay);
-    }
-  }
-
-  // make a string flash with a given color and delay
-  internal static void FlashAt(this string s, int x, int y, int flashCount, int flashDelay,
-    ConsoleColor color)
-  {
-    for (int i = 0; i < flashCount; i++)
-    {
-      WriteAt(s, x, y, color, ConsoleColor.Black);
-      Thread.Sleep(flashDelay);
-      WriteAt(s, x, y, ConsoleColor.Black, color);
-      Thread.Sleep(flashDelay);
-    }
-  }
-
-  // make a string flash with a given color and background color and delay
-  internal static void FlashAt(this string s, int x, int y, int flashCount, int flashDelay,
-    ConsoleColor color, ConsoleColor bgColor)
-  {
-    for (int i = 0; i < flashCount; i++)
-    {
-      WriteAt(s, x, y, color, bgColor);
-      Thread.Sleep(flashDelay);
-      WriteAt(s, x, y, bgColor, color);
-      Thread.Sleep(flashDelay);
-    }
-  }
-
+  #endregion WriteBorder Methods
 
   // Read Methods
   internal static int ReadInt(int x, int y, Color fgColor, Color bgColor)
@@ -1406,15 +1349,4 @@ internal static class ConsoleEx
     return result;
   }
 
-  //Utility Methods
-  internal static void ResetColor()
-  {
-    Console.Write(ColorEx.ResetColor);
-  }
-
-  internal static void Clear()
-  {
-    ResetColor();
-    Console.Clear();
-  }
 }
