@@ -30,6 +30,10 @@ internal static class Actions
         case 'V':
           Vendor.Draw();
           break;
+        case 'X':
+          Game.IsWon = true;
+          GameWon.Draw();
+          break;
         case 'O':
         case 'k':
         case 'z':

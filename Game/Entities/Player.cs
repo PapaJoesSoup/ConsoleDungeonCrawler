@@ -27,7 +27,7 @@ internal class Player : MapObject
 
   internal Player(MapObject mapObject)
   {
-    // Set Player's MapObject base to the one passed in
+    // Set Player's base MapObject values to the passed in values
     X = mapObject.X;
     Y = mapObject.Y;
     Type = mapObject.Type;
@@ -45,7 +45,7 @@ internal class Player : MapObject
       new(ArmorType.Feet)
     };
 
-    // Add a couple of bags and 5 initial slots to inventory
+    // Add a couple of bags and 5 initial items to inventory
     Inventory.Bags.Add(new Bag());
     Inventory.Bags.Add(new Bag());
     Inventory.AddItem(new Potion(BuffType.Health, ItemRarity.Common, 1, 1, 0.1M));
@@ -128,14 +128,14 @@ internal class Player : MapObject
       case WeaponType.Dagger:
       case WeaponType.Staff:
         if (IsNextToOverlayGrid(out MapObject objM) == ' ') return;
-        Monster melee = (Monster)objM;
+        if (objM is not Monster melee) return;
         GamePlay.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {melee.Type.Name}!"));
         melee.TakeDamage(Weapon.Damage);
         break;
       case WeaponType.Bow:
       case WeaponType.Wand:
         if (IsInRange(Weapon.Range, out MapObject objR)) return;
-        Monster ranged = (Monster)objR;
+        if (objR is not Monster ranged) return;
         GamePlay.Messages.Add(new Message($"You shoot your {Weapon.WeaponType} at the {ranged.Type.Name}!"));
         ranged.TakeDamage(Weapon.Damage);
         break;
