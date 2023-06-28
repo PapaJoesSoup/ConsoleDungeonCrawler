@@ -136,9 +136,9 @@ internal class Monster : MapObject
       {
         health = 0;
         IsAlive = false;
-        GamePlay.Messages.Add(new Message($"You killed the {Type.Name}!", Color.DarkOrange, Color.Black));
+        GamePlay.Messages.Add(new Message($"You killed the {Type.Name}!", Color.LimeGreen, Color.Black));
         int xp = Dice.Roll(level * 2);
-        GamePlay.Messages.Add(new Message($"You gained {xp} experience!", Color.DarkOrange, Color.Black));
+        GamePlay.Messages.Add(new Message($"You gained {xp} experience!", Color.LimeGreen, Color.Black));
         Player.AddExperience(xp);
         BackgroundColor = Type.BackgroundColor;
         ForegroundColor = Color.Gray;

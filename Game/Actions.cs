@@ -37,9 +37,9 @@ internal static class Actions
         case 'B':
           if (obj.IsLootable)
           {
+            GamePlay.Messages.Add(new Message($"You loot  {((Monster)obj).Type.Name}...", Color.BlanchedAlmond, Color.Black));
             Player.Gold += ((Monster)obj).Gold;
-            GamePlay.Messages.Add(new Message($"You gained {((Monster)obj).Gold} gold!", Color.DarkOrange,
-              Color.Black));
+            GamePlay.Messages.Add(new Message($"You gained {((Monster)obj).Gold} gold!", Color.LimeGreen, Color.Black));
             item = Monster.Loot((Monster)obj);
             obj.IsLootable = false;
           }
@@ -63,7 +63,7 @@ internal static class Actions
       string message = item.Type == ItemType.Gold
         ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!"
         : $"You Picked up {item.Description}!";
-      GamePlay.Messages.Add(new Message(message, Color.DarkGoldenrod, Color.Black));
+      GamePlay.Messages.Add(new Message(message, Color.LimeGreen, Color.Black));
       Map.UpdateOverlayObject(obj);
     }
   }
