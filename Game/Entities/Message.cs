@@ -2,28 +2,28 @@
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Screens;
 
-namespace ConsoleDungeonCrawler.Game.Entities
+namespace ConsoleDungeonCrawler.Game.Entities;
+
+internal class Message
 {
-  internal class Message
+  private readonly string text;
+  private readonly Color foregroundColor = Color.White;
+  private readonly Color backgroundColor = Color.Black;
+
+  internal Message(string text, Color fgColor, Color bgColor)
   {
-    internal string Text;
-    internal Color ForegroundColor = Color.White;
-    internal Color BackgroundColor = Color.Black;
+    this.text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
+    foregroundColor = fgColor;
+    backgroundColor = bgColor;
+  }
 
-    internal Message(string text, Color foregroundColor, Color backgroundColor)
-    {
-      Text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
-      ForegroundColor = foregroundColor;
-      BackgroundColor = backgroundColor;
-    }
+  public Message(string text)
+  {
+    this.text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
+  }
 
-    public Message(string text)
-    {
-      Text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
-    }
-    internal void WriteAt(int x, int y)
-    {
-      ConsoleEx.WriteAt(Text.PadRight(GamePlay.MessageBox.Width - 32), x, y, ForegroundColor, BackgroundColor);
-    }
+  internal void WriteMessageAt(int x, int y)
+  {
+    text.PadRight(GamePlay.MessageWidth).WriteAt(x, y, foregroundColor, backgroundColor);
   }
 }

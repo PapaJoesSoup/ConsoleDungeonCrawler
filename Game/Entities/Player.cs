@@ -1,409 +1,424 @@
 ﻿using ConsoleDungeonCrawler.Game.Entities.Items;
-using ConsoleDungeonCrawler.Game.Maps;
 using ConsoleDungeonCrawler.Game.Screens;
 using System.Drawing;
 
-namespace ConsoleDungeonCrawler.Game.Entities
+namespace ConsoleDungeonCrawler.Game.Entities;
+
+internal class Player : MapObject
 {
-  internal class Player : MapObject
+  internal static int Level = 1;
+  private static int experience;
+  private static int experienceToLevel = 100;
+  internal static readonly PlayerClass Class = PlayerClass.Rogue;
+  internal static int Health = 100;
+  internal static int MaxHealth = 100;
+  internal static int Mana;
+  internal static int MaxMana;
+  internal static decimal Gold;
+
+  internal static List<Armor> ArmorSet = new();
+  internal static Weapon Weapon = new();
+  internal static readonly Dictionary<int, Spell> Spells = new();
+  internal static bool InCombat = false;
+
+  internal Player()
   {
-    internal static int Level = 1;
-    internal static int Experience = 0;
-    internal static int ExperienceToLevel = 100;
-    internal static PlayerClass Class = PlayerClass.Rogue;
-    internal static int Health = 100;
-    internal static int MaxHealth = 100;
-    internal static int Mana = 0;
-    internal static int MaxMana = 0;
-    internal static decimal Gold = 0;
+  }
 
-    internal static List<Armor> ArmorSet = new List<Armor>();
-    internal static Weapon Weapon = new Weapon();
-    internal static Dictionary<int, Spell> Spells = new Dictionary<int, Spell>();
-    internal static bool IsAlive = true;
-    internal static bool InCombat = false;
+  internal Player(MapObject mapObject)
+  {
+    // Set Player's MapObject base to the one passed in
+    X = mapObject.X;
+    Y = mapObject.Y;
+    Type = mapObject.Type;
+    ForegroundColor = Type.ForegroundColor;
+    BackgroundColor = Type.BackgroundColor;
+    IsVisible = mapObject.IsVisible;
 
-    internal Player()
+    // Add 5 empty slots to armor set
+    ArmorSet = new List<Armor>
     {
+      new(ArmorType.Head),
+      new(ArmorType.Body),
+      new(ArmorType.Hands),
+      new(ArmorType.Legs),
+      new(ArmorType.Feet)
+    };
+
+    // Add a couple of bags and 5 initial slots to inventory
+    Inventory.Bags.Add(new Bag());
+    Inventory.Bags.Add(new Bag());
+    Inventory.AddItem(new Potion(BuffType.Health, ItemRarity.Common, 1, 1, 0.1M));
+    Inventory.AddItem(new Potion(BuffType.Health, ItemRarity.Common, 1, 1, 0.1M));
+    Inventory.AddItem(new Food(FoodName.Bread, BuffType.Health, 1, 1, 0.1M));
+    Inventory.AddItem(new Food(FoodName.Vegetable, BuffType.Health, 1, 1, 0.1M));
+  }
+
+  public bool Move(ConsoleKey key)
+  {
+    int x = 0;
+    int y = 0;
+    if (key == ConsoleKey.W) { x = 0; y = -1; }
+    if (key == ConsoleKey.A) { x = -1; y = 0; }
+    if (key == ConsoleKey.S) { x = 0; y = 1; }
+    if (key == ConsoleKey.D) { x = 1; y = 0; }
+
+    Position oldPos = new(X, Y);
+    Position newPos = new(X + x, Y + y);
+
+    if (!CanMoveTo(newPos)) return false;
+    X = newPos.X;
+    Y = newPos.Y;
+    // Check needed for level changes.
+    if (Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol].Count == 0)
+      Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol].Add(this);
+    else
+      Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol][0] = this;
+
+    Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+    Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
+    Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][0].Draw();
+    Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][0].Draw();
+    Map.Player.Draw();
+    return true;
+  }
+
+  public void Jump(ConsoleKey key)
+  {
+    int x = 0;
+    int y = 0;
+    if (key == ConsoleKey.W) { x = 0; y = -2; }
+    if (key == ConsoleKey.A) { x = -2; y = 0; }
+    if (key == ConsoleKey.S) { x = 0; y = 2; }
+    if (key == ConsoleKey.D) { x = 2; y = 0; }
+
+    Position oldPos = new(X, Y);
+    Position newPos = new(X + x, Y + y);
+
+    if (!CanJumpTo(oldPos, newPos)) return;
+
+    X = newPos.X;
+    Y = newPos.Y;
+    for (int i = 0; i < Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Count; i++)
+    {
+      Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol][0] = this;
+      Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+      Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
+
+      Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][i].Draw();
+      Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][i].Draw();
+      Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][i].Draw();
     }
+    GamePlay.Messages.Add(new Message($"You jumped {Map.GetDirection(key)}..."));
+  }
 
-    internal Player(MapObject mapObject)
+  public void Attack()
+  {
+    //if (!InCombat) return;
+    switch (Weapon.WeaponType)
     {
-      // Set Player's MapObject base to the one passed in
-      X = mapObject.X;
-      Y = mapObject.Y;
-      Type = mapObject.Type;
-      ForegroundColor = Type.ForegroundColor;
-      BackgroundColor = Type.BackgroundColor;
-      IsVisible = mapObject.IsVisible;
-
-      // Add 5 empty slots to armor set
-      ArmorSet = new List<Armor>
-      {
-        new Armor(ArmorType.Head),
-        new Armor(ArmorType.Body),
-        new Armor(ArmorType.Hands),
-        new Armor(ArmorType.Legs),
-        new Armor(ArmorType.Feet)
-      };
-
-      // Add 5 initial slots to inventory
-      Inventory.Bags.Add(new Bag());
-      Inventory.AddItem( new Potion(BuffType.Health, 1, 1, 0));
-      Inventory.AddItem(new Potion(BuffType.Health, 1, 1, 0));
-      Inventory.AddItem( new Food(FoodType.Bread, BuffType.Health, 1, 1, 0));
-      Inventory.AddItem( new Food(FoodType.Vegetable, BuffType.Health, 1, 1, 0));
+      case WeaponType.Fists:
+      case WeaponType.Sword:
+      case WeaponType.Axe:
+      case WeaponType.Mace:
+      case WeaponType.Dagger:
+      case WeaponType.Staff:
+        if (IsNextToOverlayGrid(out MapObject objM) == ' ') return;
+        Monster melee = (Monster)objM;
+        GamePlay.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {melee.Type.Name}!"));
+        melee.TakeDamage(Weapon.Damage);
+        break;
+      case WeaponType.Bow:
+      case WeaponType.Wand:
+        if (IsInRange(Weapon.Range, out MapObject objR)) return;
+        Monster ranged = (Monster)objR;
+        GamePlay.Messages.Add(new Message($"You shoot your {Weapon.WeaponType} at the {ranged.Type.Name}!"));
+        ranged.TakeDamage(Weapon.Damage);
+        break;
     }
+  }
 
-    public void Move(ConsoleKey key)
+  internal static void EquipArmor(Armor armor)
+  {
+    switch (armor.ArmorType)
     {
-      int x = 0;
-      int y = 0;
-      if (key == ConsoleKey.W) { x = 0; y = -1; }
-      if (key == ConsoleKey.A) { x = -1; y = 0; }
-      if (key == ConsoleKey.S) { x = 0; y = 1; }
-      if (key == ConsoleKey.D) { x = 1; y = 0; }
-
-      Position oldPos = new Position(X, Y);
-      Position newPos = new Position(X + x, Y + y);
-
-      if (!Map.CanMoveTo(newPos.X, newPos.Y)) return;
-      X = newPos.X;
-      Y = newPos.Y;
-      Map.OverlayObjects['P'][0] = this;
-      Map.MapGrid[oldPos.X][oldPos.Y].Draw();
-      Map.MapGrid[newPos.X][newPos.Y].Draw();
-      Map.OverlayGrid[oldPos.X][oldPos.Y].Draw();
-      Map.OverlayGrid[newPos.X][newPos.Y].Draw();
+      case ArmorType.Head:
+        if (ArmorSet[0].ArmorType != ArmorType.None)
+          Inventory.AddItem(ArmorSet[0]);
+        ArmorSet[0] = armor;
+        break;
+      case ArmorType.Body:
+        if (ArmorSet[1].ArmorName != ArmorName.None)
+          Inventory.AddItem(ArmorSet[1]);
+        ArmorSet[1] = armor;
+        break;
+      case ArmorType.Hands:
+        if (ArmorSet[2].ArmorName != ArmorName.None)
+          Inventory.AddItem(ArmorSet[2]);
+        ArmorSet[2] = armor;
+        break;
+      case ArmorType.Legs:
+        if (ArmorSet[3].ArmorName != ArmorName.None)
+          Inventory.AddItem(ArmorSet[3]);
+        ArmorSet[3] = armor;
+        break;
+      case ArmorType.Feet:
+        if (ArmorSet[4].ArmorName != ArmorName.None)
+          Inventory.AddItem(ArmorSet[4]);
+        ArmorSet[4] = armor;
+        break;
     }
+  }
 
-    public void Jump(ConsoleKey key)
+  internal static void EquipWeapon(Weapon weapon)
+  {
+    // don't add fists to inventory
+    if (Weapon.Name != "Fists") Inventory.AddItem(Weapon);
+    Weapon = weapon;
+  }
+
+  internal static void EquipSpell(Spell spell)
+  {
+
+  }
+
+  internal static void UseSpell(Spell spell)
+  {
+
+  }
+
+  internal static void TakeDamage(int damage)
+  {
+    Health -= damage;
+    if (Health <= 0)
     {
-      int x = 0;
-      int y = 0;
-      if (key == ConsoleKey.W) { x = 0; y = -2; }
-      if (key == ConsoleKey.A) { x = -2; y = 0; }
-      if (key == ConsoleKey.S) { x = 0; y = 2; }
-      if (key == ConsoleKey.D) { x = 2; y = 0; }
-
-      Position oldPos = new Position(X, Y);
-      Position newPos = new Position(X + x, Y + y);
-
-      if (!Map.CanJumpTo(oldPos.X, oldPos.Y, newPos.X, newPos.Y)) return;
-      X = newPos.X;
-      Y = newPos.Y;
-      Map.OverlayObjects['P'][0] = this;
-      Map.MapGrid[oldPos.X][oldPos.Y].Draw();
-      Map.MapGrid[newPos.X][newPos.Y].Draw();
-      Map.OverlayGrid[oldPos.X][oldPos.Y].Draw();
-      Map.OverlayGrid[newPos.X][newPos.Y].Draw();
+      Health = 0;
+      GamePlay.Messages.Add(new Message("You died!", Color.Red, Color.Black));
+      InCombat = false;
     }
-
-    public void Attack()
+    else
     {
-      if (!InCombat) return;
-      switch (Weapon.WeaponType)
-      {
-        case WeaponType.Fists:
-        case WeaponType.Sword:
-        case WeaponType.Axe:
-        case WeaponType.Mace:
-        case WeaponType.Dagger:
-        case WeaponType.Staff:
-          if (IsNextToOverlay(out MapObject objM) == ' ') return;
-          Monster meelee = (Monster)objM;
-          GamePlay.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {meelee.Type.Name}!"));
-          meelee.TakeDamage(Weapon.Damage);
-          break;
-        case WeaponType.Bow:
-        case WeaponType.Wand:
-          if (IsInRange(Weapon.Range, out MapObject objR)) return;
-          Monster ranged = (Monster)objR;
-          GamePlay.Messages.Add(new Message($"You shoot your {Weapon.WeaponType} at the {ranged.Type.Name}!"));
-          ranged.TakeDamage(Weapon.Damage);
-          break;
-      }
+      GamePlay.Messages.Add(
+        new Message($"You have {Health} health left!", Color.DarkOrange, Color.Black));
     }
+  }
 
-    internal static void EquipArmor(Armor armor)
+  internal static void Heal(int amount)
+  {
+    Health += amount;
+    if (Health > MaxHealth) Health = MaxHealth;
+  }
+
+  internal static void RestoreMana(int amount)
+  {
+    Mana += amount;
+    if (Mana > MaxMana) Mana = MaxMana;
+  }
+
+  internal static bool RemoveGold(decimal amount)
+  {
+    if (amount > Gold)
     {
-      switch (armor.ArmorType)
-      {
-        case ArmorType.Head:
-          if (ArmorSet[0].ArmorType != ArmorType.None)
-            Inventory.AddItem(ArmorSet[0]); 
-          ArmorSet[0] = armor;
-          break;
-        case ArmorType.Body:
-          if (ArmorSet[1].ArmorName != ArmorName.None)
-            Inventory.AddItem(ArmorSet[1]);
-          ArmorSet[1] = armor;
-          break;
-        case ArmorType.Hands:
-          if (ArmorSet[2].ArmorName != ArmorName.None)
-            Inventory.AddItem(ArmorSet[2]);
-          ArmorSet[2] = armor;
-          break;
-        case ArmorType.Legs:
-          if (ArmorSet[3].ArmorName != ArmorName.None)
-            Inventory.AddItem(ArmorSet[3]);
-          ArmorSet[3] = armor;
-          break;
-        case ArmorType.Feet:
-          if (ArmorSet[4].ArmorName != ArmorName.None)
-            Inventory.AddItem(ArmorSet[4]);
-          ArmorSet[4] = armor;
-          break;
-      }
-    }
-
-    internal static void EquipWeapon(Weapon weapon)
-    {
-
-      Inventory.AddItem(Player.Weapon);
-      Weapon = weapon;
-    }
-
-    internal static void EquipSpell(Spell spell)
-    {
-
-    }
-
-    internal static void UseSpell(Spell spell)
-    {
-
-    }
-
-    internal static void TakeDamage(int damage)
-    {
-      if (damage <= 0)
-      {
-        GamePlay.Messages.Add(new Message($"Monster Missed you!", Color.DarkOrange, Color.Black));
-        GamePlay.Messages.Add(
-          new Message($"You have {Player.Health} health left!", Color.DarkOrange, Color.Black));
-      }
-
-      ;
-      GamePlay.Messages.Add(new Message($"You were hit for {damage} damage!", Color.DarkOrange, Color.Black));
-      Player.Health -= damage;
-      if (Player.Health <= 0)
-      {
-        Player.Health = 0;
-        GamePlay.Messages.Add(new Message("You died!", Color.Red, Color.Black));
-        Player.InCombat = false;
-        Player.IsAlive = false;
-      }
-      else
-      {
-        GamePlay.Messages.Add(
-          new Message($"You have {Player.Health} health left!", Color.DarkOrange, Color.Black));
-      }
-    }
-
-    internal static void Heal(int amount)
-    {
-      Health += amount;
-      if (Health > MaxHealth) Health = MaxHealth;
-    }
-
-    internal static void RestoreMana(int amount)
-    {
-      Mana += amount;
-      if (Mana > MaxMana) Mana = MaxMana;
-    }
-
-    internal static bool RemoveGold(decimal amount)
-    {
-      if (amount > Gold)
-      {
-        GamePlay.Messages.Add(new Message("You don't have enough gold!", Color.Red, Color.Black));
-        return false;
-      }
-      Gold -= amount;
-      return true;
-    }
-
-    internal static void LevelUp()
-    {
-      Level++;
-      ExperienceToLevel = (int)(ExperienceToLevel * 1.5);
-      MaxHealth += 10;
-      if(MaxMana > 0) MaxMana += 5;
-      Health = MaxHealth;
-      Mana = MaxMana;
-      GamePlay.Messages.Add(new Message($"You are now level {Level}!", Color.Green, Color.Black));
-    }
-
-    internal static void AddExperience(int amount)
-    {
-      Experience += amount;
-      if (Experience >= ExperienceToLevel)
-      {
-        Experience -= ExperienceToLevel;
-        LevelUp();
-      }
-    }
-
-    internal static bool IsInCombat()
-    {
-      // Check if there is a mapObject.InCombat == true in OverlayObjects Except Player
-      foreach (char key in Map.OverlayObjects.Keys)
-      {
-        if (Map.OverlayObjects[key].Count == 0) continue;
-        List<MapObject> objs = Map.OverlayObjects[key];
-        if (!objs[0].Type.IsAttackable) continue;
-        foreach (MapObject obj in objs)
-        {
-          if (obj is Player) continue;
-          if (obj is Monster == false) continue;
-          if (((Monster)obj).InCombat) return true;
-        }
-      }
+      GamePlay.Messages.Add(new Message("You don't have enough gold!", Color.Red, Color.Black));
       return false;
     }
+    Gold -= amount;
+    return true;
+  }
 
-    internal char IsNextToOverlay(out MapObject obj)
+  private static void LevelUp()
+  {
+    Level++;
+    experienceToLevel = (int)(experienceToLevel * 1.5);
+    MaxHealth += 10;
+    if (MaxMana > 0) MaxMana += 5;
+    Health = MaxHealth;
+    Mana = MaxMana;
+    GamePlay.Messages.Add(new Message($"You are now level {Level}!", Color.Green, Color.Black));
+  }
+
+  internal static void AddExperience(int amount)
+  {
+    experience += amount;
+    if (experience >= experienceToLevel)
     {
-      // look left
-      if (X > 0 && Map.OverlayGrid[X - 1][Y].Type.Symbol != ' ')
-      {
-        obj = Map.OverlayGrid[X - 1][Y];
-        return obj.Type.Symbol;
-      }
+      experience -= experienceToLevel;
+      LevelUp();
+    }
+  }
 
-      // look right
-      if (X < GamePlay.MapBox.Width && Map.OverlayGrid[X + 1][Y].Type.Symbol != ' ')
+  internal static bool IsInCombat()
+  {
+    // Check if there is a mapObject.InCombat == true in OverlayObjects Except Player
+    foreach (char key in Map.LevelOverlayObjects[Game.CurrentLevel].Keys)
+    {
+      if (Map.LevelOverlayObjects[Game.CurrentLevel][key].Count == 0) continue;
+      List<MapObject> objs = Map.LevelOverlayObjects[Game.CurrentLevel][key];
+      if (!objs[0].Type.IsAttackable) continue;
+      foreach (MapObject obj in objs)
       {
-        obj = Map.OverlayGrid[X + 1][Y];
-        return obj.Type.Symbol;
+        if (obj is Player || obj is Monster == false) continue;
+        if (((Monster)obj).InCombat) return true;
       }
+    }
+    return false;
+  }
 
-      // look up
-      if (Y > 0 && Map.OverlayGrid[X][Y - 1].Type.Symbol != ' ')
+  private char IsNextToOverlayGrid(out MapObject obj)
+  {
+    // we need to account for monsters on a different overlay level
+    if (IsNextToOverlay(West, out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(East, out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(North, out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(South, out obj)) return obj.Type.Symbol;
+
+    // not found
+    obj = new MapObject();
+    return ' ';
+  }
+
+  internal bool IsNextToOverlayGrid(char symbol, out MapObject obj)
+  {
+    // we need to account for monsters on a different overlay level
+    if (IsNextToOverlay(West, symbol, out obj)) return true;
+    if (IsNextToOverlay(East, symbol, out obj)) return true;
+    if (IsNextToOverlay(North, symbol, out obj)) return true;
+    if (IsNextToOverlay(South, symbol, out obj)) return true;
+
+    // not found
+    obj = new MapObject();
+    return false;
+  }
+
+  private bool IsNextToOverlay(Position pos, char symbol, out MapObject obj)
+  {
+    // if we have any monsters, we want to get them first, so we work our way down from the top layer.
+    if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
+    {
+      for (int layer = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].Count - 1; layer >= 0; layer--)
       {
-        obj = Map.OverlayGrid[X][Y - 1];
-        return obj.Type.Symbol;
+        if (Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer].Type.Symbol != symbol) continue;
+        obj = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer];
+        if (obj is Monster { IsAlive: false }) continue;
+        return true;
       }
-
-      // look down
-      if (Y >= GamePlay.MapBox.Height || Map.OverlayGrid[X][Y + 1].Type.Symbol != ' ')
-      {
-        obj = Map.OverlayGrid[X][Y + 1];
-        return obj.Type.Symbol;
-      }
-
-      // not found
-      obj = new MapObject();
-      return ' ';
     }
 
-    internal bool IsNextToOverlay(char symbol, out MapObject obj)
+    // not found
+    obj = new MapObject();
+    return false;
+  }
+
+  private bool IsNextToOverlay(Position pos, out MapObject obj)
+  {
+    if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
     {
-      // look left
-      if (X > 0 && Map.OverlayGrid[X - 1][Y].Type.Symbol == symbol)
+      // if we have any live monsters, we want to get them first, so we work our way down from the top layer.
+      for (int layer = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].Count - 1; layer >= 0; layer--)
       {
-        obj = Map.OverlayGrid[X - 1][Y];
+        if (Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer].Type.Symbol == ' ') continue;
+        obj = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer];
+        if (obj is Monster { IsAlive: false }) continue;
         return true;
       }
-
-      // look right
-      if (X < GamePlay.MapBox.Width && Map.OverlayGrid[X + 1][Y].Type.Symbol == symbol)
-      {
-        obj = Map.OverlayGrid[X + 1][Y];
-        return true;
-      }
-
-      // look up
-      if (Y > 0 && Map.OverlayGrid[X][Y - 1].Type.Symbol == symbol)
-      {
-        obj = Map.OverlayGrid[X][Y - 1];
-        return true;
-      }
-
-      // look down
-      if (Y >= GamePlay.MapBox.Height || Map.OverlayGrid[X][Y + 1].Type.Symbol == symbol)
-      {
-        obj = Map.OverlayGrid[X][Y + 1];
-        return true;
-      }
-
-      // not found
-      obj = new MapObject();
-      return false;
     }
 
-    internal bool IsNextToMap(char symbol, out MapObject obj)
+    // not found
+    obj = new MapObject();
+    return false;
+  }
+
+  internal bool IsNextToMapGrid(char symbol, out MapObject obj)
+  {
+    if (IsNextToMap(symbol, West,out obj)) return true;
+    if (IsNextToMap(symbol, East, out obj)) return true;
+    if (IsNextToMap(symbol, North, out obj)) return true;
+    if (IsNextToMap(symbol, South, out obj)) return true;
+
+    // not found
+    obj = new MapObject();
+    return false;
+  }
+
+  private bool IsNextToMap(char symbol, Position pos, out MapObject obj)
+  {
+    if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
     {
-      // look left
-      if (X > 0 && Map.MapGrid[X - 1][Y].Type.Symbol == symbol)
+      if (Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].Type.Symbol == symbol)
       {
-        obj = Map.MapGrid[X - 1][Y];
+        obj = Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y];
         return true;
       }
-
-      // look right
-      if (X < GamePlay.MapBox.Width && Map.MapGrid[X + 1][Y].Type.Symbol == symbol)
-      {
-        obj = Map.MapGrid[X + 1][Y];
-        return true;
-      }
-
-      // look up
-      if (Y > 0 && Map.MapGrid[X][Y - 1].Type.Symbol == symbol)
-      {
-        obj = Map.MapGrid[X][Y - 1];
-        return true;
-      }
-
-      // look down
-      if (Y >= GamePlay.MapBox.Height || Map.MapGrid[X][Y + 1].Type.Symbol == symbol)
-      {
-        obj = Map.MapGrid[X][Y + 1];
-        return true;
-      }
-
-      // not found
-      obj = new MapObject();
-      return false;
     }
 
-    internal bool IsInRange(int radius, out MapObject obj)
+    obj = new MapObject();
+    return false;
+  }
+
+  private bool IsNextToMap(Position pos, out MapObject obj)
+  {
+    if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
     {
-      // find the closest object within the radius
-      for (int i = 0; i < radius; i++)
+      if (Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].Type.Symbol != ' ')
       {
-        // look left
-        if (X > 0 && Map.MapGrid[X - 1][Y].Type.Symbol != ' ')
-        {
-          obj = Map.MapGrid[X - 1][Y];
-          return true;
-        }
-
-        // look right
-        if (X < GamePlay.MapBox.Width && Map.MapGrid[X + 1][Y].Type.Symbol != ' ')
-        {
-          obj = Map.MapGrid[X + 1][Y];
-          return true;
-        }
-
-        // look up
-        if (Y > 0 && Map.MapGrid[X][Y - 1].Type.Symbol != ' ')
-        {
-          obj = Map.MapGrid[X][Y - 1];
-          return true;
-        }
-
-        // look down
-        if (Y >= GamePlay.MapBox.Height || Map.MapGrid[X][Y + 1].Type.Symbol != ' ')
-        {
-          obj = Map.MapGrid[X][Y + 1];
-          return true;
-        }
+        obj = Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y];
+        return true;
       }
-
-      // not found
-      obj = new MapObject();
-      return false;
     }
+
+    obj = new MapObject();
+    return false;
+  }
+
+  private bool IsInRange(int radius, out MapObject obj)
+  {
+    // find the closest object within the radius
+    for (int i = 1; i <= radius; i++)
+    {
+      Position left = new Position(X - i, Y);
+      Position right = new Position(X + i, Y);
+      Position up = new Position(X, Y - i);
+      Position down = new Position(X, Y + i);
+
+      if (IsNextToMap(left, out obj)) return true;
+      if (IsNextToMap(right, out obj)) return true;
+      if (IsNextToMap(up, out obj)) return true;
+      if (IsNextToMap(down, out obj)) return true;
+    }
+
+    // not found
+    obj = new MapObject();
+    return false;
+  }
+
+  private static bool CanMoveTo(Position pos)
+  {
+    // check to see if there is an object there that is not passable
+    for (int layer = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].Count - 1; layer >= 0; layer--)
+      if (!Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer].IsPassable) return false;
+    return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable;
+  }
+
+  private static bool CanJumpTo(Position oldPos, Position newPos)
+  {
+      Direction dir = GetDirection(oldPos, newPos);
+    // check to see if there is an object in between old and new location that is not passable and not transparent
+    for (int radius = 1; radius <= 2; radius++)
+    {
+      Position curPos = oldPos;
+      if (dir == Direction.West) curPos = new Position(oldPos.X - radius, oldPos.Y);
+      if (dir == Direction.East) curPos = new Position(oldPos.X + radius, oldPos.Y);
+      if (dir == Direction.North) curPos = new Position(oldPos.X, oldPos.Y - radius);
+      if (dir == Direction.South) curPos = new Position(oldPos.X, oldPos.Y + radius);
+      if (curPos == oldPos) return false;
+
+      List<MapObject> overlayObjs = Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y];
+      MapObject mapObj = Map.LevelMapGrids[Game.CurrentLevel][curPos.X][curPos.Y];
+
+      for (int i = 0; i < overlayObjs.Count - 1; i++)
+        if (!overlayObjs[i].IsPassable) return false;
+      if (mapObj is { IsPassable: false, Type.IsTransparent: false }) return false;
+    }
+    return true;
   }
 }

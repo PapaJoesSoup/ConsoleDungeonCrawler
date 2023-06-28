@@ -1,43 +1,73 @@
-﻿namespace ConsoleDungeonCrawler.Game.Entities.Items
+﻿using ConsoleDungeonCrawler.Game.Screens;
+using System.Drawing;
+
+namespace ConsoleDungeonCrawler.Game.Entities.Items;
+
+internal class Potion : Item
 {
-  internal class Potion : Item
+  private readonly BuffType buffType = BuffType.Health;
+  private readonly int buffAmount = 1;
+
+  internal Potion()
   {
-    internal BuffType BuffType = BuffType.Health;
-    internal int BuffAmount = 1;
+  }
 
+  internal Potion(BuffType potionType, ItemRarity rarity, int quantity, decimal buyCost, decimal sellCost)
+  {
+    Type = ItemType.Potion;
+    Rarity = rarity;
+    Quantity = quantity;
+    StackSize = 20;
+    BuyCost = buyCost;
+    SellCost = sellCost;
 
-    internal Potion()
+    Name = $"{Rarity} {buffType} Potion";
+    Description = $"A {Rarity} {buffType} Potion";
+    buffType = potionType;
+    buffAmount = (int)rarity * 10;
+  }
+
+  internal override bool Use()
+  {
+    if (Player.Health == Player.MaxHealth)
     {
-
+      GamePlay.Messages.Add(new Message("You are already at full health.", Color.Orange, Color.Black));
+      return false;
     }
-
-    internal Potion(BuffType potionType, int quantity, decimal buyCost, decimal sellCost)
+    switch (buffType)
     {
-      Type = ItemType.Potion;
-      Quantity = quantity;
-      StackSize = 20;
-      BuyCost = buyCost;
-      SellCost = sellCost;
-
-      Name = $"{BuffType} Potion";
-      Description = $"A {BuffType} Potion";
-      BuffType = potionType;
+      case BuffType.Health:
+        Player.Heal(buffAmount);
+        break;
+      case BuffType.Mana:
+        Player.RestoreMana(buffAmount);
+        break;
+      case BuffType.HealthAndMana:
+        Player.Heal(buffAmount);
+        Player.RestoreMana(buffAmount);
+        break;
     }
+    Quantity--;
+    if (Quantity > 0) return true;
+    GamePlay.Messages.Add(new Message($"You used your last {Name}.", Color.Orange, Color.Black));
+    Inventory.RemoveItem(this);
 
-    internal static Potion GetRandomPotion()
+    return true;
+  }
+
+  internal new static Item GetRandomItem()
+  {
+    int randomPotion = Dice.Roll(0, 2);
+    switch (randomPotion)
     {
-      int randomPotion = Dice.Roll(0, 2);
-      switch (randomPotion)
-      {
-        case 0:
-          return new Potion(BuffType.Health, 1, 1, 0.2M);
-        case 1:
-          return new Potion(BuffType.Mana, 1, 1, 0.3M);
-        case 2:
-          return new Potion(BuffType.HealthAndMana, 1, 1, 0.5M);
-        default:
-          return new Potion(BuffType.Health, 1, 1, 0.2M);
-      }
+      case 0:
+        return new Potion(BuffType.Health, ItemRarity.Common, 1, 1, 0.1M);
+      case 1:
+        return new Potion(BuffType.Mana, ItemRarity.Common, 1, 1, 0.1M);
+      case 2:
+        return new Potion(BuffType.HealthAndMana, ItemRarity.Common, 1, 1, 0.1M);
+      default:
+        return new Potion(BuffType.Health, ItemRarity.Common, 1, 1, 0.1M);
     }
   }
 }
