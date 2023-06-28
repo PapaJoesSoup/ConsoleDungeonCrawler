@@ -262,7 +262,8 @@ internal class Map
     {
       foreach (int y in LevelOverlayGrids[Game.CurrentLevel][x].Keys)
       {
-        MapObject obj = LevelOverlayGrids[Game.CurrentLevel][x][y][0];
+        int layer = LevelOverlayGrids[Game.CurrentLevel][x][y].Count - 1;
+        MapObject obj = LevelOverlayGrids[Game.CurrentLevel][x][y][layer];
         if (!obj.IsVisible || obj.Type.Symbol == ' ') continue;
         obj.Draw();
       }
@@ -280,13 +281,17 @@ internal class Map
   internal static bool CanAttack(int x, int y)
   {
     // check to see if there is an object there that is attackable
-    return LevelOverlayGrids[Game.CurrentLevel][x][y][0].Type.IsAttackable;
+    foreach (MapObject obj in LevelOverlayGrids[Game.CurrentLevel][x][y])
+      if (obj.Type.IsAttackable) return true;
+    return false;
   }
 
   internal static bool CanLoot(int x, int y)
   {
     // check to see if there is an object there that is not passable
-    return LevelOverlayGrids[Game.CurrentLevel][x][y][0].Type.IsLootable;
+    foreach (MapObject obj in LevelOverlayGrids[Game.CurrentLevel][x][y])
+      if (obj.Type.IsLootable) return true;
+    return false;
   }
 
   private static void SetVisibleYObjects(int x, int y, ref int yLimit)
@@ -305,11 +310,11 @@ internal class Map
       LevelMapGrids[Game.CurrentLevel][x][y].Draw();
       yLimit = y;
     }
-
-    if (LevelOverlayGrids[Game.CurrentLevel][x][y][0].Type.Symbol == ' ') return;
-    LevelOverlayGrids[Game.CurrentLevel][x][y][0].IsVisible = true;
     AddToMapObjects(LevelMapGrids[Game.CurrentLevel][x][y]);
-    LevelOverlayGrids[Game.CurrentLevel][x][y][0].Draw();
+    int layer = LevelOverlayGrids[Game.CurrentLevel][x][y].Count - 1;
+    if (LevelOverlayGrids[Game.CurrentLevel][x][y][layer].Type.Symbol == ' ') return;
+    LevelOverlayGrids[Game.CurrentLevel][x][y][layer].IsVisible = true;
+    LevelOverlayGrids[Game.CurrentLevel][x][y][layer].Draw();
   }
 
   private static void SetVisibleXObjects(int x, int y, ref int xLimit)
@@ -329,9 +334,10 @@ internal class Map
       xLimit = x;
     }
 
-    if (LevelOverlayGrids[Game.CurrentLevel][x][y][0].Type.Symbol == ' ') return;
-    LevelOverlayGrids[Game.CurrentLevel][x][y][0].IsVisible = true;
-    LevelOverlayGrids[Game.CurrentLevel][x][y][0].Draw();
+    int layer = LevelOverlayGrids[Game.CurrentLevel][x][y].Count - 1;
+    if (LevelOverlayGrids[Game.CurrentLevel][x][y][layer].Type.Symbol == ' ') return;
+    LevelOverlayGrids[Game.CurrentLevel][x][y][layer].IsVisible = true;
+    LevelOverlayGrids[Game.CurrentLevel][x][y][layer].Draw();
   }
 
   internal static void SetVisibleArea(int range)
@@ -592,7 +598,8 @@ internal class Map
     {
       foreach (int y in LevelOverlayGrids[Game.CurrentLevel][x].Keys)
       {
-        MapObject obj = LevelOverlayGrids[Game.CurrentLevel][x][y][0];
+        int layer = LevelOverlayGrids[Game.CurrentLevel][x][y].Count - 1;
+        MapObject obj = LevelOverlayGrids[Game.CurrentLevel][x][y][layer];
         if (obj.Type.Symbol == ' ') continue;
         obj.Draw(true);
       }

@@ -93,31 +93,44 @@ internal class Monster : MapObject
   private void MoveTo(Position newPos)
   {
     // Monsters can step on overlay items (items/dead monsters on the ground).  Layers are used to preserve items and dead monsters.
-    // This will move a monter to a new position, moving them to another layer if needed to preserve items on the ground.
+    // This will move a monster to a new position, moving them to another layer if needed to preserve items on the ground.
     // Layer 0 is reserved to the Map overlay object when the overlays are loaded.  The top most layer is the last layer in the list.
-
+    // We also wan to make sure that living monsters are always on the top layer, so we will move them to the top layer if needed.
     if (!CanMoveTo(newPos)) return;
+
     Position oldPos = new(X, Y);
     X = newPos.X;
     Y = newPos.Y;
 
-    if (Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][0].ContainsItem())
-      Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y].Add(this);
-    else 
-      Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][0] = this;
+    List<MapObject> newList = Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y];
+    List<MapObject> oldList = Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y];
 
-    for (int layer = 0; layer < Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Count; layer++)
+    // there is always at least one item in the list, the Map overlay object
+    // add monster to the new cell
+    if (newList.Count > 1) 
+      newList.Add(this);
+    else
     {
-      if (Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][layer] != this) continue;
-      Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].RemoveAt(layer);
-      if (Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Count == 0)
-      {
-        Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Add(new MapObject(oldPos.X, oldPos.Y, new ObjectType(true)));
-        Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
-      }
-      break;
+      if (newList[0].ContainsItem()) newList.Add(this);
+      else newList[0] = this;
     }
 
+    // remove this monster from the old cell
+    if (oldList.Count == 1)
+    {
+      oldList[0] = new MapObject(oldPos.X, oldPos.Y, new ObjectType(true));
+      Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+    }
+    else
+    {
+      for (int layer = 1; layer < oldList.Count; layer++)
+      {
+        if (oldList[layer] != this) continue;
+        oldList.RemoveAt(layer);
+        break;
+      }
+    }
+    Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
     Draw();
   }
 

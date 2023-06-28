@@ -43,7 +43,6 @@ internal static class Actions
             item = Monster.Loot((Monster)obj);
             obj.IsLootable = false;
           }
-
           break;
         case 'i':
           item = Inventory.GetRandomItem();
@@ -54,11 +53,9 @@ internal static class Actions
         case '$':
           item = Gold.GetRandomItem();
           break;
-        default:
-          return;
       }
 
-      if (item.Type == ItemType.None) return;
+      if (item.Type == ItemType.None) continue;
       Inventory.AddItem(item);
       string message = item.Type == ItemType.Gold
         ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!"

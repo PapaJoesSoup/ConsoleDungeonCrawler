@@ -69,16 +69,20 @@ internal class Player : MapObject
     if (!CanMoveTo(newPos)) return false;
     X = newPos.X;
     Y = newPos.Y;
-    // Check needed for level changes.
+    // Overlay section Check needed for level changes.
     if (Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol].Count == 0)
       Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol].Add(this);
     else
       Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol][0] = this;
 
+    // update grids.
     Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
     Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
-    Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][0].Draw();
-    Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][0].Draw();
+
+    int oldlayer = Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Count - 1;
+    int newlayer = Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y].Count - 1;
+    Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][oldlayer].Draw();
+    Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][newlayer].Draw();
     Map.Player.Draw();
     return true;
   }

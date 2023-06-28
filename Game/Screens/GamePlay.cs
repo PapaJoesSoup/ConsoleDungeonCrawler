@@ -19,16 +19,19 @@ internal static class GamePlay
 
   internal static readonly List<Message> Messages = new();
   internal static readonly int MessageWidth = MessageBox.Width - 33;
-
-  // These are unicode values for box drawing characters.   Expects Console.OutputEncoding = Encoding.Unicode and Consolas font selected in Terminal Settings.
-  // Note that font settings cannot be changed in code, so the user must do this manually.
-  // refer to: https://www.fileformat.info/info/unicode/font/consolas/grid.htm for a grid of all characters
-  internal static readonly BoxChars BChars = new("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560", "\u2563", "\u2566", "\u2569", "\u256c");
-
-  private static int currentBag = 1;
+  private static readonly int MessageHeight = MessageBox.Height - 2;
 
   // MessageOffset is a negative number that decrements the index of the first message to display in the message Section
   private static int messageOffset;
+
+
+  // These are unicode values for box drawing characters.   Expects Console.OutputEncoding = Encoding.Unicode and Consolas font selected in Terminal Settings.
+  // Note that font settings cannot be changed in code, so the user must do this manually in the terminal app.
+  // refer to: https://www.fileformat.info/info/unicode/font/consolas/grid.htm for a grid of all characters
+  internal static readonly BoxChars BChars = new("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560", "\u2563", "\u2566", "\u2569", "\u256c");
+
+  // This is used to manage display of bags in both the inventory section as well as the PlayerInventory and Vendor screens
+  private static int currentBag = 1;
 
   // LastKey is used to help with player combat state management
   private static ConsoleKeyInfo lastKey;
@@ -254,14 +257,13 @@ internal static class GamePlay
     // display the last 10 messages or less.  allow scrolling up or down through messages in pages of 8
     int col = MessageBox.Left + 2;
     int row = MessageBox.Top + 1;
-    int displayCount = MessageBox.Height - 2;
     if (messageOffset > 0) messageOffset = 0;
     if (messageOffset < -Messages.Count) messageOffset = -Messages.Count;
     int end = Messages.Count + messageOffset;
     if (Messages.Count < end) end = Messages.Count;
     int start = 0;
-    if (end > displayCount) start = end - displayCount;
-    if (end < displayCount && Messages.Count >= displayCount) end = displayCount;
+    if (end > MessageHeight) start = end - MessageHeight;
+    if (end < MessageHeight && Messages.Count >= MessageHeight) end = MessageHeight;
     for (int index = start; index < end; index++)
     {
       Messages[index].WriteMessageAt(col, row);
