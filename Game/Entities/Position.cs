@@ -10,8 +10,7 @@ internal class Position
   internal Position North => new(X, Y - 1);
   internal Position South => new(X, Y + 1);
 
-
-  // Used for pathfinding
+  // These are used for path finding
   internal int Cost { get; set; }
   private int Distance { get; set; }
   internal int CostDistance => Cost + Distance;
@@ -32,7 +31,7 @@ internal class Position
     X = x;
     Y = y;
     Parent = parent;
-    this.Cost = Cost;
+    this.Cost = cost;
   }
 
   internal int GetDistance(Position target)

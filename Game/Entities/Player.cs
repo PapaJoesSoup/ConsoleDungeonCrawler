@@ -284,51 +284,35 @@ internal class Player : MapObject
   internal bool IsNextToOverlayGrid(char symbol, out MapObject obj)
   {
     // we need to account for monsters on a different overlay level
-    if (IsNextToOverlay(West, symbol, out obj)) return true;
-    if (IsNextToOverlay(East, symbol, out obj)) return true;
-    if (IsNextToOverlay(North, symbol, out obj)) return true;
-    if (IsNextToOverlay(South, symbol, out obj)) return true;
+    if (IsNextToOverlay(West, out obj, symbol)) return true;
+    if (IsNextToOverlay(East, out obj, symbol)) return true;
+    if (IsNextToOverlay(North, out obj, symbol)) return true;
+    if (IsNextToOverlay(South, out obj, symbol)) return true;
 
     // not found
     obj = new MapObject();
     return false;
   }
 
-  private bool IsNextToOverlay(Position pos, char symbol, out MapObject obj)
+  private bool IsNextToOverlay(Position pos, out MapObject obj, char symbol = char.MinValue)
   {
-    // if we have any monsters, we want to get them first, so we work our way down from the top layer.
-    if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
+    obj = new MapObject();
+    if (pos is not { X: > 0, Y: > 0 } || pos.X > GamePlay.MapBox.Width || pos.Y > GamePlay.MapBox.Height) return false;
+    // if we have any live monsters, we want to get them first, so we work our way down from the top layer.
+    for (int layer = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].Count - 1; layer >= 0; layer--)
     {
-      for (int layer = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].Count - 1; layer >= 0; layer--)
+      if (symbol != char.MinValue)
       {
         if (Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer].Type.Symbol != symbol) continue;
-        obj = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer];
-        if (obj is Monster { IsAlive: false }) continue;
-        return true;
       }
+      else if (Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer].Type.Symbol == ' ') continue;
+
+      obj = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer];
+      if (obj is Monster { IsAlive: false }) continue;
+      return true;
     }
 
     // not found
-    obj = new MapObject();
-    return false;
-  }
-
-  private bool IsNextToOverlay(Position pos, out MapObject obj)
-  {
-    if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
-    {
-      // if we have any live monsters, we want to get them first, so we work our way down from the top layer.
-      for (int layer = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].Count - 1; layer >= 0; layer--)
-      {
-        if (Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer].Type.Symbol == ' ') continue;
-        obj = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y][layer];
-        if (obj is Monster { IsAlive: false }) continue;
-        return true;
-      }
-    }
-
-    // not found
-    obj = new MapObject();
     return false;
   }
 
@@ -405,24 +389,22 @@ internal class Player : MapObject
 
   private static bool CanJumpTo(Position oldPos, Position newPos)
   {
-      Direction dir = Map.GetDirection(oldPos, newPos);
     // check to see if there is an object in between old and new location that is not passable and not transparent
-    for (int radius = 1; radius <= 2; radius++)
-    {
-      Position curPos = oldPos;
-      if (dir == Direction.West) curPos = new Position(oldPos.X - radius, oldPos.Y);
-      if (dir == Direction.East) curPos = new Position(oldPos.X + radius, oldPos.Y);
-      if (dir == Direction.North) curPos = new Position(oldPos.X, oldPos.Y - radius);
-      if (dir == Direction.South) curPos = new Position(oldPos.X, oldPos.Y + radius);
-      if (curPos == oldPos) return false;
+    Direction dir = Map.GetDirection(oldPos, newPos);
+    Position curPos = oldPos;
+    if (dir == Direction.West) curPos = oldPos.West;
+    if (dir == Direction.East) curPos = oldPos.East;
+    if (dir == Direction.North) curPos = oldPos.North;
+    if (dir == Direction.South) curPos = oldPos.South;
+    if (curPos == oldPos) return false;
 
-      List<MapObject> overlayObjs = Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y];
-      MapObject mapObj = Map.LevelMapGrids[Game.CurrentLevel][curPos.X][curPos.Y];
+    List<MapObject> layers = Map.LevelOverlayGrids[Game.CurrentLevel][curPos.X][curPos.Y];
+    for (int i = layers.Count - 1; i >= 0; i--)
+      if (!layers[i].IsPassable) return false;
 
-      for (int i = 0; i < overlayObjs.Count - 1; i++)
-        if (!overlayObjs[i].IsPassable) return false;
-      if (mapObj is { IsPassable: false, Type.IsTransparent: false }) return false;
-    }
-    return true;
+    MapObject mapObj = Map.LevelMapGrids[Game.CurrentLevel][curPos.X][curPos.Y];
+    if (mapObj is { IsPassable: false, Type.IsTransparent: false }) return false;
+
+    return CanMoveTo(newPos);
   }
 }
