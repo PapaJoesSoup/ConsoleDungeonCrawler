@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ConsoleDungeonCrawler.Game.Entities;
 
-internal class Player : MapObject
+internal class Player : Tile
 {
   internal static int Level = 1;
   private static int experience;
@@ -25,15 +25,15 @@ internal class Player : MapObject
   {
   }
 
-  internal Player(MapObject mapObject)
+  internal Player(Tile tile)
   {
-    // Set Player's base MapObject values to the passed in values
-    X = mapObject.X;
-    Y = mapObject.Y;
-    Type = mapObject.Type;
+    // Set Player's base Tile values to the passed in values
+    X = tile.X;
+    Y = tile.Y;
+    Type = tile.Type;
     ForegroundColor = Type.ForegroundColor;
     BackgroundColor = Type.BackgroundColor;
-    IsVisible = mapObject.IsVisible;
+    IsVisible = tile.IsVisible;
 
     // Add 5 empty slots to armor set
     ArmorSet = new List<Armor>
@@ -127,14 +127,14 @@ internal class Player : MapObject
       case WeaponType.Mace:
       case WeaponType.Dagger:
       case WeaponType.Staff:
-        if (IsNextToOverlayGrid(out MapObject objM) == ' ') return;
+        if (IsNextToOverlayGrid(out Tile objM) == ' ') return;
         if (objM is not Monster melee) return;
         GamePlay.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {melee.Type.Name}!"));
         melee.TakeDamage(Weapon.Damage);
         break;
       case WeaponType.Bow:
       case WeaponType.Wand:
-        if (IsInRange(Weapon.Range, out MapObject objR)) return;
+        if (IsInRange(Weapon.Range, out Tile objR)) return;
         if (objR is not Monster ranged) return;
         GamePlay.Messages.Add(new Message($"You shoot your {Weapon.WeaponType} at the {ranged.Type.Name}!"));
         ranged.TakeDamage(Weapon.Damage);
@@ -253,13 +253,13 @@ internal class Player : MapObject
 
   internal static bool IsInCombat()
   {
-    // Check if there is a mapObject.InCombat == true in OverlayObjects Except Player
+    // Check if there is a tile.InCombat == true in OverlayObjects Except Player
     foreach (char key in Map.LevelOverlayObjects[Game.CurrentLevel].Keys)
     {
       if (Map.LevelOverlayObjects[Game.CurrentLevel][key].Count == 0) continue;
-      List<MapObject> objs = Map.LevelOverlayObjects[Game.CurrentLevel][key];
+      List<Tile> objs = Map.LevelOverlayObjects[Game.CurrentLevel][key];
       if (!objs[0].Type.IsAttackable) continue;
-      foreach (MapObject obj in objs)
+      foreach (Tile obj in objs)
       {
         if (obj is Player || obj is Monster == false) continue;
         if (((Monster)obj).InCombat) return true;
@@ -268,7 +268,7 @@ internal class Player : MapObject
     return false;
   }
 
-  private char IsNextToOverlayGrid(out MapObject obj)
+  private char IsNextToOverlayGrid(out Tile obj)
   {
     // we need to account for monsters on a different overlay level
     if (IsNextToOverlay(West, out obj)) return obj.Type.Symbol;
@@ -277,11 +277,11 @@ internal class Player : MapObject
     if (IsNextToOverlay(South, out obj)) return obj.Type.Symbol;
 
     // not found
-    obj = new MapObject();
+    obj = new Tile();
     return ' ';
   }
 
-  internal bool IsNextToOverlayGrid(char symbol, out MapObject obj)
+  internal bool IsNextToOverlayGrid(char symbol, out Tile obj)
   {
     // we need to account for monsters on a different overlay level
     if (IsNextToOverlay(West, out obj, symbol)) return true;
@@ -290,13 +290,13 @@ internal class Player : MapObject
     if (IsNextToOverlay(South, out obj, symbol)) return true;
 
     // not found
-    obj = new MapObject();
+    obj = new Tile();
     return false;
   }
 
-  private bool IsNextToOverlay(Position pos, out MapObject obj, char symbol = char.MinValue)
+  private bool IsNextToOverlay(Position pos, out Tile obj, char symbol = char.MinValue)
   {
-    obj = new MapObject();
+    obj = new Tile();
     if (pos is not { X: > 0, Y: > 0 } || pos.X > GamePlay.MapBox.Width || pos.Y > GamePlay.MapBox.Height) return false;
     // if we have any live monsters, we want to get them first, so we work our way down from the top layer.
     for (int layer = Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y].Count - 1; layer >= 0; layer--)
@@ -316,7 +316,7 @@ internal class Player : MapObject
     return false;
   }
 
-  internal bool IsNextToMapGrid(char symbol, out MapObject obj)
+  internal bool IsNextToMapGrid(char symbol, out Tile obj)
   {
     if (IsNextToMap(symbol, West,out obj)) return true;
     if (IsNextToMap(symbol, East, out obj)) return true;
@@ -324,11 +324,11 @@ internal class Player : MapObject
     if (IsNextToMap(symbol, South, out obj)) return true;
 
     // not found
-    obj = new MapObject();
+    obj = new Tile();
     return false;
   }
 
-  private bool IsNextToMap(char symbol, Position pos, out MapObject obj)
+  private bool IsNextToMap(char symbol, Position pos, out Tile obj)
   {
     if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
     {
@@ -339,11 +339,11 @@ internal class Player : MapObject
       }
     }
 
-    obj = new MapObject();
+    obj = new Tile();
     return false;
   }
 
-  private bool IsNextToMap(Position pos, out MapObject obj)
+  private bool IsNextToMap(Position pos, out Tile obj)
   {
     if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
     {
@@ -354,11 +354,11 @@ internal class Player : MapObject
       }
     }
 
-    obj = new MapObject();
+    obj = new Tile();
     return false;
   }
 
-  private bool IsInRange(int radius, out MapObject obj)
+  private bool IsInRange(int radius, out Tile obj)
   {
     // find the closest object within the radius
     for (int i = 1; i <= radius; i++)
@@ -375,7 +375,7 @@ internal class Player : MapObject
     }
 
     // not found
-    obj = new MapObject();
+    obj = new Tile();
     return false;
   }
 
@@ -398,13 +398,11 @@ internal class Player : MapObject
     if (dir == Direction.South) curPos = oldPos.South;
     if (curPos == oldPos) return false;
 
-    List<MapObject> layers = Map.LevelOverlayGrids[Game.CurrentLevel][curPos.X][curPos.Y];
+    List<Tile> layers = Map.LevelOverlayGrids[Game.CurrentLevel][curPos.X][curPos.Y];
     for (int i = layers.Count - 1; i >= 0; i--)
       if (!layers[i].IsPassable) return false;
 
-    MapObject mapObj = Map.LevelMapGrids[Game.CurrentLevel][curPos.X][curPos.Y];
-    if (mapObj is { IsPassable: false, Type.IsTransparent: false }) return false;
-
-    return CanMoveTo(newPos);
+    Tile mapObj = Map.LevelMapGrids[Game.CurrentLevel][curPos.X][curPos.Y];
+    return mapObj is not { IsPassable: false, Type.IsTransparent: false } && CanMoveTo(newPos);
   }
 }

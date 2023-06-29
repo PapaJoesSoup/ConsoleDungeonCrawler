@@ -3,9 +3,9 @@ using ConsoleDungeonCrawler.Extensions;
 
 namespace ConsoleDungeonCrawler.Game.Entities;
 
-internal class MapObject : Position
+internal class Tile : Position
 {
-  internal ObjectType Type = new();
+  internal TileType Type = new();
   internal bool IsVisible = false;
   internal bool IsPassable = false;
   internal bool IsLootable = false;
@@ -13,15 +13,15 @@ internal class MapObject : Position
   internal Color ForegroundColor = Color.White;
   internal Color BackgroundColor = Color.Black;
 
-  internal MapObject()
+  internal Tile()
   {
   }
 
-  internal MapObject(int x, int y)
+  internal Tile(int x, int y)
   {
     X = x;
     Y = y;
-    Type = new ObjectType();
+    Type = new TileType();
     IsVisible = Type.IsVisible;
     IsPassable = Type.IsPassable;
     IsAttackable = Type.IsAttackable;
@@ -30,7 +30,7 @@ internal class MapObject : Position
     BackgroundColor = Type.BackgroundColor;
   }
 
-  internal MapObject(int x, int y, ObjectType type)
+  internal Tile(int x, int y, TileType type)
   {
     X = x;
     Y = y;
@@ -44,7 +44,7 @@ internal class MapObject : Position
 
   }
 
-  internal MapObject(int x, int y, ObjectType type, bool isVisible)
+  internal Tile(int x, int y, TileType type, bool isVisible)
   {
     X = x;
     Y = y;

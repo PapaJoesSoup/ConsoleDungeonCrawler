@@ -13,11 +13,11 @@ internal static class Actions
   /// </summary>
   public static void PickupOverlayItem()
   {
-    // search MapObject location from the top down for items to pick up
+    // search Tile location from the top down for items to pick up
     for (int i = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y].Count - 1; i >= 0; i--)
     {
       if (Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i].Type.Symbol == ' ') continue;
-      MapObject obj = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i];
+      Tile obj = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i];
       Item item = new();
       switch (obj.Type.Symbol)
       {
@@ -71,8 +71,8 @@ internal static class Actions
 
   public static void OpenDoor()
   {
-    if (!Map.Player.IsNextToMapGrid('+', out MapObject door)) return;
-    ObjectType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new ObjectType();
+    if (!Map.Player.IsNextToMapGrid('+', out Tile door)) return;
+    TileType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new TileType();
     if (type.Symbol == ' ') return;
     GamePlay.Messages.Add(new Message("Opening Door...", Color.Yellow, Color.Black));
     Map.RemoveFromMapObjects(door);
@@ -84,8 +84,8 @@ internal static class Actions
 
   public static void CloseDoor()
   {
-    if (!Map.Player.IsNextToMapGrid('-', out MapObject door)) return;
-    ObjectType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new ObjectType();
+    if (!Map.Player.IsNextToMapGrid('-', out Tile door)) return;
+    TileType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new TileType();
     if (type.Symbol == ' ') return;
     GamePlay.Messages.Add(new Message("Closing Door...", Color.Yellow, Color.Black));
     Map.RemoveFromMapObjects(door);
@@ -102,7 +102,7 @@ internal static class Actions
       char symbol = Map.LevelOverlayObjects[Game.CurrentLevel].Keys.ElementAt(charIdx);
       for (int index = 0; index < Map.LevelOverlayObjects[Game.CurrentLevel][symbol].Count; index++)
       {
-        MapObject obj = Map.LevelOverlayObjects[Game.CurrentLevel][symbol][index];
+        Tile obj = Map.LevelOverlayObjects[Game.CurrentLevel][symbol][index];
         if (obj is not Monster monster) continue;
         if (!monster.IsVisible || !monster.IsAlive) continue;
         // remember monster state before detecting player so we can delay attack one turn.

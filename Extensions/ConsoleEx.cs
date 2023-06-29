@@ -135,15 +135,15 @@ internal static class ConsoleEx
   }
 
   // string Extension methods for custom screen and dialog writes
-  internal static void WriteLegendItem(this MapObject mapObject, int col, int row, int width)
+  internal static void WriteLegendItem(this Tile tile, int col, int row, int width)
   {
     // create a formatted line containing the symbol and the type of the map object
-    int padding = width - mapObject.Type.Name.Length - 6;
-    int paddingStart = col + mapObject.Type.Name.Length + 4;
+    int padding = width - tile.Type.Name.Length - 6;
+    int paddingStart = col + tile.Type.Name.Length + 4;
     WriteAt(' ', col, row, Color.White, Color.DimGray);
-    WriteAt(mapObject.Type.Symbol.ToString(), col + 1, row, mapObject.Type.ForegroundColor, mapObject.Type.BackgroundColor);
+    WriteAt(tile.Type.Symbol.ToString(), col + 1, row, tile.Type.ForegroundColor, tile.Type.BackgroundColor);
     WriteAt(": ", col + 2, row, Color.White, Color.DimGray);
-    WriteAt(mapObject.Type.Name, col + 4, row, mapObject.Type.ForegroundColor, Color.DimGray);
+    WriteAt(tile.Type.Name, col + 4, row, tile.Type.ForegroundColor, Color.DimGray);
     WriteAt(new string(' ', padding), paddingStart, row, Color.White, Color.DimGray);
   }
 

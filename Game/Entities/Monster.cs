@@ -4,7 +4,7 @@ using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game.Entities;
 
-internal class Monster : MapObject
+internal class Monster : Tile
 {
   private int health;
   internal int MaxHealth = 10;
@@ -17,9 +17,9 @@ internal class Monster : MapObject
   internal bool IsAlive = true;
   internal bool InCombat;
 
-  internal Monster(MapObject obj, int level)
+  internal Monster(Tile obj, int level)
   {
-    // set Base MapObject properties
+    // set Base Tile properties
     X = obj.X;
     Y = obj.Y;
     Type = obj.Type;
@@ -101,8 +101,8 @@ internal class Monster : MapObject
     X = newPos.X;
     Y = newPos.Y;
 
-    List<MapObject> newList = Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y];
-    List<MapObject> oldList = Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y];
+    List<Tile> newList = Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y];
+    List<Tile> oldList = Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y];
 
     // there is always at least one item in the list, the Map overlay object
     // add monster to the new cell
@@ -117,7 +117,7 @@ internal class Monster : MapObject
     // remove this monster from the old cell
     if (oldList.Count == 1)
     {
-      oldList[0] = new MapObject(oldPos.X, oldPos.Y, new ObjectType(true));
+      oldList[0] = new Tile(oldPos.X, oldPos.Y, new TileType(true));
       Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
     }
     else
@@ -168,7 +168,7 @@ internal class Monster : MapObject
   internal static bool CanMoveTo(Position pos)
   {
     // check to see if there is an object that is not passable or some other immovable object
-    foreach (MapObject obj in Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y])
+    foreach (Tile obj in Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y])
       if (!obj.IsPassable) return false;
     return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable;
   }

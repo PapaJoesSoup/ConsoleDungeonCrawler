@@ -2,7 +2,7 @@
 
 namespace ConsoleDungeonCrawler.Game.Entities;
 
-internal class ObjectType
+internal class TileType
 {
   internal readonly char Symbol = ' ';
   internal readonly string Name = "Empty";
@@ -16,17 +16,17 @@ internal class ObjectType
   internal readonly bool IsLootable = false;
   internal readonly bool IsTransparent = false;
 
-  internal ObjectType()
+  internal TileType()
   {
   }
 
-  internal ObjectType(bool isPassable, bool isVisible = true)
+  internal TileType(bool isPassable, bool isVisible = true)
   {
     IsPassable = isPassable;
     IsVisible = isVisible;
   }
 
-  public ObjectType(char symbol, string name, string singular, string plural, Color foregroundColor, Color backgroundColor, bool isPassable, bool isAttackable, bool isLootable, bool isTransparent = false) : this()
+  public TileType(char symbol, string name, string singular, string plural, Color foregroundColor, Color backgroundColor, bool isPassable, bool isAttackable, bool isLootable, bool isTransparent = false) : this()
   {
     Symbol = symbol;
     Name = name;

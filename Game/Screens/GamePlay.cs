@@ -216,7 +216,7 @@ internal static class GamePlay
     "Map objects: ".WriteAt(col, row, Color.Gold); row += 2;
     foreach (char type in Map.LevelOverlayObjects[Game.CurrentLevel].Keys)
     {
-      foreach (MapObject mapObject in Map.LevelOverlayObjects[Game.CurrentLevel][type])
+      foreach (Tile mapObject in Map.LevelOverlayObjects[Game.CurrentLevel][type])
       {
         if (!mapObject.IsVisible || mapObject.Type.Symbol == ' ') continue;
         mapObject.WriteLegendItem(col, row, OverlayBox.Width - 2);
