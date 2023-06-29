@@ -7,6 +7,7 @@ namespace ConsoleDungeonCrawler.Game.Entities;
 
 internal class Map
 {
+  #region Properties
   internal static Map Instance = new();
   internal static int Top { get; set; }
   internal static int Left { get; set; }
@@ -30,6 +31,7 @@ internal class Map
   internal static Player Player = new();
   private static char startChar;
   private static char exitChar;
+  #endregion Properties
 
   private Map()
   {
@@ -47,6 +49,7 @@ internal class Map
     LoadGameMaps();
   }
 
+  #region Initialization
   private void InitTypeLists()
   {
     // These are for building the map
@@ -248,6 +251,7 @@ internal class Map
       }
     }
   }
+  #endregion Initialization
 
   internal static void DrawMap()
   {
@@ -276,28 +280,174 @@ internal class Map
     }
   }
 
-
-  // Utilities
+  #region Utilities
   internal static void Clear()
   {
     for (int y = Top + 1; y < (Top + Height); y++)
       new string(' ', Width - 2).WriteAt(Left + 1, y, ConsoleColor.Black, ConsoleColor.Black);
   }
 
-  internal static bool CanAttack(int x, int y)
+  internal static void ShowFullMap()
   {
-    // check to see if there is an object there that is attackable
-    foreach (MapObject obj in LevelOverlayGrids[Game.CurrentLevel][x][y])
-      if (obj.Type.IsAttackable) return true;
-    return false;
+    foreach (int x in LevelMapGrids[Game.CurrentLevel].Keys)
+    {
+      foreach (int y in LevelMapGrids[Game.CurrentLevel][x].Keys)
+      {
+        MapObject obj = LevelMapGrids[Game.CurrentLevel][x][y];
+        if (obj.Type.Symbol == ' ') continue;
+        obj.Draw(true);
+      }
+    }
+    Console.ReadKey(true);
+    Clear();
+    DrawMap();
+    DrawOverlay();
   }
 
-  internal static bool CanLoot(int x, int y)
+  internal static void ShowFullOverlay()
   {
-    // check to see if there is an object there that is not passable
-    foreach (MapObject obj in LevelOverlayGrids[Game.CurrentLevel][x][y])
-      if (obj.Type.IsLootable) return true;
-    return false;
+    foreach (int x in LevelOverlayGrids[Game.CurrentLevel].Keys)
+    {
+      foreach (int y in LevelOverlayGrids[Game.CurrentLevel][x].Keys)
+      {
+        int layer = LevelOverlayGrids[Game.CurrentLevel][x][y].Count - 1;
+        MapObject obj = LevelOverlayGrids[Game.CurrentLevel][x][y][layer];
+        if (obj.Type.Symbol == ' ') continue;
+        obj.Draw(true);
+      }
+    }
+    Console.ReadKey(true);
+    Clear();
+    DrawMap();
+    DrawOverlay();
+  }
+
+  internal static void SetVisibleArea(int range)
+  {
+    // North and West
+    int xLimit = Player.X - range;
+    int yLimit = Player.Y - range;
+    for (int y = Player.Y; y > Player.Y - range; y--)
+    {
+      if (y < yLimit) break;
+      SetVisibleYObjects(Player.X, y, ref yLimit);
+      for (int x = Player.West.X; x > Player.X - range; x--)
+      {
+        if (x < xLimit) break;
+        SetVisibleXObjects(x, y, ref xLimit);
+      }
+    }
+    // West and North
+    xLimit = Player.X - range;
+    yLimit = Player.Y - range;
+    for (int x = Player.X; x > Player.X - range; x--)
+    {
+      if (x < xLimit) break;
+      SetVisibleXObjects(x, Player.Y, ref xLimit);
+      for (int y = Player.North.Y; y > Player.Y - range; y--)
+      {
+        if (y < yLimit) break;
+        SetVisibleYObjects(x, y, ref yLimit);
+      }
+    }
+    // North and East
+    xLimit = Player.X + range;
+    yLimit = Player.Y - range;
+    for (int y = Player.Y; y > Player.Y - range; y--)
+    {
+      if (y < yLimit) break;
+      SetVisibleYObjects(Player.X, y, ref yLimit);
+      for (int x = Player.East.X; x < Player.X + range; x++)
+      {
+        if (x > xLimit) break;
+        SetVisibleXObjects(x, y, ref xLimit);
+      }
+    }
+    // East and North
+    xLimit = Player.X + range;
+    yLimit = Player.Y - range;
+    for (int x = Player.X; x < Player.X + range; x++)
+    {
+      if (x > xLimit) break;
+      SetVisibleXObjects(x, Player.Y, ref xLimit);
+      for (int y = Player.North.Y; y > Player.Y - range; y--)
+      {
+        if (y < yLimit) break;
+        SetVisibleYObjects(x, y, ref yLimit);
+      }
+    }
+    // South and West
+    xLimit = Player.X - range;
+    yLimit = Player.Y + range;
+    for (int y = Player.Y; y < Player.Y + range; y++)
+    {
+      if (y > yLimit) break;
+      SetVisibleYObjects(Player.X, y, ref yLimit);
+      for (int x = Player.West.X; x > Player.X - range; x--)
+      {
+        if (x < xLimit) break;
+        SetVisibleXObjects(x, y, ref xLimit);
+      }
+    }
+    // West and South
+    xLimit = Player.X - range;
+    yLimit = Player.Y + range;
+    for (int x = Player.X; x > Player.X - range; x--)
+    {
+      if (x < xLimit) break;
+      SetVisibleXObjects(x, Player.Y, ref xLimit);
+      for (int y = Player.South.Y; y < Player.Y + range; y++)
+      {
+        if (y > yLimit) break;
+        SetVisibleYObjects(x, y, ref yLimit);
+      }
+    }
+    // South and East
+    xLimit = Player.X + range;
+    yLimit = Player.Y + range;
+    for (int y = Player.Y; y < Player.Y + range; y++)
+    {
+      if (y > yLimit) break;
+      SetVisibleYObjects(Player.X, y, ref yLimit);
+      for (int x = Player.East.X; x < Player.X + range; x++)
+      {
+        if (x > xLimit) break;
+        SetVisibleXObjects(x, y, ref xLimit);
+      }
+    }
+    // East and South
+    xLimit = Player.X + range;
+    yLimit = Player.Y + range;
+    for (int x = Player.X; x < Player.X + range; x++)
+    {
+      if (x > xLimit) break;
+      SetVisibleXObjects(x, Player.Y, ref xLimit);
+      for (int y = Player.East.X; y < Player.Y + range; y++)
+      {
+        if (y > yLimit) break;
+        SetVisibleYObjects(x, y, ref yLimit);
+      }
+    }
+  }
+
+  public static void WhatIsVisible()
+  {
+    bool visibleChanged = false;
+    foreach (char symbol in levelMapObjects[Game.CurrentLevel].Keys)
+    {
+      if (symbol == ' ') continue;
+      ObjectType type = MapTypes.Find(t => t.Symbol == symbol) ?? new ObjectType();
+      if (type.Symbol == ' ') continue;
+      visibleChanged = GetObjectTypeCount(levelMapObjects[Game.CurrentLevel][symbol], visibleChanged, type);
+    }
+    foreach (char symbol in levelMapObjects[Game.CurrentLevel].Keys)
+    {
+      if (symbol == Player.Type.Symbol || symbol == ' ') continue;
+      ObjectType type = overlayTypes.Find(t => t.Symbol == symbol) ?? new ObjectType();
+      if (type.Symbol == ' ') continue;
+      visibleChanged = GetObjectTypeCount(LevelOverlayObjects[Game.CurrentLevel][symbol], visibleChanged, type);
+    }
+    if (visibleChanged) WriteVisibleObjects();
   }
 
   private static void SetVisibleYObjects(int x, int y, ref int yLimit)
@@ -346,132 +496,19 @@ internal class Map
     LevelOverlayGrids[Game.CurrentLevel][x][y][layer].Draw();
   }
 
-  internal static void SetVisibleArea(int range)
+  private static void WriteVisibleObjects()
   {
-    // up and left
-    int xLimit = Player.X - range;
-    int yLimit = Player.Y - range;
-    for (int y = Player.Y; y > Player.Y - range; y--)
+    string message = "";
+    foreach (char symbol in levelVisibleObjects[Game.CurrentLevel].Keys)
     {
-      if (y < yLimit) break;
-      SetVisibleYObjects(Player.X, y, ref yLimit);
-      for (int x = Player.West.X; x > Player.X - range; x--)
-      {
-        if (x < xLimit) break;
-        SetVisibleXObjects(x, y, ref xLimit);
-      }
+      ObjectType type = levelVisibleObjects[Game.CurrentLevel][symbol].Item1;
+      int count = levelVisibleObjects[Game.CurrentLevel][symbol].Item2;
+      if (count < 1) continue;
+      if (count == 1) message += $"{type.Singular}, ";
+      else message += $"{type.Plural} ({count}), ";
     }
-    // left and up
-    xLimit = Player.X - range;
-    yLimit = Player.Y - range;
-    for (int x = Player.X; x > Player.X - range; x--)
-    {
-      if (x < xLimit) break;
-      SetVisibleXObjects(x, Player.Y, ref xLimit);
-      for (int y = Player.North.Y; y > Player.Y - range; y--)
-      {
-        if (y < yLimit) break;
-        SetVisibleYObjects(x, y, ref yLimit);
-      }
-    }
-    // up and right
-    xLimit = Player.X + range;
-    yLimit = Player.Y - range;
-    for (int y = Player.Y; y > Player.Y - range; y--)
-    {
-      if (y < yLimit) break;
-      SetVisibleYObjects(Player.X, y, ref yLimit);
-      for (int x = Player.East.X; x < Player.X + range; x++)
-      {
-        if (x > xLimit) break;
-        SetVisibleXObjects(x, y, ref xLimit);
-      }
-    }
-    // right and up
-    xLimit = Player.X + range;
-    yLimit = Player.Y - range;
-    for (int x = Player.X; x < Player.X + range; x++)
-    {
-      if (x > xLimit) break;
-      SetVisibleXObjects(x, Player.Y, ref xLimit);
-      for (int y = Player.North.Y; y > Player.Y - range; y--)
-      {
-        if (y < yLimit) break;
-        SetVisibleYObjects(x, y, ref yLimit);
-      }
-    }
-    // down and left
-    xLimit = Player.X - range;
-    yLimit = Player.Y + range;
-    for (int y = Player.Y; y < Player.Y + range; y++)
-    {
-      if (y > yLimit) break;
-      SetVisibleYObjects(Player.X, y, ref yLimit);
-      for (int x = Player.West.X; x > Player.X - range; x--)
-      {
-        if (x < xLimit) break;
-        SetVisibleXObjects(x, y, ref xLimit);
-      }
-    }
-    // left and down
-    xLimit = Player.X - range;
-    yLimit = Player.Y + range;
-    for (int x = Player.X; x > Player.X - range; x--)
-    {
-      if (x < xLimit) break;
-      SetVisibleXObjects(x, Player.Y, ref xLimit);
-      for (int y = Player.South.Y; y < Player.Y + range; y++)
-      {
-        if (y > yLimit) break;
-        SetVisibleYObjects(x, y, ref yLimit);
-      }
-    }
-    // down and right
-    xLimit = Player.X + range;
-    yLimit = Player.Y + range;
-    for (int y = Player.Y; y < Player.Y + range; y++)
-    {
-      if (y > yLimit) break;
-      SetVisibleYObjects(Player.X, y, ref yLimit);
-      for (int x = Player.East.X; x < Player.X + range; x++)
-      {
-        if (x > xLimit) break;
-        SetVisibleXObjects(x, y, ref xLimit);
-      }
-    }
-    // right and down
-    xLimit = Player.X + range;
-    yLimit = Player.Y + range;
-    for (int x = Player.X; x < Player.X + range; x++)
-    {
-      if (x > xLimit) break;
-      SetVisibleXObjects(x, Player.Y, ref xLimit);
-      for (int y = Player.East.X; y < Player.Y + range; y++)
-      {
-        if (y > yLimit) break;
-        SetVisibleYObjects(x, y, ref yLimit);
-      }
-    }
-  }
-
-  public static void WhatIsVisible()
-  {
-    bool visibleChanged = false;
-    foreach (char symbol in levelMapObjects[Game.CurrentLevel].Keys)
-    {
-      if (symbol == ' ') continue;
-      ObjectType type = MapTypes.Find(t => t.Symbol == symbol) ?? new ObjectType();
-      if (type.Symbol == ' ') continue;
-      visibleChanged = GetObjectTypeCount(levelMapObjects[Game.CurrentLevel][symbol], visibleChanged, type);
-    }
-    foreach (char symbol in levelMapObjects[Game.CurrentLevel].Keys)
-    {
-      if (symbol == Player.Type.Symbol || symbol == ' ') continue;
-      ObjectType type = overlayTypes.Find(t => t.Symbol == symbol) ?? new ObjectType();
-      if (type.Symbol == ' ') continue;
-      visibleChanged = GetObjectTypeCount(LevelOverlayObjects[Game.CurrentLevel][symbol], visibleChanged, type);
-    }
-    if (visibleChanged) WriteVisibleObjects();
+    if (message.Length > 0) message = message.Substring(0, message.Length - 2);
+    GamePlay.Messages.Add(new Message($"You see {message}.", Color.White, Color.Black));
   }
 
   private static bool GetObjectTypeCount(List<MapObject> list, bool visibleChanged, ObjectType type)
@@ -502,21 +539,6 @@ internal class Map
       visibleChanged = true;
     }
     return visibleChanged;
-  }
-
-  private static void WriteVisibleObjects()
-  {
-    string message = "";
-    foreach (char symbol in levelVisibleObjects[Game.CurrentLevel].Keys)
-    {
-      ObjectType type = levelVisibleObjects[Game.CurrentLevel][symbol].Item1;
-      int count = levelVisibleObjects[Game.CurrentLevel][symbol].Item2;
-      if (count < 1) continue;
-      if (count == 1) message += $"{type.Singular}, ";
-      else message += $"{type.Plural} ({count}), ";
-    }
-    if (message.Length > 0) message = message.Substring(0, message.Length - 2);
-    GamePlay.Messages.Add(new Message($"You see {message}.", Color.White, Color.Black));
   }
 
   internal static void AddToMapObjects(MapObject obj)
@@ -589,39 +611,5 @@ internal class Map
     if (from.Y > to.Y) return Direction.North;
     return Direction.None;
   }
-
-  internal static void ShowFullMap()
-  {
-    foreach (int x in LevelMapGrids[Game.CurrentLevel].Keys)
-    {
-      foreach (int y in LevelMapGrids[Game.CurrentLevel][x].Keys)
-      {
-        MapObject obj = LevelMapGrids[Game.CurrentLevel][x][y];
-        if (obj.Type.Symbol == ' ') continue;
-        obj.Draw(true);
-      }
-    }
-    Console.ReadKey(true);
-    Clear();
-    DrawMap();
-    DrawOverlay();
-  }
-
-  internal static void ShowFullOverlay()
-  {
-    foreach (int x in LevelOverlayGrids[Game.CurrentLevel].Keys)
-    {
-      foreach (int y in LevelOverlayGrids[Game.CurrentLevel][x].Keys)
-      {
-        int layer = LevelOverlayGrids[Game.CurrentLevel][x][y].Count - 1;
-        MapObject obj = LevelOverlayGrids[Game.CurrentLevel][x][y][layer];
-        if (obj.Type.Symbol == ' ') continue;
-        obj.Draw(true);
-      }
-    }
-    Console.ReadKey(true);
-    Clear();
-    DrawMap();
-    DrawOverlay();
-  }
+  #endregion Utilities
 }
