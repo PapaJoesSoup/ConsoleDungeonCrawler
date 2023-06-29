@@ -323,6 +323,9 @@ internal static class GamePlay
         case ConsoleKey.Q:
           Game.IsOver = true;
           break;
+        case ConsoleKey.E:
+          Game.IsWon = true;
+          break;
       }
     }
     else

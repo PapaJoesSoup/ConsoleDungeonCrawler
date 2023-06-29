@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Game\Data\Art\GameTitle.txt" />
     <None Remove="Game\Data\Art\TitleArt2.txt" />
     <None Remove="Game\Data\Art\TitleArt3.txt" />
     <None Remove="Game\Data\Maps\CastleMania\LevelMap_-1.txt" />
@@ -35,6 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Game\Data\Art\GameTitle.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game\Data\Art\TitleArt3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

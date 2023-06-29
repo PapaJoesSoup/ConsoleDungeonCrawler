@@ -26,11 +26,15 @@ internal static class GameOver
     sb.Append(File.ReadAllText($"{Game.ArtPath}/TitleArt3.txt"));
     // write the title art to the console
     string[] lines = sb.ToString().Split('\n');
-    for (int y = 1; y < 52; y++)
+    int height = lines.Length > Console.WindowHeight - 2 ? Console.WindowHeight - 2 : lines.Length;
+    int width = lines[0].Length > Console.WindowWidth -2 ? Console.WindowWidth - 2 : lines[0].Length;
+    int x = (Console.WindowWidth - width) / 2;
+    int Y = (Console.WindowHeight - height) / 2;
+    for (int y = 0; y < height; y++)
     {
       string line = lines[y];
-      line.WriteAt(1, y, Color.DarkOrange);
+      line.WriteAt(x, Y + y, Color.DarkOrange);
     }
-    "Courtesy of: https://textart.sh".WriteAlignedAt(HAlign.Right, VAlign.Bottom, Color.Bisque, Color.DarkOrange, 0, 0);
+    "Ascii art courtesy of: https://textart.sh".WriteAlignedAt(HAlign.Right, VAlign.Bottom, Color.Bisque, Color.DarkOrange, -2, -1);
   }
 }

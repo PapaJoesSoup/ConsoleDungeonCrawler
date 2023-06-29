@@ -69,7 +69,7 @@ internal class Map
     overlayTypes = new List<ObjectType>
     {
       new('S', "Start", "the Entrance", "the Entrance", Color.Black, Color.White, true, false, false),
-      new('X', "Exit", "the Exit", "The Exit", Color.MidnightBlue, Color.Gold, true, false, false),
+      new('E', "Exit", "the Exit", "The Exit", Color.MidnightBlue, Color.Gold, true, false, false),
       new('\u2640', "Player", "me", "am is seeing double?", Color.White, Color.DimGray, true, true, true),
       new('V', "Vendor", "A Vendor", "Vendors", Color.MidnightBlue, Color.Lime, true, false, false),
       new('\u25b2', "UpStairs", "stairs going up", "multiple stairs going up", Color.White, Color.DimGray, true, false, false),
