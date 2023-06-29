@@ -5,9 +5,9 @@ namespace ConsoleDungeonCrawler.Game.Entities.Items;
 
 internal class Bandage : Item
 {
-  BandageType bandageType = BandageType.Cloth;
-  private readonly int buffAmount = 1;
-  internal int Level { get; private set; }
+  BandageType bandageType;
+  private readonly int buffAmount;
+  internal int Level;
 
   internal Bandage(BandageType bandageType, int buffAmount, int quantity, decimal buyCost, decimal sellCost)
   {

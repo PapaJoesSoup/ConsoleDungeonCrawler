@@ -2,8 +2,6 @@
 using System.Text;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Screens.Dialogs;
-using System.Drawing;
-using System.Text;
 
 namespace ConsoleDungeonCrawler.Game.Screens;
 
@@ -16,8 +14,8 @@ internal static class GameWon
     ConsoleEx.Clear();
     ScreenBorder.WriteBorder(GamePlay.BChars, Color.DarkOrange);
     LoadArt();
-    GameCredits.Draw();
-    KeyHandler();
+    LoadBannerText();
+    ReplayMenu.Draw();
   }
 
   private static void LoadArt()
@@ -28,47 +26,32 @@ internal static class GameWon
     string[] lines = sb.ToString().Split('\n');
     int height = lines.Length > Console.WindowHeight - 2 ? Console.WindowHeight - 2 : lines.Length;
     int width = lines[0].Length > Console.WindowWidth - 2 ? Console.WindowWidth - 2 : lines[0].Length;
-    int x = (Console.WindowWidth - width) / 2;
-    int Y = (Console.WindowHeight - height) / 2;
+    int startX = (Console.WindowWidth - width) / 2;
+    int startY = (Console.WindowHeight - height) / 2;
     for (int y = 0; y < height; y++)
     {
       string line = lines[y];
-      line.WriteAt(x, Y + y, Color.DarkOrange);
+      line.WriteAt(startX, startY + y, Color.DarkOrange);
     }
     "Ascii art courtesy of: https://textart.sh".WriteAlignedAt(HAlign.Right, VAlign.Bottom, Color.Bisque, Color.DarkOrange, -2, -1);
   }
-  internal static void KeyHandler()
+
+  private static void LoadBannerText()
   {
-    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-    switch (keyInfo.Key)
+    StringBuilder sb = new();
+    int xOffset = 0;
+    int yOffset = 4;
+
+    sb.Append(File.ReadAllText($"{Game.ArtPath}/GameWon.txt"));
+    // write the title art to the console
+    string[] lines = sb.ToString().Split('\n');
+    int height = lines.Length;
+    int width = lines[0].Length;
+    for (int y = 0; y < height; y++)
     {
-      case ConsoleKey.Escape:
-        ConsoleEx.Clear();
-        Environment.Exit(0);
-        break;
-      case ConsoleKey.UpArrow:
-        break;
-      case ConsoleKey.DownArrow:
-        break;
-      case ConsoleKey.Q:
-        ConsoleEx.Clear();
-        Environment.Exit(0);
-        break;
-      case ConsoleKey.R:
-        Game.IsWon = false;
-        Game.IsOver = false;
-        Game.IsPaused = false;
-        ConsoleEx.Clear();
-        GamePlay.Draw();
-        break;
-      case ConsoleKey.M:
-        Game.IsWon = false;
-        Game.IsOver = false;
-        Game.IsPaused = false;
-        ConsoleEx.Clear();
-        GameTitle.Draw();
-        break;
+      string line = lines[y];
+      line.WriteAlignedAt(HAlign.Center, VAlign.Top, Color.DarkOrange, Color.Black, xOffset, yOffset);
+      yOffset++;
     }
   }
-
 }

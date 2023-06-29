@@ -9,11 +9,14 @@ internal static class Game
 {
   internal const string Title = "Console Dungeon Crawler";
   private const string MapPath = "Game/Data/Maps/";
-  internal const string DataPath = "Game/Data/";
   internal const string ArtPath = "Game/Data/Art/";
+  internal static bool IsMainMenu { get; set; }
+  internal static bool IsPaused { get; set; }
   internal static bool IsOver { get; set; }
   internal static bool IsWon { get; set; }
-  internal static bool IsPaused { get; set; }
+  internal static bool IsRestart { get; set; }
+  internal static bool IsQuit { get; set; }
+
   internal static string CurrentDungeon = "";
   internal static int CurrentLevel = 0;
 
@@ -39,31 +42,48 @@ internal static class Game
 
   internal static void Run()
   {
-    LoadDungeons();
-    GameTitle.Draw();
-    Map.Instance = new Map(GamePlay.MapBox);
-    PlayGame();
+    IsMainMenu = true;
+    while (!IsQuit)
+    {
+      if (IsMainMenu)
+      {
+        IsMainMenu = false;
+        LoadDungeons();
+        GameTitle.Draw();
+        PlayGame();
+      }
+      if (IsRestart)
+      {
+        IsRestart = false;
+        PlayGame();
+      }
+      if (IsOver)
+      {
+        IsOver = false;
+        GameOver.Draw();
+        continue;
+      }
+
+      if (IsWon)
+      {
+        IsWon = false;
+        GameWon.Draw();
+        continue;
+      }
+      if (IsPaused) GamePaused.Draw();
+      GamePlay.KeyHandler();
+      GamePlay.Update();
+    }
+    Environment.Exit(0);
   }
 
   private static void PlayGame()
   {
+    Map.Instance = new Map(GamePlay.MapBox);
+    GamePlay.Messages = new();
     ConsoleEx.Clear();
     GamePlay.Messages.Add(new Message($"You have entered the {CurrentDungeon} Dungeon!", Color.Chartreuse, Color.Black));
     GamePlay.Messages.Add(new Message("You look around...", Color.White, Color.Black));
     GamePlay.Draw();
-    while (!IsOver && !IsWon)
-    {
-      if (IsPaused)
-        GamePaused.Draw();
-      else
-      {
-        GamePlay.KeyHandler();
-        GamePlay.Update();
-      }
-    }
-    if (IsOver)
-      GameOver.Draw();
-    else if (IsWon)
-      GameWon.Draw();
   }
 }

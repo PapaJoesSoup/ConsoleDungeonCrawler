@@ -17,7 +17,7 @@ internal static class GamePlay
   private static readonly Box MessageBox = new(1, 41, 178, 12);
   private static readonly Box LegendBox = new(178, 36, 31, 17);
 
-  internal static readonly List<Message> Messages = new();
+  internal static List<Message> Messages = new();
   internal static readonly int MessageWidth = MessageBox.Width - 33;
   private static readonly int MessageHeight = MessageBox.Height - 2;
 
@@ -115,12 +115,10 @@ internal static class GamePlay
 
   private static void SpellStats()
   {
-    int col;
-    int row;
     int count = 0;
     //Spells
-    col = StatusBox.Left + 140;
-    row = StatusBox.Top + 1;
+    int col = StatusBox.Left + 140;
+    int row = StatusBox.Top + 1;
     int colWidth = 18;
     BChars.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
     BChars.MidBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
@@ -150,11 +148,10 @@ internal static class GamePlay
 
   private static void InventoryStats()
   {
-    int col;
-    int row;
-    //Inventory
-    col = StatusBox.Left + 31;
-    row = StatusBox.Top + 1;
+    int col =
+      //Inventory
+      StatusBox.Left + 31;
+    int row = StatusBox.Top + 1;
     int colWidth = 25;
     int count = 0;
     int totalBags = Inventory.Bags.Count;

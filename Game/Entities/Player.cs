@@ -379,10 +379,10 @@ internal class Player : MapObject
     // find the closest object within the radius
     for (int i = 1; i <= radius; i++)
     {
-      Position left = new Position(X - i, Y);
-      Position right = new Position(X + i, Y);
-      Position up = new Position(X, Y - i);
-      Position down = new Position(X, Y + i);
+      Position left = new(X - i, Y);
+      Position right = new(X + i, Y);
+      Position up = new(X, Y - i);
+      Position down = new(X, Y + i);
 
       if (IsNextToMap(left, out obj)) return true;
       if (IsNextToMap(right, out obj)) return true;
@@ -405,7 +405,7 @@ internal class Player : MapObject
 
   private static bool CanJumpTo(Position oldPos, Position newPos)
   {
-      Direction dir = GetDirection(oldPos, newPos);
+      Direction dir = Map.GetDirection(oldPos, newPos);
     // check to see if there is an object in between old and new location that is not passable and not transparent
     for (int radius = 1; radius <= 2; radius++)
     {

@@ -27,7 +27,7 @@ internal class Position
     Y = y;
   }
 
-  internal Position(int x, int y, Position parent, int Cost)
+  internal Position(int x, int y, Position parent, int cost)
   {
     X = x;
     Y = y;
@@ -43,14 +43,5 @@ internal class Position
   internal void SetDistance(Position target)
   {
     Distance = Math.Abs(target.X - X) + Math.Abs(target.Y - Y);
-  }
-
-  internal static Direction GetDirection(Position from, Position to)
-  {
-    if (from.X < to.X) return Direction.East;
-    if (from.X > to.X) return Direction.West;
-    if (from.Y < to.Y) return Direction.South;
-    if (from.Y > to.Y) return Direction.North;
-    return Direction.None;
   }
 }

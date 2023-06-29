@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Reflection.Emit;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Screens;
 
@@ -7,7 +6,7 @@ namespace ConsoleDungeonCrawler.Game.Entities;
 
 internal class Monster : MapObject
 {
-  private int health = 10;
+  private int health;
   internal int MaxHealth = 10;
   internal int Mana;
   internal int MaxMana;

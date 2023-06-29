@@ -18,10 +18,10 @@ internal class Map
 
   // Dictionary storage and retrieval is faster than a DataSet/DataTables and not as heavy as a database.
   // expressed as:  LevelMapGrids[level][x][y];
-  internal static readonly Dictionary<int, Dictionary<int, Dictionary<int, MapObject>>> LevelMapGrids = new();
+  internal static Dictionary<int, Dictionary<int, Dictionary<int, MapObject>>> LevelMapGrids = new();
 
   // This allows for multiple overlay objects on a single tile.
-  internal static readonly Dictionary<int, Dictionary<int, Dictionary<int, List<MapObject>>>> LevelOverlayGrids = new();
+  internal static Dictionary<int, Dictionary<int, Dictionary<int, List<MapObject>>>> LevelOverlayGrids = new();
 
   private static Dictionary<int, Dictionary<char, List<MapObject>>> levelMapObjects = new();
   internal static Dictionary<int, Dictionary<char, List<MapObject>>> LevelOverlayObjects = new();
@@ -94,6 +94,12 @@ internal class Map
 
   private void InitDictionaries()
   {
+    LevelMapGrids = new();
+    LevelOverlayGrids = new();
+    LevelMapGrids = new();
+    LevelOverlayObjects = new();
+    levelMapObjects = new();
+
     // load empty map/overlay grid for each level
     foreach (string level in Game.Dungeons[Game.CurrentDungeon].Keys)
     {
@@ -573,6 +579,15 @@ internal class Map
       default:
         return Direction.None;
     }
+  }
+
+  internal static Direction GetDirection(Position from, Position to)
+  {
+    if (from.X < to.X) return Direction.East;
+    if (from.X > to.X) return Direction.West;
+    if (from.Y < to.Y) return Direction.South;
+    if (from.Y > to.Y) return Direction.North;
+    return Direction.None;
   }
 
   internal static void ShowFullMap()

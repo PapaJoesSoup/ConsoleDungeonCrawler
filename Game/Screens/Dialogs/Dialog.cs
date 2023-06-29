@@ -7,7 +7,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs;
 internal static class Dialog
 {
   // This is the default box for the generic dialog box
-  internal static readonly Box Box = new(Console.WindowWidth / 2 - 52, Console.WindowHeight / 2 - 12, 100, 25);
+  private static readonly Box Box = new(Console.WindowWidth / 2 - 52, Console.WindowHeight / 2 - 12, 100, 25);
 
   // These colors are for the default theme of a dialog box
   private static readonly Color BackgroundColor = Color.Black;
