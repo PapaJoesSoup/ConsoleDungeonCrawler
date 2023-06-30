@@ -32,6 +32,7 @@ internal static class Game
 
   static Game()
   {
+    // Lets cache the art so we don't have to read it from disk every time we need it
     GameTitleArt = new StringBuilder();
     GameTitleArt.Append(File.ReadAllText($"{Game.ArtPath}/GameTitleArt.txt"));
     GameTitleText = new StringBuilder();

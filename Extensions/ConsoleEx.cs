@@ -43,6 +43,7 @@ internal static class ConsoleEx
     Clear();
     Console.OutputEncoding = System.Text.Encoding.Unicode;
     // Maximize console window  Use if you have a console window set to a specific size and is not maximized (fullscreen focused
+
     //MaximizeConsoleWindow();
     // Enable extended colors
     EnableExtendedColors();
@@ -73,7 +74,6 @@ internal static class ConsoleEx
     // Constants for the ShowWindow function
     const int swMaximize = 3;
     IntPtr consoleWindowHandle = GetForegroundWindow();
-    ShowWindow(consoleWindowHandle, swMaximize);
 
     // Get the screen size
     GetWindowRect(consoleWindowHandle, out Rect screenRect);
@@ -81,6 +81,7 @@ internal static class ConsoleEx
     int width = screenRect.Right - screenRect.Left;
     int height = screenRect.Bottom - screenRect.Top;
     MoveWindow(consoleWindowHandle, screenRect.Left, screenRect.Top, width, height, true);
+    ShowWindow(consoleWindowHandle, swMaximize);
     SetScreenSizes(width, height);
   }
 
