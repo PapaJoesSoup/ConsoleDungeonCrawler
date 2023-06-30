@@ -20,10 +20,8 @@ internal static class GameWon
 
   private static void LoadArt()
   {
-    StringBuilder sb = new();
-    sb.Append(File.ReadAllText($"{Game.ArtPath}/TitleArt2.txt"));
     // write the title art to the console
-    string[] lines = sb.ToString().Split('\n');
+    string[] lines = Game.GameWonArt.ToString().Split('\n');
     int height = lines.Length > Console.WindowHeight - 2 ? Console.WindowHeight - 2 : lines.Length;
     int width = lines[0].Length > Console.WindowWidth - 2 ? Console.WindowWidth - 2 : lines[0].Length;
     int startX = (Console.WindowWidth - width) / 2;
@@ -38,13 +36,10 @@ internal static class GameWon
 
   private static void LoadBannerText()
   {
-    StringBuilder sb = new();
     int xOffset = 0;
     int yOffset = 4;
 
-    sb.Append(File.ReadAllText($"{Game.ArtPath}/GameWon.txt"));
-    // write the title art to the console
-    string[] lines = sb.ToString().Split('\n');
+    string[] lines = Game.GameWonText.ToString().Split('\n');
     int height = lines.Length;
     int width = lines[0].Length;
     for (int y = 0; y < height; y++)

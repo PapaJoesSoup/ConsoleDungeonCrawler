@@ -157,7 +157,7 @@ internal class Monster : Tile
         IsPassable = true;
         InCombat = false;
         Draw();
-        Map.RemoveFromOverlayObjects(this);
+        Map.RemoveFromOverlayTiles(this);
         Player.InCombat = Player.IsInCombat();
       }
       else

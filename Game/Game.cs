@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System.Text;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Screens;
@@ -20,7 +21,34 @@ internal static class Game
   internal static string CurrentDungeon = "";
   internal static int CurrentLevel = 0;
 
+  internal static readonly StringBuilder GameTitleArt;
+  internal static readonly StringBuilder GameWonArt;
+  internal static readonly StringBuilder GameOverArt;
+  internal static readonly StringBuilder GameTitleText;
+  internal static readonly StringBuilder GameWonText;
+  internal static readonly StringBuilder GameOverText;
+  
   internal static readonly Dictionary<string, Dictionary<string, string>> Dungeons = new();
+
+  static Game()
+  {
+    GameTitleArt = new StringBuilder();
+    GameTitleArt.Append(File.ReadAllText($"{Game.ArtPath}/GameTitleArt.txt"));
+    GameTitleText = new StringBuilder();
+    GameTitleText.Append(File.ReadAllText($"{Game.ArtPath}/GameTitleText.txt"));
+
+    GameWonArt = new StringBuilder();
+    GameWonArt.Append(File.ReadAllText($"{Game.ArtPath}/GameWonArt.txt"));
+    GameWonText = new StringBuilder();
+    GameWonText.Append(File.ReadAllText($"{Game.ArtPath}/GameWonText.txt"));
+
+    GameOverArt = new StringBuilder();
+    GameOverArt.Append(File.ReadAllText($"{Game.ArtPath}/GameOverArt.txt"));
+    GameOverText = new StringBuilder();
+    GameOverText.Append(File.ReadAllText($"{Game.ArtPath}/GameOverText.txt"));
+
+    LoadDungeons();
+  }
 
   private static void LoadDungeons()
   {
@@ -48,7 +76,6 @@ internal static class Game
       if (IsMainMenu)
       {
         IsMainMenu = false;
-        LoadDungeons();
         GameTitle.Draw();
         PlayGame();
       }

@@ -24,8 +24,8 @@ internal class Map
   // This allows for multiple overlay objects on a single tile.
   internal static Dictionary<int, Dictionary<int, Dictionary<int, List<Tile>>>> LevelOverlayGrids = new();
 
-  private static Dictionary<int, Dictionary<char, List<Tile>>> levelMapObjects = new();
-  internal static Dictionary<int, Dictionary<char, List<Tile>>> LevelOverlayObjects = new();
+  private static Dictionary<int, Dictionary<char, List<Tile>>> levelMapTiles = new();
+  internal static Dictionary<int, Dictionary<char, List<Tile>>> LevelOverlayTiles = new();
   private static Dictionary<int, Dictionary<char, Tuple<TileType, int>>> levelVisibleObjects = new();
 
   internal static Player Player = new();
@@ -100,8 +100,8 @@ internal class Map
     LevelMapGrids = new();
     LevelOverlayGrids = new();
     LevelMapGrids = new();
-    LevelOverlayObjects = new();
-    levelMapObjects = new();
+    LevelOverlayTiles = new();
+    levelMapTiles = new();
 
     // load empty map/overlay grid for each level
     foreach (string level in Game.Dungeons[Game.CurrentDungeon].Keys)
@@ -141,24 +141,24 @@ internal class Map
     }
 
     // Create empty object lists for each level
-    levelMapObjects = new Dictionary<int, Dictionary<char, List<Tile>>>();
+    levelMapTiles = new Dictionary<int, Dictionary<char, List<Tile>>>();
     foreach (string level in Game.Dungeons[Game.CurrentDungeon].Keys)
     {
       int lvlNumber = int.Parse(level.Split('_')[1].Split('.')[0]);
-      if (levelMapObjects.ContainsKey(lvlNumber)) continue;
-      levelMapObjects.Add(lvlNumber, new Dictionary<char, List<Tile>>());
+      if (levelMapTiles.ContainsKey(lvlNumber)) continue;
+      levelMapTiles.Add(lvlNumber, new Dictionary<char, List<Tile>>());
       foreach (TileType objectType in MapTypes)
-        levelMapObjects[lvlNumber].Add(objectType.Symbol, new List<Tile>());
+        levelMapTiles[lvlNumber].Add(objectType.Symbol, new List<Tile>());
     }
 
-    LevelOverlayObjects = new Dictionary<int, Dictionary<char, List<Tile>>>();
+    LevelOverlayTiles = new Dictionary<int, Dictionary<char, List<Tile>>>();
     foreach (string level in Game.Dungeons[Game.CurrentDungeon].Keys)
     {
       int lvlNumber = int.Parse(level.Split('_')[1].Split('.')[0]);
-      if (LevelOverlayObjects.ContainsKey(lvlNumber)) continue;
-      LevelOverlayObjects.Add(lvlNumber, new Dictionary<char, List<Tile>>());
+      if (LevelOverlayTiles.ContainsKey(lvlNumber)) continue;
+      LevelOverlayTiles.Add(lvlNumber, new Dictionary<char, List<Tile>>());
       foreach (TileType objectType in overlayTypes)
-        LevelOverlayObjects[lvlNumber].Add(objectType.Symbol, new List<Tile>());
+        LevelOverlayTiles[lvlNumber].Add(objectType.Symbol, new List<Tile>());
     }
 
     levelVisibleObjects = new Dictionary<int, Dictionary<char, Tuple<TileType, int>>>();
@@ -235,18 +235,18 @@ internal class Map
         if (type.Symbol == Player.Type.Symbol)
         {
           Player = new Player(obj);
-          LevelOverlayObjects[level][type.Symbol].Add(Player);
+          LevelOverlayTiles[level][type.Symbol].Add(Player);
         }
         else if (obj.IsAttackable)
         {
           Monster monster = new(obj, 1);
           LevelOverlayGrids[level][x - 1][y - 1][0] = monster;
-          LevelOverlayObjects[level][type.Symbol].Add(monster);
+          LevelOverlayTiles[level][type.Symbol].Add(monster);
         }
         else
         {
           LevelOverlayGrids[level][x - 1][y - 1][0] = obj;
-          LevelOverlayObjects[level][type.Symbol].Add(obj);
+          LevelOverlayTiles[level][type.Symbol].Add(obj);
         }
       }
     }
@@ -287,7 +287,7 @@ internal class Map
       new string(' ', Width - 2).WriteAt(Left + 1, y, ConsoleColor.Black, ConsoleColor.Black);
   }
 
-  internal static void ShowFullMap()
+  internal static void ShowAllMapTiles()
   {
     foreach (int x in LevelMapGrids[Game.CurrentLevel].Keys)
     {
@@ -304,7 +304,7 @@ internal class Map
     DrawOverlay();
   }
 
-  internal static void ShowFullOverlay()
+  internal static void ShowAllOverlayTiles()
   {
     foreach (int x in LevelOverlayGrids[Game.CurrentLevel].Keys)
     {
@@ -330,11 +330,11 @@ internal class Map
     for (int y = Player.Y; y > Player.Y - range; y--)
     {
       if (y < yLimit) break;
-      SetVisibleYObjects(Player.X, y, ref yLimit);
+      SetVisibleYTiles(Player.X, y, ref yLimit);
       for (int x = Player.West.X; x > Player.X - range; x--)
       {
         if (x < xLimit) break;
-        SetVisibleXObjects(x, y, ref xLimit);
+        SetVisibleXTiles(x, y, ref xLimit);
       }
     }
     // West and North
@@ -343,11 +343,11 @@ internal class Map
     for (int x = Player.X; x > Player.X - range; x--)
     {
       if (x < xLimit) break;
-      SetVisibleXObjects(x, Player.Y, ref xLimit);
+      SetVisibleXTiles(x, Player.Y, ref xLimit);
       for (int y = Player.North.Y; y > Player.Y - range; y--)
       {
         if (y < yLimit) break;
-        SetVisibleYObjects(x, y, ref yLimit);
+        SetVisibleYTiles(x, y, ref yLimit);
       }
     }
     // North and East
@@ -356,11 +356,11 @@ internal class Map
     for (int y = Player.Y; y > Player.Y - range; y--)
     {
       if (y < yLimit) break;
-      SetVisibleYObjects(Player.X, y, ref yLimit);
+      SetVisibleYTiles(Player.X, y, ref yLimit);
       for (int x = Player.East.X; x < Player.X + range; x++)
       {
         if (x > xLimit) break;
-        SetVisibleXObjects(x, y, ref xLimit);
+        SetVisibleXTiles(x, y, ref xLimit);
       }
     }
     // East and North
@@ -369,11 +369,11 @@ internal class Map
     for (int x = Player.X; x < Player.X + range; x++)
     {
       if (x > xLimit) break;
-      SetVisibleXObjects(x, Player.Y, ref xLimit);
+      SetVisibleXTiles(x, Player.Y, ref xLimit);
       for (int y = Player.North.Y; y > Player.Y - range; y--)
       {
         if (y < yLimit) break;
-        SetVisibleYObjects(x, y, ref yLimit);
+        SetVisibleYTiles(x, y, ref yLimit);
       }
     }
     // South and West
@@ -382,11 +382,11 @@ internal class Map
     for (int y = Player.Y; y < Player.Y + range; y++)
     {
       if (y > yLimit) break;
-      SetVisibleYObjects(Player.X, y, ref yLimit);
+      SetVisibleYTiles(Player.X, y, ref yLimit);
       for (int x = Player.West.X; x > Player.X - range; x--)
       {
         if (x < xLimit) break;
-        SetVisibleXObjects(x, y, ref xLimit);
+        SetVisibleXTiles(x, y, ref xLimit);
       }
     }
     // West and South
@@ -395,11 +395,11 @@ internal class Map
     for (int x = Player.X; x > Player.X - range; x--)
     {
       if (x < xLimit) break;
-      SetVisibleXObjects(x, Player.Y, ref xLimit);
+      SetVisibleXTiles(x, Player.Y, ref xLimit);
       for (int y = Player.South.Y; y < Player.Y + range; y++)
       {
         if (y > yLimit) break;
-        SetVisibleYObjects(x, y, ref yLimit);
+        SetVisibleYTiles(x, y, ref yLimit);
       }
     }
     // South and East
@@ -408,11 +408,11 @@ internal class Map
     for (int y = Player.Y; y < Player.Y + range; y++)
     {
       if (y > yLimit) break;
-      SetVisibleYObjects(Player.X, y, ref yLimit);
+      SetVisibleYTiles(Player.X, y, ref yLimit);
       for (int x = Player.East.X; x < Player.X + range; x++)
       {
         if (x > xLimit) break;
-        SetVisibleXObjects(x, y, ref xLimit);
+        SetVisibleXTiles(x, y, ref xLimit);
       }
     }
     // East and South
@@ -421,11 +421,11 @@ internal class Map
     for (int x = Player.X; x < Player.X + range; x++)
     {
       if (x > xLimit) break;
-      SetVisibleXObjects(x, Player.Y, ref xLimit);
+      SetVisibleXTiles(x, Player.Y, ref xLimit);
       for (int y = Player.East.X; y < Player.Y + range; y++)
       {
         if (y > yLimit) break;
-        SetVisibleYObjects(x, y, ref yLimit);
+        SetVisibleYTiles(x, y, ref yLimit);
       }
     }
   }
@@ -433,59 +433,59 @@ internal class Map
   public static void WhatIsVisible()
   {
     bool visibleChanged = false;
-    foreach (char symbol in levelMapObjects[Game.CurrentLevel].Keys)
+    foreach (char symbol in levelMapTiles[Game.CurrentLevel].Keys)
     {
       if (symbol == ' ') continue;
       TileType type = MapTypes.Find(t => t.Symbol == symbol) ?? new TileType();
       if (type.Symbol == ' ') continue;
-      visibleChanged = GetObjectTypeCount(levelMapObjects[Game.CurrentLevel][symbol], visibleChanged, type);
+      visibleChanged = GetTileTypeCount(levelMapTiles[Game.CurrentLevel][symbol], visibleChanged, type);
     }
-    foreach (char symbol in levelMapObjects[Game.CurrentLevel].Keys)
+    foreach (char symbol in levelMapTiles[Game.CurrentLevel].Keys)
     {
       if (symbol == Player.Type.Symbol || symbol == ' ') continue;
       TileType type = overlayTypes.Find(t => t.Symbol == symbol) ?? new TileType();
       if (type.Symbol == ' ') continue;
-      visibleChanged = GetObjectTypeCount(LevelOverlayObjects[Game.CurrentLevel][symbol], visibleChanged, type);
+      visibleChanged = GetTileTypeCount(LevelOverlayTiles[Game.CurrentLevel][symbol], visibleChanged, type);
     }
-    if (visibleChanged) WriteVisibleObjects();
+    if (visibleChanged) WriteVisibleTiles();
   }
 
-  private static void SetVisibleYObjects(int x, int y, ref int yLimit)
+  private static void SetVisibleYTiles(int x, int y, ref int yLimit)
   {
     Tile obj = LevelMapGrids[Game.CurrentLevel][x][y];
     if (obj.IsPassable || obj.Type.IsTransparent)
     {
       LevelMapGrids[Game.CurrentLevel][x][y].IsVisible = true;
-      AddToMapObjects(LevelMapGrids[Game.CurrentLevel][x][y]);
+      AddToMapTiles(LevelMapGrids[Game.CurrentLevel][x][y]);
       LevelMapGrids[Game.CurrentLevel][x][y].Draw();
     }
     else
     {
       LevelMapGrids[Game.CurrentLevel][x][y].IsVisible = true;
-      AddToMapObjects(LevelMapGrids[Game.CurrentLevel][x][y]);
+      AddToMapTiles(LevelMapGrids[Game.CurrentLevel][x][y]);
       LevelMapGrids[Game.CurrentLevel][x][y].Draw();
       yLimit = y;
     }
-    AddToMapObjects(LevelMapGrids[Game.CurrentLevel][x][y]);
+    AddToMapTiles(LevelMapGrids[Game.CurrentLevel][x][y]);
     int layer = LevelOverlayGrids[Game.CurrentLevel][x][y].Count - 1;
     if (LevelOverlayGrids[Game.CurrentLevel][x][y][layer].Type.Symbol == ' ') return;
     LevelOverlayGrids[Game.CurrentLevel][x][y][layer].IsVisible = true;
     LevelOverlayGrids[Game.CurrentLevel][x][y][layer].Draw();
   }
 
-  private static void SetVisibleXObjects(int x, int y, ref int xLimit)
+  private static void SetVisibleXTiles(int x, int y, ref int xLimit)
   {
     Tile obj = LevelMapGrids[Game.CurrentLevel][x][y];
     if (obj.IsPassable || obj.Type.IsTransparent)
     {
       LevelMapGrids[Game.CurrentLevel][x][y].IsVisible = true;
-      AddToMapObjects(LevelMapGrids[Game.CurrentLevel][x][y]);
+      AddToMapTiles(LevelMapGrids[Game.CurrentLevel][x][y]);
       LevelMapGrids[Game.CurrentLevel][x][y].Draw();
     }
     else
     {
       LevelMapGrids[Game.CurrentLevel][x][y].IsVisible = true;
-      AddToMapObjects(LevelMapGrids[Game.CurrentLevel][x][y]);
+      AddToMapTiles(LevelMapGrids[Game.CurrentLevel][x][y]);
       LevelMapGrids[Game.CurrentLevel][x][y].Draw();
       xLimit = x;
     }
@@ -496,7 +496,7 @@ internal class Map
     LevelOverlayGrids[Game.CurrentLevel][x][y][layer].Draw();
   }
 
-  private static void WriteVisibleObjects()
+  private static void WriteVisibleTiles()
   {
     string message = "";
     foreach (char symbol in levelVisibleObjects[Game.CurrentLevel].Keys)
@@ -511,7 +511,7 @@ internal class Map
     GamePlay.Messages.Add(new Message($"You see {message}.", Color.White, Color.Black));
   }
 
-  private static bool GetObjectTypeCount(List<Tile> list, bool visibleChanged, TileType type)
+  private static bool GetTileTypeCount(List<Tile> list, bool visibleChanged, TileType type)
   {
     int count = 0;
     foreach (Tile obj in list) if (obj.IsVisible) count++;
@@ -541,39 +541,39 @@ internal class Map
     return visibleChanged;
   }
 
-  internal static void AddToMapObjects(Tile obj)
+  internal static void AddToMapTiles(Tile obj)
   {
-    if (levelMapObjects[Game.CurrentLevel].ContainsKey(obj.Type.Symbol))
+    if (levelMapTiles[Game.CurrentLevel].ContainsKey(obj.Type.Symbol))
     {
-      if (!levelMapObjects[Game.CurrentLevel][obj.Type.Symbol].Contains(obj))
-        levelMapObjects[Game.CurrentLevel][obj.Type.Symbol].Add(obj);
+      if (!levelMapTiles[Game.CurrentLevel][obj.Type.Symbol].Contains(obj))
+        levelMapTiles[Game.CurrentLevel][obj.Type.Symbol].Add(obj);
     }
     else
     {
-      levelMapObjects[Game.CurrentLevel].Add(obj.Type.Symbol, new List<Tile>());
-      levelMapObjects[Game.CurrentLevel][obj.Type.Symbol].Add(obj);
+      levelMapTiles[Game.CurrentLevel].Add(obj.Type.Symbol, new List<Tile>());
+      levelMapTiles[Game.CurrentLevel][obj.Type.Symbol].Add(obj);
     }
   }
 
-  internal static void RemoveFromMapObjects(Tile obj)
+  internal static void RemoveFromMapTiles(Tile obj)
   {
-    if (!levelMapObjects[Game.CurrentLevel].ContainsKey(obj.Type.Symbol)) return;
-    if (levelMapObjects[Game.CurrentLevel][obj.Type.Symbol].Contains(obj))
-      levelMapObjects[Game.CurrentLevel][obj.Type.Symbol].Remove(obj);
+    if (!levelMapTiles[Game.CurrentLevel].ContainsKey(obj.Type.Symbol)) return;
+    if (levelMapTiles[Game.CurrentLevel][obj.Type.Symbol].Contains(obj))
+      levelMapTiles[Game.CurrentLevel][obj.Type.Symbol].Remove(obj);
   }
 
-  internal static void UpdateOverlayObject(Tile obj)
+  internal static void UpdateOverlayTile(Tile obj)
   {
-    RemoveFromOverlayObjects(obj);
+    RemoveFromOverlayTiles(obj);
     RemoveFromOverlayGrid(obj);
     GamePlay.OverlaySection();
   }
 
-  internal static void RemoveFromOverlayObjects(Tile obj)
+  internal static void RemoveFromOverlayTiles(Tile obj)
   {
-    if (!LevelOverlayObjects[Game.CurrentLevel].ContainsKey(obj.Type.Symbol)) return;
-    if (LevelOverlayObjects[Game.CurrentLevel][obj.Type.Symbol].Contains(obj))
-      LevelOverlayObjects[Game.CurrentLevel][obj.Type.Symbol].Remove(obj);
+    if (!LevelOverlayTiles[Game.CurrentLevel].ContainsKey(obj.Type.Symbol)) return;
+    if (LevelOverlayTiles[Game.CurrentLevel][obj.Type.Symbol].Contains(obj))
+      LevelOverlayTiles[Game.CurrentLevel][obj.Type.Symbol].Remove(obj);
   }
 
   private static void RemoveFromOverlayGrid(Tile obj)

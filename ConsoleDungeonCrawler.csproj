@@ -18,11 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Game\Data\Art\GameOver.txt" />
-    <None Remove="Game\Data\Art\GameTitle.txt" />
-    <None Remove="Game\Data\Art\GameWon.txt" />
-    <None Remove="Game\Data\Art\TitleArt2.txt" />
-    <None Remove="Game\Data\Art\TitleArt3.txt" />
+    <None Remove="Game\Data\Art\GameOverArt.txt" />
+    <None Remove="Game\Data\Art\GameOverText.txt" />
+    <None Remove="Game\Data\Art\GameTitleText.txt" />
+    <None Remove="Game\Data\Art\GameWonArt.txt" />
+    <None Remove="Game\Data\Art\GameWonText.txt" />
     <None Remove="Game\Data\Maps\CastleMania\LevelMap_-1.txt" />
     <None Remove="Game\Data\Maps\CastleMania\LevelMap_0.txt" />
     <None Remove="Game\Data\Maps\CastleMania\LevelMap_1.txt" />
@@ -38,16 +38,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Game\Data\Art\GameOver.txt">
+    <Content Include="Game\Data\Art\GameOverText.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Data\Art\GameTitle.txt">
+    <Content Include="Game\Data\Art\GameTitleText.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Data\Art\GameWon.txt">
+    <Content Include="Game\Data\Art\GameWonText.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Data\Art\TitleArt3.txt">
+    <Content Include="Game\Data\Art\GameOverArt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Game\Data\Maps\CastleMania\LevelMap_-1.txt">
@@ -86,7 +86,7 @@
     <Content Include="Game\Data\Maps\Castle\LevelOverlay_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Data\Art\TitleArt.txt">
+    <Content Include="Game\Data\Art\GameTitleArt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Game\Screens\GameTitle.cs">
@@ -95,7 +95,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Game\Data\Art\TitleArt2.txt">
+    <Content Include="Game\Data\Art\GameWonArt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

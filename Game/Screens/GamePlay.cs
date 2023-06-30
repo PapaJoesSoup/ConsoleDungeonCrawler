@@ -214,12 +214,12 @@ internal static class GamePlay
     int col = OverlayBox.Left + 2;
     int row = OverlayBox.Top + 1;
     "Map objects: ".WriteAt(col, row, Color.Gold); row += 2;
-    foreach (char type in Map.LevelOverlayObjects[Game.CurrentLevel].Keys)
+    foreach (char type in Map.LevelOverlayTiles[Game.CurrentLevel].Keys)
     {
-      foreach (Tile mapObject in Map.LevelOverlayObjects[Game.CurrentLevel][type])
+      foreach (Tile tile in Map.LevelOverlayTiles[Game.CurrentLevel][type])
       {
-        if (!mapObject.IsVisible || mapObject.Type.Symbol == ' ') continue;
-        mapObject.WriteLegendItem(col, row, OverlayBox.Width - 2);
+        if (!tile.IsVisible || tile.Type.Symbol == ' ') continue;
+        tile.WriteLegendItem(col, row, OverlayBox.Width - 2);
         row++;
       }
     }
@@ -390,10 +390,10 @@ internal static class GamePlay
           Map.Player.Attack();
           break;
         case ConsoleKey.F5:
-          Map.ShowFullMap();
+          Map.ShowAllMapTiles();
           break;
         case ConsoleKey.F6:
-          Map.ShowFullOverlay();
+          Map.ShowAllOverlayTiles();
           break;
       }
     }

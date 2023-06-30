@@ -70,10 +70,10 @@ internal class Player : Tile
     X = newPos.X;
     Y = newPos.Y;
     // Overlay section Check needed for level changes.
-    if (Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol].Count == 0)
-      Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol].Add(this);
+    if (Map.LevelOverlayTiles[Game.CurrentLevel][Type.Symbol].Count == 0)
+      Map.LevelOverlayTiles[Game.CurrentLevel][Type.Symbol].Add(this);
     else
-      Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol][0] = this;
+      Map.LevelOverlayTiles[Game.CurrentLevel][Type.Symbol][0] = this;
 
     // update grids.
     Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
@@ -105,7 +105,7 @@ internal class Player : Tile
     Y = newPos.Y;
     for (int i = 0; i < Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Count; i++)
     {
-      Map.LevelOverlayObjects[Game.CurrentLevel][Type.Symbol][0] = this;
+      Map.LevelOverlayTiles[Game.CurrentLevel][Type.Symbol][0] = this;
       Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
       Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
 
@@ -254,10 +254,10 @@ internal class Player : Tile
   internal static bool IsInCombat()
   {
     // Check if there is a tile.InCombat == true in OverlayObjects Except Player
-    foreach (char key in Map.LevelOverlayObjects[Game.CurrentLevel].Keys)
+    foreach (char key in Map.LevelOverlayTiles[Game.CurrentLevel].Keys)
     {
-      if (Map.LevelOverlayObjects[Game.CurrentLevel][key].Count == 0) continue;
-      List<Tile> objs = Map.LevelOverlayObjects[Game.CurrentLevel][key];
+      if (Map.LevelOverlayTiles[Game.CurrentLevel][key].Count == 0) continue;
+      List<Tile> objs = Map.LevelOverlayTiles[Game.CurrentLevel][key];
       if (!objs[0].Type.IsAttackable) continue;
       foreach (Tile obj in objs)
       {

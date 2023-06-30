@@ -10,6 +10,9 @@ internal static class GameTitle
   // Game Title name courtesy of:
   // https://patorjk.com/software/taag/#p=display&h=2&v=3&f=Elite&t=Console%20Dungeon%20Crawler
   // background screen Ascii art courtesy of: https://textart.sh
+  // Rendering speeds and unicode support are improved significantly by setting the renderer in Terminal to "Use Atlas Engine".
+  // This can be accessed by "Ctrl + ," to get to the settings menu in the console window. Ctrl + Shift + W will return you to the game.
+  // Refer to the comments here: https://github.com/microsoft/terminal/issues/15625
 
   private static readonly Box ScreenBorder = new(0, 0, Console.WindowWidth, Console.WindowHeight);
 
@@ -25,10 +28,8 @@ internal static class GameTitle
 
   private static void LoadTitleArt()
   {
-    StringBuilder sb = new();
-    sb.Append(File.ReadAllText($"{Game.ArtPath}/TitleArt.txt"));
     // write the title art to the console
-    string[] lines = sb.ToString().Split('\n');
+    string[] lines = Game.GameTitleArt.ToString().Split('\n');
     int height = lines.Length > Console.WindowHeight - 2 ? Console.WindowHeight - 2 : lines.Length;
     int width = lines[0].Length > Console.WindowWidth - 2 ? Console.WindowWidth - 2 : lines[0].Length;
     int startX = (Console.WindowWidth - width) / 2;
@@ -44,13 +45,11 @@ internal static class GameTitle
 
   private static void LoadBannerText()
   {
-    StringBuilder sb = new();
     int xOffset = 0;
     int yOffset = 4;
 
-    sb.Append(File.ReadAllText($"{Game.ArtPath}/GameTitle.txt"));
     // write the title art to the console
-    string[] lines = sb.ToString().Split('\n');
+    string[] lines = Game.GameTitleText.ToString().Split('\n');
     int height = lines.Length;
     int width = lines[0].Length;
     for (int y = 0; y < height; y++)

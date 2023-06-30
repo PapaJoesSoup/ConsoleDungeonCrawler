@@ -65,7 +65,7 @@ internal static class Actions
         ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!"
         : $"You Picked up {item.Description}!";
       GamePlay.Messages.Add(new Message(message, Color.LimeGreen, Color.Black));
-      Map.UpdateOverlayObject(obj);
+      Map.UpdateOverlayTile(obj);
     }
   }
 
@@ -75,10 +75,10 @@ internal static class Actions
     TileType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new TileType();
     if (type.Symbol == ' ') return;
     GamePlay.Messages.Add(new Message("Opening Door...", Color.Yellow, Color.Black));
-    Map.RemoveFromMapObjects(door);
+    Map.RemoveFromMapTiles(door);
     door.Type = type;
     door.IsPassable = type.IsPassable;
-    Map.AddToMapObjects(door);
+    Map.AddToMapTiles(door);
     door.Draw();
   }
 
@@ -88,21 +88,21 @@ internal static class Actions
     TileType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new TileType();
     if (type.Symbol == ' ') return;
     GamePlay.Messages.Add(new Message("Closing Door...", Color.Yellow, Color.Black));
-    Map.RemoveFromMapObjects(door);
+    Map.RemoveFromMapTiles(door);
     door.Type = type;
     door.IsPassable = type.IsPassable;
-    Map.AddToMapObjects(door);
+    Map.AddToMapTiles(door);
     door.Draw();
   }
 
   public static void MonsterActions()
   {
-    for (int charIdx = 0; charIdx < Map.LevelOverlayObjects[Game.CurrentLevel].Count; charIdx++)
+    for (int charIdx = 0; charIdx < Map.LevelOverlayTiles[Game.CurrentLevel].Count; charIdx++)
     {
-      char symbol = Map.LevelOverlayObjects[Game.CurrentLevel].Keys.ElementAt(charIdx);
-      for (int index = 0; index < Map.LevelOverlayObjects[Game.CurrentLevel][symbol].Count; index++)
+      char symbol = Map.LevelOverlayTiles[Game.CurrentLevel].Keys.ElementAt(charIdx);
+      for (int index = 0; index < Map.LevelOverlayTiles[Game.CurrentLevel][symbol].Count; index++)
       {
-        Tile obj = Map.LevelOverlayObjects[Game.CurrentLevel][symbol][index];
+        Tile obj = Map.LevelOverlayTiles[Game.CurrentLevel][symbol][index];
         if (obj is not Monster monster) continue;
         if (!monster.IsVisible || !monster.IsAlive) continue;
         // remember monster state before detecting player so we can delay attack one turn.

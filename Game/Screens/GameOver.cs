@@ -21,10 +21,8 @@ internal static class GameOver
 
   private static void LoadArt()
   {
-    StringBuilder sb = new();
-    sb.Append(File.ReadAllText($"{Game.ArtPath}/TitleArt3.txt"));
-    // write the title art to the console
-    string[] lines = sb.ToString().Split('\n');
+   // write the title art to the console
+    string[] lines = Game.GameOverArt.ToString().Split('\n');
     int height = lines.Length > Console.WindowHeight - 2 ? Console.WindowHeight - 2 : lines.Length;
     int width = lines[0].Length > Console.WindowWidth -2 ? Console.WindowWidth - 2 : lines[0].Length;
     int startX = (Console.WindowWidth - width) / 2;
@@ -39,13 +37,11 @@ internal static class GameOver
 
   private static void LoadBannerText()
   {
-    StringBuilder sb = new();
     int xOffset = 0;
     int yOffset = 7;
 
-    sb.Append(File.ReadAllText($"{Game.ArtPath}/GameOver.txt"));
     // write the title art to the console
-    string[] lines = sb.ToString().Split('\n');
+    string[] lines = Game.GameOverText.ToString().Split('\n');
     int height = lines.Length;
     int width = lines[0].Length;
     for (int y = 0; y < height; y++)

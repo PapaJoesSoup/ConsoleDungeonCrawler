@@ -18,7 +18,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       {
         int rowCount = 4 + Game.Dungeons.Keys.Count;
         int row = -(rowCount / 2) + 1;
-        "Please select a Game Map (North or South Arrow):".WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, 0, row);
+        "Please select a Game Map (Up or Down Arrow):".WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, 0, row);
         row += 2;
         for (int i = 0; i < Game.Dungeons.Keys.Count; i++)
         {
