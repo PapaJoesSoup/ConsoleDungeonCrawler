@@ -2,16 +2,10 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Game\Data\NewFolder\**" />
-    <EmbeddedResource Remove="Game\Data\NewFolder\**" />
-    <None Remove="Game\Data\NewFolder\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Game\Data\Title.cs" />
@@ -98,6 +92,45 @@
     <Content Include="Game\Data\Art\GameWonArt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibVLCSharp" Version="3.7.0" />
+    <PackageReference Include="System.Windows.Extensions" Version="8.0.0-preview.5.23280.8" />
+    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Game\Data\Sounds\166187__drminky__creepy-dungeon-ambience.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\177958__sclolex__water-dripping-in-cave.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\322447__goodlistener__dungeon-2.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\372252__tomchikrec__creaky-noises-echoey.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\388340__phlair__dungeon-ambiance.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\516566__kinoton__dark-dungeon-ambience.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\536180__fivebrosstopmosyt__ogre-roar-2.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\580442__bennynz__dungeon_lock_2.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\580443__bennynz__dungeon_lock_1.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\641931__kbrecordzz__dungeon-boss-aku.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

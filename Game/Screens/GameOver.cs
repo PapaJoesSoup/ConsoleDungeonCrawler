@@ -1,7 +1,6 @@
-﻿using ConsoleDungeonCrawler.Extensions;
+﻿using System.Drawing;
+using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Screens.Dialogs;
-using System.Drawing;
-using System.Text;
 
 namespace ConsoleDungeonCrawler.Game.Screens;
 
@@ -9,7 +8,6 @@ internal static class GameOver
 {
   private static readonly Box ScreenBorder = new(0, 0, Console.WindowWidth, Console.WindowHeight);
 
-  // Create a method that displays the game over screen in ascii art
   internal static void Draw()
   {
     ConsoleEx.Clear();

@@ -74,6 +74,7 @@ internal static class Actions
     if (!Map.Player.IsNextToMapGrid('+', out Tile door)) return;
     TileType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new TileType();
     if (type.Symbol == ' ') return;
+    MusicSystem.PlayEffect();
     GamePlay.Messages.Add(new Message("Opening Door...", Color.Yellow, Color.Black));
     Map.RemoveFromMapTiles(door);
     door.Type = type;
@@ -87,6 +88,7 @@ internal static class Actions
     if (!Map.Player.IsNextToMapGrid('-', out Tile door)) return;
     TileType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new TileType();
     if (type.Symbol == ' ') return;
+    MusicSystem.PlayEffect();
     GamePlay.Messages.Add(new Message("Closing Door...", Color.Yellow, Color.Black));
     Map.RemoveFromMapTiles(door);
     door.Type = type;

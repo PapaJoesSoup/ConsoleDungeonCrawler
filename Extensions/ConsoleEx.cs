@@ -44,7 +44,7 @@ internal static class ConsoleEx
     Console.OutputEncoding = System.Text.Encoding.Unicode;
     // Maximize console window  Use if you have a console window set to a specific size and is not maximized (fullscreen focused
 
-    //MaximizeConsoleWindow();
+    MaximizeConsoleWindow();
     // Enable extended colors
     EnableExtendedColors();
 
@@ -57,6 +57,9 @@ internal static class ConsoleEx
   /// </summary>
   private static void MaximizeConsoleWindow()
   {
+    // Only maximize if the window is not already maximized
+    if (Console.WindowWidth >= Program.MinWindowWidth && Console.WindowHeight >= Program.MinWindowHeight) return;
+
     // Setup console to allow window to be maximized
     // Import the necessary functions from user32.dll
     [DllImport("user32.dll")]

@@ -30,25 +30,31 @@ internal static class ReplayMenu
 
   private static void KeyHandler()
   {
-    ConsoleKeyInfo keyInfo = Console.ReadKey(true);
-    switch (keyInfo.Key)
+    bool loop = true;
+    while (loop)
     {
-      case ConsoleKey.Escape:
-        ConsoleEx.Clear();
-        Game.IsQuit = true;
-        break;
-      case ConsoleKey.Q:
-        ConsoleEx.Clear();
-        Game.IsQuit = true;
-        break;
-      case ConsoleKey.R:
-        ConsoleEx.Clear();
-        Game.IsRestart = true;
-        break;
-      case ConsoleKey.M:
-        ConsoleEx.Clear();
-        Game.IsMainMenu = true;
-        break;
+      ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+      loop = false;
+      switch (keyInfo.Key)
+      {
+        case ConsoleKey.Escape:
+        case ConsoleKey.Q:
+          ConsoleEx.Clear();
+          Game.IsQuit = true;
+          break;
+        case ConsoleKey.R:
+          ConsoleEx.Clear();
+          Game.IsRestart = true;
+          break;
+        case ConsoleKey.M:
+          ConsoleEx.Clear();
+          Game.IsMainMenu = true;
+          break;
+        default:
+          loop = true;
+          break;
+      }
+
     }
   }
 }

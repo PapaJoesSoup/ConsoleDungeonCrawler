@@ -9,8 +9,11 @@ namespace ConsoleDungeonCrawler.Game;
 internal static class Game
 {
   internal const string Title = "Console Dungeon Crawler";
-  private const string MapPath = "Game/Data/Maps/";
-  internal const string ArtPath = "Game/Data/Art/";
+  private const string DataPath = $"Game/Data/";
+  private const string MapPath = $"{DataPath}Maps/";
+  internal const string ArtPath = $"{DataPath}Art/";
+  internal const string SoundPath = $"{DataPath}Sounds/";
+
   internal static bool IsMainMenu { get; set; }
   internal static bool IsPaused { get; set; }
   internal static bool IsOver { get; set; }
@@ -77,6 +80,7 @@ internal static class Game
       if (IsMainMenu)
       {
         IsMainMenu = false;
+        MusicSystem.PlayBackground();
         GameTitle.Draw();
         PlayGame();
       }

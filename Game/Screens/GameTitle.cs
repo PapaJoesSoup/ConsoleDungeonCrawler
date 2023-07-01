@@ -1,7 +1,6 @@
 ﻿using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Screens.Dialogs;
 using System.Drawing;
-using System.Text;
 
 namespace ConsoleDungeonCrawler.Game.Screens;
 
