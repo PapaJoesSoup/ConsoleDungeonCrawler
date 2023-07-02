@@ -1,5 +1,4 @@
-﻿using System.Media;
-using LibVLCSharp.Shared;
+﻿using LibVLCSharp.Shared;
 
 
 namespace ConsoleDungeonCrawler.Game.Entities;
@@ -16,11 +15,6 @@ internal static class SoundSystem
   private static readonly MediaPlayer BackgroundMPlayer2;
   private static readonly MediaPlayer MediaEffectPlayer;
   internal static readonly Dictionary<Sound, Media> MSounds;
-
-  // Declare the SoundPlayer objects
-  private static readonly SoundPlayer SoundEffectPlayer;
-  internal static readonly Dictionary<Sound, string> Sounds;
-
 
   // Static Initializer
   static SoundSystem()
@@ -64,20 +58,6 @@ internal static class SoundSystem
       { Sound.Pickup, new Media(libVlc, $"{Game.SoundPath}Ogg/209578__zott820__cash-register-purchase.ogg")}
 
     };
-
-    //System.Media.SoundPlayer for Effects
-    SoundEffectPlayer = new();
-
-    // create the sound objects
-    // Downside is SoundPlayer does not support any other file types other than .wav
-    Sounds = new()
-    {
-      { Sound.Door, $"{Game.SoundPath}580442__bennynz__dungeon_lock_2.wav" },
-      { Sound.GoblinCackle, $"{Game.SoundPath}202096__spookymodem__goblin-cackle.wav" },
-      { Sound.GoblinScream, $"{Game.SoundPath}202100__spookymodem__goblin-scream.wav" },
-      { Sound.GoblinDeath, $"{Game.SoundPath}249813__spookymodem__goblin-death.wav" },
-      { Sound.Pickup, $"{Game.SoundPath}209578__zott820__cash-register-purchase.wav" }
-    };
   }
 
   internal static MediaPlayer GetPlayer()
@@ -109,11 +89,5 @@ internal static class SoundSystem
   internal static void PlayEffect(Media media)
   {
     MediaEffectPlayer.Play(media);
-  }
-
-  internal static void PlayEffect(string location)
-  {
-    SoundEffectPlayer.SoundLocation = location;
-    SoundEffectPlayer.Play();
   }
 }

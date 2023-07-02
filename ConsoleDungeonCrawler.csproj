@@ -96,7 +96,6 @@
 
   <ItemGroup>
     <PackageReference Include="LibVLCSharp" Version="3.7.0" />
-    <PackageReference Include="System.Windows.Extensions" Version="8.0.0-preview.5.23280.8" />
     <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.18" />
   </ItemGroup>
 
