@@ -13,9 +13,9 @@ internal static class PathFinding
   /// <returns>a path list of non-subClassed Positions that are passable</returns>
   internal static List<Position> FindPath(Position start, Position destination)
   {
-    List<Position> path = new List<Position>(); // path is the list of positions that lead from the destination to the start
-    List<Position> openList = new List<Position>(); // open list is a list of positions that have not been checked yet
-    List<Position> checkedList = new List<Position>(); // closed list is a list of positions that have been checked
+    List<Position> path = new(); // path is the list of positions that lead from the destination to the start
+    List<Position> openList = new(); // open list is a list of positions that have not been checked yet
+    List<Position> checkedList = new(); // closed list is a list of positions that have been checked
 
     start.SetDistance(destination);
     openList.Add(start);
@@ -70,12 +70,12 @@ internal static class PathFinding
   /// <returns>adjacent coords that are passable</returns>
   private static List<Position> GetPassableArea(Position currentPos, Position targetPos)
   {
-    Dictionary<int, Dictionary<int, MapObject>> map = Map.LevelMapGrids[Game.CurrentLevel];
-    Dictionary<int, Dictionary<int, List<MapObject>>> overlay = Map.LevelOverlayGrids[Game.CurrentLevel];
+    Dictionary<int, Dictionary<int, Tile>> map = Map.LevelMapGrids[Game.CurrentLevel];
+    Dictionary<int, Dictionary<int, List<Tile>>> overlay = Map.LevelOverlayGrids[Game.CurrentLevel];
 
     // get the 4 adjacent positions (non subClassed to treat them like value types)
     // this ensures the parent position values of each position are not overwritten
-    List<Position> possiblePositions = new List<Position>()
+    List<Position> possiblePositions = new()
     {
       new Position(currentPos.X, currentPos.North.Y, currentPos, currentPos.Cost + 1),
       new Position(currentPos.X, currentPos.South.Y, currentPos, currentPos.Cost + 1),

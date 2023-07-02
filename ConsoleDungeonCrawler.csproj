@@ -2,24 +2,21 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Game\Data\NewFolder\**" />
-    <EmbeddedResource Remove="Game\Data\NewFolder\**" />
-    <None Remove="Game\Data\NewFolder\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Game\Data\Title.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Game\Data\Art\TitleArt2.txt" />
-    <None Remove="Game\Data\Art\TitleArt3.txt" />
+    <None Remove="Game\Data\Art\GameOverArt.txt" />
+    <None Remove="Game\Data\Art\GameOverText.txt" />
+    <None Remove="Game\Data\Art\GameTitleText.txt" />
+    <None Remove="Game\Data\Art\GameWonArt.txt" />
+    <None Remove="Game\Data\Art\GameWonText.txt" />
     <None Remove="Game\Data\Maps\CastleMania\LevelMap_-1.txt" />
     <None Remove="Game\Data\Maps\CastleMania\LevelMap_0.txt" />
     <None Remove="Game\Data\Maps\CastleMania\LevelMap_1.txt" />
@@ -35,7 +32,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Game\Data\Art\TitleArt3.txt">
+    <Content Include="Game\Data\Art\GameOverText.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Data\Art\GameTitleText.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Data\Art\GameWonText.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Game\Data\Art\GameOverArt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Game\Data\Maps\CastleMania\LevelMap_-1.txt">
@@ -74,7 +80,7 @@
     <Content Include="Game\Data\Maps\Castle\LevelOverlay_1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Game\Data\Art\TitleArt.txt">
+    <Content Include="Game\Data\Art\GameTitleArt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Game\Screens\GameTitle.cs">
@@ -83,9 +89,111 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Game\Data\Art\TitleArt2.txt">
+    <Content Include="Game\Data\Art\GameWonArt.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibVLCSharp" Version="3.7.0" />
+    <PackageReference Include="System.Windows.Extensions" Version="8.0.0-preview.5.23280.8" />
+    <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Game\Data\Sounds\166187__drminky__creepy-dungeon-ambience.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\177958__sclolex__water-dripping-in-cave.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\202096__spookymodem__goblin-cackle.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\202100__spookymodem__goblin-scream.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\209578__zott820__cash-register-purchase.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\210997__zagi2__demonic-vocal-intro.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\232685__julius_galla__atmosphere-cave-loop.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\233065__lukeupf__stairs.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\249813__spookymodem__goblin-death.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\268227__xxchr0nosxx__swing.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\322447__goodlistener__dungeon-2.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\353615__timothy_neville__walking-steps.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\364221__noedell__noedell-royalty-free-horrorhalloween-ambience.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\372252__tomchikrec__creaky-noises-echoey.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\388340__phlair__dungeon-ambiance.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\417330__beatarchive__thunder-short-intro.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\456384__lost_dream__intro.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\490951__nox_sound__footsteps_walk.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\492518__soundflakes__giant-demon-death.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\516566__kinoton__dark-dungeon-ambience.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\536180__fivebrosstopmosyt__ogre-roar-2.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\547041__eponn__hit-swing-sword-small-3.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\555425__tonsil5__zombie-pain-6.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\565051__aria_of_winds__hellishambience01.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\580442__bennynz__dungeon_lock_2.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\580443__bennynz__dungeon_lock_1.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\591161__corsart__dungeon-horror-atmosphere.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\606970__amaezingnooby__creepy-dungeon-ambience-elementary-memories-version.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\641931__kbrecordzz__dungeon-boss-aku.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\75235__creek23__cha-ching.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\97790__cgeffex__dungeon-gates.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

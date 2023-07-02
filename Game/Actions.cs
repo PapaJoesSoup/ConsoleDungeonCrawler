@@ -13,11 +13,11 @@ internal static class Actions
   /// </summary>
   public static void PickupOverlayItem()
   {
-    // search MapObject location from the top down for items to pick up
+    // search Tile location from the top down for items to pick up
     for (int i = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y].Count - 1; i >= 0; i--)
     {
       if (Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i].Type.Symbol == ' ') continue;
-      MapObject obj = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i];
+      Tile obj = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i];
       Item item = new();
       switch (obj.Type.Symbol)
       {
@@ -30,6 +30,10 @@ internal static class Actions
         case 'V':
           Vendor.Draw();
           break;
+        case 'E':
+          Game.IsWon = true;
+          GameWon.Draw();
+          break;
         case 'O':
         case 'k':
         case 'z':
@@ -37,13 +41,13 @@ internal static class Actions
         case 'B':
           if (obj.IsLootable)
           {
+            SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Pickup]);
             GamePlay.Messages.Add(new Message($"You loot  {((Monster)obj).Type.Name}...", Color.BurlyWood, Color.Black));
             Player.Gold += ((Monster)obj).Gold;
             GamePlay.Messages.Add(new Message($"You gained {((Monster)obj).Gold} gold!", Color.LimeGreen, Color.Black));
             item = Monster.Loot((Monster)obj);
             obj.IsLootable = false;
           }
-
           break;
         case 'i':
           item = Inventory.GetRandomItem();
@@ -54,54 +58,55 @@ internal static class Actions
         case '$':
           item = Gold.GetRandomItem();
           break;
-        default:
-          return;
       }
 
-      if (item.Type == ItemType.None) return;
+      if (item.Type == ItemType.None) continue;
+      SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Pickup]);
       Inventory.AddItem(item);
       string message = item.Type == ItemType.Gold
         ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!"
         : $"You Picked up {item.Description}!";
       GamePlay.Messages.Add(new Message(message, Color.LimeGreen, Color.Black));
-      Map.UpdateOverlayObject(obj);
+      Map.UpdateOverlayTile(obj);
     }
   }
 
   public static void OpenDoor()
   {
-    if (!Map.Player.IsNextToMapGrid('+', out MapObject door)) return;
-    ObjectType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new ObjectType();
+    if (!Map.Player.IsNextToMapGrid('+', out Tile door)) return;
+    TileType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new TileType();
     if (type.Symbol == ' ') return;
+    SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Door]);
     GamePlay.Messages.Add(new Message("Opening Door...", Color.Yellow, Color.Black));
-    Map.RemoveFromMapObjects(door);
+    Map.RemoveFromMapTiles(door);
     door.Type = type;
     door.IsPassable = type.IsPassable;
-    Map.AddToMapObjects(door);
+    Map.AddToMapTiles(door);
     door.Draw();
   }
 
   public static void CloseDoor()
   {
-    if (!Map.Player.IsNextToMapGrid('-', out MapObject door)) return;
-    ObjectType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new ObjectType();
+    if (!Map.Player.IsNextToMapGrid('-', out Tile door)) return;
+    TileType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new TileType();
     if (type.Symbol == ' ') return;
+    SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Door]);
     GamePlay.Messages.Add(new Message("Closing Door...", Color.Yellow, Color.Black));
-    Map.RemoveFromMapObjects(door);
+    Map.RemoveFromMapTiles(door);
     door.Type = type;
     door.IsPassable = type.IsPassable;
-    Map.AddToMapObjects(door);
+    Map.AddToMapTiles(door);
     door.Draw();
   }
 
   public static void MonsterActions()
   {
-    for (int charIdx = 0; charIdx < Map.LevelOverlayObjects[Game.CurrentLevel].Count; charIdx++)
+    for (int charIdx = 0; charIdx < Map.LevelOverlayTiles[Game.CurrentLevel].Count; charIdx++)
     {
-      char symbol = Map.LevelOverlayObjects[Game.CurrentLevel].Keys.ElementAt(charIdx);
-      for (int index = 0; index < Map.LevelOverlayObjects[Game.CurrentLevel][symbol].Count; index++)
+      char symbol = Map.LevelOverlayTiles[Game.CurrentLevel].Keys.ElementAt(charIdx);
+      for (int index = 0; index < Map.LevelOverlayTiles[Game.CurrentLevel][symbol].Count; index++)
       {
-        MapObject obj = Map.LevelOverlayObjects[Game.CurrentLevel][symbol][index];
+        Tile obj = Map.LevelOverlayTiles[Game.CurrentLevel][symbol][index];
         if (obj is not Monster monster) continue;
         if (!monster.IsVisible || !monster.IsAlive) continue;
         // remember monster state before detecting player so we can delay attack one turn.

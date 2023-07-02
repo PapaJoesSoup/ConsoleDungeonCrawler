@@ -10,31 +10,38 @@ namespace ConsoleDungeonCrawler.Game.Screens;
 /// </summary>
 internal static class GamePlay
 {
+  #region Properties
+
   private static readonly Box StatusBox = new(1, 0, 208, 8);
   internal static readonly Box MapBox = new(1, 7, 178, 35);
   private static readonly Box OverlayBox = new(178, 7, 31, 30);
   private static readonly Box MessageBox = new(1, 41, 178, 12);
   private static readonly Box LegendBox = new(178, 36, 31, 17);
 
-  internal static readonly List<Message> Messages = new();
+  internal static List<Message> Messages = new();
   internal static readonly int MessageWidth = MessageBox.Width - 33;
-
-  // These are unicode values for box drawing characters.   Expects Console.OutputEncoding = Encoding.Unicode and Consolas font selected in Terminal Settings.
-  // Note that font settings cannot be changed in code, so the user must do this manually.
-  // refer to: https://www.fileformat.info/info/unicode/font/consolas/grid.htm for a grid of all characters
-  internal static readonly BoxChars BChars = new("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560", "\u2563", "\u2566", "\u2569", "\u256c");
-
-  private static int currentBag = 1;
+  private static readonly int MessageHeight = MessageBox.Height - 2;
 
   // MessageOffset is a negative number that decrements the index of the first message to display in the message Section
   private static int messageOffset;
 
+
+  // These are unicode values for box drawing characters.   Expects Console.OutputEncoding = Encoding.Unicode and Consolas font selected in Terminal Settings.
+  // Note that font settings cannot be changed in code, so the user must do this manually in the terminal app.
+  // refer to: https://www.fileformat.info/info/unicode/font/consolas/grid.htm for a grid of all characters
+  internal static readonly BoxChars BChars = new("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560",
+    "\u2563", "\u2566", "\u2569", "\u256c");
+
+  // This is used to manage display of bags in both the inventory section as well as the PlayerInventory and Vendor screens
+  private static int currentBag = 1;
+
   // LastKey is used to help with player combat state management
   private static ConsoleKeyInfo lastKey;
 
+  #endregion Properties
+
   internal static void Draw()
   {
-    //Borders();
     BordersEx();
     MapSection();
     LegendSection();
@@ -68,14 +75,14 @@ internal static class GamePlay
     // now to clean up the corners
     BChars.MidLeft.WriteAt(MapBox.Left, MapBox.Top, Color.Gold);
     BChars.MidTop.WriteAt(OverlayBox.Left, MapBox.Top, Color.Gold);
-    BChars.MidRight.WriteAt(OverlayBox.Left + OverlayBox.Width - 1 , MapBox.Top, Color.Gold);
+    BChars.MidRight.WriteAt(OverlayBox.Left + OverlayBox.Width - 1, MapBox.Top, Color.Gold);
 
     BChars.MidLeft.WriteAt(LegendBox.Left, LegendBox.Top, Color.Gold);
     BChars.MidRight.WriteAt(LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Color.Gold);
 
     BChars.MidLeft.WriteAt(MessageBox.Left, MessageBox.Top, Color.Gold);
     BChars.MidRight.WriteAt(MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Color.Gold);
-       
+
     BChars.MidBottom.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
 
   }
@@ -99,23 +106,27 @@ internal static class GamePlay
     {
       BChars.Ver.WriteAt(col - 2, index, Color.Gold);
     }
-    $"Player - Level: {Player.Level}".WriteAt(col, row, Color.Gold); row++;
-    $"Class: {Player.Class}".WriteAt(col, row, ConsoleColor.White); row++;
+
+    $"Player - Level: {Player.Level}".WriteAt(col, row, Color.Gold);
+    row++;
+    $"Class: {Player.Class}".WriteAt(col, row, ConsoleColor.White);
+    row++;
     "Weapon: ".WriteAt(col, row, ConsoleColor.White);
-    $"{Player.Weapon.Name}".WriteAt(col + 8, row, ColorEx.RarityColor(Player.Weapon.Rarity)); row++;
-    $"Health: {Player.Health}/{Player.MaxHealth}".WriteAt(col, row, ConsoleColor.White); row++;
-    $"Mana: {Player.Mana}/{Player.MaxMana}".WriteAt(col, row, ConsoleColor.White); row++;
+    $"{Player.Weapon.Name}".WriteAt(col + 8, row, ColorEx.RarityColor(Player.Weapon.Rarity));
+    row++;
+    $"Health: {Player.Health}/{Player.MaxHealth}".WriteAt(col, row, ConsoleColor.White);
+    row++;
+    $"Mana: {Player.Mana}/{Player.MaxMana}".WriteAt(col, row, ConsoleColor.White);
+    row++;
     $"Gold: {Player.Gold:C}g".WriteAt(col, row, ConsoleColor.White);
   }
 
   private static void SpellStats()
   {
-    int col;
-    int row;
     int count = 0;
     //Spells
-    col = StatusBox.Left + 140;
-    row = StatusBox.Top + 1;
+    int col = StatusBox.Left + 140;
+    int row = StatusBox.Top + 1;
     int colWidth = 18;
     BChars.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
     BChars.MidBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
@@ -123,6 +134,7 @@ internal static class GamePlay
     {
       BChars.Ver.WriteAt(col - 2, index, Color.Gold);
     }
+
     "Spells".WriteAt(col, row, Color.Gold);
     row++;
     for (int index = 0; index < 10; index++) // 10 spells max
@@ -133,6 +145,7 @@ internal static class GamePlay
         Spell spell = Player.Spells[index];
         $"{spell.Name}: {spell.Description} ".WriteAt(col, row, ConsoleColor.White);
       }
+
       row++;
       count++;
 
@@ -145,11 +158,10 @@ internal static class GamePlay
 
   private static void InventoryStats()
   {
-    int col;
-    int row;
-    //Inventory
-    col = StatusBox.Left + 31;
-    row = StatusBox.Top + 1;
+    int col =
+      //Inventory
+      StatusBox.Left + 31;
+    int row = StatusBox.Top + 1;
     int colWidth = 25;
     int count = 0;
     int totalBags = Inventory.Bags.Count;
@@ -171,6 +183,7 @@ internal static class GamePlay
         Item item = bag.Items[index];
         item.WriteInventoryItem(col, row, colWidth);
       }
+
       row++;
       count++;
       if (count < 5) continue;
@@ -192,7 +205,8 @@ internal static class GamePlay
     {
       string armorText = $"{armor.ArmorType}: ";
       armorText.WriteAt(col, row, ConsoleColor.White);
-      armor.Name.PadRight(50 - armorText.Length).WriteAt(col + armorText.Length, row, ColorEx.RarityColor(armor.Rarity));
+      armor.Name.PadRight(50 - armorText.Length)
+        .WriteAt(col + armorText.Length, row, ColorEx.RarityColor(armor.Rarity));
       row++;
     }
   }
@@ -211,16 +225,18 @@ internal static class GamePlay
   {
     int col = OverlayBox.Left + 2;
     int row = OverlayBox.Top + 1;
-    "Map objects: ".WriteAt(col, row, Color.Gold); row += 2;
-    foreach (char type in Map.LevelOverlayObjects[Game.CurrentLevel].Keys)
+    "Map objects: ".WriteAt(col, row, Color.Gold);
+    row += 2;
+    foreach (char type in Map.LevelOverlayTiles[Game.CurrentLevel].Keys)
     {
-      foreach (MapObject mapObject in Map.LevelOverlayObjects[Game.CurrentLevel][type])
+      foreach (Tile tile in Map.LevelOverlayTiles[Game.CurrentLevel][type])
       {
-        if (!mapObject.IsVisible || mapObject.Type.Symbol == ' ') continue;
-        mapObject.WriteLegendItem(col, row, OverlayBox.Width - 2);
+        if (!tile.IsVisible || tile.Type.Symbol == ' ') continue;
+        tile.WriteLegendItem(col, row, OverlayBox.Width - 2);
         row++;
       }
     }
+
     // clear the rest of the legend box
     if (row >= OverlayBox.Top + OverlayBox.Height - 1) return;
     for (int index = row; index < OverlayBox.Top + OverlayBox.Height - 1; index++)
@@ -231,19 +247,32 @@ internal static class GamePlay
   {
     int col = LegendBox.Left + 2;
     int row = LegendBox.Top + 1;
-    "Game Play Legend: ".WriteAt(col, row, Color.Gold); row += 2;
-    "[W,A,S,D] - Move".WriteAt(col, row, ConsoleColor.White); row++;
-    "[Shift+W,A,S,D] - Jump".WriteAt(col, row, ConsoleColor.White); row++;
-    "[T] - Attack Enemy".WriteAt(col, row, ConsoleColor.White); row++;
-    "[1-0] - Cast Spell".WriteAt(col, row, ConsoleColor.White); row++;
-    "[H] - Use Healing Potion".WriteAt(col, row, ConsoleColor.White); row++;
-    "[M] - Use Mana Potion".WriteAt(col, row, ConsoleColor.White); row++;
-    "[G] - Use Bandage".WriteAt(col, row, ConsoleColor.White); row++;
-    "[O,C] - Open/Close Door".WriteAt(col, row, ConsoleColor.White); row++;
-    "[< >] - Switch Bag Shown".WriteAt(col, row, ConsoleColor.White); row++;
-    "[Esc] - Pause Menu".WriteAt(col, row, ConsoleColor.White); row++;
-    "[Shift+I] - Inventory".WriteAt(col, row, ConsoleColor.White); row++;
-    "[Shift+S] - Spells".WriteAt(col, row, ConsoleColor.White); row++;
+    "Game Play Legend: ".WriteAt(col, row, Color.Gold);
+    row += 2;
+    "[W,A,S,D] - Move".WriteAt(col, row, ConsoleColor.White);
+    row++;
+    "[Shift+W,A,S,D] - Jump".WriteAt(col, row, ConsoleColor.White);
+    row++;
+    "[T] - Attack Enemy".WriteAt(col, row, ConsoleColor.White);
+    row++;
+    "[1-0] - Cast Spell".WriteAt(col, row, ConsoleColor.White);
+    row++;
+    "[H] - Use Healing Potion".WriteAt(col, row, ConsoleColor.White);
+    row++;
+    "[M] - Use Mana Potion".WriteAt(col, row, ConsoleColor.White);
+    row++;
+    "[G] - Use Bandage".WriteAt(col, row, ConsoleColor.White);
+    row++;
+    "[O,C] - Open/Close Door".WriteAt(col, row, ConsoleColor.White);
+    row++;
+    "[< >] - Switch Bag Shown".WriteAt(col, row, ConsoleColor.White);
+    row++;
+    "[Esc] - Pause Menu".WriteAt(col, row, ConsoleColor.White);
+    row++;
+    "[Shift+I] - Inventory".WriteAt(col, row, ConsoleColor.White);
+    row++;
+    "[Shift+S] - Spells".WriteAt(col, row, ConsoleColor.White);
+    row++;
     "[Shift+Q] - Quit".WriteAt(col, row, ConsoleColor.White);
   }
 
@@ -252,19 +281,19 @@ internal static class GamePlay
     // display the last 10 messages or less.  allow scrolling up or down through messages in pages of 8
     int col = MessageBox.Left + 2;
     int row = MessageBox.Top + 1;
-    int displayCount = MessageBox.Height - 2;
     if (messageOffset > 0) messageOffset = 0;
     if (messageOffset < -Messages.Count) messageOffset = -Messages.Count;
     int end = Messages.Count + messageOffset;
     if (Messages.Count < end) end = Messages.Count;
     int start = 0;
-    if (end > displayCount) start = end - displayCount;
-    if (end < displayCount && Messages.Count >= displayCount) end = displayCount;
+    if (end > MessageHeight) start = end - MessageHeight;
+    if (end < MessageHeight && Messages.Count >= MessageHeight) end = MessageHeight;
     for (int index = start; index < end; index++)
     {
       Messages[index].WriteMessageAt(col, row);
       row++;
     }
+
     // clear the rest of the message box
     if (row >= MessageBox.Top + MessageBox.Height - 1) return;
     for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
@@ -281,12 +310,18 @@ internal static class GamePlay
     for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
       BChars.Ver.WriteAt(col, index, Color.Gold);
     col += 2;
-    "Messages Legend: ".WriteAt(col, row, Color.Gold); row += 2;
-    "[UpArrow] - Prev Message".WriteAt(col, row, Color.White); row++;
-    "[DownArrow] - Next Message".WriteAt(col, row, Color.White); row++;
-    "[PageUP] - Messages - 10".WriteAt(col, row, Color.White); row++;
-    "[PageDown] - Messages + 10".WriteAt(col, row, Color.White); row++;
-    "[Home] - First Message".WriteAt(col, row, Color.White); row++;
+    "Messages Legend: ".WriteAt(col, row, Color.Gold);
+    row += 2;
+    "[UpArrow] - Prev Message".WriteAt(col, row, Color.White);
+    row++;
+    "[DownArrow] - Next Message".WriteAt(col, row, Color.White);
+    row++;
+    "[PageUP] - Messages - 10".WriteAt(col, row, Color.White);
+    row++;
+    "[PageDown] - Messages + 10".WriteAt(col, row, Color.White);
+    row++;
+    "[Home] - First Message".WriteAt(col, row, Color.White);
+    row++;
     "[End] - Last Message".WriteAt(col, row, Color.White);
   }
 
@@ -318,6 +353,9 @@ internal static class GamePlay
           break;
         case ConsoleKey.Q:
           Game.IsOver = true;
+          break;
+        case ConsoleKey.E:
+          Game.IsWon = true;
           break;
       }
     }
@@ -386,13 +424,14 @@ internal static class GamePlay
           Map.Player.Attack();
           break;
         case ConsoleKey.F5:
-          Map.ShowFullMap();
+          Map.ShowAllMapTiles();
           break;
         case ConsoleKey.F6:
-          Map.ShowFullOverlay();
+          Map.ShowAllOverlayTiles();
           break;
       }
     }
+
     ConsoleEx.FlushInput();
   }
 }

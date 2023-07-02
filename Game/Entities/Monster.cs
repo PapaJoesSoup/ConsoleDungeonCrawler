@@ -1,13 +1,12 @@
 ﻿using System.Drawing;
-using System.Reflection.Emit;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game.Entities;
 
-internal class Monster : MapObject
+internal class Monster : Tile
 {
-  private int health = 10;
+  private int health;
   internal int MaxHealth = 10;
   internal int Mana;
   internal int MaxMana;
@@ -18,9 +17,9 @@ internal class Monster : MapObject
   internal bool IsAlive = true;
   internal bool InCombat;
 
-  internal Monster(MapObject obj, int level)
+  internal Monster(Tile obj, int level)
   {
-    // set Base MapObject properties
+    // set Base Tile properties
     X = obj.X;
     Y = obj.Y;
     Type = obj.Type;
@@ -52,6 +51,7 @@ internal class Monster : MapObject
     Player.InCombat = true;
     BackgroundColor = Color.DarkOrange;
     Draw();
+    SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GoblinCackle]);
     GamePlay.Messages.Add(new Message($"A {Type.Name} spots you!  You are in combat!", Color.Red, Color.Black));
   }
 
@@ -71,6 +71,7 @@ internal class Monster : MapObject
     // check if player is within radius of Weapon range
     if (GetDistance(Map.Player) <= weapon.Range)
     {
+      SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GoblinScream]);
       // roll to hit
       if (Dice.Roll(1, 20) < 10) return;
       // roll for damage
@@ -93,31 +94,44 @@ internal class Monster : MapObject
   private void MoveTo(Position newPos)
   {
     // Monsters can step on overlay items (items/dead monsters on the ground).  Layers are used to preserve items and dead monsters.
-    // This will move a monter to a new position, moving them to another layer if needed to preserve items on the ground.
+    // This will move a monster to a new position, moving them to another layer if needed to preserve items on the ground.
     // Layer 0 is reserved to the Map overlay object when the overlays are loaded.  The top most layer is the last layer in the list.
-
+    // We also wan to make sure that living monsters are always on the top layer, so we will move them to the top layer if needed.
     if (!CanMoveTo(newPos)) return;
+
     Position oldPos = new(X, Y);
     X = newPos.X;
     Y = newPos.Y;
 
-    if (Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][0].ContainsItem())
-      Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y].Add(this);
-    else 
-      Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][0] = this;
+    List<Tile> newList = Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y];
+    List<Tile> oldList = Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y];
 
-    for (int layer = 0; layer < Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Count; layer++)
+    // there is always at least one item in the list, the Map overlay object
+    // add monster to the new cell
+    if (newList.Count > 1)
+      newList.Add(this);
+    else
     {
-      if (Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][layer] != this) continue;
-      Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].RemoveAt(layer);
-      if (Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Count == 0)
-      {
-        Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Add(new MapObject(oldPos.X, oldPos.Y, new ObjectType(true)));
-        Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
-      }
-      break;
+      if (newList[0].ContainsItem()) newList.Add(this);
+      else newList[0] = this;
     }
 
+    // remove this monster from the old cell
+    if (oldList.Count == 1)
+    {
+      oldList[0] = new Tile(oldPos.X, oldPos.Y, new TileType(true));
+      Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+    }
+    else
+    {
+      for (int layer = 1; layer < oldList.Count; layer++)
+      {
+        if (oldList[layer] != this) continue;
+        oldList.RemoveAt(layer);
+        break;
+      }
+    }
+    Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
     Draw();
   }
 
@@ -136,6 +150,7 @@ internal class Monster : MapObject
       {
         health = 0;
         IsAlive = false;
+        SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GoblinDeath]);
         GamePlay.Messages.Add(new Message($"You killed the {Type.Name}!", Color.LimeGreen, Color.Black));
         int xp = Dice.Roll(level * 2);
         GamePlay.Messages.Add(new Message($"You gained {xp} experience!", Color.LimeGreen, Color.Black));
@@ -145,7 +160,7 @@ internal class Monster : MapObject
         IsPassable = true;
         InCombat = false;
         Draw();
-        Map.RemoveFromOverlayObjects(this);
+        Map.RemoveFromOverlayTiles(this);
         Player.InCombat = Player.IsInCombat();
       }
       else
@@ -156,11 +171,11 @@ internal class Monster : MapObject
   internal static bool CanMoveTo(Position pos)
   {
     // check to see if there is an object that is not passable or some other immovable object
-    foreach (MapObject obj in Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y])
+    foreach (Tile obj in Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y])
       if (!obj.IsPassable) return false;
     return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable;
   }
-  
+
   private static int SetOdds(char type)
   {
     switch (type)

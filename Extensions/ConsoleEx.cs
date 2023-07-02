@@ -43,7 +43,8 @@ internal static class ConsoleEx
     Clear();
     Console.OutputEncoding = System.Text.Encoding.Unicode;
     // Maximize console window  Use if you have a console window set to a specific size and is not maximized (fullscreen focused
-    //MaximizeConsoleWindow();
+
+    MaximizeConsoleWindow();
     // Enable extended colors
     EnableExtendedColors();
 
@@ -56,6 +57,9 @@ internal static class ConsoleEx
   /// </summary>
   private static void MaximizeConsoleWindow()
   {
+    // Only maximize if the window is not already maximized
+    if (Console.WindowWidth >= Program.MinWindowWidth && Console.WindowHeight >= Program.MinWindowHeight) return;
+
     // Setup console to allow window to be maximized
     // Import the necessary functions from user32.dll
     [DllImport("user32.dll")]
@@ -73,7 +77,6 @@ internal static class ConsoleEx
     // Constants for the ShowWindow function
     const int swMaximize = 3;
     IntPtr consoleWindowHandle = GetForegroundWindow();
-    ShowWindow(consoleWindowHandle, swMaximize);
 
     // Get the screen size
     GetWindowRect(consoleWindowHandle, out Rect screenRect);
@@ -81,6 +84,7 @@ internal static class ConsoleEx
     int width = screenRect.Right - screenRect.Left;
     int height = screenRect.Bottom - screenRect.Top;
     MoveWindow(consoleWindowHandle, screenRect.Left, screenRect.Top, width, height, true);
+    ShowWindow(consoleWindowHandle, swMaximize);
     SetScreenSizes(width, height);
   }
 
@@ -122,17 +126,28 @@ internal static class ConsoleEx
     while (Console.KeyAvailable) Console.ReadKey(true);
   }
 
-  // Extension methods for char and string console writes
+  //Utility Methods
+  internal static void ResetColor()
+  {
+    Console.Write(ColorEx.ResetColor);
+  }
 
-  internal static void WriteLegendItem(this MapObject mapObject, int col, int row, int width)
+  internal static void Clear()
+  {
+    ResetColor();
+    Console.Clear();
+  }
+
+  // string Extension methods for custom screen and dialog writes
+  internal static void WriteLegendItem(this Tile tile, int col, int row, int width)
   {
     // create a formatted line containing the symbol and the type of the map object
-    int padding = width - mapObject.Type.Name.Length - 6;
-    int paddingStart = col + mapObject.Type.Name.Length + 4;
+    int padding = width - tile.Type.Name.Length - 6;
+    int paddingStart = col + tile.Type.Name.Length + 4;
     WriteAt(' ', col, row, Color.White, Color.DimGray);
-    WriteAt(mapObject.Type.Symbol.ToString(), col + 1, row, mapObject.Type.ForegroundColor, mapObject.Type.BackgroundColor);
+    WriteAt(tile.Type.Symbol.ToString(), col + 1, row, tile.Type.ForegroundColor, tile.Type.BackgroundColor);
     WriteAt(": ", col + 2, row, Color.White, Color.DimGray);
-    WriteAt(mapObject.Type.Name, col + 4, row, mapObject.Type.ForegroundColor, Color.DimGray);
+    WriteAt(tile.Type.Name, col + 4, row, tile.Type.ForegroundColor, Color.DimGray);
     WriteAt(new string(' ', padding), paddingStart, row, Color.White, Color.DimGray);
   }
 
@@ -144,7 +159,10 @@ internal static class ConsoleEx
     WriteAt(item.Name.PadRight(col + colWidth), col + 5, row, ColorEx.RarityColor(item.Rarity));
   }
 
+  // string and char extension methods
+
   // WriteAlignedAt Methods
+  #region WriteAlignedAt Methods
   internal static void WriteAlignedAt(this string s, HAlign hAlign)
   {
     int x = hAlign switch
@@ -590,8 +608,10 @@ internal static class ConsoleEx
     }
     WriteAt(s, x + xOffset, y + yOffset, color, bgColor);
   }
+  #endregion WriteAlignedAt Methods
 
   // WriteAt string methods
+  #region WriteAt string methods
   private static void WriteAt(this string s, int x, int y)
   {
     try
@@ -847,8 +867,10 @@ internal static class ConsoleEx
       Console.WriteLine(e.Message);
     }
   }
+  #endregion WriteAt string methods
 
   //WriteAt Char Methods
+  #region WriteAt char methods
   internal static void WriteAt(this char c, int x, int y, ConsoleColor color)
   {
     try
@@ -1036,8 +1058,9 @@ internal static class ConsoleEx
       Console.WriteLine(e.Message);
     }
   }
+  #endregion WriteAt char methods
 
-
+  #region Extended Color WriteAt Char Methods
   // Extended Color WriteAt Char Methods
   internal static void WriteAt(this char c, int x, int y, Color color, Color bgColor)
   {
@@ -1109,9 +1132,10 @@ internal static class ConsoleEx
       Console.WriteLine(e.Message);
     }
   }
-
+  #endregion Extended Color WriteAt Char Methods
 
   // Extended Color WriteAt String Methods
+  #region Extended Color WriteAt String Methods
   internal static void WriteAt(this string s, int x, int y, Color color)
   {
     try
@@ -1213,9 +1237,10 @@ internal static class ConsoleEx
       Console.WriteLine(e.Message);
     }
   }
-
+#endregion Extended Color WriteAt String Methods
 
   // WriteBorder Methods
+  #region WriteBorder Methods
   internal static void WriteBorder(this Box box, BoxChars bChars, ConsoleColor color)
   {
     try
@@ -1283,85 +1308,7 @@ internal static class ConsoleEx
       Console.WriteLine(e.Message);
     }
   }
-
-
-  // Flashing Methods
-  // make a char flash
-  internal static void FlashAt(this char c, int x, int y, int flashCount, int flashDelay)
-  {
-    for (int i = 0; i < flashCount; i++)
-    {
-      WriteAt(c, x, y, ConsoleColor.Black, ConsoleColor.White);
-      Thread.Sleep(flashDelay);
-      WriteAt(c, x, y, ConsoleColor.White, ConsoleColor.Black);
-      Thread.Sleep(flashDelay);
-    }
-  }
-
-  // make a char flash with a given color and delay
-  internal static void FlashAt(this char c, int x, int y, int flashCount, int flashDelay,
-    ConsoleColor color)
-  {
-    for (int i = 0; i < flashCount; i++)
-    {
-      WriteAt(c, x, y, color, ConsoleColor.Black);
-      Thread.Sleep(flashDelay);
-      WriteAt(c, x, y, ConsoleColor.Black, color);
-      Thread.Sleep(flashDelay);
-    }
-  }
-
-  // make a char flash with a given color and background color and delay
-  internal static void FlashAt(this char c, int x, int y, int flashCount, int flashDelay,
-    ConsoleColor color, ConsoleColor bgColor)
-  {
-    for (int i = 0; i < flashCount; i++)
-    {
-      WriteAt(c, x, y, color, bgColor);
-      Thread.Sleep(flashDelay);
-      WriteAt(c, x, y, bgColor, color);
-      Thread.Sleep(flashDelay);
-    }
-  }
-
-  // make a string flash
-  internal static void FlashAt(this string s, int x, int y, int flashCount, int flashDelay)
-  {
-    for (int i = 0; i < flashCount; i++)
-    {
-      WriteAt(s, x, y, ConsoleColor.Black, ConsoleColor.White);
-      Thread.Sleep(flashDelay);
-      WriteAt(s, x, y, ConsoleColor.White, ConsoleColor.Black);
-      Thread.Sleep(flashDelay);
-    }
-  }
-
-  // make a string flash with a given color and delay
-  internal static void FlashAt(this string s, int x, int y, int flashCount, int flashDelay,
-    ConsoleColor color)
-  {
-    for (int i = 0; i < flashCount; i++)
-    {
-      WriteAt(s, x, y, color, ConsoleColor.Black);
-      Thread.Sleep(flashDelay);
-      WriteAt(s, x, y, ConsoleColor.Black, color);
-      Thread.Sleep(flashDelay);
-    }
-  }
-
-  // make a string flash with a given color and background color and delay
-  internal static void FlashAt(this string s, int x, int y, int flashCount, int flashDelay,
-    ConsoleColor color, ConsoleColor bgColor)
-  {
-    for (int i = 0; i < flashCount; i++)
-    {
-      WriteAt(s, x, y, color, bgColor);
-      Thread.Sleep(flashDelay);
-      WriteAt(s, x, y, bgColor, color);
-      Thread.Sleep(flashDelay);
-    }
-  }
-
+  #endregion WriteBorder Methods
 
   // Read Methods
   internal static int ReadInt(int x, int y, Color fgColor, Color bgColor)
@@ -1406,15 +1353,4 @@ internal static class ConsoleEx
     return result;
   }
 
-  //Utility Methods
-  internal static void ResetColor()
-  {
-    Console.Write(ColorEx.ResetColor);
-  }
-
-  internal static void Clear()
-  {
-    ResetColor();
-    Console.Clear();
-  }
 }
