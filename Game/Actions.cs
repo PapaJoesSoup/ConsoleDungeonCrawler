@@ -23,15 +23,19 @@ internal static class Actions
       {
         case '\u25b2':
           UpStairs();
+          SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Stairs]);
           break;
         case '\u25bc':
           DownStairs();
+          SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Stairs]);
           break;
         case 'V':
+          SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Vendor]);
           Vendor.Draw();
           break;
         case 'E':
           Game.IsWon = true;
+          SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GameWon]);
           GameWon.Draw();
           break;
         case 'O':
@@ -41,7 +45,6 @@ internal static class Actions
         case 'B':
           if (obj.IsLootable)
           {
-            SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Pickup]);
             GamePlay.Messages.Add(new Message($"You loot  {((Monster)obj).Type.Name}...", Color.BurlyWood, Color.Black));
             Player.Gold += ((Monster)obj).Gold;
             GamePlay.Messages.Add(new Message($"You gained {((Monster)obj).Gold} gold!", Color.LimeGreen, Color.Black));
@@ -61,13 +64,14 @@ internal static class Actions
       }
 
       if (item.Type == ItemType.None) continue;
-      SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Pickup]);
       Inventory.AddItem(item);
       string message = item.Type == ItemType.Gold
         ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!"
         : $"You Picked up {item.Description}!";
       GamePlay.Messages.Add(new Message(message, Color.LimeGreen, Color.Black));
       Map.UpdateOverlayTile(obj);
+      if (item.Type != ItemType.None || obj is Monster)
+        SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Pickup]);
     }
   }
 

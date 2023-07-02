@@ -1,6 +1,7 @@
 ﻿using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Screens;
 using System.Drawing;
+using LibVLCSharp.Shared;
 
 namespace ConsoleDungeonCrawler.Game.Entities;
 
@@ -21,6 +22,8 @@ internal class Player : Tile
   internal static readonly Dictionary<int, Spell> Spells = new();
   internal static bool InCombat = false;
 
+  internal static MediaPlayer EffectPlayer;
+
   internal Player()
   {
   }
@@ -34,6 +37,7 @@ internal class Player : Tile
     ForegroundColor = Type.ForegroundColor;
     BackgroundColor = Type.BackgroundColor;
     IsVisible = tile.IsVisible;
+    EffectPlayer = SoundSystem.GetPlayer();
 
     // Add 5 empty slots to armor set
     ArmorSet = new List<Armor>
@@ -130,12 +134,14 @@ internal class Player : Tile
         if (IsNextToOverlayGrid(out Tile objM) == ' ') return;
         if (objM is not Monster melee) return;
         GamePlay.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {melee.Type.Name}!"));
+        EffectPlayer.Play(SoundSystem.MSounds[Sound.SwordSwing]);
         melee.TakeDamage(Weapon.Damage);
         break;
       case WeaponType.Bow:
       case WeaponType.Wand:
         if (IsInRange(Weapon.Range, out Tile objR)) return;
         if (objR is not Monster ranged) return;
+        EffectPlayer.Play(SoundSystem.MSounds[Sound.RangedAttack]);
         GamePlay.Messages.Add(new Message($"You shoot your {Weapon.WeaponType} at the {ranged.Type.Name}!"));
         ranged.TakeDamage(Weapon.Damage);
         break;
@@ -238,6 +244,7 @@ internal class Player : Tile
     if (MaxMana > 0) MaxMana += 5;
     Health = MaxHealth;
     Mana = MaxMana;
+    EffectPlayer.Play(SoundSystem.MSounds[Sound.LevelUp]);
     GamePlay.Messages.Add(new Message($"You are now level {Level}!", Color.Green, Color.Black));
   }
 

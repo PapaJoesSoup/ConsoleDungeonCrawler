@@ -1,4 +1,5 @@
 ﻿using ConsoleDungeonCrawler.Extensions;
+using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Screens.Dialogs;
 using System.Drawing;
 
@@ -23,6 +24,11 @@ internal static class GameTitle
     LoadTitleArt();
     LoadBannerText();
     GameMenu.Draw();
+    SoundSystem.PlayEnter();
+    LoadTitleArt();
+    LoadBannerText();
+    Thread.Sleep(6000);
+
   }
 
   private static void LoadTitleArt()

@@ -50,11 +50,12 @@ internal static class SoundSystem
       { Sound.Ambiance2, new Media(libVlc, $"{Game.SoundPath}322447__goodlistener__dungeon-2.ogg", FromType.FromPath, options)},
       { Sound.Door, new Media(libVlc, $"{Game.SoundPath}580442__bennynz__dungeon_lock_2.ogg") },
       { Sound.Stairs, new Media(libVlc, $"{Game.SoundPath}233065__lukeupf__stairs.ogg") },
-      { Sound.FootSteps, new Media(libVlc, $"{Game.SoundPath}490951__nox_sound__footsteps_walk.ogg") },
+      { Sound.FootSteps, new Media(libVlc, $"{Game.SoundPath}490951__nox_footsteps1.ogg") },
       { Sound.GoblinCackle, new Media(libVlc, $"{Game.SoundPath}202096__spookymodem__goblin-cackle.ogg") },
       { Sound.GoblinScream, new Media(libVlc, $"{Game.SoundPath}202100__spookymodem__goblin-scream.ogg") },
       { Sound.GoblinDeath, new Media(libVlc, $"{Game.SoundPath}249813__spookymodem__goblin-death.ogg") },
-      { Sound.SwordSwing, new Media(libVlc, $"{Game.SoundPath}249813__spookymodem__goblin-death.ogg") },
+      { Sound.SwordSwing, new Media(libVlc, $"{Game.SoundPath}268227__xxchr0nosxx__swing.ogg") },
+      { Sound.RangedAttack, new Media(libVlc, $"{Game.SoundPath}547041__eponn__hit-swing-sword-small-3.ogg") },
       { Sound.Boss, new Media(libVlc, $"{Game.SoundPath}641931__kbrecordzz__dungeon-boss-aku.ogg") },
       { Sound.BossDeath, new Media(libVlc, $"{Game.SoundPath}210997__zagi2__demonic-vocal-intro.ogg") },
       { Sound.Vendor, new Media(libVlc, $"{Game.SoundPath}75235__creek23__cha-ching.ogg") },
@@ -77,18 +78,24 @@ internal static class SoundSystem
     };
   }
 
+  internal static MediaPlayer GetPlayer()
+  {
+    return new(libVlc);
+  }
+
+
   internal static void PlayTitle()
   {
     BackgroundMPlayer1.Stop();
     BackgroundMPlayer1.Play(MSounds[Sound.GameTitle]);
-    //BackgroundMPlayer2.Play(MSounds[Sound.Ambiance2]);
+    BackgroundMPlayer2.Play(MSounds[Sound.Ambiance1]);
   }
 
   internal static void PlayEnter()
   {
     BackgroundMPlayer1.Stop();
-    BackgroundMPlayer1.Play(MSounds[Sound.GameEnter]);
-    //BackgroundMPlayer2.Play(MSounds[Sound.Ambiance2]);
+    BackgroundMPlayer2.Stop();
+    PlayEffect(MSounds[Sound.GameEnter]);
   }
 
   internal static void PlayBackground()

@@ -207,8 +207,10 @@ internal enum Sound
   Stairs,
   FootSteps,
   SwordSwing,
+  RangedAttack,
   Intro,
   Vendor,
   Boss,
-  BossDeath
+  BossDeath,
+  LevelUp
 }

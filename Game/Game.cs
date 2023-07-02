@@ -87,6 +87,8 @@ internal static class Game
       if (IsRestart)
       {
         IsRestart = false;
+        SoundSystem.PlayEnter();
+        Thread.Sleep(6000);
         PlayGame();
       }
       if (IsOver)
@@ -113,7 +115,7 @@ internal static class Game
 
   private static void PlayGame()
   {
-    SoundSystem.PlayEnter();
+    SoundSystem.PlayBackground();
     Map.Instance = new Map(GamePlay.MapBox);
     GamePlay.Messages = new();
     ConsoleEx.Clear();

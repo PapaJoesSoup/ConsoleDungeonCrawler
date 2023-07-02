@@ -1,6 +1,8 @@
 ﻿using System.Drawing;
+using System.Threading;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Screens;
+using LibVLCSharp.Shared;
 
 namespace ConsoleDungeonCrawler.Game.Entities;
 
@@ -16,6 +18,8 @@ internal class Monster : Tile
   internal Spell Spell = new();
   internal bool IsAlive = true;
   internal bool InCombat;
+
+  internal MediaPlayer EffectPlayer;
 
   internal Monster(Tile obj, int level)
   {
@@ -39,6 +43,7 @@ internal class Monster : Tile
     Gold = Decimal.Round(level * Dice.Roll(.01M, 1.1M), 2);
     weapon = new Weapon();
     this.level = level;
+    EffectPlayer = SoundSystem.GetPlayer();
   }
 
   internal void DetectPlayer()
@@ -51,8 +56,8 @@ internal class Monster : Tile
     Player.InCombat = true;
     BackgroundColor = Color.DarkOrange;
     Draw();
-    SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GoblinCackle]);
     GamePlay.Messages.Add(new Message($"A {Type.Name} spots you!  You are in combat!", Color.Red, Color.Black));
+    EffectPlayer.Play(SoundSystem.MSounds[Sound.GoblinCackle]);
   }
 
   internal void Attack()
@@ -63,15 +68,10 @@ internal class Monster : Tile
     List<Position> path = PathFinding.FindPath(this, Map.Player);
     if (path.Count == 0) return;
 
-    // display path to player (testing)
-    //foreach (Position pos in path) Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].Highlight();
-    //this.Draw();
-    //Map.Player.Draw();
-
     // check if player is within radius of Weapon range
     if (GetDistance(Map.Player) <= weapon.Range)
     {
-      SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GoblinScream]);
+      EffectPlayer.Play(SoundSystem.MSounds[Sound.GoblinScream]);
       // roll to hit
       if (Dice.Roll(1, 20) < 10) return;
       // roll for damage
@@ -150,7 +150,7 @@ internal class Monster : Tile
       {
         health = 0;
         IsAlive = false;
-        SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GoblinDeath]);
+        EffectPlayer.Play(SoundSystem.MSounds[Sound.GoblinDeath]);
         GamePlay.Messages.Add(new Message($"You killed the {Type.Name}!", Color.LimeGreen, Color.Black));
         int xp = Dice.Roll(level * 2);
         GamePlay.Messages.Add(new Message($"You gained {xp} experience!", Color.LimeGreen, Color.Black));

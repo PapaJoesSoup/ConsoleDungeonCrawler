@@ -356,6 +356,7 @@ internal static class GamePlay
           break;
         case ConsoleKey.E:
           Game.IsWon = true;
+          SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GameWon]);
           break;
       }
     }
@@ -369,6 +370,7 @@ internal static class GamePlay
         case ConsoleKey.D:
           if (!Map.Player.Move(keyInfo.Key)) break;
           Messages.Add(new Message($"You moved {Map.GetDirection(keyInfo.Key)}..."));
+          //Player.EffectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
           Actions.PickupOverlayItem();
           break;
         case ConsoleKey.D0:

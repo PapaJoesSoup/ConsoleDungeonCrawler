@@ -152,6 +152,9 @@
     <None Update="Game\Data\Sounds\456384__lost_dream__intro.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Game\Data\Sounds\490951__nox_footsteps1.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Game\Data\Sounds\490951__nox_sound__footsteps_walk.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
