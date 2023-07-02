@@ -41,6 +41,7 @@ internal static class Actions
         case 'B':
           if (obj.IsLootable)
           {
+            SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Pickup]);
             GamePlay.Messages.Add(new Message($"You loot  {((Monster)obj).Type.Name}...", Color.BurlyWood, Color.Black));
             Player.Gold += ((Monster)obj).Gold;
             GamePlay.Messages.Add(new Message($"You gained {((Monster)obj).Gold} gold!", Color.LimeGreen, Color.Black));
@@ -60,6 +61,7 @@ internal static class Actions
       }
 
       if (item.Type == ItemType.None) continue;
+      SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Pickup]);
       Inventory.AddItem(item);
       string message = item.Type == ItemType.Gold
         ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!"
@@ -74,7 +76,7 @@ internal static class Actions
     if (!Map.Player.IsNextToMapGrid('+', out Tile door)) return;
     TileType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new TileType();
     if (type.Symbol == ' ') return;
-    MusicSystem.PlayEffect();
+    SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Door]);
     GamePlay.Messages.Add(new Message("Opening Door...", Color.Yellow, Color.Black));
     Map.RemoveFromMapTiles(door);
     door.Type = type;
@@ -88,7 +90,7 @@ internal static class Actions
     if (!Map.Player.IsNextToMapGrid('-', out Tile door)) return;
     TileType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new TileType();
     if (type.Symbol == ' ') return;
-    MusicSystem.PlayEffect();
+    SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Door]);
     GamePlay.Messages.Add(new Message("Closing Door...", Color.Yellow, Color.Black));
     Map.RemoveFromMapTiles(door);
     door.Type = type;

@@ -30,7 +30,7 @@ internal static class Game
   internal static readonly StringBuilder GameTitleText;
   internal static readonly StringBuilder GameWonText;
   internal static readonly StringBuilder GameOverText;
-  
+
   internal static readonly Dictionary<string, Dictionary<string, string>> Dungeons = new();
 
   static Game()
@@ -80,7 +80,7 @@ internal static class Game
       if (IsMainMenu)
       {
         IsMainMenu = false;
-        MusicSystem.PlayBackground();
+        SoundSystem.PlayTitle();
         GameTitle.Draw();
         PlayGame();
       }
@@ -92,6 +92,7 @@ internal static class Game
       if (IsOver)
       {
         IsOver = false;
+        SoundSystem.PlayTitle();
         GameOver.Draw();
         continue;
       }
@@ -99,6 +100,7 @@ internal static class Game
       if (IsWon)
       {
         IsWon = false;
+        SoundSystem.PlayTitle();
         GameWon.Draw();
         continue;
       }
@@ -111,6 +113,7 @@ internal static class Game
 
   private static void PlayGame()
   {
+    SoundSystem.PlayEnter();
     Map.Instance = new Map(GamePlay.MapBox);
     GamePlay.Messages = new();
     ConsoleEx.Clear();

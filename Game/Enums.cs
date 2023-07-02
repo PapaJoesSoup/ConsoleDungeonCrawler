@@ -190,3 +190,25 @@ public enum VAlign
   Bottom,
   Middle
 }
+
+internal enum Sound
+{
+  Ambiance1,
+  Ambiance2,
+  Door,
+  GameTitle,
+  GameEnter,
+  GameOver,
+  GameWon,
+  GoblinCackle,
+  GoblinScream,
+  GoblinDeath,
+  Pickup,
+  Stairs,
+  FootSteps,
+  SwordSwing,
+  Intro,
+  Vendor,
+  Boss,
+  BossDeath
+}

@@ -51,6 +51,7 @@ internal class Monster : Tile
     Player.InCombat = true;
     BackgroundColor = Color.DarkOrange;
     Draw();
+    SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GoblinCackle]);
     GamePlay.Messages.Add(new Message($"A {Type.Name} spots you!  You are in combat!", Color.Red, Color.Black));
   }
 
@@ -70,6 +71,7 @@ internal class Monster : Tile
     // check if player is within radius of Weapon range
     if (GetDistance(Map.Player) <= weapon.Range)
     {
+      SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GoblinScream]);
       // roll to hit
       if (Dice.Roll(1, 20) < 10) return;
       // roll for damage
@@ -106,7 +108,7 @@ internal class Monster : Tile
 
     // there is always at least one item in the list, the Map overlay object
     // add monster to the new cell
-    if (newList.Count > 1) 
+    if (newList.Count > 1)
       newList.Add(this);
     else
     {
@@ -148,6 +150,7 @@ internal class Monster : Tile
       {
         health = 0;
         IsAlive = false;
+        SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GoblinDeath]);
         GamePlay.Messages.Add(new Message($"You killed the {Type.Name}!", Color.LimeGreen, Color.Black));
         int xp = Dice.Roll(level * 2);
         GamePlay.Messages.Add(new Message($"You gained {xp} experience!", Color.LimeGreen, Color.Black));
@@ -172,7 +175,7 @@ internal class Monster : Tile
       if (!obj.IsPassable) return false;
     return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable;
   }
-  
+
   private static int SetOdds(char type)
   {
     switch (type)
