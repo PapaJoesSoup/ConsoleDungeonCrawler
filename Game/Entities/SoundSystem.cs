@@ -39,27 +39,29 @@ internal static class SoundSystem
     MediaEffectPlayer = new(libVlc);
 
     // create the media objects
+    //Note, it seems the VLC library does not like looping OGG files (seek issues).
+    //I had to convert them to WAV or MP3 files so they loop correctly.
     MSounds = new()
     {
-      { Sound.Intro, new Media(libVlc, $"{Game.SoundPath}565051__aria_of_winds__hellishambience01.ogg")},
-      { Sound.GameTitle, new Media(libVlc, $"{Game.SoundPath}565051__aria_of_winds__hellishambience01.ogg")},
-      { Sound.GameWon, new Media(libVlc, $"{Game.SoundPath}516566__kinoton__dark-dungeon-ambience.ogg")},
-      { Sound.GameOver, new Media(libVlc, $"{Game.SoundPath}166187__drminky__creepy-dungeon-ambience.ogg")},
-      { Sound.GameEnter, new Media(libVlc, $"{Game.SoundPath}97790__cgeffex__dungeon-gates.ogg")},
-      { Sound.Ambiance1, new Media(libVlc, $"{Game.SoundPath}388340__phlair__dungeon-ambiance.ogg", FromType.FromPath, options)},
-      { Sound.Ambiance2, new Media(libVlc, $"{Game.SoundPath}322447__goodlistener__dungeon-2.ogg", FromType.FromPath, options)},
-      { Sound.Door, new Media(libVlc, $"{Game.SoundPath}580442__bennynz__dungeon_lock_2.ogg") },
-      { Sound.Stairs, new Media(libVlc, $"{Game.SoundPath}233065__lukeupf__stairs.ogg") },
-      { Sound.FootSteps, new Media(libVlc, $"{Game.SoundPath}490951__nox_footsteps1.ogg") },
-      { Sound.GoblinCackle, new Media(libVlc, $"{Game.SoundPath}202096__spookymodem__goblin-cackle.ogg") },
-      { Sound.GoblinScream, new Media(libVlc, $"{Game.SoundPath}202100__spookymodem__goblin-scream.ogg") },
-      { Sound.GoblinDeath, new Media(libVlc, $"{Game.SoundPath}249813__spookymodem__goblin-death.ogg") },
-      { Sound.SwordSwing, new Media(libVlc, $"{Game.SoundPath}268227__xxchr0nosxx__swing.ogg") },
-      { Sound.RangedAttack, new Media(libVlc, $"{Game.SoundPath}547041__eponn__hit-swing-sword-small-3.ogg") },
-      { Sound.Boss, new Media(libVlc, $"{Game.SoundPath}641931__kbrecordzz__dungeon-boss-aku.ogg") },
-      { Sound.BossDeath, new Media(libVlc, $"{Game.SoundPath}210997__zagi2__demonic-vocal-intro.ogg") },
-      { Sound.Vendor, new Media(libVlc, $"{Game.SoundPath}75235__creek23__cha-ching.ogg") },
-      { Sound.Pickup, new Media(libVlc, $"{Game.SoundPath}209578__zott820__cash-register-purchase.ogg")}
+      { Sound.Intro, new Media(libVlc, $"{Game.SoundPath}Ogg/456384__lost_dream__intro.ogg")},
+      { Sound.GameTitle, new Media(libVlc, $"{Game.SoundPath}Mp3/565051__aria_of_winds__hellishambience.mp3", FromType.FromPath, options)},
+      { Sound.GameWon, new Media(libVlc, $"{Game.SoundPath}Ogg/516566__kinoton__dark-dungeon-ambience.ogg")},
+      { Sound.GameOver, new Media(libVlc, $"{Game.SoundPath}Ogg/166187__drminky__creepy-dungeon-ambience.ogg")},
+      { Sound.GameEnter, new Media(libVlc, $"{Game.SoundPath}Ogg/97790__cgeffex__dungeon-gates.ogg")},
+      { Sound.Ambiance1, new Media(libVlc, $"{Game.SoundPath}Wav/388340__phlair__dungeon-ambiance.wav", FromType.FromPath, options)},
+      { Sound.Ambiance2, new Media(libVlc, $"{Game.SoundPath}Wav/322447__goodlistener__dungeon-2.wav", FromType.FromPath, options)},
+      { Sound.Door, new Media(libVlc, $"{Game.SoundPath}Ogg/580442__bennynz__dungeon_lock_2.ogg") },
+      { Sound.Stairs, new Media(libVlc, $"{Game.SoundPath}Ogg/233065__lukeupf__stairs.ogg") },
+      { Sound.FootSteps, new Media(libVlc, $"{Game.SoundPath}Ogg/490951__nox_footsteps1.ogg") },
+      { Sound.GoblinCackle, new Media(libVlc, $"{Game.SoundPath}Ogg/202096__spookymodem__goblin-cackle.ogg") },
+      { Sound.GoblinScream, new Media(libVlc, $"{Game.SoundPath}Ogg/202100__spookymodem__goblin-scream.ogg") },
+      { Sound.GoblinDeath, new Media(libVlc, $"{Game.SoundPath}Ogg/249813__spookymodem__goblin-death.ogg") },
+      { Sound.SwordSwing, new Media(libVlc, $"{Game.SoundPath}Ogg/268227__xxchr0nosxx__swing.ogg") },
+      { Sound.RangedAttack, new Media(libVlc, $"{Game.SoundPath}Ogg/547041__eponn__hit-swing-sword-small-3.ogg") },
+      { Sound.Boss, new Media(libVlc, $"{Game.SoundPath}Ogg/641931__kbrecordzz__dungeon-boss-aku.ogg") },
+      { Sound.BossDeath, new Media(libVlc, $"{Game.SoundPath}Ogg/210997__zagi2__demonic-vocal-intro.ogg") },
+      { Sound.Vendor, new Media(libVlc, $"{Game.SoundPath}Ogg/75235__creek23__cha-ching.ogg") },
+      { Sound.Pickup, new Media(libVlc, $"{Game.SoundPath}Ogg/209578__zott820__cash-register-purchase.ogg")}
 
     };
 
@@ -100,8 +102,8 @@ internal static class SoundSystem
 
   internal static void PlayBackground()
   {
-    BackgroundMPlayer1.Play(MSounds[Sound.Ambiance1]);
-    BackgroundMPlayer2.Play(MSounds[Sound.Ambiance2]);
+    //BackgroundMPlayer1.Play(MSounds[Sound.Ambiance1]);
+    //BackgroundMPlayer2.Play(MSounds[Sound.Ambiance2]);
   }
 
   internal static void PlayEffect(Media media)

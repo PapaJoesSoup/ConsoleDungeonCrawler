@@ -101,100 +101,187 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Game\Data\Sounds\166187__drminky__creepy-dungeon-ambience.ogg">
+    <None Update="Game\Data\Sounds\Mp3\268227__xxchr0nosxx__swing.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\177958__sclolex__water-dripping-in-cave.ogg">
+    <None Update="Game\Data\Sounds\Mp3\353615__timothy_neville__walking-steps.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\202096__spookymodem__goblin-cackle.ogg">
+    <None Update="Game\Data\Sounds\Mp3\364221__noedell__noedell-royalty-free-horrorhalloween-ambience.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\202100__spookymodem__goblin-scream.ogg">
+    <None Update="Game\Data\Sounds\Mp3\417330__beatarchive__thunder-short-intro.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\209578__zott820__cash-register-purchase.ogg">
+    <None Update="Game\Data\Sounds\Mp3\565051__aria_of_winds__hellishambience.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\210997__zagi2__demonic-vocal-intro.ogg">
+    <None Update="Game\Data\Sounds\Mp3\591161__corsart__dungeon-horror-atmosphere.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\232685__julius_galla__atmosphere-cave-loop.ogg">
+    <None Update="Game\Data\Sounds\Mp3\606970__amaezingnooby__creepy-dungeon-ambience-elementary-memories-version.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\233065__lukeupf__stairs.ogg">
+    <None Update="Game\Data\Sounds\Mp3\641931__kbrecordzz__dungeon-boss-aku.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\249813__spookymodem__goblin-death.ogg">
+    <None Update="Game\Data\Sounds\Ogg\166187__drminky__creepy-dungeon-ambience.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\268227__xxchr0nosxx__swing.ogg">
+    <None Update="Game\Data\Sounds\Ogg\177958__sclolex__water-dripping-in-cave.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\322447__goodlistener__dungeon-2.ogg">
+    <None Update="Game\Data\Sounds\Ogg\202096__spookymodem__goblin-cackle.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\353615__timothy_neville__walking-steps.ogg">
+    <None Update="Game\Data\Sounds\Ogg\202100__spookymodem__goblin-scream.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\364221__noedell__noedell-royalty-free-horrorhalloween-ambience.ogg">
+    <None Update="Game\Data\Sounds\Ogg\209578__zott820__cash-register-purchase.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\372252__tomchikrec__creaky-noises-echoey.ogg">
+    <None Update="Game\Data\Sounds\Ogg\210997__zagi2__demonic-vocal-intro.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\388340__phlair__dungeon-ambiance.ogg">
+    <None Update="Game\Data\Sounds\Ogg\232685__julius_galla__atmosphere-cave-loop.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\417330__beatarchive__thunder-short-intro.ogg">
+    <None Update="Game\Data\Sounds\Ogg\233065__lukeupf__stairs.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\456384__lost_dream__intro.ogg">
+    <None Update="Game\Data\Sounds\Ogg\249813__spookymodem__goblin-death.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\490951__nox_footsteps1.ogg">
+    <None Update="Game\Data\Sounds\Ogg\268227__xxchr0nosxx__swing.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\490951__nox_sound__footsteps_walk.ogg">
+    <None Update="Game\Data\Sounds\Ogg\322447__goodlistener__dungeon-2.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\492518__soundflakes__giant-demon-death.ogg">
+    <None Update="Game\Data\Sounds\Ogg\353615__timothy_neville__walking-steps.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\516566__kinoton__dark-dungeon-ambience.ogg">
+    <None Update="Game\Data\Sounds\Ogg\364221__noedell__noedell-royalty-free-horrorhalloween-ambience.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\536180__fivebrosstopmosyt__ogre-roar-2.ogg">
+    <None Update="Game\Data\Sounds\Ogg\372252__tomchikrec__creaky-noises-echoey.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\547041__eponn__hit-swing-sword-small-3.ogg">
+    <None Update="Game\Data\Sounds\Ogg\388340__phlair__dungeon-ambiance.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\555425__tonsil5__zombie-pain-6.ogg">
+    <None Update="Game\Data\Sounds\Ogg\417330__beatarchive__thunder-short-intro.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\565051__aria_of_winds__hellishambience01.ogg">
+    <None Update="Game\Data\Sounds\Ogg\456384__lost_dream__intro.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\580442__bennynz__dungeon_lock_2.ogg">
+    <None Update="Game\Data\Sounds\Ogg\490951__nox_footsteps1.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\580443__bennynz__dungeon_lock_1.ogg">
+    <None Update="Game\Data\Sounds\Ogg\490951__nox_sound__footsteps_walk.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\591161__corsart__dungeon-horror-atmosphere.ogg">
+    <None Update="Game\Data\Sounds\Ogg\492518__soundflakes__giant-demon-death.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\606970__amaezingnooby__creepy-dungeon-ambience-elementary-memories-version.ogg">
+    <None Update="Game\Data\Sounds\Ogg\516566__kinoton__dark-dungeon-ambience.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\641931__kbrecordzz__dungeon-boss-aku.ogg">
+    <None Update="Game\Data\Sounds\Ogg\536180__fivebrosstopmosyt__ogre-roar-2.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\75235__creek23__cha-ching.ogg">
+    <None Update="Game\Data\Sounds\Ogg\547041__eponn__hit-swing-sword-small-3.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Game\Data\Sounds\97790__cgeffex__dungeon-gates.ogg">
+    <None Update="Game\Data\Sounds\Ogg\555425__tonsil5__zombie-pain-6.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Ogg\565051__aria_of_winds__hellishambience01.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Ogg\580442__bennynz__dungeon_lock_2.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Ogg\580443__bennynz__dungeon_lock_1.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Ogg\591161__corsart__dungeon-horror-atmosphere.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Ogg\606970__amaezingnooby__creepy-dungeon-ambience-elementary-memories-version.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Ogg\641931__kbrecordzz__dungeon-boss-aku.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Ogg\75235__creek23__cha-ching.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Ogg\97790__cgeffex__dungeon-gates.ogg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\166187__drminky__creepy-dungeon-ambience.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\177958__sclolex__water-dripping-in-cave.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\202096__spookymodem__goblin-cackle.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\202100__spookymodem__goblin-scream.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\209578__zott820__cash-register-purchase.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\210997__zagi2__demonic-vocal-intro.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\233065__lukeupf__stairs.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\249813__spookymodem__goblin-death.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\322447__goodlistener__dungeon-2.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\372252__tomchikrec__creaky-noises-echoey.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\388340__phlair__dungeon-ambiance.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\456384__lost_dream__intro.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\490951__nox_sound__footsteps_walk.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\492518__soundflakes__giant-demon-death.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\536180__fivebrosstopmosyt__ogre-roar-2.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\547041__eponn__hit-swing-sword-small-3.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\555425__tonsil5__zombie-pain-6.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\580442__bennynz__dungeon_lock_2.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\580443__bennynz__dungeon_lock_1.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\75235__creek23__cha-ching.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\97790__cgeffex__dungeon-gates.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
