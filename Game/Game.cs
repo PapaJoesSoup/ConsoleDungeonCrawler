@@ -11,7 +11,7 @@ internal static class Game
   internal const string Title = "Console Dungeon Crawler";
   private const string DataPath = $"Game/Data/";
   private const string MapPath = $"{DataPath}Maps/";
-  internal const string ArtPath = $"{DataPath}Art/";
+  private const string ArtPath = $"{DataPath}Art/";
   internal const string SoundPath = $"{DataPath}Sounds/";
 
   internal static bool IsMainMenu { get; set; }
@@ -28,6 +28,7 @@ internal static class Game
   internal static readonly StringBuilder GameWonArt;
   internal static readonly StringBuilder GameOverArt;
   internal static readonly StringBuilder GameTitleText;
+  internal static readonly StringBuilder GameEnterText;
   internal static readonly StringBuilder GameWonText;
   internal static readonly StringBuilder GameOverText;
 
@@ -40,6 +41,8 @@ internal static class Game
     GameTitleArt.Append(File.ReadAllText($"{Game.ArtPath}/GameTitleArt.txt"));
     GameTitleText = new StringBuilder();
     GameTitleText.Append(File.ReadAllText($"{Game.ArtPath}/GameTitleText.txt"));
+    GameEnterText = new StringBuilder();
+    GameEnterText.Append(File.ReadAllText($"{Game.ArtPath}/GameEnterText.txt"));
 
     GameWonArt = new StringBuilder();
     GameWonArt.Append(File.ReadAllText($"{Game.ArtPath}/GameWonArt.txt"));

@@ -1,13 +1,15 @@
-﻿using LibVLCSharp.Shared;
+﻿using System.Diagnostics;
+using System.Drawing;
+using ConsoleDungeonCrawler.Extensions;
+using ConsoleDungeonCrawler.Game.Screens;
+using LibVLCSharp.Shared;
 
 
 namespace ConsoleDungeonCrawler.Game.Entities;
 
 internal static class SoundSystem
 {
-  // Note this works on Windows only!!!
   // We want to use LibVLCSharp to play layered sound effects and background sounds
-  // We can also System.Media.SoundPlayer to play individual effects
 
   // Declare the LibVLCSharp objects
   private static readonly LibVLC libVlc;
@@ -19,10 +21,9 @@ internal static class SoundSystem
   // Static Initializer
   static SoundSystem()
   {
-    // In order to play multiple sounds at once, we need to use LibVLCSharp.  SoundPlayer will not allow this.
-    //LibVLCSharp mediaPlayers for Background Music
-    // we want only one instance of libVLC.  we can have as many media players as we want.
-    libVlc = new();
+    // In order to play multiple sounds at once, we will use LibVLCSharp.
+    // We want only one instance of libVLC.  We can have as many media players as we want.
+    libVlc = new(); // LibVlc can take arguments. refer to the LibVLCSharp documentation for more info.
 
     // we want to loop the background music, so create an input-repeat option
     string[] options = { ":input-repeat=65535" };
@@ -34,7 +35,7 @@ internal static class SoundSystem
 
     // create the media objects
     //Note, it seems the VLC library does not like looping OGG files (seek issues).
-    //I had to convert them to WAV or MP3 files so they loop correctly.
+    //I had to convert looping sounds to WAV or MP3 files so they loop correctly.
     MSounds = new()
     {
       { Sound.Intro, new Media(libVlc, $"{Game.SoundPath}Ogg/456384__lost_dream__intro.ogg")},
@@ -46,7 +47,7 @@ internal static class SoundSystem
       { Sound.Ambiance2, new Media(libVlc, $"{Game.SoundPath}Wav/322447__goodlistener__dungeon-2.wav", FromType.FromPath, options)},
       { Sound.Door, new Media(libVlc, $"{Game.SoundPath}Ogg/580442__bennynz__dungeon_lock_2.ogg") },
       { Sound.Stairs, new Media(libVlc, $"{Game.SoundPath}Ogg/233065__lukeupf__stairs.ogg") },
-      { Sound.FootSteps, new Media(libVlc, $"{Game.SoundPath}Ogg/490951__nox_footsteps1.ogg") },
+      { Sound.FootSteps, new Media(libVlc, $"{Game.SoundPath}Wav/490951__nox_footsteps_1.wav") },
       { Sound.GoblinCackle, new Media(libVlc, $"{Game.SoundPath}Ogg/202096__spookymodem__goblin-cackle.ogg") },
       { Sound.GoblinScream, new Media(libVlc, $"{Game.SoundPath}Ogg/202100__spookymodem__goblin-scream.ogg") },
       { Sound.GoblinDeath, new Media(libVlc, $"{Game.SoundPath}Ogg/249813__spookymodem__goblin-death.ogg") },
@@ -56,8 +57,13 @@ internal static class SoundSystem
       { Sound.BossDeath, new Media(libVlc, $"{Game.SoundPath}Ogg/210997__zagi2__demonic-vocal-intro.ogg") },
       { Sound.Vendor, new Media(libVlc, $"{Game.SoundPath}Ogg/75235__creek23__cha-ching.ogg") },
       { Sound.Pickup, new Media(libVlc, $"{Game.SoundPath}Ogg/209578__zott820__cash-register-purchase.ogg")}
-
     };
+
+    // Let's parse the media objects so they are ready to play
+    foreach (var media in MSounds.Values)
+    {
+      media.Parse();
+    }
   }
 
   internal static MediaPlayer GetPlayer()
@@ -75,19 +81,19 @@ internal static class SoundSystem
 
   internal static void PlayEnter()
   {
+    PlayEffect(MSounds[Sound.GameEnter]);
     BackgroundMPlayer1.Stop();
     BackgroundMPlayer2.Stop();
-    PlayEffect(MSounds[Sound.GameEnter]);
   }
 
   internal static void PlayBackground()
   {
-    //BackgroundMPlayer1.Play(MSounds[Sound.Ambiance1]);
-    //BackgroundMPlayer2.Play(MSounds[Sound.Ambiance2]);
+    BackgroundMPlayer1.Play(MSounds[Sound.Ambiance1]);
+    BackgroundMPlayer2.Play(MSounds[Sound.Ambiance2]);
   }
 
   internal static void PlayEffect(Media media)
-  {
+  { 
     MediaEffectPlayer.Play(media);
   }
 }

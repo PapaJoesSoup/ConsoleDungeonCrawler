@@ -353,6 +353,7 @@ internal static class GamePlay
           break;
         case ConsoleKey.Q:
           Game.IsOver = true;
+          SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GameOver]);
           break;
         case ConsoleKey.E:
           Game.IsWon = true;
@@ -370,7 +371,6 @@ internal static class GamePlay
         case ConsoleKey.D:
           if (!Map.Player.Move(keyInfo.Key)) break;
           Messages.Add(new Message($"You moved {Map.GetDirection(keyInfo.Key)}..."));
-          //Player.EffectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
           Actions.PickupOverlayItem();
           break;
         case ConsoleKey.D0:

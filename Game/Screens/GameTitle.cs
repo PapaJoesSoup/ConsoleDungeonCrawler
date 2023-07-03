@@ -27,6 +27,7 @@ internal static class GameTitle
     SoundSystem.PlayEnter();
     LoadTitleArt();
     LoadBannerText();
+    LoadEnterText();
     Thread.Sleep(6000);
 
   }
@@ -44,8 +45,11 @@ internal static class GameTitle
       string line = lines[y];
       line.WriteAt(startX, startY + y, Color.DarkOrange);
     }
-    "License: MIT (https://opensource.org/license/mit/)".WriteAlignedAt(HAlign.Left, VAlign.Bottom, Color.Bisque, Color.DarkOrange, 2, -1);
-    "Ascii art courtesy of: https://textart.sh".WriteAlignedAt(HAlign.Right, VAlign.Bottom, Color.Bisque, Color.DarkOrange, -2, -1);
+
+    "License: MIT (https://opensource.org/license/mit/)".WriteAlignedAt(HAlign.Left, VAlign.Bottom, Color.Bisque,
+      Color.DarkOrange, 2, -1);
+    "Ascii art courtesy of: https://textart.sh".WriteAlignedAt(HAlign.Right, VAlign.Bottom, Color.Bisque,
+      Color.DarkOrange, -2, -1);
   }
 
   private static void LoadBannerText()
@@ -60,7 +64,24 @@ internal static class GameTitle
     for (int y = 0; y < height; y++)
     {
       string line = lines[y];
-      line.WriteAlignedAt(HAlign.Center, VAlign.Top, Color.Black, Color.DarkOrange,xOffset, yOffset);
+      line.WriteAlignedAt(HAlign.Center, VAlign.Top, Color.Black, Color.DarkOrange, xOffset, yOffset);
+      yOffset++;
+    }
+  }
+
+  private static void LoadEnterText()
+  {
+    int xOffset = 0;
+    int yOffset = 0;
+
+    // write the title art to the console
+    string[] lines = Game.GameEnterText.ToString().Split('\n');
+    int height = lines.Length;
+    int width = lines[0].Length;
+    for (int y = 0; y < height; y++)
+    {
+      string line = lines[y];
+      line.WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Black, Color.DarkOrange, xOffset, yOffset);
       yOffset++;
     }
   }

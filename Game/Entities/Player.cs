@@ -26,6 +26,7 @@ internal class Player : Tile
 
   internal Player()
   {
+    EffectPlayer = SoundSystem.GetPlayer();
   }
 
   internal Player(Tile tile)
@@ -71,6 +72,7 @@ internal class Player : Tile
     Position newPos = new(X + x, Y + y);
 
     if (!CanMoveTo(newPos)) return false;
+    Player.EffectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
     X = newPos.X;
     Y = newPos.Y;
     // Overlay section Check needed for level changes.
@@ -104,6 +106,7 @@ internal class Player : Tile
     Position newPos = new(X + x, Y + y);
 
     if (!CanJumpTo(oldPos, newPos)) return;
+    Player.EffectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
 
     X = newPos.X;
     Y = newPos.Y;

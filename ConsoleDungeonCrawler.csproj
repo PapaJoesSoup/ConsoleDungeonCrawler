@@ -100,6 +100,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Game\Data\Art\GameEnterText.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Game\Data\Sounds\Mp3\268227__xxchr0nosxx__swing.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -173,9 +176,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Game\Data\Sounds\Ogg\456384__lost_dream__intro.ogg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Game\Data\Sounds\Ogg\490951__nox_footsteps1.ogg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Game\Data\Sounds\Ogg\490951__nox_sound__footsteps_walk.ogg">
@@ -254,6 +254,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Game\Data\Sounds\Wav\456384__lost_dream__intro.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Game\Data\Sounds\Wav\490951__nox_footsteps_1.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Game\Data\Sounds\Wav\490951__nox_sound__footsteps_walk.wav">

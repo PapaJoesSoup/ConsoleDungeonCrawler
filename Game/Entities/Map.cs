@@ -126,7 +126,7 @@ internal class Map
       if (!level.Contains("LevelOverlay_")) continue;
       // create empty overlay grid
       Dictionary<int, Dictionary<int, List<Tile>>> overlayGrid = new();
-      TileType empty = new(true);
+      TileType empty = new(true, false);
       for (int x = 0; x <= Width; x++)
       {
         overlayGrid.Add(x, new Dictionary<int, List<Tile>>());

@@ -22,12 +22,14 @@ internal static class Actions
       switch (obj.Type.Symbol)
       {
         case '\u25b2':
-          UpStairs();
           SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Stairs]);
+          Thread.Sleep((int)SoundSystem.MSounds[Sound.Stairs].Duration-200);
+          UpStairs();
           break;
         case '\u25bc':
-          DownStairs();
           SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Stairs]);
+          Thread.Sleep((int)SoundSystem.MSounds[Sound.Stairs].Duration - 200);
+          DownStairs();
           break;
         case 'V':
           SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Vendor]);
@@ -63,6 +65,8 @@ internal static class Actions
           break;
       }
 
+      if (item.Type != ItemType.None || obj is Monster)
+        SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Pickup]);
       if (item.Type == ItemType.None) continue;
       Inventory.AddItem(item);
       string message = item.Type == ItemType.Gold
@@ -70,8 +74,6 @@ internal static class Actions
         : $"You Picked up {item.Description}!";
       GamePlay.Messages.Add(new Message(message, Color.LimeGreen, Color.Black));
       Map.UpdateOverlayTile(obj);
-      if (item.Type != ItemType.None || obj is Monster)
-        SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Pickup]);
     }
   }
 
