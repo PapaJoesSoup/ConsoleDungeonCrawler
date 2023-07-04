@@ -65,9 +65,8 @@ internal static class Actions
           break;
       }
 
-      if (item.Type != ItemType.None || obj is Monster)
-        SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Pickup]);
       if (item.Type == ItemType.None) continue;
+        SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Pickup]);
       Inventory.AddItem(item);
       string message = item.Type == ItemType.Gold
         ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!"

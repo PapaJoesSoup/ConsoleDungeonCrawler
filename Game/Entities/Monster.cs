@@ -99,6 +99,7 @@ internal class Monster : Tile
     // We also wan to make sure that living monsters are always on the top layer, so we will move them to the top layer if needed.
     if (!CanMoveTo(newPos)) return;
 
+    EffectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
     Position oldPos = new(X, Y);
     X = newPos.X;
     Y = newPos.Y;
@@ -194,6 +195,7 @@ internal class Monster : Tile
 
   internal static Item Loot(Monster monster)
   {
+    monster.EffectPlayer.Play(SoundSystem.MSounds[Sound.Pickup]);
     if (Dice.Roll(SetOdds(monster.Type.Symbol)) != 1) return new Item(); //chance of dropping an item other than gold
     monster.IsLootable = false;
     return Inventory.GetRandomItem();
