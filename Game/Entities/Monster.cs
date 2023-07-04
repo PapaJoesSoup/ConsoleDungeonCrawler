@@ -19,7 +19,7 @@ internal class Monster : Tile
   internal bool IsAlive = true;
   internal bool InCombat;
 
-  internal MediaPlayer EffectPlayer;
+  private readonly MediaPlayer effectPlayer;
 
   internal Monster(Tile obj, int level)
   {
@@ -43,7 +43,7 @@ internal class Monster : Tile
     Gold = Decimal.Round(level * Dice.Roll(.01M, 1.1M), 2);
     weapon = new Weapon();
     this.level = level;
-    EffectPlayer = SoundSystem.GetPlayer();
+    effectPlayer = SoundSystem.GetPlayer();
   }
 
   internal void DetectPlayer()
@@ -57,7 +57,7 @@ internal class Monster : Tile
     BackgroundColor = Color.DarkOrange;
     Draw();
     GamePlay.Messages.Add(new Message($"A {Type.Name} spots you!  You are in combat!", Color.Red, Color.Black));
-    EffectPlayer.Play(SoundSystem.MSounds[Sound.GoblinCackle]);
+    effectPlayer.Play(SoundSystem.MSounds[Sound.GoblinCackle]);
   }
 
   internal void Attack()
@@ -71,7 +71,7 @@ internal class Monster : Tile
     // check if player is within radius of Weapon range
     if (GetDistance(Map.Player) <= weapon.Range)
     {
-      EffectPlayer.Play(SoundSystem.MSounds[Sound.GoblinScream]);
+      effectPlayer.Play(SoundSystem.MSounds[Sound.SwordSwing]);
       // roll to hit
       if (Dice.Roll(1, 20) < 10) return;
       // roll for damage
@@ -99,7 +99,7 @@ internal class Monster : Tile
     // We also wan to make sure that living monsters are always on the top layer, so we will move them to the top layer if needed.
     if (!CanMoveTo(newPos)) return;
 
-    EffectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
+    effectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
     Position oldPos = new(X, Y);
     X = newPos.X;
     Y = newPos.Y;
@@ -151,7 +151,7 @@ internal class Monster : Tile
       {
         health = 0;
         IsAlive = false;
-        EffectPlayer.Play(SoundSystem.MSounds[Sound.GoblinDeath]);
+        effectPlayer.Play(SoundSystem.MSounds[Sound.GoblinDeath]);
         GamePlay.Messages.Add(new Message($"You killed the {Type.Name}!", Color.LimeGreen, Color.Black));
         int xp = Dice.Roll(level * 2);
         GamePlay.Messages.Add(new Message($"You gained {xp} experience!", Color.LimeGreen, Color.Black));
@@ -195,7 +195,7 @@ internal class Monster : Tile
 
   internal static Item Loot(Monster monster)
   {
-    monster.EffectPlayer.Play(SoundSystem.MSounds[Sound.Pickup]);
+    monster.effectPlayer.Play(SoundSystem.MSounds[Sound.Pickup]);
     if (Dice.Roll(SetOdds(monster.Type.Symbol)) != 1) return new Item(); //chance of dropping an item other than gold
     monster.IsLootable = false;
     return Inventory.GetRandomItem();

@@ -22,11 +22,11 @@ internal class Player : Tile
   internal static readonly Dictionary<int, Spell> Spells = new();
   internal static bool InCombat = false;
 
-  internal static MediaPlayer EffectPlayer;
+  private static MediaPlayer effectPlayer;
 
   internal Player()
   {
-    EffectPlayer = SoundSystem.GetPlayer();
+    effectPlayer = SoundSystem.GetPlayer();
   }
 
   internal Player(Tile tile)
@@ -38,7 +38,7 @@ internal class Player : Tile
     ForegroundColor = Type.ForegroundColor;
     BackgroundColor = Type.BackgroundColor;
     IsVisible = tile.IsVisible;
-    EffectPlayer = SoundSystem.GetPlayer();
+    effectPlayer = SoundSystem.GetPlayer();
 
     // Add 5 empty slots to armor set
     ArmorSet = new List<Armor>
@@ -72,7 +72,7 @@ internal class Player : Tile
     Position newPos = new(X + x, Y + y);
 
     if (!CanMoveTo(newPos)) return false;
-    Player.EffectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
+    Player.effectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
     X = newPos.X;
     Y = newPos.Y;
     // Overlay section Check needed for level changes.
@@ -106,7 +106,7 @@ internal class Player : Tile
     Position newPos = new(X + x, Y + y);
 
     if (!CanJumpTo(oldPos, newPos)) return;
-    Player.EffectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
+    Player.effectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
 
     X = newPos.X;
     Y = newPos.Y;
@@ -137,14 +137,14 @@ internal class Player : Tile
         if (IsNextToOverlayGrid(out Tile objM) == ' ') return;
         if (objM is not Monster melee) return;
         GamePlay.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {melee.Type.Name}!"));
-        EffectPlayer.Play(SoundSystem.MSounds[Sound.SwordSwing]);
+        effectPlayer.Play(SoundSystem.MSounds[Sound.SwordSwing]);
         melee.TakeDamage(Weapon.Damage);
         break;
       case WeaponType.Bow:
       case WeaponType.Wand:
         if (IsInRange(Weapon.Range, out Tile objR)) return;
         if (objR is not Monster ranged) return;
-        EffectPlayer.Play(SoundSystem.MSounds[Sound.RangedAttack]);
+        effectPlayer.Play(SoundSystem.MSounds[Sound.RangedAttack]);
         GamePlay.Messages.Add(new Message($"You shoot your {Weapon.WeaponType} at the {ranged.Type.Name}!"));
         ranged.TakeDamage(Weapon.Damage);
         break;
@@ -247,7 +247,7 @@ internal class Player : Tile
     if (MaxMana > 0) MaxMana += 5;
     Health = MaxHealth;
     Mana = MaxMana;
-    EffectPlayer.Play(SoundSystem.MSounds[Sound.LevelUp]);
+    effectPlayer.Play(SoundSystem.MSounds[Sound.LevelUp]);
     GamePlay.Messages.Add(new Message($"You are now level {Level}!", Color.Green, Color.Black));
   }
 

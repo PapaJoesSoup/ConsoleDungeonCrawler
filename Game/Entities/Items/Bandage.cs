@@ -7,7 +7,6 @@ internal class Bandage : Item
 {
   BandageType bandageType;
   private readonly int buffAmount;
-  internal int Level;
 
   internal Bandage(BandageType bandageType, int buffAmount, int quantity, decimal buyCost, decimal sellCost)
   {

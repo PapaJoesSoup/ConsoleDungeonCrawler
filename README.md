@@ -13,8 +13,8 @@ It uses a basic turn system driven by the player keystroke choices.
 
 It has an armor system, inventory system class types and weapon types.  it includes melee and ranged attacks.  there is a legend that shows the visible overlay objects and a status section that displays armour, items, spells and player stats.
 
-Recent addition of a multi layer sound system.  Uses LibVLCSharp. to leverage a media player and play multiple sounds simultaneously.  Great for background sounds and action sounds.  A new level of immersion.
-Also added System.Media.SoundPlayer, but that is limited to one sound at a time and must use .wav files.  LibVLC has no such restrictions. All waves were converted to .ogg files as they take up so much less storage space.
+Includes a multi layer sound system.  Uses LibVLCSharp. to leverage a media player and play multiple sounds simultaneously.  Great for background sounds and action sounds.  A new level of immersion.
+All wav files were converted to .ogg files as they take up so much less storage space. Note that .ogg does not like looping, so these were changed to .mp3
 
 Finally there is a notification system that will scroll, logging all activity in text form.  it is color coded for ease of reading.
 
