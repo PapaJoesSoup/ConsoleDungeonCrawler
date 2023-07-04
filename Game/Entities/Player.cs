@@ -7,6 +7,7 @@ namespace ConsoleDungeonCrawler.Game.Entities;
 
 internal class Player : Tile
 {
+  #region Properties
   internal static int Level = 1;
   private static int experience;
   private static int experienceToLevel = 100;
@@ -23,6 +24,7 @@ internal class Player : Tile
   internal static bool InCombat = false;
 
   private static MediaPlayer effectPlayer;
+  #endregion Properties
 
   internal Player()
   {

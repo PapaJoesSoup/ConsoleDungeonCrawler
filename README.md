@@ -1,6 +1,5 @@
 # ConsoleDungeonCrawler
 
-
 This is an attempt to make a Dos style Console Dungeon game.  It is designed for Windows Terminal, uses extended (24 bit) color, and is designed for a screen resolution of 1920x1080.
 
 The licensing on this is MIT, as it is to be used as a learning tool, and is open for others to use as they desire, with appropriate attribution.  Portions of this code are AI Generated using Copilot.

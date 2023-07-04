@@ -8,6 +8,7 @@ namespace ConsoleDungeonCrawler.Game;
 
 internal static class Game
 {
+  #region Properties
   internal const string Title = "Console Dungeon Crawler";
   private const string DataPath = $"Game/Data/";
   private const string MapPath = $"{DataPath}Maps/";
@@ -33,6 +34,7 @@ internal static class Game
   internal static readonly StringBuilder GameOverText;
 
   internal static readonly Dictionary<string, Dictionary<string, string>> Dungeons = new();
+  #endregion Properties
 
   static Game()
   {

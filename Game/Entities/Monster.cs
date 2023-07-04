@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Threading;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Screens;
 using LibVLCSharp.Shared;
@@ -8,6 +7,7 @@ namespace ConsoleDungeonCrawler.Game.Entities;
 
 internal class Monster : Tile
 {
+  #region Properties
   private int health;
   internal int MaxHealth = 10;
   internal int Mana;
@@ -20,6 +20,7 @@ internal class Monster : Tile
   internal bool InCombat;
 
   private readonly MediaPlayer effectPlayer;
+  #endregion Properties
 
   internal Monster(Tile obj, int level)
   {
