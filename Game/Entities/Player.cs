@@ -158,7 +158,7 @@ internal class Player : Tile
     switch (armor.ArmorType)
     {
       case ArmorType.Head:
-        if (ArmorSet[0].ArmorType != ArmorType.None)
+        if (ArmorSet[0].ArmorName != ArmorName.None)
           Inventory.AddItem(ArmorSet[0]);
         ArmorSet[0] = armor;
         break;

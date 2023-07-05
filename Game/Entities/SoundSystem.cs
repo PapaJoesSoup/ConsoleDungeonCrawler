@@ -1,8 +1,4 @@
-﻿using System.Diagnostics;
-using System.Drawing;
-using ConsoleDungeonCrawler.Extensions;
-using ConsoleDungeonCrawler.Game.Screens;
-using LibVLCSharp.Shared;
+﻿using LibVLCSharp.Shared;
 
 
 namespace ConsoleDungeonCrawler.Game.Entities;

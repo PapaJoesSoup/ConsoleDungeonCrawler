@@ -271,7 +271,7 @@ internal static class GamePlay
     row++;
     "[Shift+I] - Inventory".WriteAt(col, row, ConsoleColor.White);
     row++;
-    "[Shift+S] - Spells".WriteAt(col, row, ConsoleColor.White);
+    "[Shift+P] - Spells".WriteAt(col, row, ConsoleColor.White);
     row++;
     "[Shift+Q] - Quit".WriteAt(col, row, ConsoleColor.White);
   }
