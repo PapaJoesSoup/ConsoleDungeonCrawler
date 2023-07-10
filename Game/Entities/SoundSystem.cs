@@ -92,4 +92,25 @@ internal static class SoundSystem
   { 
     MediaEffectPlayer.Play(media);
   }
+
+  internal static void OnEnableSoundChanged(object? option, EventArgs e)
+  {
+    if (option is not GameOption<bool> thisOption) return;
+    BackgroundMPlayer1.Mute = !thisOption.Value;
+    BackgroundMPlayer2.Mute = !thisOption.Value;
+    MediaEffectPlayer.Mute = !thisOption.Value;
+  }
+
+  internal static void SetBackgroundVolume(object? option, EventArgs e)
+  {
+    if (option is not GameOption<int> thisOption) return;
+    BackgroundMPlayer1.Volume = thisOption.Value;
+    BackgroundMPlayer2.Volume = thisOption.Value;
+  }
+
+  internal static void SetEffectVolume(object? option, EventArgs e)
+  {
+    if (option is not GameOption<int> thisOption) return;
+    MediaEffectPlayer.Volume = thisOption.Value;
+  }
 }

@@ -6,6 +6,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
 internal static class PlayerInventory
 {
+#region Properties
   private static readonly Color Color = Color.DarkOrange;
   private static readonly Color BackgroundColor = Color.Black;
   private static readonly Color FillColor = Color.Olive;
@@ -22,7 +23,7 @@ internal static class PlayerInventory
   private static int activeBag;
   private static int activeItem;
   private static bool dialogOpen;
-
+#endregion Properties
 
   internal static void Draw()
   {

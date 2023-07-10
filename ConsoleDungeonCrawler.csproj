@@ -95,6 +95,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Figgle" Version="0.5.1" />
+    <PackageReference Include="Figgle.Generator" Version="0.5.1" />
     <PackageReference Include="LibVLCSharp" Version="3.7.0" />
     <PackageReference Include="VideoLAN.LibVLC.Windows" Version="3.0.18" />
   </ItemGroup>

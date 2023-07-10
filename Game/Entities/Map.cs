@@ -28,6 +28,7 @@ internal class Map
   internal static Dictionary<int, Dictionary<char, List<Tile>>> LevelOverlayTiles = new();
   private static Dictionary<int, Dictionary<char, Tuple<TileType, int>>> levelVisibleObjects = new();
 
+  internal static Dictionary<Direction, Point> Directions = new ();
   internal static Player Player = new();
   private static char startChar;
   private static char exitChar;
@@ -97,11 +98,24 @@ internal class Map
 
   private void InitDictionaries()
   {
+    Directions = new ()
+    {
+      { Direction.North, new Point(0, -1) },
+      { Direction.South, new Point(0, 1) },
+      { Direction.East, new Point(1, 0) },
+      { Direction.West, new Point(-1, 0) },
+      { Direction.NorthEast, new Point(1, -1) },
+      { Direction.NorthWest, new Point(-1, -1) },
+      { Direction.SouthEast, new Point(1, 1) },
+      { Direction.SouthWest, new Point(-1, 1) }
+    };
+
     LevelMapGrids = new();
     LevelOverlayGrids = new();
     LevelMapGrids = new();
     LevelOverlayTiles = new();
     levelMapTiles = new();
+
 
     // load empty map/overlay grid for each level
     foreach (string level in Game.Dungeons[Game.CurrentDungeon].Keys)
@@ -324,112 +338,68 @@ internal class Map
 
   internal static void SetVisibleArea(int range)
   {
-    // North and West
-    int xLimit = Player.X - range;
-    int yLimit = Player.Y - range;
-    for (int y = Player.Y; y > Player.Y - range; y--)
+    // y then x
+    Point dir = Directions[Direction.NorthWest];
+    SetVisibleTiles(range, dir);
+    dir = Directions[Direction.NorthEast];
+    SetVisibleTiles(range, dir);
+    dir = Directions[Direction.SouthWest];
+    SetVisibleTiles(range, dir);
+    dir = Directions[Direction.SouthEast];
+    SetVisibleTiles(range, dir);
+
+  }
+
+  private static void SetVisibleTiles(int range, Point dir)
+  {
+    // y then x 
+    int xLimit = Player.X + dir.X * range;
+    int yLimit = Player.Y + dir.Y * range;
+    for (int y = Player.Y; y != Player.Y + dir.Y * (range + 1); y += dir.Y)
     {
-      if (y < yLimit) break;
-      SetVisibleYTiles(Player.X, y, ref yLimit);
-      for (int x = Player.West.X; x > Player.X - range; x--)
+      if ((dir.Y < 0 && y < yLimit) || (dir.Y > 0 && y > yLimit)) break;
+      Tile yObj = UpdateVisibleTiles(Player.X, y);
+      if (yObj is { IsPassable: false, Type.IsTransparent: false }) yLimit = y;
+      for (int x = Player.X + dir.X; x != Player.X + dir.X * (range + 1); x += dir.X)
       {
-        if (x < xLimit) break;
-        SetVisibleXTiles(x, y, ref xLimit);
+        if ((dir.X < 0 && x < xLimit) || (dir.X > 0 && x > xLimit)) break;
+       Tile xObj = UpdateVisibleTiles(x, y);
+        if (xObj is { IsPassable: false, Type.IsTransparent: false }) xLimit = x;
       }
     }
-    // West and North
-    xLimit = Player.X - range;
-    yLimit = Player.Y - range;
-    for (int x = Player.X; x > Player.X - range; x--)
+
+    // x then y
+    xLimit = Player.X + dir.X * range;
+    yLimit = Player.Y + dir.Y * range;
+    for (int x = Player.X; x != Player.X + dir.X * (range + 1); x += dir.X)
     {
-      if (x < xLimit) break;
-      SetVisibleXTiles(x, Player.Y, ref xLimit);
-      for (int y = Player.North.Y; y > Player.Y - range; y--)
+      if ((dir.X < 0 && x < xLimit) || (dir.X > 0 && x > xLimit)) break;
+      Tile xObj = UpdateVisibleTiles(x, Player.Y);
+      if (xObj is { IsPassable: false, Type.IsTransparent: false }) xLimit = x;
+      for (int y = Player.Y + dir.Y; y != Player.Y + dir.Y * (range + 1); y += dir.Y)
       {
-        if (y < yLimit) break;
-        SetVisibleYTiles(x, y, ref yLimit);
-      }
-    }
-    // North and East
-    xLimit = Player.X + range;
-    yLimit = Player.Y - range;
-    for (int y = Player.Y; y > Player.Y - range; y--)
-    {
-      if (y < yLimit) break;
-      SetVisibleYTiles(Player.X, y, ref yLimit);
-      for (int x = Player.East.X; x < Player.X + range; x++)
-      {
-        if (x > xLimit) break;
-        SetVisibleXTiles(x, y, ref xLimit);
-      }
-    }
-    // East and North
-    xLimit = Player.X + range;
-    yLimit = Player.Y - range;
-    for (int x = Player.X; x < Player.X + range; x++)
-    {
-      if (x > xLimit) break;
-      SetVisibleXTiles(x, Player.Y, ref xLimit);
-      for (int y = Player.North.Y; y > Player.Y - range; y--)
-      {
-        if (y < yLimit) break;
-        SetVisibleYTiles(x, y, ref yLimit);
-      }
-    }
-    // South and West
-    xLimit = Player.X - range;
-    yLimit = Player.Y + range;
-    for (int y = Player.Y; y < Player.Y + range; y++)
-    {
-      if (y > yLimit) break;
-      SetVisibleYTiles(Player.X, y, ref yLimit);
-      for (int x = Player.West.X; x > Player.X - range; x--)
-      {
-        if (x < xLimit) break;
-        SetVisibleXTiles(x, y, ref xLimit);
-      }
-    }
-    // West and South
-    xLimit = Player.X - range;
-    yLimit = Player.Y + range;
-    for (int x = Player.X; x > Player.X - range; x--)
-    {
-      if (x < xLimit) break;
-      SetVisibleXTiles(x, Player.Y, ref xLimit);
-      for (int y = Player.South.Y; y < Player.Y + range; y++)
-      {
-        if (y > yLimit) break;
-        SetVisibleYTiles(x, y, ref yLimit);
-      }
-    }
-    // South and East
-    xLimit = Player.X + range;
-    yLimit = Player.Y + range;
-    for (int y = Player.Y; y < Player.Y + range; y++)
-    {
-      if (y > yLimit) break;
-      SetVisibleYTiles(Player.X, y, ref yLimit);
-      for (int x = Player.East.X; x < Player.X + range; x++)
-      {
-        if (x > xLimit) break;
-        SetVisibleXTiles(x, y, ref xLimit);
-      }
-    }
-    // East and South
-    xLimit = Player.X + range;
-    yLimit = Player.Y + range;
-    for (int x = Player.X; x < Player.X + range; x++)
-    {
-      if (x > xLimit) break;
-      SetVisibleXTiles(x, Player.Y, ref xLimit);
-      for (int y = Player.East.X; y < Player.Y + range; y++)
-      {
-        if (y > yLimit) break;
-        SetVisibleYTiles(x, y, ref yLimit);
+        if ((dir.Y < 0 && y < yLimit) || (dir.Y > 0 && y > yLimit)) break;
+        Tile yObj = UpdateVisibleTiles(x, y);
+        if (yObj is { IsPassable: false, Type.IsTransparent: false }) yLimit = y;
       }
     }
   }
 
+  private static Tile UpdateVisibleTiles(int x, int y)
+  {
+    Tile obj = LevelMapGrids[Game.CurrentLevel][x][y];
+    obj.IsVisible = true;
+    AddToMapTiles(obj);
+    obj.Draw();
+    AddToMapTiles(obj);
+
+    int layer = LevelOverlayGrids[Game.CurrentLevel][x][y].Count - 1;
+    Tile overlay = LevelOverlayGrids[Game.CurrentLevel][x][y][layer];
+    if (overlay.Type.Symbol == ' ') return obj;
+    overlay.IsVisible = true;
+    overlay.Draw();
+    return obj;
+  }
   public static void WhatIsVisible()
   {
     bool visibleChanged = false;
@@ -447,56 +417,10 @@ internal class Map
       if (type.Symbol == ' ') continue;
       visibleChanged = GetTileTypeCount(LevelOverlayTiles[Game.CurrentLevel][symbol], visibleChanged, type);
     }
-    if (visibleChanged) WriteVisibleTiles();
+    if (visibleChanged) DescribeVisibleTiles();
   }
 
-  private static void SetVisibleYTiles(int x, int y, ref int yLimit)
-  {
-    Tile obj = LevelMapGrids[Game.CurrentLevel][x][y];
-    if (obj.IsPassable || obj.Type.IsTransparent)
-    {
-      LevelMapGrids[Game.CurrentLevel][x][y].IsVisible = true;
-      AddToMapTiles(LevelMapGrids[Game.CurrentLevel][x][y]);
-      LevelMapGrids[Game.CurrentLevel][x][y].Draw();
-    }
-    else
-    {
-      LevelMapGrids[Game.CurrentLevel][x][y].IsVisible = true;
-      AddToMapTiles(LevelMapGrids[Game.CurrentLevel][x][y]);
-      LevelMapGrids[Game.CurrentLevel][x][y].Draw();
-      yLimit = y;
-    }
-    AddToMapTiles(LevelMapGrids[Game.CurrentLevel][x][y]);
-    int layer = LevelOverlayGrids[Game.CurrentLevel][x][y].Count - 1;
-    if (LevelOverlayGrids[Game.CurrentLevel][x][y][layer].Type.Symbol == ' ') return;
-    LevelOverlayGrids[Game.CurrentLevel][x][y][layer].IsVisible = true;
-    LevelOverlayGrids[Game.CurrentLevel][x][y][layer].Draw();
-  }
-
-  private static void SetVisibleXTiles(int x, int y, ref int xLimit)
-  {
-    Tile obj = LevelMapGrids[Game.CurrentLevel][x][y];
-    if (obj.IsPassable || obj.Type.IsTransparent)
-    {
-      LevelMapGrids[Game.CurrentLevel][x][y].IsVisible = true;
-      AddToMapTiles(LevelMapGrids[Game.CurrentLevel][x][y]);
-      LevelMapGrids[Game.CurrentLevel][x][y].Draw();
-    }
-    else
-    {
-      LevelMapGrids[Game.CurrentLevel][x][y].IsVisible = true;
-      AddToMapTiles(LevelMapGrids[Game.CurrentLevel][x][y]);
-      LevelMapGrids[Game.CurrentLevel][x][y].Draw();
-      xLimit = x;
-    }
-
-    int layer = LevelOverlayGrids[Game.CurrentLevel][x][y].Count - 1;
-    if (LevelOverlayGrids[Game.CurrentLevel][x][y][layer].Type.Symbol == ' ') return;
-    LevelOverlayGrids[Game.CurrentLevel][x][y][layer].IsVisible = true;
-    LevelOverlayGrids[Game.CurrentLevel][x][y][layer].Draw();
-  }
-
-  private static void WriteVisibleTiles()
+  private static void DescribeVisibleTiles()
   {
     string message = "";
     foreach (char symbol in levelVisibleObjects[Game.CurrentLevel].Keys)

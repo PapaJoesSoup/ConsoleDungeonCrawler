@@ -21,7 +21,7 @@ internal class Player : Tile
   internal static List<Armor> ArmorSet = new();
   internal static Weapon Weapon = new();
   internal static readonly Dictionary<int, Spell> Spells = new();
-  internal static bool InCombat = false;
+  internal static bool InCombat;
 
   private static MediaPlayer effectPlayer;
   #endregion Properties
@@ -74,7 +74,7 @@ internal class Player : Tile
     Position newPos = new(X + x, Y + y);
 
     if (!CanMoveTo(newPos)) return false;
-    Player.effectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
+    effectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
     X = newPos.X;
     Y = newPos.Y;
     // Overlay section Check needed for level changes.
@@ -108,7 +108,7 @@ internal class Player : Tile
     Position newPos = new(X + x, Y + y);
 
     if (!CanJumpTo(oldPos, newPos)) return;
-    Player.effectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
+    effectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
 
     X = newPos.X;
     Y = newPos.Y;
@@ -283,10 +283,10 @@ internal class Player : Tile
   private char IsNextToOverlayGrid(out Tile obj)
   {
     // we need to account for monsters on a different overlay level
-    if (IsNextToOverlay(West, out obj)) return obj.Type.Symbol;
-    if (IsNextToOverlay(East, out obj)) return obj.Type.Symbol;
-    if (IsNextToOverlay(North, out obj)) return obj.Type.Symbol;
-    if (IsNextToOverlay(South, out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(Dir[Direction.West], out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(Dir[Direction.East], out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(Dir[Direction.North], out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(Dir[Direction.South], out obj)) return obj.Type.Symbol;
 
     // not found
     obj = new Tile();
@@ -296,10 +296,10 @@ internal class Player : Tile
   internal bool IsNextToOverlayGrid(char symbol, out Tile obj)
   {
     // we need to account for monsters on a different overlay level
-    if (IsNextToOverlay(West, out obj, symbol)) return true;
-    if (IsNextToOverlay(East, out obj, symbol)) return true;
-    if (IsNextToOverlay(North, out obj, symbol)) return true;
-    if (IsNextToOverlay(South, out obj, symbol)) return true;
+    if (IsNextToOverlay(Dir[Direction.West], out obj, symbol)) return true;
+    if (IsNextToOverlay(Dir[Direction.East], out obj, symbol)) return true;
+    if (IsNextToOverlay(Dir[Direction.North], out obj, symbol)) return true;
+    if (IsNextToOverlay(Dir[Direction.South], out obj, symbol)) return true;
 
     // not found
     obj = new Tile();
@@ -330,10 +330,10 @@ internal class Player : Tile
 
   internal bool IsNextToMapGrid(char symbol, out Tile obj)
   {
-    if (IsNextToMap(symbol, West,out obj)) return true;
-    if (IsNextToMap(symbol, East, out obj)) return true;
-    if (IsNextToMap(symbol, North, out obj)) return true;
-    if (IsNextToMap(symbol, South, out obj)) return true;
+    if (IsNextToMap(symbol, Dir[Direction.West],out obj)) return true;
+    if (IsNextToMap(symbol, Dir[Direction.East], out obj)) return true;
+    if (IsNextToMap(symbol, Dir[Direction.North], out obj)) return true;
+    if (IsNextToMap(symbol, Dir[Direction.South], out obj)) return true;
 
     // not found
     obj = new Tile();
@@ -404,10 +404,10 @@ internal class Player : Tile
     // check to see if there is an object in between old and new location that is not passable and not transparent
     Direction dir = Map.GetDirection(oldPos, newPos);
     Position curPos = oldPos;
-    if (dir == Direction.West) curPos = oldPos.West;
-    if (dir == Direction.East) curPos = oldPos.East;
-    if (dir == Direction.North) curPos = oldPos.North;
-    if (dir == Direction.South) curPos = oldPos.South;
+    if (dir == Direction.West) curPos = oldPos.Dir[Direction.West];
+    if (dir == Direction.East) curPos = oldPos.Dir[Direction.East];
+    if (dir == Direction.North) curPos = oldPos.Dir[Direction.North];
+    if (dir == Direction.South) curPos = oldPos.Dir[Direction.South];
     if (curPos == oldPos) return false;
 
     List<Tile> layers = Map.LevelOverlayGrids[Game.CurrentLevel][curPos.X][curPos.Y];
@@ -416,5 +416,11 @@ internal class Player : Tile
 
     Tile mapObj = Map.LevelMapGrids[Game.CurrentLevel][curPos.X][curPos.Y];
     return mapObj is not { IsPassable: false, Type.IsTransparent: false } && CanMoveTo(newPos);
+  }
+
+  internal static void SetEffectVolume(object? sender, EventArgs e)
+  {
+    if (sender is not GameOption<int> option) return;
+    effectPlayer.Volume = option.Value;
   }
 }

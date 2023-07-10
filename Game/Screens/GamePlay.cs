@@ -14,9 +14,9 @@ internal static class GamePlay
 
   private static readonly Box StatusBox = new(1, 0, 208, 8);
   internal static readonly Box MapBox = new(1, 7, 178, 35);
-  private static readonly Box OverlayBox = new(178, 7, 31, 30);
   private static readonly Box MessageBox = new(1, 41, 178, 12);
-  private static readonly Box LegendBox = new(178, 36, 31, 17);
+  private static readonly Box OverlayBox = new(178, 7, 31, 29);
+  private static readonly Box LegendBox = new(178, 35, 31, 18);
 
   internal static List<Message> Messages = new();
   internal static readonly int MessageWidth = MessageBox.Width - 33;
@@ -172,8 +172,8 @@ internal static class GamePlay
       BChars.Ver.WriteAt(col - 2, index, Color.Gold);
     }
 
-    Bag bag = Inventory.Bags[currentBag - 1];
-    $"Inventory - Bag: {currentBag} of {totalBags}  (< or > to switch bags)".WriteAt(col, row, Color.Gold);
+    Bag bag = Inventory.Bags[currentBag];
+    $"Inventory - Bag: {currentBag + 1} of {totalBags}  (< or > to switch bags)".WriteAt(col, row, Color.Gold);
     row++;
     for (int index = 0; index < bag.Capacity; index++)
     {
@@ -269,6 +269,8 @@ internal static class GamePlay
     row++;
     "[Esc] - Pause Menu".WriteAt(col, row, ConsoleColor.White);
     row++;
+    "[Shift+G] - Game Options".WriteAt(col, row, ConsoleColor.White);
+    row++;
     "[Shift+I] - Inventory".WriteAt(col, row, ConsoleColor.White);
     row++;
     "[Shift+P] - Spells".WriteAt(col, row, ConsoleColor.White);
@@ -351,6 +353,9 @@ internal static class GamePlay
         case ConsoleKey.P:
           PlayerSpells.Draw();
           break;
+        case ConsoleKey.G:
+          GameOptions.Draw();
+          break;
         case ConsoleKey.Q:
           Game.IsOver = true;
           SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GameOver]);
@@ -407,12 +412,12 @@ internal static class GamePlay
           messageOffset = 0;
           break;
         case ConsoleKey.OemComma:
-          if (Inventory.Bags.Count > 1)
             currentBag--;
+          if (currentBag<0) currentBag = Inventory.Bags.Count-1;
           break;
         case ConsoleKey.OemPeriod:
-          if (currentBag < Inventory.Bags.Count)
-            currentBag++;
+          currentBag++;
+          if (currentBag > Inventory.Bags.Count - 1) currentBag = 0;
           break;
         case ConsoleKey.O:
           Actions.OpenDoor();

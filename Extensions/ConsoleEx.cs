@@ -38,6 +38,7 @@ internal static class ConsoleEx
     }
   }
 
+
   internal static void InitializeConsole()
   {
     Clear();
@@ -61,6 +62,7 @@ internal static class ConsoleEx
     if (Console.WindowWidth >= Program.MinWindowWidth && Console.WindowHeight >= Program.MinWindowHeight) return;
 
     // Setup console to allow window to be maximized
+    // We cannot do this inside CSharp normally so we need to attach to the windows API
     // Import the necessary functions from user32.dll
     [DllImport("user32.dll")]
     static extern IntPtr GetForegroundWindow();
@@ -1352,5 +1354,4 @@ internal static class ConsoleEx
     ResetColor();
     return result;
   }
-
 }

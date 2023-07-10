@@ -5,10 +5,17 @@ internal class Position
   internal int X { get; set; }
   internal int Y { get; set; }
 
-  internal Position West => new(X - 1, Y);
-  internal Position East => new(X + 1, Y);
-  internal Position North => new(X, Y - 1);
-  internal Position South => new(X, Y + 1);
+  internal Dictionary<Direction, Position> Dir => new()
+  {
+    {Direction.North, new(X, Y - 1)},
+    {Direction.NorthEast, new(X + 1, Y - 1)},
+    {Direction.East, new(X + 1, Y)},
+    {Direction.SouthEast, new(X + 1, Y + 1)},
+    {Direction.South, new(X, Y + 1)},
+    {Direction.SouthWest, new(X - 1, Y + 1)},
+    {Direction.West, new(X - 1, Y)},
+    {Direction.NorthWest, new(X - 1, Y - 1)}
+  };
 
   // These are used for path finding
   internal int Cost { get; set; }

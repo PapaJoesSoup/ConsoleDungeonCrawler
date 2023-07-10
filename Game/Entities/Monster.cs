@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Screens;
+using ConsoleDungeonCrawler.Game.Screens.Dialogs;
 using LibVLCSharp.Shared;
 
 namespace ConsoleDungeonCrawler.Game.Entities;
@@ -45,6 +46,9 @@ internal class Monster : Tile
     weapon = new Weapon();
     this.level = level;
     effectPlayer = SoundSystem.GetPlayer();
+
+    // Add volume option handler
+    if (GameOptions.GetOption("MonsterVolume") is GameOption<int> monsterOption) monsterOption.OnValueChanged += SetEffectVolume;
   }
 
   internal void DetectPlayer()
@@ -200,5 +204,11 @@ internal class Monster : Tile
     if (Dice.Roll(SetOdds(monster.Type.Symbol)) != 1) return new Item(); //chance of dropping an item other than gold
     monster.IsLootable = false;
     return Inventory.GetRandomItem();
+  }
+
+  private void SetEffectVolume(object? sender, EventArgs e)
+  {
+    if (sender is not GameOption<int> option) return;
+    effectPlayer.Volume = option.Value;
   }
 }

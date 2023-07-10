@@ -5,9 +5,13 @@ internal enum Direction
 {
   None,
   North,
+  West,
   East,
   South,
-  West
+  NorthWest,
+  NorthEast,
+  SouthWest,
+  SouthEast,
 }
 
 internal enum PlayerClass
