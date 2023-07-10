@@ -67,7 +67,6 @@ internal static class SoundSystem
     return new(libVlc);
   }
 
-
   internal static void PlayTitle()
   {
     BackgroundMPlayer1.Stop();
@@ -93,6 +92,7 @@ internal static class SoundSystem
     MediaEffectPlayer.Play(media);
   }
 
+  // Option value change handlers
   internal static void OnEnableSoundChanged(object? option, EventArgs e)
   {
     if (option is not GameOption<bool> thisOption) return;

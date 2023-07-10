@@ -28,7 +28,7 @@ internal class Map
   internal static Dictionary<int, Dictionary<char, List<Tile>>> LevelOverlayTiles = new();
   private static Dictionary<int, Dictionary<char, Tuple<TileType, int>>> levelVisibleObjects = new();
 
-  internal static Dictionary<Direction, Point> Directions = new ();
+  private static Dictionary<Direction, Point> Directions = new ();
   internal static Player Player = new();
   private static char startChar;
   private static char exitChar;
@@ -400,6 +400,7 @@ internal class Map
     overlay.Draw();
     return obj;
   }
+
   public static void WhatIsVisible()
   {
     bool visibleChanged = false;

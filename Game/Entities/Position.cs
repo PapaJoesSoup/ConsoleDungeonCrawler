@@ -4,7 +4,6 @@ internal class Position
 {
   internal int X { get; set; }
   internal int Y { get; set; }
-
   internal Dictionary<Direction, Position> Dir => new()
   {
     {Direction.North, new(X, Y - 1)},

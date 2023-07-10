@@ -206,6 +206,7 @@ internal class Monster : Tile
     return Inventory.GetRandomItem();
   }
 
+  // Option value change event handler
   private void SetEffectVolume(object? sender, EventArgs e)
   {
     if (sender is not GameOption<int> option) return;

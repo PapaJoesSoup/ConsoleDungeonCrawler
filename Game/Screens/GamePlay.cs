@@ -158,9 +158,8 @@ internal static class GamePlay
 
   private static void InventoryStats()
   {
-    int col =
-      //Inventory
-      StatusBox.Left + 31;
+    //Inventory
+    int col = StatusBox.Left + 31;
     int row = StatusBox.Top + 1;
     int colWidth = 25;
     int count = 0;

@@ -5,7 +5,7 @@
     internal string Name { get; set; }
     internal T? Value;
     internal T? TempValue;
-    internal int ActionCount;
+    internal readonly int ActionCount;
     internal int ActionIdx;
 
     internal event EventHandler OnValueChanged;

@@ -418,6 +418,7 @@ internal class Player : Tile
     return mapObj is not { IsPassable: false, Type.IsTransparent: false } && CanMoveTo(newPos);
   }
 
+  // Option value Change event handler
   internal static void SetEffectVolume(object? sender, EventArgs e)
   {
     if (sender is not GameOption<int> option) return;
