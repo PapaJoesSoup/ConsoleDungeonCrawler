@@ -9,8 +9,6 @@ internal static class GameCredits
   private static readonly Color BackgroundColor = Color.Black;
   private static readonly Color FillColor = Color.DarkSlateGray;
   private static readonly Color TextColor = Color.Cyan;
-  private static readonly Color SelectedColor = Color.Lime;
-  private static readonly Color SelectedBackgroundColor = Color.DarkOrange;
 
   private static readonly Box Box = new(Console.WindowWidth / 2 - 41, Console.WindowHeight / 2 - 8, 82, 17);
 

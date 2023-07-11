@@ -41,7 +41,6 @@ internal static class GameOver
     // write the title art to the console
     string[] lines = Game.GameOverText.ToString().Split('\n');
     int height = lines.Length;
-    int width = lines[0].Length;
     for (int y = 0; y < height; y++)
     {
       string line = lines[y];

@@ -10,7 +10,6 @@ internal class TerminalConfiguration
   private static readonly Color FillColor = Color.DarkBlue;
   private static readonly Color TextColor = Color.Bisque;
   private static readonly Color SelectedColor = Color.Lime;
-  private static readonly Color SelectedBackgroundColor = Color.DarkOrange;
 
   private static readonly Box DialogBox = new(Console.WindowWidth / 2 - 56, Console.WindowHeight / 2 - 13, 116, 25);
 

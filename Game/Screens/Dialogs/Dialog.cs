@@ -14,8 +14,6 @@ internal static class Dialog
   private static readonly Color ForegroundColor = Color.DarkOrange;
   private static readonly Color FillColor = Color.Olive;
   private static readonly Color TextColor = Color.Bisque;
-  private static readonly Color SelectedColor = Color.Lime;
-  internal static readonly Color SelectedBackgroundColor = Color.DarkOrange;
 
   /// <summary>
   /// Generic Dialog box with a title everything else is default

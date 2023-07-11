@@ -40,7 +40,6 @@ internal static class GameWon
 
     string[] lines = Game.GameWonText.ToString().Split('\n');
     int height = lines.Length;
-    int width = lines[0].Length;
     for (int y = 0; y < height; y++)
     {
       string line = lines[y];

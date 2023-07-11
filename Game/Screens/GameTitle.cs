@@ -60,7 +60,6 @@ internal static class GameTitle
     // write the title art to the console
     string[] lines = Game.GameTitleText.ToString().Split('\n');
     int height = lines.Length;
-    int width = lines[0].Length;
     for (int y = 0; y < height; y++)
     {
       string line = lines[y];
@@ -77,7 +76,6 @@ internal static class GameTitle
     // write the title art to the console
     string[] lines = Game.GameEnterText.ToString().Split('\n');
     int height = lines.Length;
-    int width = lines[0].Length;
     for (int y = 0; y < height; y++)
     {
       string line = lines[y];
