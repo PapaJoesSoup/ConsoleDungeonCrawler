@@ -56,7 +56,7 @@ internal static class SoundSystem
     };
 
     // Let's parse the media objects so they are ready to play
-    foreach (var media in MSounds.Values)
+    foreach (Media? media in MSounds.Values)
     {
       media.Parse();
     }

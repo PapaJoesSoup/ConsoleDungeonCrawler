@@ -418,7 +418,7 @@ internal static class Inventory
     Spells.Add(SpellName.GreaterStamina, new Spell(SpellName.GreaterStamina, "Increases your maximum health", SpellType.Buff, 6, 3, 10));
     Spells.Add(SpellName.Haste, new Spell(SpellName.Haste, "Get an extra attack in a turn", SpellType.Buff, 3, 3, 10));
 
-    //Debuff
+    // Debuff
     Spells.Add(SpellName.SunderArmor, new Spell(SpellName.SunderArmor, "Shows any monsters on the map of the current level for a short time", SpellType.Debuff, 3, 3, 10));
     Spells.Add(SpellName.Slow, new Spell(SpellName.Slow, "Slows a monsters and prevents an attack for the next turn", SpellType.Debuff, 3, 3, 10));
 

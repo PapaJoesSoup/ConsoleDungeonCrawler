@@ -23,7 +23,7 @@ internal static class Dialog
   /// <param name="title"></param>
   internal static void Draw(string title)
   {
-    Box.Draw(GamePlay.BChars, ForegroundColor, BackgroundColor, FillColor);
+    Box.Draw(BoxChars.Default, ForegroundColor, BackgroundColor, FillColor);
     $"[{title}]".WriteAlignedAt(Box, HAlign.Center, VAlign.Top, TextColor, BackgroundColor, 0, -1);
   }
 
@@ -35,7 +35,7 @@ internal static class Dialog
   /// <param name="bChars"></param>
   internal static void Draw(string title, Box box, BoxChars? bChars = null)
   {
-    bChars ??= GamePlay.BChars;
+    bChars ??= BoxChars.Default;
     box.Draw(bChars, ForegroundColor, BackgroundColor, FillColor);
     $"[{title}]".WriteAlignedAt(box, HAlign.Center, VAlign.Top, Color.Bisque, Color.Black, 0, -1);
   }
@@ -53,7 +53,7 @@ internal static class Dialog
   internal static void Draw(string title, Color color, Color backgroundColor, Color fillColor, Color textColor, Box? box = null, BoxChars? bChars = null)
   {
     box ??= Box;
-    bChars ??= GamePlay.BChars;
+    bChars ??= BoxChars.Default;
     box.Draw(bChars, color, backgroundColor, fillColor);
     $"[{title}]".WriteAlignedAt(box, HAlign.Center, VAlign.Top, textColor, backgroundColor, 0, -1);
   }

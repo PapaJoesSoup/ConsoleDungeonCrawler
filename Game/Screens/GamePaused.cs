@@ -8,7 +8,7 @@ internal static class GamePaused
   internal static void Draw()
   {
     Box box = new(Console.WindowWidth/2 -52, Console.WindowHeight/2 -10, 100, 20);
-    box.Draw(GamePlay.BChars, Color.DarkOrange, Color.Black, Color.Olive);
+    box.Draw(BoxChars.Default, Color.DarkOrange, Color.Black, Color.Olive);
     "Game Paused".WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive);
     "Press any key to continue".WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, 2);
     Console.ReadKey(true);

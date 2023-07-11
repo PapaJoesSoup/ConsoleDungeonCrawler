@@ -87,10 +87,10 @@ internal class Player : Tile
     Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
     Map.LevelMapGrids[Game.CurrentLevel][newPos.X][newPos.Y].Draw();
 
-    int oldlayer = Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Count - 1;
-    int newlayer = Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y].Count - 1;
-    Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][oldlayer].Draw();
-    Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][newlayer].Draw();
+    int oldLayer = Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Count - 1;
+    int newLayer = Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y].Count - 1;
+    Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y][oldLayer].Draw();
+    Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y][newLayer].Draw();
     Map.Player.Draw();
     return true;
   }

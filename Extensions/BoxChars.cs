@@ -17,7 +17,13 @@ internal class BoxChars
   internal readonly string MidBottom;
   internal readonly string Mid;
 
-  internal BoxChars(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver,
+  // These are unicode values for box drawing characters.   Expects Console.OutputEncoding = Encoding.Unicode and Consolas font selected in Terminal Settings.
+  // Note that font settings cannot be changed in code, so the user must do this manually in the terminal app.
+  // refer to: https://www.fileformat.info/info/unicode/font/consolas/grid.htm for a grid of all characters
+  internal static readonly BoxChars Default = new("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560",
+    "\u2563", "\u2566", "\u2569", "\u256c");
+
+  private BoxChars(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver,
     string midLeft, string midRight, string midTop, string midBottom, string mid)
   {
     TopLeft = topLeft;

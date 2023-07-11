@@ -37,7 +37,7 @@ internal static class PlayerInventory
       int y = 1;
       "Select Bag: ([x])".WriteAt(DialogBox.Left + 2, DialogBox.Top + 1, TextColor, FillColor);
       y += 2;
-      foreach (var bag in Inventory.Bags)
+      foreach (Bag bag in Inventory.Bags)
       {
         $"[{x}] Bag {x}".WriteAt(DialogBox.Left + 2, DialogBox.Top + y, TextColor, activeBag == x - 1 ? SelectedBackgroundColor : FillColor);
         x++;

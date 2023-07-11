@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
+using ConsoleDungeonCrawler.Game.Entities.Items;
 using ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
 namespace ConsoleDungeonCrawler.Game.Screens;
@@ -26,14 +27,8 @@ internal static class GamePlay
   private static int messageOffset;
 
 
-  // These are unicode values for box drawing characters.   Expects Console.OutputEncoding = Encoding.Unicode and Consolas font selected in Terminal Settings.
-  // Note that font settings cannot be changed in code, so the user must do this manually in the terminal app.
-  // refer to: https://www.fileformat.info/info/unicode/font/consolas/grid.htm for a grid of all characters
-  internal static readonly BoxChars BChars = new("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560",
-    "\u2563", "\u2566", "\u2569", "\u256c");
-
-  // This is used to manage display of bags in both the inventory section as well as the PlayerInventory and Vendor screens
-  private static int currentBag = 1;
+  // This is used to manage display of bags in the inventory section
+  private static int currentBag;
 
   // LastKey is used to help with player combat state management
   private static ConsoleKeyInfo lastKey;
@@ -65,25 +60,25 @@ internal static class GamePlay
 
   private static void BordersEx()
   {
-    StatusBox.WriteBorder(BChars, Color.Gold);
+    StatusBox.WriteBorder(BoxChars.Default, Color.Gold);
     $"[ {Game.Title} - The {Game.CurrentDungeon} ]".WriteAlignedAt(HAlign.Center, VAlign.Top, Color.White);
-    MapBox.WriteBorder(BChars, Color.Gold);
-    OverlayBox.WriteBorder(BChars, Color.Gold);
-    MessageBox.WriteBorder(BChars, Color.Gold);
-    LegendBox.WriteBorder(BChars, Color.Gold);
+    MapBox.WriteBorder(BoxChars.Default, Color.Gold);
+    OverlayBox.WriteBorder(BoxChars.Default, Color.Gold);
+    MessageBox.WriteBorder(BoxChars.Default, Color.Gold);
+    LegendBox.WriteBorder(BoxChars.Default, Color.Gold);
 
     // now to clean up the corners
-    BChars.MidLeft.WriteAt(MapBox.Left, MapBox.Top, Color.Gold);
-    BChars.MidTop.WriteAt(OverlayBox.Left, MapBox.Top, Color.Gold);
-    BChars.MidRight.WriteAt(OverlayBox.Left + OverlayBox.Width - 1, MapBox.Top, Color.Gold);
+    BoxChars.Default.MidLeft.WriteAt(MapBox.Left, MapBox.Top, Color.Gold);
+    BoxChars.Default.MidTop.WriteAt(OverlayBox.Left, MapBox.Top, Color.Gold);
+    BoxChars.Default.MidRight.WriteAt(OverlayBox.Left + OverlayBox.Width - 1, MapBox.Top, Color.Gold);
 
-    BChars.MidLeft.WriteAt(LegendBox.Left, LegendBox.Top, Color.Gold);
-    BChars.MidRight.WriteAt(LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Color.Gold);
+    BoxChars.Default.MidLeft.WriteAt(LegendBox.Left, LegendBox.Top, Color.Gold);
+    BoxChars.Default.MidRight.WriteAt(LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Color.Gold);
 
-    BChars.MidLeft.WriteAt(MessageBox.Left, MessageBox.Top, Color.Gold);
-    BChars.MidRight.WriteAt(MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Color.Gold);
+    BoxChars.Default.MidLeft.WriteAt(MessageBox.Left, MessageBox.Top, Color.Gold);
+    BoxChars.Default.MidRight.WriteAt(MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Color.Gold);
 
-    BChars.MidBottom.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
+    BoxChars.Default.MidBottom.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
 
   }
 
@@ -100,11 +95,11 @@ internal static class GamePlay
     //Player Stats
     int col = StatusBox.Left + 179;
     int row = StatusBox.Top + 1;
-    BChars.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
-    BChars.Mid.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
+    BoxChars.Default.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
+    BoxChars.Default.Mid.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
     for (int index = row; index < row + 6; index++)
     {
-      BChars.Ver.WriteAt(col - 2, index, Color.Gold);
+      BoxChars.Default.Ver.WriteAt(col - 2, index, Color.Gold);
     }
 
     $"Player - Level: {Player.Level}".WriteAt(col, row, Color.Gold);
@@ -128,11 +123,11 @@ internal static class GamePlay
     int col = StatusBox.Left + 140;
     int row = StatusBox.Top + 1;
     int colWidth = 18;
-    BChars.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
-    BChars.MidBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
+    BoxChars.Default.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
+    BoxChars.Default.MidBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
     for (int index = row; index < row + 6; index++)
     {
-      BChars.Ver.WriteAt(col - 2, index, Color.Gold);
+      BoxChars.Default.Ver.WriteAt(col - 2, index, Color.Gold);
     }
 
     "Spells".WriteAt(col, row, Color.Gold);
@@ -164,11 +159,11 @@ internal static class GamePlay
     int colWidth = 25;
     int count = 0;
     int totalBags = Inventory.Bags.Count;
-    BChars.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
-    BChars.MidBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
+    BoxChars.Default.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
+    BoxChars.Default.MidBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
     for (int index = row; index < row + 6; index++)
     {
-      BChars.Ver.WriteAt(col - 2, index, Color.Gold);
+      BoxChars.Default.Ver.WriteAt(col - 2, index, Color.Gold);
     }
 
     Bag bag = Inventory.Bags[currentBag];
@@ -200,7 +195,7 @@ internal static class GamePlay
     //Armor
     "Armor".WriteAt(col, row, Color.Gold);
     row++;
-    foreach (var armor in Player.ArmorSet)
+    foreach (Armor? armor in Player.ArmorSet)
     {
       string armorText = $"{armor.ArmorType}: ";
       armorText.WriteAt(col, row, ConsoleColor.White);
@@ -306,10 +301,10 @@ internal static class GamePlay
     int col = MessageBox.Width - 30;
     int row = MessageBox.Top + 1;
     // draw the message Legend left border
-    BChars.MidTop.WriteAt(col, row - 1, Color.Gold);
-    BChars.MidBottom.WriteAt(col, MessageBox.Top + MessageBox.Height - 1, Color.Gold);
+    BoxChars.Default.MidTop.WriteAt(col, row - 1, Color.Gold);
+    BoxChars.Default.MidBottom.WriteAt(col, MessageBox.Top + MessageBox.Height - 1, Color.Gold);
     for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
-      BChars.Ver.WriteAt(col, index, Color.Gold);
+      BoxChars.Default.Ver.WriteAt(col, index, Color.Gold);
     col += 2;
     "Messages Legend: ".WriteAt(col, row, Color.Gold);
     row += 2;

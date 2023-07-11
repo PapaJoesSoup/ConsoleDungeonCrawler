@@ -11,7 +11,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 
     internal static void Draw()
     {
-      Dialog.Draw(" Welcome to the Dungeon Crawler! ",Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, Box, GamePlay.BChars);
+      Dialog.Draw(" Welcome to the Dungeon Crawler! ",Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, Box, BoxChars.Default);
       dialogOpen = true;
 
       while (dialogOpen)

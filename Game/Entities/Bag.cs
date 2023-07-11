@@ -18,10 +18,10 @@ internal class Bag
 
   internal bool AddItem(Item item)
   {
-    foreach (Item bagitem in Items.Where(x => x.Name == item.Name))
+    foreach (Item bagItem in Items.Where(x => x.Name == item.Name))
     {
-      if (bagitem.Quantity >= bagitem.StackSize) continue;
-      bagitem.Quantity++;
+      if (bagItem.Quantity >= bagItem.StackSize) continue;
+      bagItem.Quantity++;
       return true;
     }
 
@@ -34,16 +34,16 @@ internal class Bag
   {
     // lambda expression for all items in the bag that match the item.name
     // if the item is in the bag, decrement the count.  if the count drops to 0, remove the item from the bag
-    foreach (Item bagitem in Items.Where(x => x.Name == item.Name))
+    foreach (Item bagItem in Items.Where(x => x.Name == item.Name))
     {
-      if (bagitem.Quantity > 1)
+      if (bagItem.Quantity > 1)
       {
-        bagitem.Quantity--;
+        bagItem.Quantity--;
         return true;
       }
       else
       {
-        Items.Remove(bagitem);
+        Items.Remove(bagItem);
         return true;
       }
     }
@@ -52,14 +52,14 @@ internal class Bag
 
   internal int GetQuantity(Item item)
   {
-    int quanity = 0;
-    foreach (Item bagitem in Items)
+    int quantity = 0;
+    foreach (Item bagItem in Items)
     {
-      if (bagitem.Name == item.Name)
+      if (bagItem.Name == item.Name)
       {
-        quanity += bagitem.Quantity;
+        quantity += bagItem.Quantity;
       }
     }
-    return quanity;
+    return quantity;
   }
 }
