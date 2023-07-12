@@ -69,7 +69,7 @@ internal static class GamePlay
 
     // now to clean up the corners
     BoxChars.Default.MidLeft.WriteAt(MapBox.Left, MapBox.Top, Color.Gold);
-    BoxChars.Default.MidTop.WriteAt(OverlayBox.Left, MapBox.Top, Color.Gold);
+    BoxChars.Default.TopMid.WriteAt(OverlayBox.Left, MapBox.Top, Color.Gold);
     BoxChars.Default.MidRight.WriteAt(OverlayBox.Left + OverlayBox.Width - 1, MapBox.Top, Color.Gold);
 
     BoxChars.Default.MidLeft.WriteAt(LegendBox.Left, LegendBox.Top, Color.Gold);
@@ -78,7 +78,7 @@ internal static class GamePlay
     BoxChars.Default.MidLeft.WriteAt(MessageBox.Left, MessageBox.Top, Color.Gold);
     BoxChars.Default.MidRight.WriteAt(MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Color.Gold);
 
-    BoxChars.Default.MidBottom.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
+    BoxChars.Default.BotMid.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
 
   }
 
@@ -95,7 +95,7 @@ internal static class GamePlay
     //Player Stats
     int col = StatusBox.Left + 179;
     int row = StatusBox.Top + 1;
-    BoxChars.Default.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
+    BoxChars.Default.TopMid.WriteAt(col - 2, row - 1, Color.Gold);
     BoxChars.Default.Mid.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
     for (int index = row; index < row + 6; index++)
     {
@@ -123,8 +123,8 @@ internal static class GamePlay
     int col = StatusBox.Left + 140;
     int row = StatusBox.Top + 1;
     int colWidth = 18;
-    BoxChars.Default.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
-    BoxChars.Default.MidBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
+    BoxChars.Default.TopMid.WriteAt(col - 2, row - 1, Color.Gold);
+    BoxChars.Default.BotMid.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
     for (int index = row; index < row + 6; index++)
     {
       BoxChars.Default.Ver.WriteAt(col - 2, index, Color.Gold);
@@ -159,8 +159,8 @@ internal static class GamePlay
     int colWidth = 25;
     int count = 0;
     int totalBags = Inventory.Bags.Count;
-    BoxChars.Default.MidTop.WriteAt(col - 2, row - 1, Color.Gold);
-    BoxChars.Default.MidBottom.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
+    BoxChars.Default.TopMid.WriteAt(col - 2, row - 1, Color.Gold);
+    BoxChars.Default.BotMid.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
     for (int index = row; index < row + 6; index++)
     {
       BoxChars.Default.Ver.WriteAt(col - 2, index, Color.Gold);
@@ -301,8 +301,8 @@ internal static class GamePlay
     int col = MessageBox.Width - 30;
     int row = MessageBox.Top + 1;
     // draw the message Legend left border
-    BoxChars.Default.MidTop.WriteAt(col, row - 1, Color.Gold);
-    BoxChars.Default.MidBottom.WriteAt(col, MessageBox.Top + MessageBox.Height - 1, Color.Gold);
+    BoxChars.Default.TopMid.WriteAt(col, row - 1, Color.Gold);
+    BoxChars.Default.BotMid.WriteAt(col, MessageBox.Top + MessageBox.Height - 1, Color.Gold);
     for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
       BoxChars.Default.Ver.WriteAt(col, index, Color.Gold);
     col += 2;
@@ -347,9 +347,6 @@ internal static class GamePlay
         case ConsoleKey.P:
           PlayerSpells.Draw();
           break;
-        case ConsoleKey.G:
-          GameOptions.Draw();
-          break;
         case ConsoleKey.Q:
           Game.IsOver = true;
           SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GameOver]);
@@ -357,6 +354,12 @@ internal static class GamePlay
         case ConsoleKey.E:
           Game.IsWon = true;
           SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GameWon]);
+          break;
+        case ConsoleKey.G:
+          GameOptions.Draw();
+          break;
+        case ConsoleKey.B:
+          BorderConfig.Draw();
           break;
       }
     }

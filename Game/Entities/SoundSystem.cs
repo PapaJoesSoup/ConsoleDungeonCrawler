@@ -3,10 +3,9 @@
 
 namespace ConsoleDungeonCrawler.Game.Entities;
 
+// We want to use LibVLCSharp to play layered sound effects and background sounds
 internal static class SoundSystem
 {
-  // We want to use LibVLCSharp to play layered sound effects and background sounds
-
   // Declare the LibVLCSharp objects
   private static readonly LibVLC libVlc;
   private static readonly MediaPlayer BackgroundMPlayer1;

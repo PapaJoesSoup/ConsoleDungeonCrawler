@@ -46,7 +46,6 @@ internal static class Vendor
 
     while (dialogOpen)
     {
-      // Create a new dialogBox for the player inventory
       int x = 1;
       int y = 1;
       "Select Bag: ([x])".WriteAt(DialogBox.Left + 2, DialogBox.Top + 1, TextColor, FillColor);
@@ -62,7 +61,7 @@ internal static class Vendor
       DrawLegend();
 
       // Draw the vendor inventory
-      DrawTab(StoreInventory[activeVendorTab], TabPosition, ListSize, listStart);
+      DrawTab(TabPosition, ListSize, listStart);
       // Draw the player inventory
       DrawBag(Inventory.Bags[activeBag], BagPosition);
 
@@ -144,7 +143,7 @@ internal static class Vendor
     $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor);
   }
 
-  private static void DrawTab(Bag bag, Position position, int maxHeight, int scrollY)
+  private static void DrawTab(Position position, int maxHeight, int scrollY)
   {
     int x = position.X;
     int y = position.Y;

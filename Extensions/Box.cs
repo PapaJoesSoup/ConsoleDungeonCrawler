@@ -42,7 +42,7 @@ internal class Box
         }
         else
         {
-          StringInfo.GetNextTextElement(bChars.Ver).WriteAt(Left, Top + i, color);
+          StringInfo.GetNextTextElement(bChars.Ver).WriteAt(Left, Top + i, color, backgroundColor);
           StringInfo.GetNextTextElement(bChars.Ver).WriteAt(Left + Width - 1, Top + i, color, backgroundColor);
         }
       }

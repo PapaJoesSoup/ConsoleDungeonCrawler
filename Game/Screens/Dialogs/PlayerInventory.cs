@@ -51,19 +51,20 @@ internal static class PlayerInventory
 
   private static void DrawLegend()
   {
+    int x = LegendBox.Left + 2;
     int y = LegendBox.Top + 1;
-    "Legend:".WriteAt(LegendBox.Left + 2, LegendBox.Top, TextColor, FillColor); y++;
+    "Legend:".WriteAt(x, LegendBox.Top, TextColor, FillColor); y++;
 
-    "[1-5] Select Bag".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.PageUp}] Prev Bag".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.PageDown}] Next Bag".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.UpArrow}] Prev Item".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.DownArrow}] Next Item".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.M}] Move Item".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.R}] Remove Item".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.S}] Sell Item".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.U}] Use Item".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(LegendBox.Left + 2, y, TextColor, FillColor);
+    "[1-5] Select Bag".WriteAt(x, y, TextColor, FillColor); y++;
+    $"[{ConsoleKey.PageUp}] Prev Bag".WriteAt(x, y, TextColor, FillColor); y++;
+    $"[{ConsoleKey.PageDown}] Next Bag".WriteAt(x, y, TextColor, FillColor); y++;
+    $"[{ConsoleKey.UpArrow}] Prev Item".WriteAt(x, y, TextColor, FillColor); y++;
+    $"[{ConsoleKey.DownArrow}] Next Item".WriteAt(x, y, TextColor, FillColor); y++;
+    $"[{ConsoleKey.M}] Move Item".WriteAt(x, y, TextColor, FillColor); y++;
+    $"[{ConsoleKey.R}] Remove Item".WriteAt(x, y, TextColor, FillColor); y++;
+    $"[{ConsoleKey.S}] Sell Item".WriteAt(x, y, TextColor, FillColor); y++;
+    $"[{ConsoleKey.U}] Use Item".WriteAt(x, y, TextColor, FillColor); y++;
+    $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(x, y, TextColor, FillColor);
   }
 
   private static void DrawBag(Bag bag)

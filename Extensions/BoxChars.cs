@@ -5,37 +5,35 @@
 /// </summary>
 internal class BoxChars
 {
-  internal readonly string TopLeft;
-  internal readonly string TopRight;
-  internal readonly string BotLeft;
-  internal readonly string BotRight;
-  internal readonly string Hor;
-  internal readonly string Ver;
-  internal readonly string MidLeft;
-  internal readonly string MidRight;
-  internal readonly string MidTop;
-  internal readonly string MidBottom;
-  internal readonly string Mid;
+  internal string TopLeft;
+  internal string TopMid;
+  internal string TopRight;
+  internal string MidLeft;
+  internal string Mid;
+  internal string MidRight;
+  internal string BotLeft;
+  internal string BotMid;
+  internal string BotRight;
+  internal string Hor;
+  internal string Ver;
 
   // These are unicode values for box drawing characters.   Expects Console.OutputEncoding = Encoding.Unicode and Consolas font selected in Terminal Settings.
   // Note that font settings cannot be changed in code, so the user must do this manually in the terminal app.
   // refer to: https://www.fileformat.info/info/unicode/font/consolas/grid.htm for a grid of all characters
-  internal static readonly BoxChars Default = new("\u2554", "\u2557", "\u255a", "\u255d", "\u2550", "\u2551", "\u2560",
-    "\u2563", "\u2566", "\u2569", "\u256c");
+  internal static readonly BoxChars Default = new("\u2554", "\u2566", "\u2557", "\u2560", "\u256c", "\u2563", "\u255a", "\u2569", "\u255d", "\u2550", "\u2551");
 
-  private BoxChars(string topLeft, string topRight, string botLeft, string botRight, string hor, string ver,
-    string midLeft, string midRight, string midTop, string midBottom, string mid)
+  private BoxChars(string topLeft, string topMid, string topRight, string midLeft, string mid, string midRight, string botLeft, string botMid, string botRight, string hor, string ver)
   {
     TopLeft = topLeft;
+    TopMid = topMid;
     TopRight = topRight;
+    MidLeft = midLeft;
+    Mid = mid;
+    MidRight = midRight;
     BotLeft = botLeft;
+    BotMid = botMid;
     BotRight = botRight;
     Hor = hor;
     Ver = ver;
-    MidLeft = midLeft;
-    MidRight = midRight;
-    MidTop = midTop;
-    MidBottom = midBottom;
-    Mid = mid;
   }
 }
