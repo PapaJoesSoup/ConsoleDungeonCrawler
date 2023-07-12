@@ -13,7 +13,9 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     private static BoxChars sampleChars = theme.BoxChars;
     private static Colors sampleColors = Theme.DefaultColors;
 
-    private static readonly Box DialogBox = new(Console.WindowWidth / 2 - 50, Console.WindowHeight / 2 - 12, 100, 25);
+    private static readonly Box DialogBox = new(GamePlay.MapBox.Width / 2 - 50,
+      GamePlay.MapBox.Top + GamePlay.MapBox.Height / 2 - 12, 100, 24);
+    //private static readonly Box DialogBox = new(Console.WindowWidth / 2 - 50, Console.WindowHeight / 2 - 13, 100, 24);
     private static readonly Box LegendBox = new(DialogBox.Left + 3, DialogBox.Top + 2, 0, 0);
     private static readonly Box SampleCharBox = new(DialogBox.Left + 37, DialogBox.Top + 2, 0, 0);
     private static readonly Box SampleBox = new(DialogBox.Left + 62, DialogBox.Top + 4, 35, 17);
@@ -96,7 +98,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       int x = LegendBox.Left;
       int y = LegendBox.Top;
 
-      "Legend:".WriteAt(x, y, HeaderColor, FillColor); y+=2;
+      "Legend:".WriteAt(x, y, HeaderColor, FillColor); y++; x++;
 
       $"[{ConsoleKey.PageUp}] Border Chars Active".WriteAt(x, y, TextColor, FillColor); y++;
       $"[{ConsoleKey.PageDown}] Char Colors Active".WriteAt(x, y, TextColor, FillColor); y++;
@@ -112,12 +114,12 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     private static void DrawSampleChars()
     {
       int x = SampleCharBox.Left;
-      int x2 = SampleCharBox.Left + 21;
+      int x2 = SampleCharBox.Left + 22;
       int y = SampleCharBox.Top;
       int i = 0;
 
-      "Border Characters".WriteAt(x, y, charsActive ? SelectedColor : HeaderColor, FillColor); y += 2;
-
+      "Border Characters".WriteAt(x, y, charsActive ? SelectedColor : HeaderColor, FillColor); y++; x++;
+      
       "Top Left char:".WriteAt(x, y, selectedCharIdx == i ? SelectedColor : TextColor, selectedCharIdx == i ? SelectedBackgroundColor : FillColor);
       $"{sampleChars.TopLeft}".WriteAt(x2, y, sampleColors.Color, sampleColors.FillColor);
       if (selectedCharIdx == i) selectedChar = sampleChars.TopLeft;
@@ -178,7 +180,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       int x = SampleColorBox.Left;
       int y = SampleColorBox.Top;
       int i = 0;
-      "Box Char Colors".WriteAt(x, y, charsActive ? HeaderColor : SelectedColor, FillColor); y += 2;
+      "Box Char Colors".WriteAt(x, y, charsActive ? HeaderColor : SelectedColor, FillColor); y++; x++;
 
       "Border Char Color:".WriteAt(x, y, selectedColorIdx == i ? SelectedColor : TextColor, selectedColorIdx == i ? SelectedBackgroundColor : FillColor);
       ' '.WriteAt(x + 27, y, sampleColors.Color, sampleColors.Color);
@@ -220,11 +222,12 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       int x = ColorSelectorBox.Left;
       int y = ColorSelectorBox.Top;
 
-      "RGB Color Picker".WriteAt(x, y, HeaderColor, FillColor); y += 2;
+      "RGB Color Picker".WriteAt(x, y, HeaderColor, FillColor); y++; x++;
+
       "[R]: ".WriteAt(x, y, Color.Red, FillColor); $"{iRed}".PadRight(3).WriteAt(x + 5, y, strRGB == "R"? SelectedColor : TextColor, strRGB == "R" ? SelectedBackgroundColor : FillColor); y++;
-      "[G]: ".WriteAt(x, y, Color.Green, FillColor); $"{iGreen}".PadRight(3).WriteAt(x + 5, y, strRGB == "G" ? SelectedColor : TextColor, strRGB == "G" ? SelectedBackgroundColor : FillColor); y++;
+      "[G]: ".WriteAt(x, y, Color.Green, FillColor); $"{iGreen}".PadRight(3).WriteAt(x + 5, y, strRGB == "G" ? SelectedColor : TextColor, strRGB == "G" ? SelectedBackgroundColor : FillColor);
+      "RGB Color: ".WriteAt(x + 10, y, TextColor, FillColor); " ".WriteAt(x + 21, y, Color.FromArgb(255, iRed, iGreen, iBlue), Color.FromArgb(255, iRed, iGreen, iBlue)); y++;
       "[B]: ".WriteAt(x, y, Color.Blue, FillColor); $"{iBlue}".PadRight(3).WriteAt(x + 5, y, strRGB == "B" ? SelectedColor : TextColor, strRGB == "B" ? SelectedBackgroundColor : FillColor);
-      "RGB Color: ".WriteAt(x + 10, y - 1, TextColor, FillColor); " ".WriteAt(x + 21, y - 1, Color.FromArgb(255, iRed, iGreen, iBlue), Color.FromArgb(255, iRed, iGreen, iBlue));
       "[Enter]: Updates Color".WriteAt(x, y+1, TextColor, FillColor); 
     }
 
@@ -250,9 +253,10 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       sampleChars.Mid.WriteAt(center, middle, sampleColors.Color, sampleColors.FillColor);
 
       // draw text elements in box.
-      "Header".WriteAt(left + 2, top + 2, sampleColors.HeaderColor, sampleColors.FillColor);
-      "Text String".WriteAt(left + 2, top + 4, sampleColors.TextColor, sampleColors.FillColor);
-      "SelectedText".WriteAt(left + 2, top + 5, sampleColors.SelectedColor, sampleColors.SelectedBackgroundColor);
+      "Theme Sample".WriteAt(left, top-1, HeaderColor, FillColor);
+      "Header color".WriteAt(left + 2, top + 2, sampleColors.HeaderColor, sampleColors.FillColor);
+      "Text Color".WriteAt(left + 3, top + 3, sampleColors.TextColor, sampleColors.FillColor);
+      "Selected Item".WriteAt(left + 3, top + 4, sampleColors.SelectedColor, sampleColors.SelectedBackgroundColor);
     }
 
     private static void GetPrevChar()

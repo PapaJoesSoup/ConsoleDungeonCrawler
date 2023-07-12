@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using System.Globalization;
 using ConsoleDungeonCrawler.Extensions;
+using ConsoleDungeonCrawler.Game.Screens;
 
 namespace ConsoleDungeonCrawler.Game.Entities;
 
@@ -14,13 +15,24 @@ internal class Box
     internal readonly int Left;
     internal readonly int Top;
 
-    internal Box(int left, int top, int width, int height)
+    internal static readonly Box DefaultBox = new(Console.WindowWidth / 2 - 52, Console.WindowHeight / 2 - 12, 100, 25);
+    internal static readonly Box MapBox = new(GamePlay.MapBox.Width / 2 - 50, GamePlay.MapBox.Top + GamePlay.MapBox.Height / 2 - 12, 100, 24);
+
+  internal Box(int left, int top, int width, int height)
     {
         Left = left;
         Top = top;
         Width = width;
         Height = height;
     }
+
+  internal Box(Box box)
+  {
+    Height = box.Height;
+    Left = box.Left;
+    Top = box.Top;
+    Width = box.Width;
+  }
 
     // WriteBorder Methods
     internal void Draw(BoxChars bChars, Color color, Color backgroundColor, Color fillColor)

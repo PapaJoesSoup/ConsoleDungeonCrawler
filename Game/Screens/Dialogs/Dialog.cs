@@ -22,7 +22,7 @@ internal static class Dialog
   internal static void Draw(string title)
   {
     Box.Draw(BoxChars.Default, ForegroundColor, BackgroundColor, FillColor);
-    $"[{title}]".WriteAlignedAt(Box, HAlign.Center, VAlign.Top, TextColor, BackgroundColor, 0, -1);
+    $"[ {title} ]".WriteAlignedAt(Box, HAlign.Center, VAlign.Top, TextColor, BackgroundColor, 0, -1);
   }
 
   /// <summary>
@@ -35,7 +35,7 @@ internal static class Dialog
   {
     bChars ??= BoxChars.Default;
     box.Draw(bChars, ForegroundColor, BackgroundColor, FillColor);
-    $"[{title}]".WriteAlignedAt(box, HAlign.Center, VAlign.Top, Color.Bisque, Color.Black, 0, -1);
+    $"[ {title} ]".WriteAlignedAt(box, HAlign.Center, VAlign.Top, Color.Bisque, Color.Black, 0, -1);
   }
 
   /// <summary>
@@ -43,17 +43,17 @@ internal static class Dialog
   /// </summary>
   /// <param name="title"></param>
   /// <param name="color"></param>
-  /// <param name="backgroundColor"></param>
+  /// <param name="bgColor"></param>
   /// <param name="fillColor"></param>
   /// <param name="textColor"></param>
   /// <param name="box"></param>
   /// <param name="bChars"></param>
-  internal static void Draw(string title, Color color, Color backgroundColor, Color fillColor, Color textColor, Box? box = null, BoxChars? bChars = null)
+  internal static void Draw(string title, Color color, Color bgColor, Color fillColor, Color textColor, Box? box = null, BoxChars? bChars = null)
   {
     box ??= Box;
     bChars ??= BoxChars.Default;
-    box.Draw(bChars, color, backgroundColor, fillColor);
-    $"[{title}]".WriteAlignedAt(box, HAlign.Center, VAlign.Top, textColor, backgroundColor, 0, -1);
+    box.Draw(bChars, color, bgColor, fillColor);
+    $"[ {title} ]".WriteAlignedAt(box, HAlign.Center, VAlign.Top, textColor, bgColor, 0, -1);
   }
 
   internal static void AskForInt(string question, string prompt, out int result)

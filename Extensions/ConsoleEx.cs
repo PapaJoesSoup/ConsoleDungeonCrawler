@@ -412,6 +412,16 @@ internal static class ConsoleEx
     WriteAt(s, x + xOffset, y + yOffset, color);
   }
 
+  /// <summary>
+  /// Writes a string aligned to the screen using legacy ConsoleColors and an Offset ability
+  /// </summary>
+  /// <param name="s">String to write</param>
+  /// <param name="hAlign">Horizontal alignment</param>
+  /// <param name="vAlign">Vertical alignment</param>
+  /// <param name="color">Foreground Console color</param>
+  /// <param name="bgColor">Background Console color</param>
+  /// <param name="xOffset">left and right offset amount.</param>
+  /// <param name="yOffset">up and down offset amount</param>
   internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, ConsoleColor color,
     ConsoleColor bgColor, int xOffset, int yOffset)
   {
@@ -447,6 +457,13 @@ internal static class ConsoleEx
 
   // Extended Color WriteAlignedAt Methods
 
+  /// <summary>
+  /// Writes a string aligned with the screen
+  /// </summary>
+  /// <param name="s">String to write</param>
+  /// <param name="hAlign">Horizontal alignment</param>
+  /// <param name="vAlign">Vertical alignment</param>
+  /// <param name="color">Foreground color</param>
   internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, Color color)
   {
     int x = 0;
@@ -479,6 +496,16 @@ internal static class ConsoleEx
     WriteAt(s, x, y, color);
   }
 
+  /// <summary>
+  /// Writes a string aligned with the screen and includes an offset ability
+  /// </summary>
+  /// <param name="s">String to write</param>
+  /// <param name="hAlign">Horizontal alignment</param>
+  /// <param name="vAlign">Vertical alignment</param>
+  /// <param name="color">Foreground color</param>
+  /// <param name="bgColor">Background color</param>
+  /// <param name="xOffset">left and right offset amount.</param>
+  /// <param name="yOffset">up and down offset amount</param>
   internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, Color color,
     Color bgColor, int xOffset, int yOffset)
   {
@@ -512,8 +539,15 @@ internal static class ConsoleEx
     WriteAt(s, x + xOffset, y + yOffset, color, bgColor);
   }
 
-  internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, Color color,
-    Color bgColor)
+  /// <summary>
+  /// Writes a string aligned with the screen
+  /// </summary>
+  /// <param name="s">String to write</param>
+  /// <param name="hAlign">Horizontal alignment</param>
+  /// <param name="vAlign">Vertical alignment</param>
+  /// <param name="color">Foreground color</param>
+  /// <param name="bgColor">Background color</param>
+  internal static void WriteAlignedAt(this string s, HAlign hAlign, VAlign vAlign, Color color, Color bgColor)
   {
     int x = 0;
     int y = 0;
@@ -545,8 +579,15 @@ internal static class ConsoleEx
     WriteAt(s, x, y, color, bgColor);
   }
 
-  internal static void WriteAlignedAt(this string s, Box box, HAlign hAlign, VAlign vAlign, Color color,
-    Color bgColor)
+  /// <summary>
+  /// Writes a string aligned with a box
+  /// </summary>
+  /// <param name="s">String to write</param>
+  /// <param name="hAlign">Horizontal alignment</param>
+  /// <param name="vAlign">Vertical alignment</param>
+  /// <param name="color">Foreground color</param>
+  /// <param name="bgColor">Background color</param>
+  internal static void WriteAlignedAt(this string s, Box box, HAlign hAlign, VAlign vAlign, Color color, Color bgColor)
   {
     int x = 0;
     int y = 0;
@@ -556,7 +597,7 @@ internal static class ConsoleEx
         x = box.Left + 1;
         break;
       case HAlign.Center:
-        x = (Console.WindowWidth / 2) - (s.Length / 2);
+        x = box.Left + (box.Width / 2) - (s.Length / 2);
         break;
       case HAlign.Right:
         x = box.Width - s.Length;
@@ -578,6 +619,17 @@ internal static class ConsoleEx
     WriteAt(s, x, y, color, bgColor);
   }
 
+  /// <summary>
+  /// Writes a string aligned with a box and includes an offset ability
+  /// </summary>
+  /// <param name="s">String to write</param>
+  /// <param name="box">Box to use for alignment</param>
+  /// <param name="hAlign">Horizontal alignment</param>
+  /// <param name="vAlign">Vertical alignment</param>
+  /// <param name="color">Foreground color</param>
+  /// <param name="bgColor">Background color</param>
+  /// <param name="xOffset">left and right offset amount.</param>
+  /// <param name="yOffset">up and down offset amount</param>
   internal static void WriteAlignedAt(this string s, Box box, HAlign hAlign, VAlign vAlign, Color color,
     Color bgColor, int xOffset, int yOffset)
   {
@@ -589,7 +641,7 @@ internal static class ConsoleEx
         x = box.Left + 1;
         break;
       case HAlign.Center:
-        x = (Console.WindowWidth / 2) - (s.Length / 2);
+        x = box.Left + (box.Width / 2) - (s.Length / 2);
         break;
       case HAlign.Right:
         x = box.Width + box.Left - s.Length;

@@ -32,4 +32,15 @@ internal class Colors
     SelectedColor = selectedColor;
     SelectedBackgroundColor = selectedBackgroundColor;
   }
+
+  internal Colors(Colors colors)
+  {
+    Color = colors.Color;
+    BackgroundColor = colors.BackgroundColor;
+    FillColor = colors.BackgroundColor;
+    HeaderColor = colors.BackgroundColor;
+    TextColor = colors.BackgroundColor;
+    SelectedColor = colors.BackgroundColor;
+    SelectedBackgroundColor = colors.BackgroundColor;
+  }
 }
