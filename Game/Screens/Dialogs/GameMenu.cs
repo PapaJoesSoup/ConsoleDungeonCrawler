@@ -1,9 +1,10 @@
 ﻿using ConsoleDungeonCrawler.Extensions;
+using ConsoleDungeonCrawler.Game.Entities;
 using System.Drawing;
 
 namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 {
-  internal class GameMenu
+    internal class GameMenu
   {
     private static bool dialogOpen = false;
     private static int activeItem = 0;

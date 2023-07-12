@@ -359,7 +359,7 @@ internal static class GamePlay
           GameOptions.Draw();
           break;
         case ConsoleKey.B:
-          BorderConfig.Draw();
+          ThemeConfig.Draw();
           break;
       }
     }
