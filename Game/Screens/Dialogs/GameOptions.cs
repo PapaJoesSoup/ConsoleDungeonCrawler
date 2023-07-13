@@ -9,12 +9,12 @@ internal static class GameOptions
   #region Properties
   private static bool dialogOpen;
   private static readonly Box Box = new(Console.WindowWidth / 2 - 41, Console.WindowHeight / 2 - 8, 82, 17);
-  private static readonly Color Color = Color.DarkOrange;
-  private static readonly Color BackgroundColor = Color.Black;
-  private static readonly Color FillColor = Color.DarkSlateGray;
-  private static readonly Color TextColor = Color.Cyan;
-  private static readonly Color SelectedColor = Color.Lime;
-  private static readonly Color SelectedBackgroundColor = Color.DarkOrange;
+
+  private static readonly Colors Colors = new Colors()
+  {
+    FillColor = Color.DarkSlateGray,
+    TextColor = Color.Cyan
+  };
 
   private static readonly Dictionary<string, List<object?>> Options = new();
   private static int activeOption;
@@ -31,41 +31,41 @@ internal static class GameOptions
     dialogOpen = true;
     while (dialogOpen)
     {
-      Dialog.Draw($" {Game.Title} - Options", Color, BackgroundColor, FillColor, TextColor, Box);
+      Dialog.Draw($" {Game.Title} - Options", Colors.Color, Colors.BackgroundColor, Colors.FillColor, Colors.TextColor, Box);
 
       int i = 0;
       int y = Box.Top + 2;
       int x = Box.Left + 5;
-      "Use the Up and Down Arrow Keys to Select an option".WriteAt(x, y, TextColor, FillColor); y++;
-      "Use Left / Right Arrow Keys to select value of option.  Enter to Change".WriteAt(x, y, TextColor, FillColor); y += 2;
+      "Use the Up and Down Arrow Keys to Select an option".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+      "Use Left / Right Arrow Keys to select value of option.  Enter to Change".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y += 2;
 
       foreach (string header in Options.Keys)
       {
-        header.WriteAt(x, y, TextColor, FillColor);
+        header.WriteAt(x, y, Colors.TextColor, Colors.FillColor);
         y++;
         foreach (object? option in Options[header])
         {
           switch (option)
           {
             case GameOption<bool> bOption:
-              bOption.Name.WriteAt(x + 2, y, activeOption == i ? SelectedColor : TextColor, activeOption == i ? SelectedBackgroundColor : FillColor);
-              "True".WriteAt(x + 30, y, bOption.ActionIdx == 1 ? SelectedColor : TextColor, bOption.ActionIdx == 1 ? SelectedBackgroundColor : FillColor);
-              "False".WriteAt(x + 36, y, bOption.ActionIdx == 0 ? SelectedColor : TextColor, bOption.ActionIdx == 0 ? SelectedBackgroundColor : FillColor);
+              bOption.Name.WriteAt(x + 2, y, activeOption == i ? Colors.SelectedColor : Colors.TextColor, activeOption == i ? Colors.SelectedBackgroundColor : Colors.FillColor);
+              "True".WriteAt(x + 30, y, bOption.ActionIdx == 1 ? Colors.SelectedColor : Colors.TextColor, bOption.ActionIdx == 1 ? Colors.SelectedBackgroundColor : Colors.FillColor);
+              "False".WriteAt(x + 36, y, bOption.ActionIdx == 0 ? Colors.SelectedColor : Colors.TextColor, bOption.ActionIdx == 0 ? Colors.SelectedBackgroundColor : Colors.FillColor);
               y++;
               i++;
               break;
             case GameOption<int> iOption:
-              iOption.Name.WriteAt(x + 2, y, activeOption == i ? SelectedColor : TextColor, activeOption == i ? SelectedBackgroundColor : FillColor);
-              iOption.TempValue.ToString().WriteAt(x + 30, y, TextColor, FillColor);
-              "<<".WriteAt(x + 36, y, iOption.ActionIdx == 0? SelectedColor : TextColor, iOption.ActionIdx == 0 ? SelectedBackgroundColor : FillColor);
-              "<".WriteAt(x + 40, y, iOption.ActionIdx == 1 ? SelectedColor : TextColor, iOption.ActionIdx == 1 ? SelectedBackgroundColor : FillColor);
-              ">".WriteAt(x + 43, y, iOption.ActionIdx == 2 ? SelectedColor : TextColor, iOption.ActionIdx == 2 ? SelectedBackgroundColor : FillColor);
-              ">>".WriteAt(x + 46, y, iOption.ActionIdx == 3 ? SelectedColor : TextColor, iOption.ActionIdx == 3 ? SelectedBackgroundColor : FillColor);
+              iOption.Name.WriteAt(x + 2, y, activeOption == i ? Colors.SelectedColor : Colors.TextColor, activeOption == i ? Colors.SelectedBackgroundColor : Colors.FillColor);
+              iOption.TempValue.ToString().WriteAt(x + 30, y, Colors.TextColor, Colors.FillColor);
+              "<<".WriteAt(x + 36, y, iOption.ActionIdx == 0? Colors.SelectedColor : Colors.TextColor, iOption.ActionIdx == 0 ? Colors.SelectedBackgroundColor : Colors.FillColor);
+              "<".WriteAt(x + 40, y, iOption.ActionIdx == 1 ? Colors.SelectedColor : Colors.TextColor, iOption.ActionIdx == 1 ? Colors.SelectedBackgroundColor : Colors.FillColor);
+              ">".WriteAt(x + 43, y, iOption.ActionIdx == 2 ? Colors.SelectedColor : Colors.TextColor, iOption.ActionIdx == 2 ? Colors.SelectedBackgroundColor : Colors.FillColor);
+              ">>".WriteAt(x + 46, y, iOption.ActionIdx == 3 ? Colors.SelectedColor : Colors.TextColor, iOption.ActionIdx == 3 ? Colors.SelectedBackgroundColor : Colors.FillColor);
               y++;
               i++;
               break;
             case GameOption<string> sOption:
-              sOption.Name.WriteAt(x + 2, y, activeOption == i ? SelectedColor : TextColor, activeOption == i ? SelectedBackgroundColor : FillColor);
+              sOption.Name.WriteAt(x + 2, y, activeOption == i ? Colors.SelectedColor : Colors.TextColor, activeOption == i ? Colors.SelectedBackgroundColor : Colors.FillColor);
               y++;
               i++;
               break;
@@ -74,8 +74,8 @@ internal static class GameOptions
         y ++;
       }
 
-      "Press [S] to Save Changes".WriteAt(x, y, TextColor, FillColor); y++;
-      "Press [Esc] to Exit Without Waving".WriteAt(x, y, TextColor, FillColor);
+      "Press [S] to Save Changes".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+      "Press [Esc] to Exit Without Waving".WriteAt(x, y, Colors.TextColor, Colors.FillColor);
       KeyHandler();
     }
   }

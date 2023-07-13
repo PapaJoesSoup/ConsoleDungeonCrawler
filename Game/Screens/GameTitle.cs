@@ -15,12 +15,12 @@ internal static class GameTitle
   // Refer to the comments here: https://github.com/microsoft/terminal/issues/15625
 
   private static readonly Box ScreenBorder = new(0, 0, Console.WindowWidth, Console.WindowHeight);
-
+  private static readonly Colors Colors = new Colors();
   // Create a method that displays the title screen in ascii art
   internal static void Draw()
   {
     ConsoleEx.Clear();
-    ScreenBorder.WriteBorder(BoxChars.Default, Color.DarkOrange);
+    ScreenBorder.WriteBorder(BoxChars.Default, Colors.Color);
     LoadTitleArt();
     LoadBannerText();
     GameMenu.Draw();
@@ -43,13 +43,13 @@ internal static class GameTitle
     for (int y = 0; y < height; y++)
     {
       string line = lines[y];
-      line.WriteAt(startX, startY + y, Color.DarkOrange);
+      line.WriteAt(startX, startY + y, Colors.Color);
     }
 
-    "License: MIT (https://opensource.org/license/mit/)".WriteAlignedAt(HAlign.Left, VAlign.Bottom, Color.Bisque,
-      Color.DarkOrange, 2, -1);
-    "Ascii art courtesy of: https://textart.sh".WriteAlignedAt(HAlign.Right, VAlign.Bottom, Color.Bisque,
-      Color.DarkOrange, -2, -1);
+    "License: MIT (https://opensource.org/license/mit/)".WriteAlignedAt(HAlign.Left, VAlign.Bottom, Colors.TextColor,
+      Colors.Color, 2, -1);
+    "Ascii art courtesy of: https://textart.sh".WriteAlignedAt(HAlign.Right, VAlign.Bottom, Colors.TextColor,
+      Colors.Color, -2, -1);
   }
 
   private static void LoadBannerText()
@@ -63,7 +63,7 @@ internal static class GameTitle
     for (int y = 0; y < height; y++)
     {
       string line = lines[y];
-      line.WriteAlignedAt(HAlign.Center, VAlign.Top, Color.Black, Color.DarkOrange, xOffset, yOffset);
+      line.WriteAlignedAt(HAlign.Center, VAlign.Top, Colors.BackgroundColor, Colors.Color, xOffset, yOffset);
       yOffset++;
     }
   }
@@ -79,7 +79,7 @@ internal static class GameTitle
     for (int y = 0; y < height; y++)
     {
       string line = lines[y];
-      line.WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Black, Color.DarkOrange, xOffset, yOffset);
+      line.WriteAlignedAt(HAlign.Center, VAlign.Middle, Colors.BackgroundColor, Colors.Color, xOffset, yOffset);
       yOffset++;
     }
   }

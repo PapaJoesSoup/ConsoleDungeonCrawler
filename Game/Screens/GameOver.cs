@@ -8,11 +8,11 @@ namespace ConsoleDungeonCrawler.Game.Screens;
 internal static class GameOver
 {
   private static readonly Box ScreenBorder = new(0, 0, Console.WindowWidth, Console.WindowHeight);
-
+  private static readonly Colors Colors = new Colors();
   internal static void Draw()
   {
     ConsoleEx.Clear();
-    ScreenBorder.WriteBorder(BoxChars.Default, Color.DarkOrange);
+    ScreenBorder.WriteBorder(BoxChars.Default, Colors.Color);
     LoadArt();
     LoadBannerText();
     ReplayMenu.Draw();
@@ -29,9 +29,9 @@ internal static class GameOver
     for (int y = 0; y < height; y++)
     {
       string line = lines[y];
-      line.WriteAt(startX, startY + y, Color.DarkOrange);
+      line.WriteAt(startX, startY + y, Colors.Color);
     }
-    "Ascii art courtesy of: https://textart.sh".WriteAlignedAt(HAlign.Right, VAlign.Bottom, Color.Bisque, Color.DarkOrange, -2, -1);
+    "Ascii art courtesy of: https://textart.sh".WriteAlignedAt(HAlign.Right, VAlign.Bottom, Colors.TextColor, Colors.Color, -2, -1);
   }
 
   private static void LoadBannerText()
@@ -45,7 +45,7 @@ internal static class GameOver
     for (int y = 0; y < height; y++)
     {
       string line = lines[y];
-      line.WriteAlignedAt(HAlign.Center, VAlign.Top, Color.Black, Color.DarkOrange, xOffset, yOffset);
+      line.WriteAlignedAt(HAlign.Center, VAlign.Top, Colors.BackgroundColor, Colors.Color, xOffset, yOffset);
       yOffset++;
     }
   }

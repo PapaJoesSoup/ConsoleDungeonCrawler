@@ -7,12 +7,10 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs;
 internal static class PlayerInventory
 {
 #region Properties
-  private static readonly Color Color = Color.DarkOrange;
-  private static readonly Color BackgroundColor = Color.Black;
-  private static readonly Color FillColor = Color.Olive;
-  private static readonly Color TextColor = Color.Bisque;
-  private static readonly Color SelectedColor = Color.Lime;
-  private static readonly Color SelectedBackgroundColor = Color.DarkOrange;
+private static readonly Colors Colors = new Colors()
+{
+  FillColor = Color.Olive,
+};
 
   private static readonly Box DialogBox = new(Console.WindowWidth / 2 - 58, Console.WindowHeight / 2 - 13, 116, 25);
   private static readonly Box LegendBox = new(DialogBox.Left, DialogBox.Top + 11, 22, 10);
@@ -28,18 +26,18 @@ internal static class PlayerInventory
   internal static void Draw()
   {
     dialogOpen = true;
-    Dialog.Draw(" Player Inventory Manager ", Color, BackgroundColor, FillColor, TextColor, DialogBox);
+    Dialog.Draw(" Player Inventory Manager ", Colors.Color, Colors.BackgroundColor, Colors.FillColor, Colors.TextColor, DialogBox);
 
     while (dialogOpen)
     {
       // Create a new box for the player inventory
       int x = 1;
       int y = 1;
-      "Select Bag: ([x])".WriteAt(DialogBox.Left + 2, DialogBox.Top + 1, TextColor, FillColor);
+      "Select Bag: ([x])".WriteAt(DialogBox.Left + 2, DialogBox.Top + 1, Colors.TextColor, Colors.FillColor);
       y += 2;
       foreach (Bag bag in Inventory.Bags)
       {
-        $"[{x}] Bag {x}".WriteAt(DialogBox.Left + 2, DialogBox.Top + y, TextColor, activeBag == x - 1 ? SelectedBackgroundColor : FillColor);
+        $"[{x}] Bag {x}".WriteAt(DialogBox.Left + 2, DialogBox.Top + y, Colors.TextColor, activeBag == x - 1 ? Colors.SelectedBackgroundColor : Colors.FillColor);
         x++;
         y++;
       }
@@ -53,18 +51,18 @@ internal static class PlayerInventory
   {
     int x = LegendBox.Left + 2;
     int y = LegendBox.Top + 1;
-    "Legend:".WriteAt(x, LegendBox.Top, TextColor, FillColor); y++;
+    "Legend:".WriteAt(x, LegendBox.Top, Colors.TextColor, Colors.FillColor); y++;
 
-    "[1-5] Select Bag".WriteAt(x, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.PageUp}] Prev Bag".WriteAt(x, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.PageDown}] Next Bag".WriteAt(x, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.UpArrow}] Prev Item".WriteAt(x, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.DownArrow}] Next Item".WriteAt(x, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.M}] Move Item".WriteAt(x, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.R}] Remove Item".WriteAt(x, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.S}] Sell Item".WriteAt(x, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.U}] Use Item".WriteAt(x, y, TextColor, FillColor); y++;
-    $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(x, y, TextColor, FillColor);
+    "[1-5] Select Bag".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[{ConsoleKey.PageUp}] Prev Bag".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[{ConsoleKey.PageDown}] Next Bag".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[{ConsoleKey.UpArrow}] Prev Item".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[{ConsoleKey.DownArrow}] Next Item".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[{ConsoleKey.M}] Move Item".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[{ConsoleKey.R}] Remove Item".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[{ConsoleKey.S}] Sell Item".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[{ConsoleKey.U}] Use Item".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(x, y, Colors.TextColor, Colors.FillColor);
   }
 
   private static void DrawBag(Bag bag)
@@ -72,16 +70,16 @@ internal static class PlayerInventory
     int x = ListPosition.X;
     int y = ListPosition.Y;
     if (activeItem >= bag.Items.Count) activeItem = bag.Items.Count - 1;
-    $"Bag {activeBag + 1} Contents:".WriteAt(x, y, TextColor, FillColor);
+    $"Bag {activeBag + 1} Contents:".WriteAt(x, y, Colors.TextColor, Colors.FillColor);
     y += 2;
     for (int i = 0; i < (bag.Capacity < ListHeight? bag.Capacity: ListHeight); i++)
     {
       if (i >= bag.Items.Count)
-        $"[{i + 1}]:  Empty".PadRight(ListWidth).WriteAt(x, y, TextColor, FillColor);
+        $"[{i + 1}]:  Empty".PadRight(ListWidth).WriteAt(x, y, Colors.TextColor, Colors.FillColor);
       else
         ($"[{i + 1}]:  ({bag.Items[i].Quantity}) {bag.Items[i].Name}".PadRight(ListWidth - 7) +
          $"{decimal.Round(bag.Items[i].SellCost, 2):C}g".PadLeft(7))
-          .WriteAt(x, y, i == activeItem ? SelectedColor : TextColor, i == activeItem ? SelectedBackgroundColor : FillColor);
+          .WriteAt(x, y, i == activeItem ? Colors.SelectedColor : Colors.TextColor, i == activeItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
       y++;
     }
   }

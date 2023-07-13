@@ -8,12 +8,10 @@ internal static class Dialog
 {
   // This is the default box for the generic dialog box
   private static readonly Box Box = new(Console.WindowWidth / 2 - 52, Console.WindowHeight / 2 - 12, 100, 25);
+  private static readonly Box DialogBox = new(GamePlay.MapBox.Width / 2 - 50, GamePlay.MapBox.Top + GamePlay.MapBox.Height / 2 - 12, 100, 24);
 
   // These colors are for the default theme of a dialog box
-  private static readonly Color BackgroundColor = Color.Black;
-  private static readonly Color ForegroundColor = Color.DarkOrange;
-  private static readonly Color FillColor = Color.Olive;
-  private static readonly Color TextColor = Color.Bisque;
+  private static readonly Colors Colors = new Colors();
 
   /// <summary>
   /// Generic Dialog box with a title everything else is default
@@ -21,8 +19,8 @@ internal static class Dialog
   /// <param name="title"></param>
   internal static void Draw(string title)
   {
-    Box.Draw(BoxChars.Default, ForegroundColor, BackgroundColor, FillColor);
-    $"[ {title} ]".WriteAlignedAt(Box, HAlign.Center, VAlign.Top, TextColor, BackgroundColor, 0, -1);
+    Box.Draw(BoxChars.Default, Colors.Color, Colors.BackgroundColor, Colors.FillColor);
+    $"[ {title} ]".WriteAlignedAt(Box, HAlign.Center, VAlign.Top, Colors.TextColor, Colors.BackgroundColor, 0, -1);
   }
 
   /// <summary>
@@ -34,7 +32,7 @@ internal static class Dialog
   internal static void Draw(string title, Box box, BoxChars? bChars = null)
   {
     bChars ??= BoxChars.Default;
-    box.Draw(bChars, ForegroundColor, BackgroundColor, FillColor);
+    box.Draw(bChars, Colors.Color, Colors.BackgroundColor, Colors.FillColor);
     $"[ {title} ]".WriteAlignedAt(box, HAlign.Center, VAlign.Top, Color.Bisque, Color.Black, 0, -1);
   }
 

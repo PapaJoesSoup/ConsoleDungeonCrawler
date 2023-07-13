@@ -8,12 +8,10 @@ internal static class PlayerSpells
 {
   private static readonly Box Box = new(Console.WindowWidth / 2 - 40, Console.WindowHeight / 2 - 8, 80, 17);
 
-  private static readonly Color Color = Color.DarkOrange;
-  private static readonly Color BackgroundColor = Color.Black;
-  private static readonly Color FillColor = Color.SaddleBrown;
-  private static readonly Color TextColor = Color.Bisque;
-  private static readonly Color SelectedColor = Color.Lime;
-  private static readonly Color SelectedBackgroundColor = Color.DarkOrange;
+  private static readonly Colors Colors = new Colors()
+  {
+    TextColor = Color.White,
+  };
 
   static int activeSpell = 1;
   static bool dialogOpen = false;
@@ -37,11 +35,11 @@ internal static class PlayerSpells
     int y = box.Top + 1;
     "Legend:".WriteAt(x, y, Color.White, Color.Olive); y += 2;
 
-    $"[{ConsoleKey.UpArrow}] Prev Spell".WriteAt(x, y, Color.White, Color.Olive); y++;
-    $"[{ConsoleKey.DownArrow}] Next Spell".WriteAt(x, y, Color.White, Color.Olive); y++;
-    $"[{ConsoleKey.M}] Move Spell".WriteAt(x, y, Color.White, Color.Olive); y++;
-    $"[{ConsoleKey.R}] Remove Spell".WriteAt(x, y, Color.White, Color.Olive); y++;
-    $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(x, y, Color.White, Color.Olive);
+    $"[{ConsoleKey.UpArrow}] Prev Spell".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[{ConsoleKey.DownArrow}] Next Spell".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[{ConsoleKey.M}] Move Spell".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[{ConsoleKey.R}] Remove Spell".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++; 
+    $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(x, y, Colors.TextColor, Colors.FillColor);
   }
 
   internal static void DrawSpells()
@@ -50,14 +48,14 @@ internal static class PlayerSpells
     int x = box.Left + 30;
     int y = box.Top + 1;
 
-    "Player Spells".WriteAt(x, y, Color.White, Color.Olive); y += 2;
-    "Key:  Spell".WriteAt(x, y, Color.White, Color.Olive); y++;
-    new string('-', 48).WriteAt(x, y, Color.White, Color.Olive); y++;
+    "Player Spells".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y += 2;
+    "Key:  Spell".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    new string('-', 48).WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
     for (int i = 1; i <= 10; i++)
     {
       (!Player.Spells.ContainsKey(i)
         ? $"[{(i == 10 ? 0 : i)}]:  Empty"
-        : $"[{(i == 10 ? 0 : i)}]:  {Player.Spells[i].Name} - {Player.Spells[i].Description}").WriteAt(x, y, Color.White, i == activeSpell ? Color.DarkOrange : Color.Olive);
+        : $"[{(i == 10 ? 0 : i)}]:  {Player.Spells[i].Name} - {Player.Spells[i].Description}").WriteAt(x, y, Color.White, i == activeSpell ? Colors.SelectedBackgroundColor : Colors.FillColor);
       y++;
     }
   }

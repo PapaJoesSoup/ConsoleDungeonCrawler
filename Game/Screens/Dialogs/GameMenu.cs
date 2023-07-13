@@ -4,15 +4,22 @@ using System.Drawing;
 
 namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 {
-    internal class GameMenu
+    internal static class GameMenu
   {
     private static bool dialogOpen = false;
     private static int activeItem = 0;
     private static readonly Box Box = new(Console.WindowWidth / 2 - 40, Console.WindowHeight / 2 - 8, 80, 17);
 
+    private static readonly Colors Colors = new Colors()
+    {
+      FillColor = Color.Black,
+      SelectedColor = Color.DarkOrange,
+      SelectedBackgroundColor = Color.White,
+    };
+
     internal static void Draw()
     {
-      Dialog.Draw(" Welcome to the Dungeon Crawler! ",Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, Box, BoxChars.Default);
+      Dialog.Draw(" Welcome to the Dungeon Crawler! ",Colors.Color, Colors.BackgroundColor, Colors.FillColor, Colors.TextColor, Box, BoxChars.Default);
       dialogOpen = true;
 
       while (dialogOpen)
@@ -25,13 +32,13 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
         {
           string dungeon = Game.Dungeons.Keys.ElementAt(i);
           if (i == activeItem)
-            dungeon.PadCenter(40).WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.DarkOrange, Color.White, 0, row);
+            dungeon.PadCenter(40).WriteAlignedAt(HAlign.Center, VAlign.Middle, Colors.SelectedColor, Colors.SelectedBackgroundColor, 0, row);
           else
-            dungeon.PadCenter(40).WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, 0, row);
+            dungeon.PadCenter(40).WriteAlignedAt(HAlign.Center, VAlign.Middle, Colors.TextColor, Colors.FillColor, 0, row);
           row++;
         }
 
-        "Press Enter to continue".WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, 0, row + 1);
+        "Press Enter to continue".WriteAlignedAt(HAlign.Center, VAlign.Middle, Colors.TextColor, Colors.FillColor, 0, row + 1);
         KeyHandler();
       }
     }

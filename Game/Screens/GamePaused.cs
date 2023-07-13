@@ -6,12 +6,13 @@ namespace ConsoleDungeonCrawler.Game.Screens;
 
 internal static class GamePaused
 {
+  internal static readonly Colors Colors = new Colors();
   internal static void Draw()
   {
     Box box = new(Console.WindowWidth/2 -52, Console.WindowHeight/2 -10, 100, 20);
-    box.Draw(BoxChars.Default, Color.DarkOrange, Color.Black, Color.Olive);
-    "Game Paused".WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive);
-    "Press any key to continue".WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Olive, 0, 2);
+    box.Draw(BoxChars.Default, Colors.Color, Colors.BackgroundColor, Colors.FillColor);
+    "Game Paused".WriteAlignedAt(HAlign.Center, VAlign.Middle, Colors.TextColor, Colors.FillColor);
+    "Press any key to continue".WriteAlignedAt(HAlign.Center, VAlign.Middle, Colors.TextColor, Colors.FillColor, 0, 2);
     Console.ReadKey(true);
     Game.IsPaused = false;
     ConsoleEx.Clear();

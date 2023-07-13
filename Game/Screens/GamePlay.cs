@@ -18,6 +18,13 @@ internal static class GamePlay
   private static readonly Box MessageBox = new(1, 41, 178, 12);
   private static readonly Box OverlayBox = new(178, 7, 31, 29);
   private static readonly Box LegendBox = new(178, 35, 31, 18);
+  private static readonly Colors Colors = new Colors()
+  {
+    Color = Color.Gold,
+    HeaderColor = Color.Gold,
+    TextColor = Color.White,
+    FillColor = Color.DimGray,
+  };
 
   internal static List<Message> Messages = new();
   internal static readonly int MessageWidth = MessageBox.Width - 33;
@@ -60,25 +67,25 @@ internal static class GamePlay
 
   private static void BordersEx()
   {
-    StatusBox.WriteBorder(BoxChars.Default, Color.Gold);
-    $"[ {Game.Title} - The {Game.CurrentDungeon} ]".WriteAlignedAt(HAlign.Center, VAlign.Top, Color.White);
-    MapBox.WriteBorder(BoxChars.Default, Color.Gold);
-    OverlayBox.WriteBorder(BoxChars.Default, Color.Gold);
-    MessageBox.WriteBorder(BoxChars.Default, Color.Gold);
-    LegendBox.WriteBorder(BoxChars.Default, Color.Gold);
+    StatusBox.WriteBorder(BoxChars.Default, Colors.Color);
+    $"[ {Game.Title} - The {Game.CurrentDungeon} ]".WriteAlignedAt(HAlign.Center, VAlign.Top, Colors.TextColor);
+    MapBox.WriteBorder(BoxChars.Default, Colors.Color);
+    OverlayBox.WriteBorder(BoxChars.Default, Colors.Color);
+    MessageBox.WriteBorder(BoxChars.Default, Colors.Color);
+    LegendBox.WriteBorder(BoxChars.Default, Colors.Color);
 
     // now to clean up the corners
-    BoxChars.Default.MidLeft.WriteAt(MapBox.Left, MapBox.Top, Color.Gold);
-    BoxChars.Default.TopMid.WriteAt(OverlayBox.Left, MapBox.Top, Color.Gold);
-    BoxChars.Default.MidRight.WriteAt(OverlayBox.Left + OverlayBox.Width - 1, MapBox.Top, Color.Gold);
+    BoxChars.Default.MidLeft.WriteAt(MapBox.Left, MapBox.Top, Colors.Color);
+    BoxChars.Default.TopMid.WriteAt(OverlayBox.Left, MapBox.Top, Colors.Color);
+    BoxChars.Default.MidRight.WriteAt(OverlayBox.Left + OverlayBox.Width - 1, MapBox.Top, Colors.Color);
 
-    BoxChars.Default.MidLeft.WriteAt(LegendBox.Left, LegendBox.Top, Color.Gold);
-    BoxChars.Default.MidRight.WriteAt(LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Color.Gold);
+    BoxChars.Default.MidLeft.WriteAt(LegendBox.Left, LegendBox.Top, Colors.Color);
+    BoxChars.Default.MidRight.WriteAt(LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Colors.Color);
 
-    BoxChars.Default.MidLeft.WriteAt(MessageBox.Left, MessageBox.Top, Color.Gold);
-    BoxChars.Default.MidRight.WriteAt(MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Color.Gold);
+    BoxChars.Default.MidLeft.WriteAt(MessageBox.Left, MessageBox.Top, Colors.Color);
+    BoxChars.Default.MidRight.WriteAt(MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Colors.Color);
 
-    BoxChars.Default.BotMid.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Color.Gold);
+    BoxChars.Default.BotMid.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Colors.Color);
 
   }
 
@@ -95,25 +102,25 @@ internal static class GamePlay
     //Player Stats
     int col = StatusBox.Left + 179;
     int row = StatusBox.Top + 1;
-    BoxChars.Default.TopMid.WriteAt(col - 2, row - 1, Color.Gold);
-    BoxChars.Default.Mid.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
+    BoxChars.Default.TopMid.WriteAt(col - 2, row - 1, Colors.Color);
+    BoxChars.Default.Mid.WriteAt(col - 2, StatusBox.Height - 1, Colors.Color);
     for (int index = row; index < row + 6; index++)
     {
-      BoxChars.Default.Ver.WriteAt(col - 2, index, Color.Gold);
+      BoxChars.Default.Ver.WriteAt(col - 2, index, Colors.Color);
     }
 
-    $"Player - Level: {Player.Level}".WriteAt(col, row, Color.Gold);
+    $"Player - Level: {Player.Level}".WriteAt(col, row, Colors.HeaderColor);
     row++;
-    $"Class: {Player.Class}".WriteAt(col, row, ConsoleColor.White);
+    $"Class: {Player.Class}".WriteAt(col, row, Colors.TextColor);
     row++;
-    "Weapon: ".WriteAt(col, row, ConsoleColor.White);
+    "Weapon: ".WriteAt(col, row, Colors.TextColor);
     $"{Player.Weapon.Name}".WriteAt(col + 8, row, ColorEx.RarityColor(Player.Weapon.Rarity));
     row++;
-    $"Health: {Player.Health}/{Player.MaxHealth}".WriteAt(col, row, ConsoleColor.White);
+    $"Health: {Player.Health}/{Player.MaxHealth}".WriteAt(col, row, Colors.TextColor);
     row++;
-    $"Mana: {Player.Mana}/{Player.MaxMana}".WriteAt(col, row, ConsoleColor.White);
+    $"Mana: {Player.Mana}/{Player.MaxMana}".WriteAt(col, row, Colors.TextColor);
     row++;
-    $"Gold: {Player.Gold:C}g".WriteAt(col, row, ConsoleColor.White);
+    $"Gold: {Player.Gold:C}g".WriteAt(col, row, Colors.TextColor);
   }
 
   private static void SpellStats()
@@ -123,22 +130,22 @@ internal static class GamePlay
     int col = StatusBox.Left + 140;
     int row = StatusBox.Top + 1;
     int colWidth = 18;
-    BoxChars.Default.TopMid.WriteAt(col - 2, row - 1, Color.Gold);
-    BoxChars.Default.BotMid.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
+    BoxChars.Default.TopMid.WriteAt(col - 2, row - 1, Colors.Color);
+    BoxChars.Default.BotMid.WriteAt(col - 2, StatusBox.Height - 1, Colors.Color);
     for (int index = row; index < row + 6; index++)
     {
-      BoxChars.Default.Ver.WriteAt(col - 2, index, Color.Gold);
+      BoxChars.Default.Ver.WriteAt(col - 2, index, Colors.Color);
     }
 
-    "Spells".WriteAt(col, row, Color.Gold);
+    "Spells".WriteAt(col, row, Colors.Color);
     row++;
     for (int index = 0; index < 10; index++) // 10 spells max
     {
-      if (index >= Player.Spells.Count) "None".WriteAt(col, row, Color.DimGray);
+      if (index >= Player.Spells.Count) "None".WriteAt(col, row, Colors.FillColor);
       else
       {
         Spell spell = Player.Spells[index];
-        $"{spell.Name}: {spell.Description} ".WriteAt(col, row, ConsoleColor.White);
+        $"{spell.Name}: {spell.Description} ".WriteAt(col, row, Colors.TextColor);
       }
 
       row++;
@@ -159,19 +166,19 @@ internal static class GamePlay
     int colWidth = 25;
     int count = 0;
     int totalBags = Inventory.Bags.Count;
-    BoxChars.Default.TopMid.WriteAt(col - 2, row - 1, Color.Gold);
-    BoxChars.Default.BotMid.WriteAt(col - 2, StatusBox.Height - 1, Color.Gold);
+    BoxChars.Default.TopMid.WriteAt(col - 2, row - 1, Colors.Color);
+    BoxChars.Default.BotMid.WriteAt(col - 2, StatusBox.Height - 1, Colors.Color);
     for (int index = row; index < row + 6; index++)
     {
-      BoxChars.Default.Ver.WriteAt(col - 2, index, Color.Gold);
+      BoxChars.Default.Ver.WriteAt(col - 2, index, Colors.Color);
     }
 
     Bag bag = Inventory.Bags[currentBag];
-    $"Inventory - Bag: {currentBag + 1} of {totalBags}  (< or > to switch bags)".WriteAt(col, row, Color.Gold);
+    $"Inventory - Bag: {currentBag + 1} of {totalBags}  (< or > to switch bags)".WriteAt(col, row, Colors.HeaderColor);
     row++;
     for (int index = 0; index < bag.Capacity; index++)
     {
-      if (index >= bag.Items.Count) "Empty".PadRight(colWidth).WriteAt(col, row, Color.DimGray);
+      if (index >= bag.Items.Count) "Empty".PadRight(colWidth).WriteAt(col, row, Colors.FillColor);
       else
       {
         Item item = bag.Items[index];
@@ -193,12 +200,12 @@ internal static class GamePlay
     int col = StatusBox.Left + 2;
 
     //Armor
-    "Armor".WriteAt(col, row, Color.Gold);
+    "Armor".WriteAt(col, row, Colors.HeaderColor);
     row++;
     foreach (Armor? armor in Player.ArmorSet)
     {
       string armorText = $"{armor.ArmorType}: ";
-      armorText.WriteAt(col, row, ConsoleColor.White);
+      armorText.WriteAt(col, row, Colors.TextColor);
       armor.Name.PadRight(50 - armorText.Length)
         .WriteAt(col + armorText.Length, row, ColorEx.RarityColor(armor.Rarity));
       row++;
@@ -219,7 +226,7 @@ internal static class GamePlay
   {
     int col = OverlayBox.Left + 2;
     int row = OverlayBox.Top + 1;
-    "Map objects: ".WriteAt(col, row, Color.Gold);
+    "Map objects: ".WriteAt(col, row, Colors.HeaderColor);
     row += 2;
     foreach (char type in Map.LevelOverlayTiles[Game.CurrentLevel].Keys)
     {
@@ -234,42 +241,42 @@ internal static class GamePlay
     // clear the rest of the legend box
     if (row >= OverlayBox.Top + OverlayBox.Height - 1) return;
     for (int index = row; index < OverlayBox.Top + OverlayBox.Height - 1; index++)
-      " ".WriteAt(col, index, ConsoleColor.Black, ConsoleColor.Black, 0, OverlayBox.Width - 3);
+      " ".WriteAt(col, index, Colors.BackgroundColor, Colors.BackgroundColor, 0, OverlayBox.Width - 3);
   }
 
   private static void LegendSection()
   {
     int col = LegendBox.Left + 2;
     int row = LegendBox.Top + 1;
-    "Game Play Legend: ".WriteAt(col, row, Color.Gold);
+    "Game Play Legend: ".WriteAt(col, row, Colors.HeaderColor);
     row += 2;
-    "[W,A,S,D] - Move".WriteAt(col, row, ConsoleColor.White);
+    "[W,A,S,D] - Move".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[Shift+W,A,S,D] - Jump".WriteAt(col, row, ConsoleColor.White);
+    "[Shift+W,A,S,D] - Jump".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[T] - Attack Enemy".WriteAt(col, row, ConsoleColor.White);
+    "[T] - Attack Enemy".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[1-0] - Cast Spell".WriteAt(col, row, ConsoleColor.White);
+    "[1-0] - Cast Spell".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[H] - Use Healing Potion".WriteAt(col, row, ConsoleColor.White);
+    "[H] - Use Healing Potion".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[M] - Use Mana Potion".WriteAt(col, row, ConsoleColor.White);
+    "[M] - Use Mana Potion".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[G] - Use Bandage".WriteAt(col, row, ConsoleColor.White);
+    "[G] - Use Bandage".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[O,C] - Open/Close Door".WriteAt(col, row, ConsoleColor.White);
+    "[O,C] - Open/Close Door".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[< >] - Switch Bag Shown".WriteAt(col, row, ConsoleColor.White);
+    "[< >] - Switch Bag Shown".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[Esc] - Pause Menu".WriteAt(col, row, ConsoleColor.White);
+    "[Esc] - Pause Menu".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[Shift+G] - Game Options".WriteAt(col, row, ConsoleColor.White);
+    "[Shift+G] - Game Options".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[Shift+I] - Inventory".WriteAt(col, row, ConsoleColor.White);
+    "[Shift+I] - Inventory".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[Shift+P] - Spells".WriteAt(col, row, ConsoleColor.White);
+    "[Shift+P] - Spells".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[Shift+Q] - Quit".WriteAt(col, row, ConsoleColor.White);
+    "[Shift+Q] - Quit".WriteAt(col, row, Colors.TextColor);
   }
 
   internal static void MessageSection()
@@ -293,7 +300,7 @@ internal static class GamePlay
     // clear the rest of the message box
     if (row >= MessageBox.Top + MessageBox.Height - 1) return;
     for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
-      " ".WriteAt(col, index, Color.Black, Color.Black, MessageWidth, 0);
+      " ".WriteAt(col, index, Colors.BackgroundColor, Colors.BackgroundColor, MessageWidth, 0);
   }
 
   private static void MessageLegend()
@@ -301,24 +308,24 @@ internal static class GamePlay
     int col = MessageBox.Width - 30;
     int row = MessageBox.Top + 1;
     // draw the message Legend left border
-    BoxChars.Default.TopMid.WriteAt(col, row - 1, Color.Gold);
-    BoxChars.Default.BotMid.WriteAt(col, MessageBox.Top + MessageBox.Height - 1, Color.Gold);
+    BoxChars.Default.TopMid.WriteAt(col, row - 1, Colors.Color);
+    BoxChars.Default.BotMid.WriteAt(col, MessageBox.Top + MessageBox.Height - 1, Colors.Color);
     for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
-      BoxChars.Default.Ver.WriteAt(col, index, Color.Gold);
+      BoxChars.Default.Ver.WriteAt(col, index, Colors.Color);
     col += 2;
-    "Messages Legend: ".WriteAt(col, row, Color.Gold);
+    "Messages Legend: ".WriteAt(col, row, Colors.HeaderColor);
     row += 2;
-    "[UpArrow] - Prev Message".WriteAt(col, row, Color.White);
+    "[UpArrow] - Prev Message".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[DownArrow] - Next Message".WriteAt(col, row, Color.White);
+    "[DownArrow] - Next Message".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[PageUP] - Messages - 10".WriteAt(col, row, Color.White);
+    "[PageUP] - Messages - 10".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[PageDown] - Messages + 10".WriteAt(col, row, Color.White);
+    "[PageDown] - Messages + 10".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[Home] - First Message".WriteAt(col, row, Color.White);
+    "[Home] - First Message".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[End] - Last Message".WriteAt(col, row, Color.White);
+    "[End] - Last Message".WriteAt(col, row, Colors.TextColor);
   }
 
   private static bool AcceptableKeys()
