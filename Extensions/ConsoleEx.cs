@@ -641,10 +641,10 @@ internal static class ConsoleEx
         x = box.Left + 1;
         break;
       case HAlign.Center:
-        x = box.Left + (box.Width / 2) - (s.Length / 2);
+        x = box.Center.X - (s.Length / 2);
         break;
       case HAlign.Right:
-        x = box.Width + box.Left - s.Length;
+        x = box.Left + box.Width - s.Length;
         break;
     }
 
@@ -654,10 +654,10 @@ internal static class ConsoleEx
         y = box.Top + 1;
         break;
       case VAlign.Middle:
-        y = (Console.WindowHeight / 2) - 1;
+        y = (box.Center.Y);
         break;
       case VAlign.Bottom:
-        y = box.Height + box.Top - 1;
+        y = box.Top + box.Height - 1;
         break;
     }
     WriteAt(s, x + xOffset, y + yOffset, color, bgColor);
@@ -1374,7 +1374,7 @@ internal static class ConsoleEx
     while (!valid)
     {
       Console.SetCursorPosition(x, y);
-      ConsoleKeyInfo keyInfo = Console.ReadKey();
+      ConsoleKeyInfo keyInfo = Console.ReadKey(true);
       valid = int.TryParse(keyInfo.KeyChar.ToString(), out result);
       if (valid) continue;
       Console.SetCursorPosition(x, y);
@@ -1393,7 +1393,7 @@ internal static class ConsoleEx
     while (!valid)
     {
       Console.SetCursorPosition(x, y);
-      ConsoleKeyInfo keyInfo = Console.ReadKey();
+      ConsoleKeyInfo keyInfo = Console.ReadKey(true);
       valid = keyInfo.Key is ConsoleKey.Y or ConsoleKey.N;
       if (valid)
       {

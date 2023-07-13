@@ -11,7 +11,7 @@ internal class TerminalConfiguration
     FillColor = Color.DarkBlue,
   };
 
-  private static readonly Box DialogBox = new(Console.WindowWidth / 2 - 56, Console.WindowHeight / 2 - 13, 116, 25);
+  private static readonly Box DialogBox = new(Dialog.ScreenCenter, 116, 25);
 
   private static bool dialogOpen;
 

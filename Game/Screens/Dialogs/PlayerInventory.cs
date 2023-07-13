@@ -7,12 +7,9 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs;
 internal static class PlayerInventory
 {
 #region Properties
-private static readonly Colors Colors = new Colors()
-{
-  FillColor = Color.Olive,
-};
+private static readonly Colors Colors = new Colors();
 
-  private static readonly Box DialogBox = new(Console.WindowWidth / 2 - 58, Console.WindowHeight / 2 - 13, 116, 25);
+  private static readonly Box DialogBox = new(Dialog.MapCenter, 116, 25);
   private static readonly Box LegendBox = new(DialogBox.Left, DialogBox.Top + 11, 22, 10);
   private static readonly Position ListPosition = new(DialogBox.Left + LegendBox.Width + 4, DialogBox.Top + 1);
 
@@ -93,7 +90,7 @@ private static readonly Colors Colors = new Colors()
 
   private static void SellItem()
   {
-    Dialog.Confirm("Sell Item",
+    Dialog.Confirm(DialogBox.Center, "Sell Item",
       $"Sell this item for {Inventory.Bags[activeBag].Items[activeItem].SellCost} gold? (Y or N)", out bool sell);
     if (sell) SellItem(Inventory.Bags[activeBag].Items[activeItem]);
     Draw();
@@ -103,12 +100,12 @@ private static readonly Colors Colors = new Colors()
   {
     if (Inventory.Bags[activeBag].Items[activeItem].Quantity == 0)
     {
-      Dialog.Notify("Can't Remove Item", "You don't have any of this item.");
+      Dialog.Notify(DialogBox.Center, "Can't Remove Item", "You don't have any of this item.");
       Draw();
       return;
     }
 
-    Dialog.Confirm("Remove Item", "Are you sure you want to destroy this item? (Y or N)", out bool remove);
+    Dialog.Confirm(DialogBox.Center, "Remove Item", "Are you sure you want to destroy this item? (Y or N)", out bool remove);
     if (remove) Inventory.Bags[activeBag].Items.RemoveAt(activeItem);
     Draw();
   }
@@ -117,18 +114,18 @@ private static readonly Colors Colors = new Colors()
   {
     if (Inventory.Bags.Count == 1)
     {
-      Dialog.Notify("Can't Move Item", "You only have one bag.");
+      Dialog.Notify(DialogBox.Center, "Can't Move Item", "You only have one bag.");
       Draw();
       return;
     }
 
-    Dialog.AskForInt("Move Item To Bag", "Enter a bag number: ", out int newBag);
+    Dialog.AskForInt(DialogBox.Center, "Move Item To Bag", "Enter a bag number: ", out int newBag);
     newBag--; // Adjust for indexing.
     if (newBag <= Inventory.Bags.Count && newBag >= 1 && newBag != activeBag)
       MoveItem(Inventory.Bags[activeBag].Items[activeItem], newBag);
     else
     {
-      Dialog.Notify("Invalid Bag", "You entered an invalid bag number.");
+      Dialog.Notify(DialogBox.Center, "Invalid Bag", "You entered an invalid bag number.");
     }
 
     Draw();
@@ -136,7 +133,7 @@ private static readonly Colors Colors = new Colors()
 
   private static void UseItem()
   {
-    Dialog.Confirm("Use Item", "Are you sure you want to use this item? (Y or N)", out bool use);
+    Dialog.Confirm(DialogBox.Center, "Use Item", "Are you sure you want to use this item? (Y or N)", out bool use);
     if (!use)
     {
       Draw();
@@ -144,8 +141,7 @@ private static readonly Colors Colors = new Colors()
     }
     if (!Inventory.Bags[activeBag].Items[activeItem].Use())
     {
-      Draw();
-      Dialog.Notify("Can't Use Item", "You can't use this item.");
+      Dialog.Notify(DialogBox.Center, "Can't Use Item", "You can't use this item.");
       Draw();
       return;
     }

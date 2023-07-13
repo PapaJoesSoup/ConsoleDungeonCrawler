@@ -15,8 +15,9 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     private static BoxChars sampleChars = theme.BoxChars;
     private static Colors sampleColors = Theme.DefaultColors;
 
-    private static readonly Box DialogBox = new(GamePlay.MapBox.Width / 2 - 50, GamePlay.MapBox.Top + GamePlay.MapBox.Height / 2 - 12, 100, 24);
-    //private static readonly Box DialogBox = new(Console.WindowWidth / 2 - 50, Console.WindowHeight / 2 - 13, 100, 24);
+    private static readonly Box DialogBox = new(Dialog.MapCenter, 100, 24);
+    //private static readonly Box DialogBox = new(Dialog.ScreenCenter, 100, 24);
+
     private static readonly Box LegendBox = new(DialogBox.Left + 3, DialogBox.Top + 2, 0, 0);
     private static readonly Box SampleCharBox = new(DialogBox.Left + 37, DialogBox.Top + 2, 0, 0);
     private static readonly Box SampleBox = new(DialogBox.Left + 62, DialogBox.Top + 4, 35, 17);

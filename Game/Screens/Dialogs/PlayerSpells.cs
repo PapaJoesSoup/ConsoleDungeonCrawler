@@ -6,7 +6,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
 internal static class PlayerSpells
 {
-  private static readonly Box Box = new(Console.WindowWidth / 2 - 40, Console.WindowHeight / 2 - 8, 80, 17);
+  private static readonly Box DialogBox = new(Dialog.MapCenter, 80, 17);
 
   private static readonly Colors Colors = new Colors()
   {
@@ -19,7 +19,7 @@ internal static class PlayerSpells
   internal static void Draw()
   {
     dialogOpen = true;
-    Dialog.Draw("Player Spell Manager", Box);
+    Dialog.Draw("Player Spell Manager", DialogBox);
     while (dialogOpen)
     {
       DrawLegend();
@@ -30,7 +30,7 @@ internal static class PlayerSpells
 
   private static void DrawLegend()
   {
-    Box box = new(Box.Left, Box.Top, 22, 10);
+    Box box = new(DialogBox.Left, DialogBox.Top, 22, 10);
     int x = box.Left + 2;
     int y = box.Top + 1;
     "Legend:".WriteAt(x, y, Color.White, Color.Olive); y += 2;
@@ -44,7 +44,7 @@ internal static class PlayerSpells
 
   internal static void DrawSpells()
   {
-    Box box = new(Box.Left, Box.Top, 40, 14);
+    Box box = new(DialogBox.Left, DialogBox.Top, 40, 14);
     int x = box.Left + 30;
     int y = box.Top + 1;
 
@@ -62,11 +62,11 @@ internal static class PlayerSpells
 
   internal static void MoveSpell()
   {
-    Dialog.AskForInt("Move Item To Key", "Enter a Key number (1-0): ", out int newKey);
+    Dialog.AskForInt(DialogBox.Center, "Move Item To Key", "Enter a Key number (1-0): ", out int newKey);
     if (Player.Spells.ContainsKey(newKey))
     {
       Draw();
-      Dialog.Notify("Destination Full", "THe destination key contains a spell.  Spells will be swapped.");
+      Dialog.Notify(DialogBox.Center, "Destination Full", "THe destination key contains a spell.  Spells will be swapped.");
       Spell temp = Player.Spells[newKey];
       Spell temp2 = Player.Spells[activeSpell];
       Player.Spells[newKey] = temp2;
@@ -83,7 +83,7 @@ internal static class PlayerSpells
 
   internal static void RemoveSpell()
   {
-    Dialog.Confirm("Delete Spell", "This will PERMANENTLY remove this spell.  Are you sure? (Y / N): ", out bool confirm);
+    Dialog.Confirm(DialogBox.Center, "Delete Spell", "This will PERMANENTLY remove this spell.  Are you sure? (Y / N): ", out bool confirm);
     if (confirm) Player.Spells.Remove(activeSpell);
     Draw();
   }

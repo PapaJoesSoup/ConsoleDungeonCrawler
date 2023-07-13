@@ -8,7 +8,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
   {
     private static bool dialogOpen = false;
     private static int activeItem = 0;
-    private static readonly Box Box = new(Console.WindowWidth / 2 - 40, Console.WindowHeight / 2 - 8, 80, 17);
+    private static readonly Box Box = new(Dialog.ScreenCenter, 80, 17);
 
     private static readonly Colors Colors = new Colors()
     {

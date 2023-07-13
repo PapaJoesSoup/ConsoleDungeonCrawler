@@ -8,7 +8,7 @@ internal static class GameOptions
 {
   #region Properties
   private static bool dialogOpen;
-  private static readonly Box Box = new(Console.WindowWidth / 2 - 41, Console.WindowHeight / 2 - 8, 82, 17);
+  private static readonly Box Box = new(Dialog.ScreenCenter, 82, 17);
 
   private static readonly Colors Colors = new Colors()
   {

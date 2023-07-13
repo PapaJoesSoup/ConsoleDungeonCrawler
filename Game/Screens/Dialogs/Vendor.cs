@@ -21,7 +21,7 @@ internal static class Vendor
   private static bool storeIsActive = true;
   private static bool dialogOpen;
 
-  private static readonly Box DialogBox = new(Console.WindowWidth / 2 - 58, Console.WindowHeight / 2 - 13, 116, 26);
+  private static readonly Box DialogBox = new(Dialog.MapCenter, 116, 26);
   private static readonly Box LegendBox = new(DialogBox.Left, DialogBox.Top + 11, 25, 12);
   private static readonly Position TabPosition = new(LegendBox.Left + LegendBox.Width + 4, DialogBox.Top + 1);
   private static readonly Position BagPosition = new(TabPosition.X + ListWidth + 4, DialogBox.Top + 1);
@@ -186,7 +186,7 @@ internal static class Vendor
   {
     if (Player.Gold < item.BuyCost)
     {
-      Dialog.Notify("Buy Item", "You don't have enough gold to buy this item.");
+      Dialog.Notify(DialogBox.Center, "Buy Item", "You don't have enough gold to buy this item.");
       Draw();
       return;
     }
@@ -198,12 +198,12 @@ internal static class Vendor
   {
     if (Inventory.Bags[activeBag].Items[activeItem].Quantity == 0)
     {
-      Dialog.Notify("Can't Remove Item", "You don't have any of this item.");
+      Dialog.Notify(DialogBox.Center, "Can't Remove Item", "You don't have any of this item.");
       Draw();
       return;
     }
 
-    Dialog.Confirm("Remove Item", "Are you sure you want to destroy this item? (Y or N)", out bool remove);
+    Dialog.Confirm(DialogBox.Center, "Remove Item", "Are you sure you want to destroy this item? (Y or N)", out bool remove);
     if (remove) Inventory.Bags[activeBag].Items.RemoveAt(activeItem);
     Draw();
   }
