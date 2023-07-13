@@ -22,9 +22,9 @@ internal static class ReplayMenu
     "Thanks to Indi O. for her inspiration in the creation of this project.".WriteAlignedAt(HAlign.Center, VAlign.Middle, Colors.TextColor, Colors.FillColor, 0, 0);
     "Best wishes to you Indi as you go forward into the future.".WriteAlignedAt(HAlign.Center, VAlign.Middle, Colors.TextColor, Colors.FillColor, 0, 1);
 
-    "Press Q to quit...".WriteAlignedAt(Box, HAlign.Center, VAlign.Bottom, Colors.TextColor, Colors.FillColor, 0, -5);
-    "Press R to restart...".WriteAlignedAt(Box, HAlign.Center, VAlign.Bottom, Colors.TextColor, Colors.FillColor, 0, -4);
-    "Press M to return to the main menu...".WriteAlignedAt(Box, HAlign.Center, VAlign.Bottom, Colors.TextColor, Colors.FillColor, 0, -3);
+    "Press Q to quit...".WriteAlignedAt(Box, HAlign.Center, VAlign.Bottom, Colors.SelectedColor, Colors.FillColor, 0, -5);
+    "Press R to restart...".WriteAlignedAt(Box, HAlign.Center, VAlign.Bottom, Colors.SelectedColor, Colors.FillColor, 0, -4);
+    "Press M to return to the main menu...".WriteAlignedAt(Box, HAlign.Center, VAlign.Bottom, Colors.SelectedColor, Colors.FillColor, 0, -3);
     KeyHandler();
   }
 
