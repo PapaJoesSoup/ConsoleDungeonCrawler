@@ -6,7 +6,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
 internal static class GameCredits
 {
-  private static readonly Colors Colors = new Colors()
+  private static readonly Colors Colors = new()
   {
     FillColor = Color.DarkSlateGray,
     TextColor = Color.Cyan

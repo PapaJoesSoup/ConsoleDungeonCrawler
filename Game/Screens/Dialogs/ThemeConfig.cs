@@ -28,7 +28,6 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     private static int selectedCharIdx = 0;
     private static string selectedChar = string.Empty;
 
-
     private static Color selectedColor = Color.Black;
     private static int selectedColorIdx = 0;
     private static string strRGB = string.Empty;
@@ -41,7 +40,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     {
       if (!Theme.Themes.ContainsKey("ThemeConfig"))
       {
-        Colors colors = new Colors()
+        Colors colors = new()
         {
           Color = Color.DarkOrange,
           BackgroundColor = Color.Black,
@@ -51,7 +50,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
           SelectedColor = Color.Lime,
           SelectedBackgroundColor = Color.DarkOrange
         };
-        Theme newTheme = new Theme("ThemeConfig", colors, BoxChars.Default);
+        Theme newTheme = new("ThemeConfig", colors, BoxChars.Default);
         Theme.Themes.Add("ThemeConfig", newTheme);
       }
 
@@ -322,7 +321,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       iBlue = selectedColor.B;
     }
     
-    private static void UpdateSelectedColor(int r, int g, int b)
+    private static void UpdateSelectedColor()
     {
       Color newColor = Color.FromArgb(255, iRed, iGreen, iBlue);
       switch (selectedColorIdx)
@@ -353,7 +352,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     
     private static void SaveChanges()
     {
-
+      //add persistence of changes to themes here.
     }
 
     private static void KeyHandler()
@@ -451,7 +450,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
           break;
         case ConsoleKey.Enter:
           if (charsActive) break;
-          UpdateSelectedColor(iRed, iGreen, iBlue);
+          UpdateSelectedColor();
           strRGB = string.Empty;
           break;
         case ConsoleKey.S:

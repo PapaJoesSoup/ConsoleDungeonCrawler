@@ -18,7 +18,7 @@ internal static class GamePlay
   private static readonly Box MessageBox = new(1, 41, 178, 12);
   private static readonly Box OverlayBox = new(178, 7, 31, 29);
   private static readonly Box LegendBox = new(178, 35, 31, 18);
-  private static readonly Colors Colors = new Colors()
+  private static readonly Colors Colors = new()
   {
     Color = Color.Gold,
     HeaderColor = Color.Gold,

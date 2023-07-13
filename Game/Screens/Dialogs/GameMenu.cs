@@ -10,7 +10,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     private static int activeItem = 0;
     private static readonly Box Box = new(Dialog.ScreenCenter, 80, 17);
 
-    private static readonly Colors Colors = new Colors()
+    private static readonly Colors Colors = new()
     {
       FillColor = Color.Black,
       SelectedColor = Color.DarkOrange,

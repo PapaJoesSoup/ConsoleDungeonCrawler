@@ -8,7 +8,7 @@ internal static class PlayerSpells
 {
   private static readonly Box DialogBox = new(Dialog.MapCenter, 80, 17);
 
-  private static readonly Colors Colors = new Colors()
+  private static readonly Colors Colors = new()
   {
     TextColor = Color.White,
   };

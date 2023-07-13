@@ -7,7 +7,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs;
 internal static class PlayerInventory
 {
 #region Properties
-private static readonly Colors Colors = new Colors();
+private static readonly Colors Colors = new();
 
   private static readonly Box DialogBox = new(Dialog.MapCenter, 116, 25);
   private static readonly Box LegendBox = new(DialogBox.Left, DialogBox.Top + 11, 22, 10);

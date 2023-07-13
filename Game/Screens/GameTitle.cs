@@ -15,7 +15,7 @@ internal static class GameTitle
   // Refer to the comments here: https://github.com/microsoft/terminal/issues/15625
 
   private static readonly Box ScreenBorder = new(0, 0, Console.WindowWidth, Console.WindowHeight);
-  private static readonly Colors Colors = new Colors();
+  private static readonly Colors Colors = new();
   // Create a method that displays the title screen in ascii art
   internal static void Draw()
   {

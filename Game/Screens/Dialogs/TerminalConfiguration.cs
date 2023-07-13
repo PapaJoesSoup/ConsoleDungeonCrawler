@@ -6,7 +6,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
 internal class TerminalConfiguration
 {
-  private static readonly Colors Colors = new Colors()
+  private static readonly Colors Colors = new()
   {
     FillColor = Color.DarkBlue,
   };

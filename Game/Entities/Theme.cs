@@ -8,8 +8,8 @@
 
     internal static BoxChars DefaultBoxChars = BoxChars.Default;
     internal static Colors DefaultColors = Colors.Default;
-    internal static Theme DefaultTheme = new Theme("DefaultTheme", DefaultColors, DefaultBoxChars);
-    internal static Dictionary<string, Theme> Themes = new Dictionary<string, Theme>();
+    internal static Theme DefaultTheme = new("DefaultTheme", DefaultColors, DefaultBoxChars);
+    internal static Dictionary<string, Theme> Themes = new();
 
     internal Theme(){}
 

@@ -8,7 +8,7 @@ namespace ConsoleDungeonCrawler.Game.Screens;
 internal static class GameWon
 {
   private static readonly Box ScreenBorder = new(0, 0, Console.WindowWidth, Console.WindowHeight);
-  private static readonly Colors Colors = new Colors();
+  private static readonly Colors Colors = new();
 
   internal static void Draw()
   {

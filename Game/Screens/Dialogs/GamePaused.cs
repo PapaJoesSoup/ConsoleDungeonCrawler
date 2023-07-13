@@ -6,7 +6,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
 internal static class GamePaused
 {
-    internal static readonly Colors Colors = new Colors();
+    internal static readonly Colors Colors = new();
     internal static void Draw()
     {
         Box box = new(Dialog.ScreenCenter, 100, 20);

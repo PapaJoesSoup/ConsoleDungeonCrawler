@@ -9,7 +9,7 @@ internal static class Vendor
 {
   private static readonly Dictionary<int, Bag> StoreInventory = new();
   private static VendorType vendorType = VendorType.General;
-  private static Colors Colors = new Colors();
+  private static Colors Colors = new();
 
   private static int activeBag;
   private static int activeItem;

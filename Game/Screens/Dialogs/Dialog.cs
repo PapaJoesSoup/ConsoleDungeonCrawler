@@ -6,16 +6,17 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
 internal static class Dialog
 {
-  internal static Point ScreenCenter = new Point(Console.WindowWidth / 2, Console.WindowHeight / 2);
-  internal static Point MapCenter = new Point(GamePlay.MapBox.Width / 2, GamePlay.MapBox.Top + GamePlay.MapBox.Height / 2);
+  internal static Point ScreenCenter = new (Console.WindowWidth / 2, Console.WindowHeight / 2);
+  internal static Point MapCenter = new (GamePlay.MapBox.Width / 2, GamePlay.MapBox.Top + GamePlay.MapBox.Height / 2);
 
   // This is the default box for the generic dialog box
   internal static readonly Box Box = new(ScreenCenter, 100, 25);
+
   // This is the Default box for centered in the Map Area
   internal static readonly Box MapBox = new(MapCenter, 100, 24);
 
   // These colors are for the default theme of a dialog box
-  private static readonly Colors Colors = new Colors();
+  private static readonly Colors Colors = new();
 
   /// <summary>
   /// Generic Dialog box with a title everything else is default
@@ -65,8 +66,8 @@ internal static class Dialog
   {
     int width = question.Length > prompt.Length ? question.Length : prompt.Length;
     Box box = new(center, width + 8, 5);
-    Draw(question, Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, box);
-    prompt.WriteAlignedAt(box, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, -1, 0);
+    Draw(question, Colors.Color, Colors.BackgroundColor, Colors.BackgroundColor, Colors.TextColor, box);
+    prompt.WriteAlignedAt(box, HAlign.Center, VAlign.Middle, Colors.TextColor, Colors.BackgroundColor, -1, 0);
     result = ConsoleEx.ReadInt(Console.GetCursorPosition().Left, Console.GetCursorPosition().Top, Color.White, Color.Black);
   }
 
@@ -74,17 +75,17 @@ internal static class Dialog
   {
     int width = question.Length > prompt.Length ? question.Length : prompt.Length;
     Box box = new(center, width + 8, 5);
-    Draw(question, Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, box);
-    prompt.WriteAlignedAt(box, HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, -1, 0);
+    Draw(question, Colors.Color, Colors.BackgroundColor, Colors.BackgroundColor, Colors.TextColor, box);
+    prompt.WriteAlignedAt(box, HAlign.Center, VAlign.Middle, Colors.TextColor, Colors.BackgroundColor, -1, 0);
     result = ConsoleEx.ReadBool(Console.GetCursorPosition().Left, Console.GetCursorPosition().Top, Color.White, Color.Black);
   }
 
   internal static void Notify(Point center, string title, string message)
   {
     Box box = new(center, message.Length + 10, 7);
-    Draw(title, Color.DarkOrange, Color.Black, Color.Black, Color.Bisque, box);
-    message.WriteAlignedAt(box, HAlign.Center, VAlign.Top, Color.Bisque, Color.Black, 0, 1);
-    "Press any key to continue".WriteAlignedAt(box, HAlign.Center, VAlign.Bottom, Color.Bisque, Color.Black, 0, -2);
+    Draw(title, Colors.Color, Colors.BackgroundColor, Colors.BackgroundColor, Colors.TextColor, box);
+    message.WriteAlignedAt(box, HAlign.Center, VAlign.Top, Colors.TextColor, Colors.BackgroundColor, 0, 1);
+    "Press any key to continue".WriteAlignedAt(box, HAlign.Center, VAlign.Bottom, Colors.TextColor, Colors.BackgroundColor, 0, -2);
     Console.ReadKey(true);
   }
 
@@ -99,5 +100,6 @@ internal static class Dialog
     if (parent is "GameCredits") GameCredits.Draw();
     if (parent is "GameOver") GameOver.Draw();
     if (parent is "GameWon") GameWon.Draw();
+    if (parent is "ThemeConfig") ThemeConfig.Draw();
   }
 }

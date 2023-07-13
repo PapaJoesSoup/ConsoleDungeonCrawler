@@ -10,7 +10,7 @@ internal static class GameOptions
   private static bool dialogOpen;
   private static readonly Box Box = new(Dialog.ScreenCenter, 82, 17);
 
-  private static readonly Colors Colors = new Colors()
+  private static readonly Colors Colors = new()
   {
     FillColor = Color.DarkSlateGray,
     TextColor = Color.Cyan
