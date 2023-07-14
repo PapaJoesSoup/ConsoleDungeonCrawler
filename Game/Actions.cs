@@ -70,8 +70,8 @@ internal static class Actions
       Inventory.AddItem(item);
       string message = item.Type == ItemType.Gold
         ? $"You Picked up a pouch containing {((Gold)item).GetValue()} gold!"
-        : $"You Picked up {item.Description}!";
-      GamePlay.Messages.Add(new Message(message, Color.LimeGreen, Color.Black));
+        : "You Picked up";
+      GamePlay.Messages.Add(new Message(message, item.Type != ItemType.Gold? item : null, Color.LimeGreen, Color.Black));
       Map.UpdateOverlayTile(obj);
     }
   }

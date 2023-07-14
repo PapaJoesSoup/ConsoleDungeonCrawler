@@ -174,7 +174,7 @@ internal static class GamePlay
     }
 
     Bag bag = Inventory.Bags[currentBag];
-    $"Inventory - Bag: {currentBag + 1} of {totalBags}  (< or > to switch bags)".WriteAt(col, row, Colors.HeaderColor);
+    $"Inventory - Bag: {currentBag + 1} of {totalBags}  (\u2190 or \u2192 to switch bags)".WriteAt(col, row, Colors.HeaderColor);
     row++;
     for (int index = 0; index < bag.Capacity; index++)
     {
@@ -266,7 +266,7 @@ internal static class GamePlay
     row++;
     "[O,C] - Open/Close Door".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[Left/Right Arrow] - Switch Bag".WriteAt(col, row, Colors.TextColor);
+    "[\u2190][\u2192] - Switch Bag".WriteAt(col, row, Colors.TextColor);
     row++;
     "[Esc] - Pause Menu".WriteAt(col, row, Colors.TextColor);
     row++;
@@ -315,9 +315,9 @@ internal static class GamePlay
     col += 2;
     "Messages Legend: ".WriteAt(col, row, Colors.HeaderColor);
     row += 2;
-    "[UpArrow] - Prev Message".WriteAt(col, row, Colors.TextColor);
+    "[\u2191] - Prev Message".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[DownArrow] - Next Message".WriteAt(col, row, Colors.TextColor);
+    "[\u2193] - Next Message".WriteAt(col, row, Colors.TextColor);
     row++;
     "[PageUP] - Messages - 10".WriteAt(col, row, Colors.TextColor);
     row++;

@@ -35,8 +35,8 @@ internal static class PlayerSpells
     int y = box.Top + 1;
     "Legend:".WriteAt(x, y, Color.White, Color.Olive); y += 2;
 
-    $"[{ConsoleKey.UpArrow}] Prev Spell".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
-    $"[{ConsoleKey.DownArrow}] Next Spell".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[\u2191] Prev Spell".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+    $"[\u2193] Next Spell".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
     $"[{ConsoleKey.M}] Move Spell".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
     $"[{ConsoleKey.R}] Remove Spell".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++; 
     $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(x, y, Colors.TextColor, Colors.FillColor);

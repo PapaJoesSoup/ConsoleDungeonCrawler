@@ -27,7 +27,7 @@ internal class Armor : Item
   {
     Type = ItemType.Armor;
     Name = $"{name} {type} Armor";
-    Description = $" {rarity} {name} {type} Armor";
+    Description = $"{rarity} {name} {type} Armor";
     Level = 1;
     Rarity = rarity;
     Quantity = 1;

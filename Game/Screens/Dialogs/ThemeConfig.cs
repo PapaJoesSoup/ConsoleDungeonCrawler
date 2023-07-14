@@ -95,11 +95,11 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 
       $"[{ConsoleKey.PageUp}] Border Chars Active".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
       $"[{ConsoleKey.PageDown}] Char Colors Active".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
-      $"[{ConsoleKey.UpArrow}] Prev Item".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
-      $"[{ConsoleKey.DownArrow}] Next Item".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
       $"[{ConsoleKey.R}][{ConsoleKey.G}][{ConsoleKey.B}] Edit RGB values".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
-      $"[{ConsoleKey.LeftArrow}] Change Value".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
-      $"[{ConsoleKey.RightArrow}] Change Value".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+      $"[\u2191] Prev Item".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+      $"[\u2193] Next Item".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+      $"[\u2190] Change Value".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
+      $"[\u2192] Change Value".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
       $"[{ConsoleKey.S}] Save Changes".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
       $"[{ConsoleKey.Escape}] Close Dialog".WriteAt(x, y, Colors.TextColor, Colors.FillColor);
     }
