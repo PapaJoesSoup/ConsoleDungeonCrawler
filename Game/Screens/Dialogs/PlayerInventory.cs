@@ -39,6 +39,7 @@ private static readonly Colors Colors = new();
       }
       DrawLegend();
       DrawBag(Inventory.Bags[activeBag]);
+      DrawCharacter();
       KeyHandler();
     }
   }
@@ -86,6 +87,21 @@ private static readonly Colors Colors = new();
         part3.WriteAt(x + part1.Length + part2.Length, y, i == activeItem ? Colors.SelectedColor : Colors.TextColor, i == activeItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
       }
       y++;
+    }
+  }
+
+  private static void DrawCharacter()
+  {
+    // write the title art to the console
+    string[] lines = Game.CharacterArt.ToString().Split('\n');
+    int height = lines.Length;
+    int width = lines[0].Length;
+    int startX = DialogBox.Left + DialogBox.Width - width;
+    int startY = DialogBox.Top + 1;
+    for (int y = 0; y < height; y++)
+    {
+      string line = lines[y];
+      line.WriteAt(startX, startY + y, Colors.Color);
     }
   }
 

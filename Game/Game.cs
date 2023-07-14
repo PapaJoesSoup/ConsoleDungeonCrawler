@@ -29,6 +29,7 @@ internal static class Game
   internal static readonly StringBuilder GameTitleArt;
   internal static readonly StringBuilder GameWonArt;
   internal static readonly StringBuilder GameOverArt;
+  internal static readonly StringBuilder CharacterArt;
   internal static readonly StringBuilder GameTitleText;
   internal static readonly StringBuilder GameEnterText;
   internal static readonly StringBuilder GameWonText;
@@ -56,6 +57,9 @@ internal static class Game
     GameOverArt.Append(File.ReadAllText($"{Game.ArtPath}/GameOverArt.txt"));
     GameOverText = new StringBuilder();
     GameOverText.Append(File.ReadAllText($"{Game.ArtPath}/GameOverText.txt"));
+
+    CharacterArt = new StringBuilder();
+    CharacterArt.Append(File.ReadAllText($"{Game.ArtPath}/CharacterArt.txt"));
 
     LoadDungeons();
   }

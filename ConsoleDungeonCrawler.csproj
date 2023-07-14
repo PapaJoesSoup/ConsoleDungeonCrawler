@@ -102,6 +102,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Game\Data\Art\CharacterArt.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Game\Data\Art\GameEnterText.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
