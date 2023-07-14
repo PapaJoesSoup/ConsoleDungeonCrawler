@@ -4,16 +4,7 @@ internal class Armor : Item
 {
   internal readonly ArmorType ArmorType = ArmorType.None;
   internal readonly ArmorName ArmorName = ArmorName.None;
-  internal int ArmorValue;
-  internal int ArmorBonus;
-  internal int Durability;
-  internal int MaxDurability;
-  internal BuffType BuffType = BuffType.None;
 
-  internal static float ArmorValueMultiplier = 1.0f;
-  internal static float ArmorBonusMultiplier = 1.0f;
-  internal static float ArmorDurabilityMultiplier = 1.0f;
-    
   internal Armor()
   {
   }
@@ -38,11 +29,6 @@ internal class Armor : Item
 
     ArmorType = type;
     ArmorName = name;
-    ArmorValue = armorValue;
-    BuffType = buffType;
-    Durability = durability;
-    MaxDurability = durability;
-
   }
 
   internal override bool Use()

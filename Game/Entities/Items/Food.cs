@@ -13,12 +13,13 @@ internal class Food : Item
 
   }
 
-  internal Food(FoodName foodName, BuffType buffType, int quantity, decimal buyCost, decimal sellCost)
+  internal Food(FoodName foodName, BuffType buffType, int quantity, decimal buyCost, decimal sellCost, ItemRarity rarity = ItemRarity.Common)
   {
     Type = ItemType.Food;
     this.buffType = buffType;
     Quantity = quantity;
     StackSize = 20;
+    Rarity = rarity;
 
     Name = $"{foodName}";
     Description = this.buffType == BuffType.Health ? $"a {foodName}" : $"some {foodName}";

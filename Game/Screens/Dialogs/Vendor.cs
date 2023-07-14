@@ -147,9 +147,12 @@ internal static class Vendor
     // foreach loop to draw the items in the bag using the scrollY and maxHeight to determine which items to draw
     for (int i = scrollY; i < scrollY + maxHeight; i++)
     {
-      ($"[{i + 1}]:  {StoreInventory[activeVendorTab].Items[i].Name}".PadRight(ListWidth - 7) + 
-       $"{decimal.Round(StoreInventory[activeVendorTab].Items[i].BuyCost, 2):C}g".PadLeft(7))
-        .WriteAt(x, y, i == activeVendorItem ? Colors.SelectedColor : Colors.TextColor, i == activeVendorItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
+      // lets color code the item by rarity
+      Item item = StoreInventory[activeVendorTab].Items[i];
+      string part1 = $"[{i + 1}]:  {item.Name}".PadRight(ListWidth - 7);
+      string part2 = $"{decimal.Round(item.BuyCost, 2):C}g".PadLeft(7);
+      part1.WriteAt(x, y, i == activeVendorItem ? Colors.SelectedColor : ColorEx.RarityColor(item.Rarity), i == activeVendorItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
+      part2.WriteAt(x + part1.Length, y, i == activeVendorItem ? Colors.SelectedColor : Colors.TextColor, i == activeVendorItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
       y++;
     }
   }
@@ -168,9 +171,16 @@ internal static class Vendor
       if (i >= bag.Items.Count)
         $"[{i + 1}]:  Empty".PadRight(ListWidth).WriteAt(x, y, Colors.TextColor, Colors.FillColor);
       else
-        ($"[{i + 1}]:  ({bag.Items[i].Quantity}) {bag.Items[i].Name}".PadRight(ListWidth - 7) +
-         $"{decimal.Round(bag.Items[i].SellCost, 2):C}g".PadLeft(7))
-          .WriteAt(x, y, i == activeItem ? Colors.SelectedColor : Colors.TextColor, i == activeItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
+      {
+        // lets color code the item by rarity
+        Item item = bag.Items[i];
+        string part1 = $"[{i + 1}]:  ({item.Quantity}) ";
+        string part2 = $"{item.Name}".PadRight(ListWidth - part1.Length - 7);
+        string part3 = $"{decimal.Round(item.SellCost, 2):C}g".PadLeft(7);
+        part1.WriteAt(x, y, i == activeItem ? Colors.SelectedColor : Colors.TextColor, i == activeItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
+        part2.WriteAt(x + part1.Length, y, i == activeItem ? Colors.SelectedColor : ColorEx.RarityColor(item.Rarity), i == activeItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
+        part3.WriteAt(x + part1.Length + part2.Length, y, i == activeItem ? Colors.SelectedColor : Colors.TextColor, i == activeItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
+      }
       y++;
     }
   }

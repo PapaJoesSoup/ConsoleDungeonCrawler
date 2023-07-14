@@ -372,7 +372,7 @@ internal static class Inventory
     Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Salmon, BuffType.HealthAndMana, 1, 1, 0.1M));
     Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Trout, BuffType.HealthAndMana, 1, 2, 0.1M));
     Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Snapper, BuffType.HealthAndMana, 1, 4, 0.1M));
-    Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Feast, BuffType.HealthAndMana, 1, 5, 0.5M));
+    Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Feast, BuffType.HealthAndMana, 1, 5, 0.5M, ItemRarity.Uncommon));
       
     Foods.Add(BuffType.Mana, new List<Food>());
     Foods[BuffType.Mana].Add(new Food(FoodName.MelonJuice, BuffType.Mana, 1, 1, 0.1M));

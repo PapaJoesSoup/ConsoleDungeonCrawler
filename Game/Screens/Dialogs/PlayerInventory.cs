@@ -68,14 +68,23 @@ private static readonly Colors Colors = new();
     if (activeItem >= bag.Items.Count) activeItem = bag.Items.Count - 1;
     $"Bag {activeBag + 1} Contents:".WriteAt(x, y, Colors.TextColor, Colors.FillColor);
     y += 2;
+    ("Item".PadRight(ListWidth - 7) + "Sell".PadLeft(7)).WriteAt(x, y, Colors.TextColor, Colors.FillColor);
+    y++;
     for (int i = 0; i < (bag.Capacity < ListHeight? bag.Capacity: ListHeight); i++)
     {
       if (i >= bag.Items.Count)
         $"[{i + 1}]:  Empty".PadRight(ListWidth).WriteAt(x, y, Colors.TextColor, Colors.FillColor);
       else
-        ($"[{i + 1}]:  ({bag.Items[i].Quantity}) {bag.Items[i].Name}".PadRight(ListWidth - 7) +
-         $"{decimal.Round(bag.Items[i].SellCost, 2):C}g".PadLeft(7))
-          .WriteAt(x, y, i == activeItem ? Colors.SelectedColor : Colors.TextColor, i == activeItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
+      {
+        // lets color code the item by rarity
+        Item item = bag.Items[i];
+        string part1 = $"[{i + 1}]:  ({item.Quantity}) ";
+        string part2 = $"{item.Name}".PadRight(ListWidth - part1.Length - 7);
+        string part3 = $"{decimal.Round(item.SellCost, 2):C}g".PadLeft(7);
+        part1.WriteAt(x, y, i == activeItem ? Colors.SelectedColor : Colors.TextColor, i == activeItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
+        part2.WriteAt(x + part1.Length, y, i == activeItem ? Colors.SelectedColor : ColorEx.RarityColor(item.Rarity), i == activeItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
+        part3.WriteAt(x + part1.Length + part2.Length, y, i == activeItem ? Colors.SelectedColor : Colors.TextColor, i == activeItem ? Colors.SelectedBackgroundColor : Colors.FillColor);
+      }
       y++;
     }
   }
