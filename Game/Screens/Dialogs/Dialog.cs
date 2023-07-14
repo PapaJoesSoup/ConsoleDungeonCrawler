@@ -9,26 +9,11 @@ internal static class Dialog
   internal static Point ScreenCenter = new (Console.WindowWidth / 2, Console.WindowHeight / 2);
   internal static Point MapCenter = new (GamePlay.MapBox.Width / 2, GamePlay.MapBox.Top + GamePlay.MapBox.Height / 2);
 
-  // This is the default box for the generic dialog box
-  internal static readonly Box Box = new(ScreenCenter, 100, 25);
-
-  // This is the Default box for centered in the Map Area
-  internal static readonly Box MapBox = new(MapCenter, 100, 24);
+  internal static readonly Box ScreenBox = new(ScreenCenter, 100, 25);
+  internal static readonly Box MapBox = new(MapCenter, 100, 25);
 
   // These colors are for the default theme of a dialog box
   private static readonly Colors Colors = new();
-
-  /// <summary>
-  /// Generic Dialog box with a title everything else is default
-  /// </summary>
-  /// <param name="title">Title placed at the top center of the box</param>
-  /// <param name="mapBoxCentering">Alters the position of the box to be centered in the middle of the map drawing area</param>
-  internal static void Draw(string title, bool mapBoxCentering = false)
-  {
-    Box box = mapBoxCentering ? MapBox : Box;
-    box.Draw(BoxChars.Default, Colors.Color, Colors.BackgroundColor, Colors.FillColor);
-    $"[ {title} ]".WriteAlignedAt(Box, HAlign.Center, VAlign.Top, Colors.TextColor, Colors.BackgroundColor, 0, -1);
-  }
 
   /// <summary>
   /// Generic Dialog box with a title, and default colors
@@ -56,7 +41,7 @@ internal static class Dialog
   /// <param name="mapBoxCentering">Alters the position of the box to be centered in the middle of the map drawing area</param>
   internal static void Draw(string title, Color color, Color bgColor, Color fillColor, Color textColor, Box? box = null, BoxChars? bChars = null, bool mapBoxCentering = false)
   {
-    box ??= mapBoxCentering? MapBox : Box;
+    box ??= mapBoxCentering? MapBox : ScreenBox;
     bChars ??= BoxChars.Default;
     box.Draw(bChars, color, bgColor, fillColor);
     $"[ {title} ]".WriteAlignedAt(box, HAlign.Center, VAlign.Top, textColor, bgColor, 0, -1);
@@ -92,14 +77,19 @@ internal static class Dialog
   internal static void Close(string parent)
   {
     Map.Clear(); 
+    if (parent is "GameCredits") GameCredits.Draw();
+    if (parent is "GameMenu") GameMenu.Draw();
+    if (parent is "GameOptions") GameOptions.Draw();
+    if (parent is "GameOver") GameOver.Draw();
+    if (parent is "GamePaused") GamePaused.Draw();
+    if (parent is "GamePlay") GamePlay.Draw();
+    if (parent is "GameTitle") GameTitle.Draw();
+    if (parent is "GameWon") GameWon.Draw();
     if (parent is "PlayerInventory") PlayerInventory.Draw();
     if (parent is "PlayerSpells") PlayerSpells.Draw();
-    if (parent is "Vendor") Vendor.Draw();
-    if (parent is "GamePlay") GamePlay.Draw();
-    if (parent is "GamePaused") GamePaused.Draw();
-    if (parent is "GameCredits") GameCredits.Draw();
-    if (parent is "GameOver") GameOver.Draw();
-    if (parent is "GameWon") GameWon.Draw();
+    if (parent is "ReplayMenu") ReplayMenu.Draw();
+    if (parent is "TerminalConfig") TerminalConfig.Draw();
     if (parent is "ThemeConfig") ThemeConfig.Draw();
+    if (parent is "Vendor") Vendor.Draw();
   }
 }

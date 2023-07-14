@@ -21,7 +21,7 @@ public static class Program
     ConsoleEx.InitializeConsole();
     if (Console.WindowWidth < Program.MinWindowWidth || Console.WindowHeight < Program.MinWindowHeight)
     {
-      TerminalConfiguration.Draw();
+      TerminalConfig.Draw();
       Environment.Exit(0);
     }
     Game.Game.Run();

@@ -4,7 +4,7 @@ using ConsoleDungeonCrawler.Game.Entities;
 
 namespace ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
-internal class TerminalConfiguration
+internal static class TerminalConfig
 {
   private static readonly Colors Colors = new()
   {

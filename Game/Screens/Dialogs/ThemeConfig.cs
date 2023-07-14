@@ -16,7 +16,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
     private static Colors sampleColors = Theme.DefaultColors;
 
     private static readonly Box DialogBox = new(Dialog.MapCenter, 100, 24);
-    //private static readonly Box DialogBox = new(Dialog.ScreenCenter, 100, 24);
+    //private static readonly ScreenBox DialogBox = new(Dialog.ScreenCenter, 100, 24);
 
     private static readonly Box LegendBox = new(DialogBox.Left + 3, DialogBox.Top + 2, 0, 0);
     private static readonly Box SampleCharBox = new(DialogBox.Left + 37, DialogBox.Top + 2, 0, 0);
@@ -78,7 +78,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
         DrawSampleChars();
         DrawSampleBox();
 
-        // Order is important here.  Color Box updates Selector data.
+        // Order is important here.  Color ScreenBox updates Selector data.
         DrawBoxColors();
         DrawColorSelector();
 
@@ -119,8 +119,8 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       y++; i++;
 
       "Top Middle char:".WriteAt(x, y, selectedCharIdx == i ? Colors.SelectedColor : Colors.TextColor, selectedCharIdx == i ? Colors.SelectedBackgroundColor : Colors.FillColor);
-      $"{sampleChars.TopMid}".WriteAt(x2, y, sampleColors.Color, sampleColors.FillColor);
-      if (selectedCharIdx == i) selectedChar = sampleChars.TopMid;
+      $"{sampleChars.TopCtr}".WriteAt(x2, y, sampleColors.Color, sampleColors.FillColor);
+      if (selectedCharIdx == i) selectedChar = sampleChars.TopCtr;
       y++; i++;
 
       "Top Right char:".WriteAt(x, y, selectedCharIdx == i ? Colors.SelectedColor : Colors.TextColor, selectedCharIdx == i ? Colors.SelectedBackgroundColor : Colors.FillColor);
@@ -134,8 +134,8 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       y++; i++;
 
       "Middle char:".WriteAt(x, y, selectedCharIdx == i ? Colors.SelectedColor : Colors.TextColor, selectedCharIdx == i ? Colors.SelectedBackgroundColor : Colors.FillColor);
-      $"{sampleChars.Mid}".WriteAt(x2, y, sampleColors.Color, sampleColors.FillColor);
-      if (selectedCharIdx == i) selectedChar = sampleChars.Mid;
+      $"{sampleChars.MidCtr}".WriteAt(x2, y, sampleColors.Color, sampleColors.FillColor);
+      if (selectedCharIdx == i) selectedChar = sampleChars.MidCtr;
       y++; i++;
 
       "Middle Right char:".WriteAt(x, y, selectedCharIdx == i ? Colors.SelectedColor : Colors.TextColor, selectedCharIdx == i ? Colors.SelectedBackgroundColor : Colors.FillColor);
@@ -149,8 +149,8 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       y++; i++;
 
       "Bottom Middle char:".WriteAt(x, y, selectedCharIdx == i ? Colors.SelectedColor : Colors.TextColor, selectedCharIdx == i ? Colors.SelectedBackgroundColor : Colors.FillColor);
-      $"{sampleChars.BotMid}".WriteAt(x2, y, sampleColors.Color, sampleColors.FillColor);
-      if (selectedCharIdx == i) selectedChar = sampleChars.BotMid;
+      $"{sampleChars.BotCtr}".WriteAt(x2, y, sampleColors.Color, sampleColors.FillColor);
+      if (selectedCharIdx == i) selectedChar = sampleChars.BotCtr;
       y++; i++;
 
       "Bottom Right char:".WriteAt(x, y, selectedCharIdx == i ? Colors.SelectedColor : Colors.TextColor, selectedCharIdx == i ? Colors.SelectedBackgroundColor : Colors.FillColor);
@@ -173,7 +173,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       int x = SampleColorBox.Left;
       int y = SampleColorBox.Top;
       int i = 0;
-      "Box Char Colors".WriteAt(x, y, charsActive ? Colors.HeaderColor : Colors.SelectedColor, Colors.FillColor); y++; x++;
+      "ScreenBox Char Colors".WriteAt(x, y, charsActive ? Colors.HeaderColor : Colors.SelectedColor, Colors.FillColor); y++; x++;
 
       "Border Char Color:".WriteAt(x, y, selectedColorIdx == i ? Colors.SelectedColor : Colors.TextColor, selectedColorIdx == i ? Colors.SelectedBackgroundColor : Colors.FillColor);
       ' '.WriteAt(x + 27, y, sampleColors.Color, sampleColors.Color);
@@ -185,7 +185,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       if (selectedColorIdx == i) GetSelectedColor(sampleColors.BackgroundColor);
       y++; i++;
 
-      "Box Fill Color:".WriteAt(x, y, selectedColorIdx == i ? Colors.SelectedColor : Colors.TextColor, selectedColorIdx == i ? Colors.SelectedBackgroundColor : Colors.FillColor);
+      "ScreenBox Fill Color:".WriteAt(x, y, selectedColorIdx == i ? Colors.SelectedColor : Colors.TextColor, selectedColorIdx == i ? Colors.SelectedBackgroundColor : Colors.FillColor);
       ' '.WriteAt(x + 27, y, sampleColors.FillColor, sampleColors.FillColor);
       if (selectedColorIdx == i) GetSelectedColor(sampleColors.FillColor);
       y++; i++;
@@ -235,15 +235,15 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 
       SampleBox.Draw(sampleChars, sampleColors.Color, sampleColors.BackgroundColor, sampleColors.FillColor);
 
-      sampleChars.TopMid.WriteAt(center, top, sampleColors.Color, sampleColors.BackgroundColor);
+      sampleChars.TopCtr.WriteAt(center, top, sampleColors.Color, sampleColors.BackgroundColor);
       sampleChars.MidLeft.WriteAt(left, middle, sampleColors.Color, sampleColors.BackgroundColor);
       sampleChars.MidRight.WriteAt(right, middle, sampleColors.Color, sampleColors.BackgroundColor);
-      sampleChars.BotMid.WriteAt(center, bottom, sampleColors.Color, sampleColors.BackgroundColor);
+      sampleChars.BotCtr.WriteAt(center, bottom, sampleColors.Color, sampleColors.BackgroundColor);
       sampleChars.Hor.WriteAt(left + 1, middle, sampleColors.Color, sampleColors.FillColor, SampleBox.Width - 2, 0);
       for (int y = top + 1; y < bottom; y++)
         sampleChars.Ver.WriteAt(center, y, sampleColors.Color, sampleColors.FillColor);
 
-      sampleChars.Mid.WriteAt(center, middle, sampleColors.Color, sampleColors.FillColor);
+      sampleChars.MidCtr.WriteAt(center, middle, sampleColors.Color, sampleColors.FillColor);
 
       // draw text elements in box.
       "Theme Sample".WriteAt(left, top-1, Colors.HeaderColor, Colors.FillColor);
@@ -280,7 +280,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
           sampleChars.TopLeft = newChar;
           break;
         case 1:
-          sampleChars.TopMid = newChar;
+          sampleChars.TopCtr = newChar;
           break;
         case 2:
           sampleChars.TopRight = newChar;
@@ -289,7 +289,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
           sampleChars.MidLeft = newChar;
           break;
         case 4:
-          sampleChars.Mid = newChar;
+          sampleChars.MidCtr = newChar;
           break;
         case 5:
           sampleChars.MidRight = newChar;
@@ -298,7 +298,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
           sampleChars.BotLeft = newChar;
           break;
         case 7:
-          sampleChars.BotMid = newChar;
+          sampleChars.BotCtr = newChar;
           break;
         case 8:
           sampleChars.BotRight = newChar;

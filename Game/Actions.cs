@@ -47,7 +47,7 @@ internal static class Actions
         case 'B':
           if (obj.IsLootable)
           {
-            GamePlay.Messages.Add(new Message($"You loot  {((Monster)obj).Type.Name}...", Color.BurlyWood, Color.Black));
+            GamePlay.Messages.Add(new Message($"You loot {((Monster)obj).Type.Name}...", Color.BurlyWood, Color.Black));
             Player.Gold += ((Monster)obj).Gold;
             GamePlay.Messages.Add(new Message($"You gained {((Monster)obj).Gold} gold!", Color.LimeGreen, Color.Black));
             item = Monster.Loot((Monster)obj);

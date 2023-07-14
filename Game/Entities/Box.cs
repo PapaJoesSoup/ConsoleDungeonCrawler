@@ -1,7 +1,6 @@
 ﻿using System.Drawing;
 using System.Globalization;
 using ConsoleDungeonCrawler.Extensions;
-using ConsoleDungeonCrawler.Game.Screens;
 using ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
 namespace ConsoleDungeonCrawler.Game.Entities;
@@ -17,7 +16,7 @@ internal class Box
   internal readonly int Top;
   internal readonly Point Center;
 
-  internal static readonly Box DefaultBox = new(Dialog.ScreenCenter, 100, 25);
+  internal static readonly Box ScreenBox = new(Dialog.ScreenCenter, 100, 25);
   internal static readonly Box MapBox = new(Dialog.MapCenter, 100, 24);
 
   internal Box(int left, int top, int width, int height)

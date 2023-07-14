@@ -1,18 +1,18 @@
 ﻿namespace ConsoleDungeonCrawler.Game.Entities;
 
 /// <summary>
-/// This is the class for Extended Box Characters
+/// This is the class for Extended ScreenBox Characters
 /// </summary>
 internal class BoxChars
 {
     internal string TopLeft;
-    internal string TopMid;
+    internal string TopCtr;
     internal string TopRight;
     internal string MidLeft;
-    internal string Mid;
+    internal string MidCtr;
     internal string MidRight;
     internal string BotLeft;
-    internal string BotMid;
+    internal string BotCtr;
     internal string BotRight;
     internal string Hor;
     internal string Ver;
@@ -25,16 +25,16 @@ internal class BoxChars
     // refer to: https://www.fileformat.info/info/unicode/font/consolas/grid.htm for a grid of all characters
     internal static readonly BoxChars Default = new("\u2554", "\u2566", "\u2557", "\u2560", "\u256c", "\u2563", "\u255a", "\u2569", "\u255d", "\u2550", "\u2551");
 
-    private BoxChars(string topLeft, string topMid, string topRight, string midLeft, string mid, string midRight, string botLeft, string botMid, string botRight, string hor, string ver)
+    private BoxChars(string topLeft, string topCtr, string topRight, string midLeft, string midCtr, string midRight, string botLeft, string botCtr, string botRight, string hor, string ver)
     {
         TopLeft = topLeft;
-        TopMid = topMid;
+        TopCtr = topCtr;
         TopRight = topRight;
         MidLeft = midLeft;
-        Mid = mid;
+        MidCtr = midCtr;
         MidRight = midRight;
         BotLeft = botLeft;
-        BotMid = botMid;
+        BotCtr = botCtr;
         BotRight = botRight;
         Hor = hor;
         Ver = ver;

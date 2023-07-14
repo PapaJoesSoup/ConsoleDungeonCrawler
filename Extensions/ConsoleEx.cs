@@ -623,7 +623,7 @@ internal static class ConsoleEx
   /// Writes a string aligned with a box and includes an offset ability
   /// </summary>
   /// <param name="s">String to write</param>
-  /// <param name="box">Box to use for alignment</param>
+  /// <param name="box">ScreenBox to use for alignment</param>
   /// <param name="hAlign">Horizontal alignment</param>
   /// <param name="vAlign">Vertical alignment</param>
   /// <param name="color">Foreground color</param>

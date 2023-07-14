@@ -76,7 +76,7 @@ internal static class GamePlay
 
     // now to clean up the corners
     BoxChars.Default.MidLeft.WriteAt(MapBox.Left, MapBox.Top, Colors.Color);
-    BoxChars.Default.TopMid.WriteAt(OverlayBox.Left, MapBox.Top, Colors.Color);
+    BoxChars.Default.TopCtr.WriteAt(OverlayBox.Left, MapBox.Top, Colors.Color);
     BoxChars.Default.MidRight.WriteAt(OverlayBox.Left + OverlayBox.Width - 1, MapBox.Top, Colors.Color);
 
     BoxChars.Default.MidLeft.WriteAt(LegendBox.Left, LegendBox.Top, Colors.Color);
@@ -85,7 +85,7 @@ internal static class GamePlay
     BoxChars.Default.MidLeft.WriteAt(MessageBox.Left, MessageBox.Top, Colors.Color);
     BoxChars.Default.MidRight.WriteAt(MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Colors.Color);
 
-    BoxChars.Default.BotMid.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Colors.Color);
+    BoxChars.Default.BotCtr.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Colors.Color);
 
   }
 
@@ -102,8 +102,8 @@ internal static class GamePlay
     //Player Stats
     int col = StatusBox.Left + 179;
     int row = StatusBox.Top + 1;
-    BoxChars.Default.TopMid.WriteAt(col - 2, row - 1, Colors.Color);
-    BoxChars.Default.Mid.WriteAt(col - 2, StatusBox.Height - 1, Colors.Color);
+    BoxChars.Default.TopCtr.WriteAt(col - 2, row - 1, Colors.Color);
+    BoxChars.Default.MidCtr.WriteAt(col - 2, StatusBox.Height - 1, Colors.Color);
     for (int index = row; index < row + 6; index++)
     {
       BoxChars.Default.Ver.WriteAt(col - 2, index, Colors.Color);
@@ -130,8 +130,8 @@ internal static class GamePlay
     int col = StatusBox.Left + 140;
     int row = StatusBox.Top + 1;
     int colWidth = 18;
-    BoxChars.Default.TopMid.WriteAt(col - 2, row - 1, Colors.Color);
-    BoxChars.Default.BotMid.WriteAt(col - 2, StatusBox.Height - 1, Colors.Color);
+    BoxChars.Default.TopCtr.WriteAt(col - 2, row - 1, Colors.Color);
+    BoxChars.Default.BotCtr.WriteAt(col - 2, StatusBox.Height - 1, Colors.Color);
     for (int index = row; index < row + 6; index++)
     {
       BoxChars.Default.Ver.WriteAt(col - 2, index, Colors.Color);
@@ -166,8 +166,8 @@ internal static class GamePlay
     int colWidth = 25;
     int count = 0;
     int totalBags = Inventory.Bags.Count;
-    BoxChars.Default.TopMid.WriteAt(col - 2, row - 1, Colors.Color);
-    BoxChars.Default.BotMid.WriteAt(col - 2, StatusBox.Height - 1, Colors.Color);
+    BoxChars.Default.TopCtr.WriteAt(col - 2, row - 1, Colors.Color);
+    BoxChars.Default.BotCtr.WriteAt(col - 2, StatusBox.Height - 1, Colors.Color);
     for (int index = row; index < row + 6; index++)
     {
       BoxChars.Default.Ver.WriteAt(col - 2, index, Colors.Color);
@@ -266,7 +266,7 @@ internal static class GamePlay
     row++;
     "[O,C] - Open/Close Door".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[< >] - Switch Bag Shown".WriteAt(col, row, Colors.TextColor);
+    "[Left/Right Arrow] - Switch Bag".WriteAt(col, row, Colors.TextColor);
     row++;
     "[Esc] - Pause Menu".WriteAt(col, row, Colors.TextColor);
     row++;
@@ -308,8 +308,8 @@ internal static class GamePlay
     int col = MessageBox.Width - 30;
     int row = MessageBox.Top + 1;
     // draw the message Legend left border
-    BoxChars.Default.TopMid.WriteAt(col, row - 1, Colors.Color);
-    BoxChars.Default.BotMid.WriteAt(col, MessageBox.Top + MessageBox.Height - 1, Colors.Color);
+    BoxChars.Default.TopCtr.WriteAt(col, row - 1, Colors.Color);
+    BoxChars.Default.BotCtr.WriteAt(col, MessageBox.Top + MessageBox.Height - 1, Colors.Color);
     for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
       BoxChars.Default.Ver.WriteAt(col, index, Colors.Color);
     col += 2;
@@ -415,11 +415,11 @@ internal static class GamePlay
         case ConsoleKey.End:
           messageOffset = 0;
           break;
-        case ConsoleKey.OemComma:
+        case ConsoleKey.LeftArrow:
             currentBag--;
           if (currentBag<0) currentBag = Inventory.Bags.Count-1;
           break;
-        case ConsoleKey.OemPeriod:
+        case ConsoleKey.RightArrow:
           currentBag++;
           if (currentBag > Inventory.Bags.Count - 1) currentBag = 0;
           break;

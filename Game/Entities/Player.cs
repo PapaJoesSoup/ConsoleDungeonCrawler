@@ -283,10 +283,10 @@ internal class Player : Tile
   private char IsNextToOverlayGrid(out Tile obj)
   {
     // we need to account for monsters on a different overlay level
-    if (IsNextToOverlay(Dir[Direction.West], out obj)) return obj.Type.Symbol;
-    if (IsNextToOverlay(Dir[Direction.East], out obj)) return obj.Type.Symbol;
-    if (IsNextToOverlay(Dir[Direction.North], out obj)) return obj.Type.Symbol;
-    if (IsNextToOverlay(Dir[Direction.South], out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(AdjDir[Direction.West], out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(AdjDir[Direction.East], out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(AdjDir[Direction.North], out obj)) return obj.Type.Symbol;
+    if (IsNextToOverlay(AdjDir[Direction.South], out obj)) return obj.Type.Symbol;
 
     // not found
     obj = new Tile();
@@ -296,10 +296,10 @@ internal class Player : Tile
   internal bool IsNextToOverlayGrid(char symbol, out Tile obj)
   {
     // we need to account for monsters on a different overlay level
-    if (IsNextToOverlay(Dir[Direction.West], out obj, symbol)) return true;
-    if (IsNextToOverlay(Dir[Direction.East], out obj, symbol)) return true;
-    if (IsNextToOverlay(Dir[Direction.North], out obj, symbol)) return true;
-    if (IsNextToOverlay(Dir[Direction.South], out obj, symbol)) return true;
+    if (IsNextToOverlay(AdjDir[Direction.West], out obj, symbol)) return true;
+    if (IsNextToOverlay(AdjDir[Direction.East], out obj, symbol)) return true;
+    if (IsNextToOverlay(AdjDir[Direction.North], out obj, symbol)) return true;
+    if (IsNextToOverlay(AdjDir[Direction.South], out obj, symbol)) return true;
 
     // not found
     obj = new Tile();
@@ -330,10 +330,10 @@ internal class Player : Tile
 
   internal bool IsNextToMapGrid(char symbol, out Tile obj)
   {
-    if (IsNextToMap(symbol, Dir[Direction.West],out obj)) return true;
-    if (IsNextToMap(symbol, Dir[Direction.East], out obj)) return true;
-    if (IsNextToMap(symbol, Dir[Direction.North], out obj)) return true;
-    if (IsNextToMap(symbol, Dir[Direction.South], out obj)) return true;
+    if (IsNextToMap(symbol, AdjDir[Direction.West],out obj)) return true;
+    if (IsNextToMap(symbol, AdjDir[Direction.East], out obj)) return true;
+    if (IsNextToMap(symbol, AdjDir[Direction.North], out obj)) return true;
+    if (IsNextToMap(symbol, AdjDir[Direction.South], out obj)) return true;
 
     // not found
     obj = new Tile();
@@ -404,10 +404,10 @@ internal class Player : Tile
     // check to see if there is an object in between old and new location that is not passable and not transparent
     Direction dir = Map.GetDirection(oldPos, newPos);
     Position curPos = oldPos;
-    if (dir == Direction.West) curPos = oldPos.Dir[Direction.West];
-    if (dir == Direction.East) curPos = oldPos.Dir[Direction.East];
-    if (dir == Direction.North) curPos = oldPos.Dir[Direction.North];
-    if (dir == Direction.South) curPos = oldPos.Dir[Direction.South];
+    if (dir == Direction.West) curPos = oldPos.AdjDir[Direction.West];
+    if (dir == Direction.East) curPos = oldPos.AdjDir[Direction.East];
+    if (dir == Direction.North) curPos = oldPos.AdjDir[Direction.North];
+    if (dir == Direction.South) curPos = oldPos.AdjDir[Direction.South];
     if (curPos == oldPos) return false;
 
     List<Tile> layers = Map.LevelOverlayGrids[Game.CurrentLevel][curPos.X][curPos.Y];

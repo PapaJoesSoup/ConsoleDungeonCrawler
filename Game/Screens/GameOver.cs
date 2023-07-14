@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using ConsoleDungeonCrawler.Extensions;
+﻿using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Entities;
 using ConsoleDungeonCrawler.Game.Screens.Dialogs;
 
