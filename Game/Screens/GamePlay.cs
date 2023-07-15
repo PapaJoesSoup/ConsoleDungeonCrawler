@@ -380,7 +380,7 @@ internal static class GamePlay
         case ConsoleKey.D:
           if (!Map.Player.Move(keyInfo.Key)) break;
           Messages.Add(new Message($"You moved {Map.GetDirection(keyInfo.Key)}..."));
-          Actions.PickupOverlayItem();
+          Actions.ProcessOverlayItem();
           break;
         case ConsoleKey.D0:
         case ConsoleKey.D1:

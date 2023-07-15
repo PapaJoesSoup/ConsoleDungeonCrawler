@@ -9,11 +9,12 @@ namespace ConsoleDungeonCrawler.Game;
 internal static class Actions
 {
   /// <summary>
-  /// Pick up any items that are on the ground under the player.  Dead monsters are lootable till looted.
+  /// Process any overlay items that the are under the player.  Dead monsters are lootable till looted.
+  /// Overlay items can be stacked in layers, so we may need to process more than one layer
   /// </summary>
-  internal static void PickupOverlayItem()
+  internal static void ProcessOverlayItem()
   {
-    // search Tile location from the top down for items to pick up
+    // search Tile location from the top down for items to process
     for (int i = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y].Count - 1; i >= 0; i--)
     {
       if (Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i].Type.Symbol == ' ') continue;
