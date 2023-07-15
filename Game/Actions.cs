@@ -11,7 +11,7 @@ internal static class Actions
   /// <summary>
   /// Pick up any items that are on the ground under the player.  Dead monsters are lootable till looted.
   /// </summary>
-  public static void PickupOverlayItem()
+  internal static void PickupOverlayItem()
   {
     // search Tile location from the top down for items to pick up
     for (int i = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y].Count - 1; i >= 0; i--)
@@ -76,35 +76,15 @@ internal static class Actions
     }
   }
 
-  public static void OpenDoor()
+  internal static void OpenCloseDoor()
   {
-    if (!Map.Player.IsNextToMapGrid('+', out Tile door)) return;
-    TileType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new TileType();
-    if (type.Symbol == ' ') return;
-    SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Door]);
-    GamePlay.Messages.Add(new Message("Opening Door...", Color.Yellow, Color.Black));
-    Map.RemoveFromMapTiles(door);
-    door.Type = type;
-    door.IsPassable = type.IsPassable;
-    Map.AddToMapTiles(door);
-    door.Draw();
+    if (Map.Player.IsNextToMapGrid('+', out Tile doorC))
+      OpenDoor(doorC);
+    if (Map.Player.IsNextToMapGrid('-', out Tile doorO))
+      CloseDoor(doorO);
   }
 
-  public static void CloseDoor()
-  {
-    if (!Map.Player.IsNextToMapGrid('-', out Tile door)) return;
-    TileType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new TileType();
-    if (type.Symbol == ' ') return;
-    SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Door]);
-    GamePlay.Messages.Add(new Message("Closing Door...", Color.Yellow, Color.Black));
-    Map.RemoveFromMapTiles(door);
-    door.Type = type;
-    door.IsPassable = type.IsPassable;
-    Map.AddToMapTiles(door);
-    door.Draw();
-  }
-
-  public static void MonsterActions()
+  internal static void MonsterActions()
   {
     for (int charIdx = 0; charIdx < Map.LevelOverlayTiles[Game.CurrentLevel].Count; charIdx++)
     {
@@ -125,7 +105,7 @@ internal static class Actions
     }
   }
 
-  public static void UseSpell(ConsoleKeyInfo keyInfo)
+  internal static void UseSpell(ConsoleKeyInfo keyInfo)
   {
     int index = (int)char.GetNumericValue(keyInfo.KeyChar);
     if (index > Player.Spells.Count) return;
@@ -163,4 +143,31 @@ internal static class Actions
     Game.CurrentLevel--;
     Map.LoadLevel();
   }
+  
+  private static void OpenDoor(Tile door)
+  {
+    TileType type = Map.MapTypes.Find(t => t.Symbol == '-') ?? new TileType();
+    if (type.Symbol == ' ') return;
+    SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Door]);
+    GamePlay.Messages.Add(new Message("Opening Door...", Color.Yellow, Color.Black));
+    Map.RemoveFromMapTiles(door);
+    door.Type = type;
+    door.IsPassable = type.IsPassable;
+    Map.AddToMapTiles(door);
+    door.Draw();
+  }
+
+  private static void CloseDoor(Tile door)
+  {
+    TileType type = Map.MapTypes.Find(t => t.Symbol == '+') ?? new TileType();
+    if (type.Symbol == ' ') return;
+    SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.Door]);
+    GamePlay.Messages.Add(new Message("Closing Door...", Color.Yellow, Color.Black));
+    Map.RemoveFromMapTiles(door);
+    door.Type = type;
+    door.IsPassable = type.IsPassable;
+    Map.AddToMapTiles(door);
+    door.Draw();
+  }
+
 }

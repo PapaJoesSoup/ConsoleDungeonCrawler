@@ -264,7 +264,7 @@ internal static class GamePlay
     row++;
     "[G] - Use Bandage".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[O,C] - Open/Close Door".WriteAt(col, row, Colors.TextColor);
+    "[Enter] - Open/Close Door".WriteAt(col, row, Colors.TextColor);
     row++;
     "[\u2190][\u2192] - Switch Bag".WriteAt(col, row, Colors.TextColor);
     row++;
@@ -423,13 +423,10 @@ internal static class GamePlay
           currentBag++;
           if (currentBag > Inventory.Bags.Count - 1) currentBag = 0;
           break;
-        case ConsoleKey.O:
-          Actions.OpenDoor();
+        case ConsoleKey.Enter:
+          Actions.OpenCloseDoor();
           Map.SetVisibleArea(10);
           Map.WhatIsVisible();
-          break;
-        case ConsoleKey.C:
-          Actions.CloseDoor();
           break;
         case ConsoleKey.T:
           Map.Player.Attack();

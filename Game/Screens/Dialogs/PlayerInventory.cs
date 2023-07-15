@@ -8,8 +8,8 @@ internal static class PlayerInventory
 #region Properties
 private static readonly Colors Colors = new();
 
-  private static readonly Box DialogBox = new(Dialog.MapCenter, 116, 25);
-  private static readonly Box LegendBox = new(DialogBox.Left, DialogBox.Top + 11, 22, 10);
+  private static readonly Box DialogBox = new(Dialog.MapCenter, 104, 26);
+  private static readonly Box LegendBox = new(DialogBox.Left, DialogBox.Top + 12, 22, 10);
   private static readonly Position ListPosition = new(DialogBox.Left + LegendBox.Width + 4, DialogBox.Top + 1);
 
   private const int ListWidth = 40;
@@ -96,13 +96,18 @@ private static readonly Colors Colors = new();
     string[] lines = Game.CharacterArt.ToString().Split('\n');
     int height = lines.Length;
     int width = lines[0].Length;
-    int startX = DialogBox.Left + DialogBox.Width - width;
-    int startY = DialogBox.Top + 1;
+    int startX = DialogBox.Left + DialogBox.Width - width - 1;
+    int startY = DialogBox.Top + 2;
     for (int y = 0; y < height; y++)
     {
       string line = lines[y];
       line.WriteAt(startX, startY + y, Colors.Color);
     }
+  }
+
+  private static void DrawEquipmentSlots()
+  {
+
   }
 
   private static void MoveItem(Item item, int bag)
