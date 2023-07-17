@@ -19,7 +19,7 @@ internal static class GameTitle
   internal static void Draw()
   {
     ConsoleEx.Clear();
-    ScreenBorder.WriteBorder(BoxChars.Default, Colors.Color);
+    ScreenBorder.WriteBorder(BoxChars.Default, Colors.Color, Colors.BackgroundColor);
     LoadTitleArt();
     LoadBannerText();
     GameMenu.Draw();

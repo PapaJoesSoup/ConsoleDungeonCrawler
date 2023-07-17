@@ -11,7 +11,7 @@ internal static class GameOver
   internal static void Draw()
   {
     ConsoleEx.Clear();
-    ScreenBorder.WriteBorder(BoxChars.Default, Colors.Color);
+    ScreenBorder.WriteBorder(BoxChars.Default, Colors.Color, Colors.BackgroundColor);
     LoadArt();
     LoadBannerText();
     ReplayMenu.Draw();

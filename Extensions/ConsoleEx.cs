@@ -713,13 +713,11 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor bgColor, int repeat)
+  internal static void WriteAt(this string s, int x, int y, int repeat)
   {
     try
     {
       Console.SetCursorPosition(x, y);
-      Console.ForegroundColor = color;
-      Console.BackgroundColor = bgColor;
       for (int i = 0; i < repeat; i++)
       {
         foreach (char c in s)
@@ -727,8 +725,6 @@ internal static class ConsoleEx
           Console.Write(c);
         }
       }
-
-      Console.ResetColor();
     }
     catch (ArgumentOutOfRangeException e)
     {
@@ -760,11 +756,13 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, int repeat)
+  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor bgColor, int repeat)
   {
     try
     {
       Console.SetCursorPosition(x, y);
+      Console.ForegroundColor = color;
+      Console.BackgroundColor = bgColor;
       for (int i = 0; i < repeat; i++)
       {
         foreach (char c in s)
@@ -772,6 +770,8 @@ internal static class ConsoleEx
           Console.Write(c);
         }
       }
+
+      Console.ResetColor();
     }
     catch (ArgumentOutOfRangeException e)
     {
@@ -806,7 +806,7 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, int delay, int repeat)
+  internal static void WriteAt(this string s, int x, int y, int repeat, int delay)
   {
     try
     {
@@ -855,7 +855,7 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, int delay, int repeat, int repeatDelay)
+  internal static void WriteAt(this string s, int x, int y, int repeat, int delay, int repeatDelay)
   {
     try
     {
@@ -878,7 +878,7 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, int delay, int repeat)
+  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, int repeat, int delay)
   {
     try
     {
@@ -902,7 +902,7 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, int delay, int repeat, int repeatDelay)
+  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, int repeat, int delay, int repeatDelay)
   {
     try
     {
@@ -1119,7 +1119,21 @@ internal static class ConsoleEx
   #endregion WriteAt char methods
 
   #region Extended Color WriteAt Char Methods
-  // Extended Color WriteAt Char Methods
+  internal static void WriteAt(this char c, int x, int y, Color color)
+  {
+    try
+    {
+      Console.SetCursorPosition(x, y);
+      ForegroundColor = color;
+      Console.Write(c);
+      ResetColor();
+    }
+    catch (ArgumentOutOfRangeException e)
+    {
+      Console.Clear(); Console.WriteLine(e.Message);
+    }
+  }
+
   internal static void WriteAt(this char c, int x, int y, Color color, Color bgColor)
   {
     try
@@ -1134,21 +1148,6 @@ internal static class ConsoleEx
     {
       Console.Clear();
       Console.WriteLine(e.Message);
-    }
-  }
-
-  internal static void WriteAt(this char c, int x, int y, Color color)
-  {
-    try
-    {
-      Console.SetCursorPosition(x, y);
-      ForegroundColor = color;
-      Console.Write(c);
-      ResetColor();
-    }
-    catch (ArgumentOutOfRangeException e)
-    {
-      Console.Clear(); Console.WriteLine(e.Message);
     }
   }
 
@@ -1168,8 +1167,24 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this char c, int x, int y, Color color, Color bgColor, int repeat,
-    int delay = 0)
+  internal static void WriteAt(this char c, int x, int y, Color color, Color bgColor, int repeat)
+  {
+    try
+    {
+      Console.SetCursorPosition(x, y);
+      ForegroundColor = color;
+      BackgroundColor = bgColor;
+      Console.Write(new string(c, repeat));
+      ResetColor();
+    }
+    catch (ArgumentOutOfRangeException e)
+    {
+      Console.Clear();
+      Console.WriteLine(e.Message);
+    }
+  }
+
+  internal static void WriteAt(this char c, int x, int y, Color color, Color bgColor, int repeat, int delay)
   {
     try
     {
@@ -1192,7 +1207,6 @@ internal static class ConsoleEx
   }
   #endregion Extended Color WriteAt Char Methods
 
-  // Extended Color WriteAt String Methods
   #region Extended Color WriteAt String Methods
   internal static void WriteAt(this string s, int x, int y, Color color)
   {
@@ -1306,18 +1320,52 @@ internal static class ConsoleEx
         {
           StringInfo.GetNextTextElement(bChars.TopLeft).WriteAt(box.Left, box.Top + i, color);
           StringInfo.GetNextTextElement(bChars.TopRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
-          StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top + i, color, box.Width - 2, 0);
+          StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top + i, color, box.Width - 2);
         }
         else if (i == box.Height - 1)
         {
           StringInfo.GetNextTextElement(bChars.BotLeft).WriteAt(box.Left, box.Top + i, color);
           StringInfo.GetNextTextElement(bChars.BotRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
-          StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top + i, color, box.Width - 2, 0);
+          StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top + i, color, box.Width - 2);
         }
         else
         {
           StringInfo.GetNextTextElement(bChars.Ver).WriteAt(box.Left, box.Top + i, color);
           StringInfo.GetNextTextElement(bChars.Ver).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
+        }
+      }
+
+      Console.ResetColor();
+    }
+    catch (ArgumentOutOfRangeException e)
+    {
+      Console.Clear();
+      Console.WriteLine(e.Message);
+    }
+  }
+
+  internal static void WriteBorder(this Box box, BoxChars bChars, ConsoleColor color, ConsoleColor bgColor)
+  {
+    try
+    {
+      for (int i = 0; i < box.Height; i++)
+      {
+        if (i == 0)
+        {
+          StringInfo.GetNextTextElement(bChars.TopLeft).WriteAt(box.Left, box.Top + i, color, bgColor);
+          StringInfo.GetNextTextElement(bChars.TopRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color, bgColor);
+          StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top + i, color, bgColor, box.Width - 2);
+        }
+        else if (i == box.Height - 1)
+        {
+          StringInfo.GetNextTextElement(bChars.BotLeft).WriteAt(box.Left, box.Top + i, color, bgColor);
+          StringInfo.GetNextTextElement(bChars.BotRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color, bgColor);
+          StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top + i, color, bgColor, box.Width - 2);
+        }
+        else
+        {
+          StringInfo.GetNextTextElement(bChars.Ver).WriteAt(box.Left, box.Top + i, color, bgColor);
+          StringInfo.GetNextTextElement(bChars.Ver).WriteAt(box.Left + box.Width - 1, box.Top + i, color, bgColor);
         }
       }
 
@@ -1352,6 +1400,40 @@ internal static class ConsoleEx
         {
           StringInfo.GetNextTextElement(bChars.Ver).WriteAt(box.Left, box.Top + i, color);
           StringInfo.GetNextTextElement(bChars.Ver).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
+        }
+      }
+
+      ResetColor();
+    }
+    catch (ArgumentOutOfRangeException e)
+    {
+      Clear();
+      Console.WriteLine(e.Message);
+    }
+  }
+  
+  internal static void WriteBorder(this Box box, BoxChars bChars, Color color, Color bgColor)
+  {
+    try
+    {
+      for (int i = 0; i < box.Height; i++)
+      {
+        if (i == 0)
+        {
+          StringInfo.GetNextTextElement(bChars.TopLeft).WriteAt(box.Left, box.Top + i, color, bgColor);
+          StringInfo.GetNextTextElement(bChars.TopRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color, bgColor);
+          StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top, color, bgColor, box.Width - 2);
+        }
+        else if (i == box.Height - 1)
+        {
+          StringInfo.GetNextTextElement(bChars.BotLeft).WriteAt(box.Left, box.Top + i, color, bgColor);
+          StringInfo.GetNextTextElement(bChars.BotRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color, bgColor);
+          StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top + i, color, bgColor, box.Width - 2);
+        }
+        else
+        {
+          StringInfo.GetNextTextElement(bChars.Ver).WriteAt(box.Left, box.Top + i, color, bgColor);
+          StringInfo.GetNextTextElement(bChars.Ver).WriteAt(box.Left + box.Width - 1, box.Top + i, color, bgColor);
         }
       }
 
