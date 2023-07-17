@@ -11,7 +11,7 @@ internal static class Game
 {
   #region Properties
   internal const string Title = "Console Dungeon Crawler";
-  private const string DataPath = $"Game/Data/";
+  private const string DataPath = "Game/Data/";
   private const string MapPath = $"{DataPath}Maps/";
   private const string ArtPath = $"{DataPath}Art/";
   internal const string SoundPath = $"{DataPath}Sounds/";
@@ -23,6 +23,7 @@ internal static class Game
   internal static bool IsRestart { get; set; }
   internal static bool IsQuit { get; set; }
 
+  internal static readonly Dictionary<string, Dictionary<string, string>> Dungeons = new();
   internal static string CurrentDungeon = "";
   internal static int CurrentLevel = 0;
 
@@ -34,8 +35,6 @@ internal static class Game
   internal static readonly StringBuilder GameEnterText;
   internal static readonly StringBuilder GameWonText;
   internal static readonly StringBuilder GameOverText;
-
-  internal static readonly Dictionary<string, Dictionary<string, string>> Dungeons = new();
   #endregion Properties
 
   static Game()

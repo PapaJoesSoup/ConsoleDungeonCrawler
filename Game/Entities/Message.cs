@@ -10,6 +10,7 @@ internal class Message
   private readonly Item? item;
   private readonly Color foregroundColor = Color.White;
   private readonly Color backgroundColor = Color.Black;
+  internal static readonly int PageSize = GamePlay.MessageBox.Height - 2;
 
   internal Message(string text, Color fgColor, Color bgColor)
   {

@@ -70,17 +70,17 @@ internal static class PathFinding
   /// <returns>adjacent coords that are passable</returns>
   private static List<Position> GetPassableArea(Position currentPos, Position targetPos)
   {
-    Dictionary<int, Dictionary<int, Tile>> map = Map.LevelMapGrids[Game.CurrentLevel];
-    Dictionary<int, Dictionary<int, List<Tile>>> overlay = Map.LevelOverlayGrids[Game.CurrentLevel];
+    Dictionary<int, Dictionary<int, Tile>> map = Map.CurrentMap;
+    Dictionary<int, Dictionary<int, List<Tile>>> overlay = Map.CurrentOverlay;
 
     // get the 4 adjacent positions (non subClassed to treat them like value types)
     // this ensures the parent position values of each position are not overwritten
     List<Position> possiblePositions = new()
     {
-      new Position(currentPos.X, currentPos.AdjDir[Direction.North].Y, currentPos, currentPos.Cost + 1),
-      new Position(currentPos.X, currentPos.AdjDir[Direction.South].Y, currentPos, currentPos.Cost + 1),
-      new Position(currentPos.AdjDir[Direction.West].X, currentPos.Y, currentPos, currentPos.Cost + 1),
-      new Position(currentPos.AdjDir[Direction.East].X, currentPos.Y, currentPos, currentPos.Cost + 1)
+      new Position(currentPos.X, currentPos.AdjPos[Direction.North].Y, currentPos, currentPos.Cost + 1),
+      new Position(currentPos.X, currentPos.AdjPos[Direction.South].Y, currentPos, currentPos.Cost + 1),
+      new Position(currentPos.AdjPos[Direction.West].X, currentPos.Y, currentPos, currentPos.Cost + 1),
+      new Position(currentPos.AdjPos[Direction.East].X, currentPos.Y, currentPos, currentPos.Cost + 1)
     };
 
     possiblePositions.ForEach(pos => pos.SetDistance(targetPos));

@@ -154,196 +154,196 @@ internal static class Inventory
   {
     ArmorDictionary.Add(ArmorType.Head, new Dictionary<ArmorName, List<Armor>>());
     ArmorDictionary.Add(ArmorType.Body, new Dictionary<ArmorName, List<Armor>>());
-    ArmorDictionary.Add(ArmorType.Legs, new Dictionary<ArmorName, List<Armor>>());
+    ArmorDictionary.Add(ArmorType.Leg, new Dictionary<ArmorName, List<Armor>>());
     ArmorDictionary.Add(ArmorType.Feet, new Dictionary<ArmorName, List<Armor>>());
-    ArmorDictionary.Add(ArmorType.Hands, new Dictionary<ArmorName, List<Armor>>());
+    ArmorDictionary.Add(ArmorType.Hand, new Dictionary<ArmorName, List<Armor>>());
 
     ArmorDictionary[ArmorType.Head].Add(ArmorName.None, new List<Armor>());
     ArmorDictionary[ArmorType.Head].Add(ArmorName.Cloth, new List<Armor>());
     ArmorDictionary[ArmorType.Head].Add(ArmorName.Leather, new List<Armor>());
-    ArmorDictionary[ArmorType.Head].Add(ArmorName.ChainMail, new List<Armor>());
+    ArmorDictionary[ArmorType.Head].Add(ArmorName.Mail, new List<Armor>());
     ArmorDictionary[ArmorType.Head].Add(ArmorName.Plate, new List<Armor>());
 
     ArmorDictionary[ArmorType.Body].Add(ArmorName.None, new List<Armor>());
     ArmorDictionary[ArmorType.Body].Add(ArmorName.Cloth, new List<Armor>());
     ArmorDictionary[ArmorType.Body].Add(ArmorName.Leather, new List<Armor>());
-    ArmorDictionary[ArmorType.Body].Add(ArmorName.ChainMail, new List<Armor>());
+    ArmorDictionary[ArmorType.Body].Add(ArmorName.Mail, new List<Armor>());
     ArmorDictionary[ArmorType.Body].Add(ArmorName.Plate, new List<Armor>());
 
-    ArmorDictionary[ArmorType.Legs].Add(ArmorName.None, new List<Armor>());
-    ArmorDictionary[ArmorType.Legs].Add(ArmorName.Cloth, new List<Armor>());
-    ArmorDictionary[ArmorType.Legs].Add(ArmorName.Leather, new List<Armor>());
-    ArmorDictionary[ArmorType.Legs].Add(ArmorName.ChainMail, new List<Armor>());
-    ArmorDictionary[ArmorType.Legs].Add(ArmorName.Plate, new List<Armor>());
+    ArmorDictionary[ArmorType.Leg].Add(ArmorName.None, new List<Armor>());
+    ArmorDictionary[ArmorType.Leg].Add(ArmorName.Cloth, new List<Armor>());
+    ArmorDictionary[ArmorType.Leg].Add(ArmorName.Leather, new List<Armor>());
+    ArmorDictionary[ArmorType.Leg].Add(ArmorName.Mail, new List<Armor>());
+    ArmorDictionary[ArmorType.Leg].Add(ArmorName.Plate, new List<Armor>());
 
     ArmorDictionary[ArmorType.Feet].Add(ArmorName.None, new List<Armor>());
     ArmorDictionary[ArmorType.Feet].Add(ArmorName.Cloth, new List<Armor>());
     ArmorDictionary[ArmorType.Feet].Add(ArmorName.Leather, new List<Armor>());
-    ArmorDictionary[ArmorType.Feet].Add(ArmorName.ChainMail, new List<Armor>());
+    ArmorDictionary[ArmorType.Feet].Add(ArmorName.Mail, new List<Armor>());
     ArmorDictionary[ArmorType.Feet].Add(ArmorName.Plate, new List<Armor>());
 
-    ArmorDictionary[ArmorType.Hands].Add(ArmorName.None, new List<Armor>());
-    ArmorDictionary[ArmorType.Hands].Add(ArmorName.Cloth, new List<Armor>());
-    ArmorDictionary[ArmorType.Hands].Add(ArmorName.Leather, new List<Armor>());
-    ArmorDictionary[ArmorType.Hands].Add(ArmorName.ChainMail, new List<Armor>());
-    ArmorDictionary[ArmorType.Hands].Add(ArmorName.Plate, new List<Armor>());
+    ArmorDictionary[ArmorType.Hand].Add(ArmorName.None, new List<Armor>());
+    ArmorDictionary[ArmorType.Hand].Add(ArmorName.Cloth, new List<Armor>());
+    ArmorDictionary[ArmorType.Hand].Add(ArmorName.Leather, new List<Armor>());
+    ArmorDictionary[ArmorType.Hand].Add(ArmorName.Mail, new List<Armor>());
+    ArmorDictionary[ArmorType.Hand].Add(ArmorName.Plate, new List<Armor>());
 
     ArmorDictionary[ArmorType.Head][ArmorName.None].Add(new Armor(ArmorType.Head, ArmorName.None, BuffType.None, ItemRarity.Poor, 0, 0, 0, 0));
 
     ArmorDictionary[ArmorType.Head][ArmorName.Cloth].Add(new Armor(ArmorType.Head, ArmorName.Cloth, BuffType.None, ItemRarity.Poor, 1, 10, 1, 1));
     ArmorDictionary[ArmorType.Head][ArmorName.Leather].Add(new Armor(ArmorType.Head, ArmorName.Leather, BuffType.None, ItemRarity.Poor, 2, 20, 2, 2));
-    ArmorDictionary[ArmorType.Head][ArmorName.ChainMail].Add(new Armor(ArmorType.Head, ArmorName.ChainMail, BuffType.None, ItemRarity.Poor, 3, 30, 3, 3));
+    ArmorDictionary[ArmorType.Head][ArmorName.Mail].Add(new Armor(ArmorType.Head, ArmorName.Mail, BuffType.None, ItemRarity.Poor, 3, 30, 3, 3));
     ArmorDictionary[ArmorType.Head][ArmorName.Plate].Add(new Armor(ArmorType.Head, ArmorName.Plate, BuffType.None, ItemRarity.Poor, 4, 40, 4, 4));
       
     ArmorDictionary[ArmorType.Head][ArmorName.Cloth].Add(new Armor(ArmorType.Head, ArmorName.Cloth, BuffType.None, ItemRarity.Common, 1, 10, 1, 1));
     ArmorDictionary[ArmorType.Head][ArmorName.Leather].Add(new Armor(ArmorType.Head, ArmorName.Leather, BuffType.None, ItemRarity.Common, 2, 20, 2, 2));
-    ArmorDictionary[ArmorType.Head][ArmorName.ChainMail].Add(new Armor(ArmorType.Head, ArmorName.ChainMail, BuffType.None, ItemRarity.Common, 3, 30, 3, 3));
+    ArmorDictionary[ArmorType.Head][ArmorName.Mail].Add(new Armor(ArmorType.Head, ArmorName.Mail, BuffType.None, ItemRarity.Common, 3, 30, 3, 3));
     ArmorDictionary[ArmorType.Head][ArmorName.Plate].Add(new Armor(ArmorType.Head, ArmorName.Plate, BuffType.None, ItemRarity.Common, 4, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Head][ArmorName.Cloth].Add(new Armor(ArmorType.Head, ArmorName.Cloth, BuffType.None, ItemRarity.Uncommon, 2, 10, 1, 1));
     ArmorDictionary[ArmorType.Head][ArmorName.Leather].Add(new Armor(ArmorType.Head, ArmorName.Leather, BuffType.None, ItemRarity.Uncommon, 4, 20, 2, 2));
-    ArmorDictionary[ArmorType.Head][ArmorName.ChainMail].Add(new Armor(ArmorType.Head, ArmorName.ChainMail, BuffType.None, ItemRarity.Uncommon, 6, 30, 3, 3));
+    ArmorDictionary[ArmorType.Head][ArmorName.Mail].Add(new Armor(ArmorType.Head, ArmorName.Mail, BuffType.None, ItemRarity.Uncommon, 6, 30, 3, 3));
     ArmorDictionary[ArmorType.Head][ArmorName.Plate].Add(new Armor(ArmorType.Head, ArmorName.Plate, BuffType.None, ItemRarity.Uncommon, 8, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Head][ArmorName.Cloth].Add(new Armor(ArmorType.Head, ArmorName.Cloth, BuffType.None, ItemRarity.Rare, 3, 10, 1, 1));
     ArmorDictionary[ArmorType.Head][ArmorName.Leather].Add(new Armor(ArmorType.Head, ArmorName.Leather, BuffType.None, ItemRarity.Rare, 6, 20, 2, 2));
-    ArmorDictionary[ArmorType.Head][ArmorName.ChainMail].Add(new Armor(ArmorType.Head, ArmorName.ChainMail, BuffType.None, ItemRarity.Rare, 9, 30, 3, 3));
+    ArmorDictionary[ArmorType.Head][ArmorName.Mail].Add(new Armor(ArmorType.Head, ArmorName.Mail, BuffType.None, ItemRarity.Rare, 9, 30, 3, 3));
     ArmorDictionary[ArmorType.Head][ArmorName.Plate].Add(new Armor(ArmorType.Head, ArmorName.Plate, BuffType.None, ItemRarity.Rare, 12, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Head][ArmorName.Cloth].Add(new Armor(ArmorType.Head, ArmorName.Cloth, BuffType.None, ItemRarity.Epic, 4, 10, 1, 1));
     ArmorDictionary[ArmorType.Head][ArmorName.Leather].Add(new Armor(ArmorType.Head, ArmorName.Leather, BuffType.None, ItemRarity.Epic, 8, 20, 2, 2));
-    ArmorDictionary[ArmorType.Head][ArmorName.ChainMail].Add(new Armor(ArmorType.Head, ArmorName.ChainMail, BuffType.None, ItemRarity.Epic, 12, 30, 3, 3));
+    ArmorDictionary[ArmorType.Head][ArmorName.Mail].Add(new Armor(ArmorType.Head, ArmorName.Mail, BuffType.None, ItemRarity.Epic, 12, 30, 3, 3));
     ArmorDictionary[ArmorType.Head][ArmorName.Plate].Add(new Armor(ArmorType.Head, ArmorName.Plate, BuffType.None, ItemRarity.Epic, 16, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Head][ArmorName.Cloth].Add(new Armor(ArmorType.Head, ArmorName.Cloth, BuffType.None, ItemRarity.Legendary, 5, 10, 1, 1));
     ArmorDictionary[ArmorType.Head][ArmorName.Leather].Add(new Armor(ArmorType.Head, ArmorName.Leather, BuffType.None, ItemRarity.Legendary, 10, 20, 2, 2));
-    ArmorDictionary[ArmorType.Head][ArmorName.ChainMail].Add(new Armor(ArmorType.Head, ArmorName.ChainMail, BuffType.None, ItemRarity.Legendary, 15, 30, 3, 3));
+    ArmorDictionary[ArmorType.Head][ArmorName.Mail].Add(new Armor(ArmorType.Head, ArmorName.Mail, BuffType.None, ItemRarity.Legendary, 15, 30, 3, 3));
     ArmorDictionary[ArmorType.Head][ArmorName.Plate].Add(new Armor(ArmorType.Head, ArmorName.Plate, BuffType.None, ItemRarity.Legendary, 20, 40, 4, 4));
       
     ArmorDictionary[ArmorType.Body][ArmorName.None].Add(new Armor(ArmorType.Body, ArmorName.None, BuffType.None, ItemRarity.Poor, 0, 0, 0, 0));
     ArmorDictionary[ArmorType.Body][ArmorName.Cloth].Add(new Armor(ArmorType.Body, ArmorName.Cloth, BuffType.None, ItemRarity.Poor, 1, 10, 1, 1));
     ArmorDictionary[ArmorType.Body][ArmorName.Leather].Add(new Armor(ArmorType.Body, ArmorName.Leather, BuffType.None, ItemRarity.Poor, 2, 20, 2, 2));
-    ArmorDictionary[ArmorType.Body][ArmorName.ChainMail].Add(new Armor(ArmorType.Body, ArmorName.ChainMail, BuffType.None, ItemRarity.Poor, 3, 30, 3, 3));
+    ArmorDictionary[ArmorType.Body][ArmorName.Mail].Add(new Armor(ArmorType.Body, ArmorName.Mail, BuffType.None, ItemRarity.Poor, 3, 30, 3, 3));
     ArmorDictionary[ArmorType.Body][ArmorName.Plate].Add(new Armor(ArmorType.Body, ArmorName.Plate, BuffType.None, ItemRarity.Poor, 4, 40, 4, 4));
 
 
     ArmorDictionary[ArmorType.Body][ArmorName.Cloth].Add(new Armor(ArmorType.Body, ArmorName.Cloth, BuffType.None, ItemRarity.Common, 1, 10, 1, 1));
     ArmorDictionary[ArmorType.Body][ArmorName.Leather].Add(new Armor(ArmorType.Body, ArmorName.Leather, BuffType.None, ItemRarity.Common, 2, 20, 2, 2));
-    ArmorDictionary[ArmorType.Body][ArmorName.ChainMail].Add(new Armor(ArmorType.Body, ArmorName.ChainMail, BuffType.None, ItemRarity.Common, 3, 30, 3, 3));
+    ArmorDictionary[ArmorType.Body][ArmorName.Mail].Add(new Armor(ArmorType.Body, ArmorName.Mail, BuffType.None, ItemRarity.Common, 3, 30, 3, 3));
     ArmorDictionary[ArmorType.Body][ArmorName.Plate].Add(new Armor(ArmorType.Body, ArmorName.Plate, BuffType.None, ItemRarity.Common, 4, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Body][ArmorName.Cloth].Add(new Armor(ArmorType.Body, ArmorName.Cloth, BuffType.None, ItemRarity.Uncommon, 2, 10, 1, 1));
     ArmorDictionary[ArmorType.Body][ArmorName.Leather].Add(new Armor(ArmorType.Body, ArmorName.Leather, BuffType.None, ItemRarity.Uncommon, 4, 20, 2, 2));
-    ArmorDictionary[ArmorType.Body][ArmorName.ChainMail].Add(new Armor(ArmorType.Body, ArmorName.ChainMail, BuffType.None, ItemRarity.Uncommon, 6, 30, 3, 3));
+    ArmorDictionary[ArmorType.Body][ArmorName.Mail].Add(new Armor(ArmorType.Body, ArmorName.Mail, BuffType.None, ItemRarity.Uncommon, 6, 30, 3, 3));
     ArmorDictionary[ArmorType.Body][ArmorName.Plate].Add(new Armor(ArmorType.Body, ArmorName.Plate, BuffType.None, ItemRarity.Uncommon, 8, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Body][ArmorName.Cloth].Add(new Armor(ArmorType.Body, ArmorName.Cloth, BuffType.None, ItemRarity.Rare, 3, 10, 1, 1));
     ArmorDictionary[ArmorType.Body][ArmorName.Leather].Add(new Armor(ArmorType.Body, ArmorName.Leather, BuffType.None, ItemRarity.Rare, 6, 20, 2, 2));
-    ArmorDictionary[ArmorType.Body][ArmorName.ChainMail].Add(new Armor(ArmorType.Body, ArmorName.ChainMail, BuffType.None, ItemRarity.Rare, 9, 30, 3, 3));
+    ArmorDictionary[ArmorType.Body][ArmorName.Mail].Add(new Armor(ArmorType.Body, ArmorName.Mail, BuffType.None, ItemRarity.Rare, 9, 30, 3, 3));
     ArmorDictionary[ArmorType.Body][ArmorName.Plate].Add(new Armor(ArmorType.Body, ArmorName.Plate, BuffType.None, ItemRarity.Rare, 12, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Body][ArmorName.Cloth].Add(new Armor(ArmorType.Body, ArmorName.Cloth, BuffType.None, ItemRarity.Epic, 4, 10, 1, 1));
     ArmorDictionary[ArmorType.Body][ArmorName.Leather].Add(new Armor(ArmorType.Body, ArmorName.Leather, BuffType.None, ItemRarity.Epic, 8, 20, 2, 2));
-    ArmorDictionary[ArmorType.Body][ArmorName.ChainMail].Add(new Armor(ArmorType.Body, ArmorName.ChainMail, BuffType.None, ItemRarity.Epic, 12, 30, 3, 3));
+    ArmorDictionary[ArmorType.Body][ArmorName.Mail].Add(new Armor(ArmorType.Body, ArmorName.Mail, BuffType.None, ItemRarity.Epic, 12, 30, 3, 3));
     ArmorDictionary[ArmorType.Body][ArmorName.Plate].Add(new Armor(ArmorType.Body, ArmorName.Plate, BuffType.None, ItemRarity.Epic, 16, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Body][ArmorName.Cloth].Add(new Armor(ArmorType.Body, ArmorName.Cloth, BuffType.None, ItemRarity.Legendary, 5, 10, 1, 1));
     ArmorDictionary[ArmorType.Body][ArmorName.Leather].Add(new Armor(ArmorType.Body, ArmorName.Leather, BuffType.None, ItemRarity.Legendary, 10, 20, 2, 2));
-    ArmorDictionary[ArmorType.Body][ArmorName.ChainMail].Add(new Armor(ArmorType.Body, ArmorName.ChainMail, BuffType.None, ItemRarity.Legendary, 15, 30, 3, 3));
+    ArmorDictionary[ArmorType.Body][ArmorName.Mail].Add(new Armor(ArmorType.Body, ArmorName.Mail, BuffType.None, ItemRarity.Legendary, 15, 30, 3, 3));
     ArmorDictionary[ArmorType.Body][ArmorName.Plate].Add(new Armor(ArmorType.Body, ArmorName.Plate, BuffType.None, ItemRarity.Legendary, 20, 40, 4, 4));
   
-    ArmorDictionary[ArmorType.Legs][ArmorName.None].Add(new Armor(ArmorType.Legs, ArmorName.None, BuffType.None, ItemRarity.Poor, 0, 0, 0, 0));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Cloth].Add(new Armor(ArmorType.Legs, ArmorName.Cloth, BuffType.None, ItemRarity.Poor, 1, 10, 1, 1));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Leather].Add(new Armor(ArmorType.Legs, ArmorName.Leather, BuffType.None, ItemRarity.Poor, 2, 20, 2, 2));
-    ArmorDictionary[ArmorType.Legs][ArmorName.ChainMail].Add(new Armor(ArmorType.Legs, ArmorName.ChainMail, BuffType.None, ItemRarity.Poor, 3, 30, 3, 3));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Plate].Add(new Armor(ArmorType.Legs, ArmorName.Plate, BuffType.None, ItemRarity.Poor, 4, 40, 4, 4));
+    ArmorDictionary[ArmorType.Leg][ArmorName.None].Add(new Armor(ArmorType.Leg, ArmorName.None, BuffType.None, ItemRarity.Poor, 0, 0, 0, 0));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Cloth].Add(new Armor(ArmorType.Leg, ArmorName.Cloth, BuffType.None, ItemRarity.Poor, 1, 10, 1, 1));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Leather].Add(new Armor(ArmorType.Leg, ArmorName.Leather, BuffType.None, ItemRarity.Poor, 2, 20, 2, 2));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Mail].Add(new Armor(ArmorType.Leg, ArmorName.Mail, BuffType.None, ItemRarity.Poor, 3, 30, 3, 3));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Plate].Add(new Armor(ArmorType.Leg, ArmorName.Plate, BuffType.None, ItemRarity.Poor, 4, 40, 4, 4));
 
-    ArmorDictionary[ArmorType.Legs][ArmorName.Cloth].Add(new Armor(ArmorType.Legs, ArmorName.Cloth, BuffType.None, ItemRarity.Common, 1, 10, 1, 1));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Leather].Add(new Armor(ArmorType.Legs, ArmorName.Leather, BuffType.None, ItemRarity.Common, 2, 20, 2, 2));
-    ArmorDictionary[ArmorType.Legs][ArmorName.ChainMail].Add(new Armor(ArmorType.Legs, ArmorName.ChainMail, BuffType.None, ItemRarity.Common, 3, 30, 3, 3));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Plate].Add(new Armor(ArmorType.Legs, ArmorName.Plate, BuffType.None, ItemRarity.Common, 4, 40, 4, 4));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Cloth].Add(new Armor(ArmorType.Leg, ArmorName.Cloth, BuffType.None, ItemRarity.Common, 1, 10, 1, 1));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Leather].Add(new Armor(ArmorType.Leg, ArmorName.Leather, BuffType.None, ItemRarity.Common, 2, 20, 2, 2));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Mail].Add(new Armor(ArmorType.Leg, ArmorName.Mail, BuffType.None, ItemRarity.Common, 3, 30, 3, 3));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Plate].Add(new Armor(ArmorType.Leg, ArmorName.Plate, BuffType.None, ItemRarity.Common, 4, 40, 4, 4));
 
-    ArmorDictionary[ArmorType.Legs][ArmorName.Cloth].Add(new Armor(ArmorType.Legs, ArmorName.Cloth, BuffType.None, ItemRarity.Uncommon, 2, 10, 1, 1));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Leather].Add(new Armor(ArmorType.Legs, ArmorName.Leather, BuffType.None, ItemRarity.Uncommon, 4, 20, 2, 2));
-    ArmorDictionary[ArmorType.Legs][ArmorName.ChainMail].Add(new Armor(ArmorType.Legs, ArmorName.ChainMail, BuffType.None, ItemRarity.Uncommon, 6, 30, 3, 3));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Plate].Add(new Armor(ArmorType.Legs, ArmorName.Plate, BuffType.None, ItemRarity.Uncommon, 8, 40, 4, 4));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Cloth].Add(new Armor(ArmorType.Leg, ArmorName.Cloth, BuffType.None, ItemRarity.Uncommon, 2, 10, 1, 1));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Leather].Add(new Armor(ArmorType.Leg, ArmorName.Leather, BuffType.None, ItemRarity.Uncommon, 4, 20, 2, 2));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Mail].Add(new Armor(ArmorType.Leg, ArmorName.Mail, BuffType.None, ItemRarity.Uncommon, 6, 30, 3, 3));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Plate].Add(new Armor(ArmorType.Leg, ArmorName.Plate, BuffType.None, ItemRarity.Uncommon, 8, 40, 4, 4));
 
-    ArmorDictionary[ArmorType.Legs][ArmorName.Cloth].Add(new Armor(ArmorType.Legs, ArmorName.Cloth, BuffType.None, ItemRarity.Rare, 3, 10, 1, 1));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Leather].Add(new Armor(ArmorType.Legs, ArmorName.Leather, BuffType.None, ItemRarity.Rare, 6, 20, 2, 2));
-    ArmorDictionary[ArmorType.Legs][ArmorName.ChainMail].Add(new Armor(ArmorType.Legs, ArmorName.ChainMail, BuffType.None, ItemRarity.Rare, 9, 30, 3, 3));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Plate].Add(new Armor(ArmorType.Legs, ArmorName.Plate, BuffType.None, ItemRarity.Rare, 12, 40, 4, 4));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Cloth].Add(new Armor(ArmorType.Leg, ArmorName.Cloth, BuffType.None, ItemRarity.Rare, 3, 10, 1, 1));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Leather].Add(new Armor(ArmorType.Leg, ArmorName.Leather, BuffType.None, ItemRarity.Rare, 6, 20, 2, 2));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Mail].Add(new Armor(ArmorType.Leg, ArmorName.Mail, BuffType.None, ItemRarity.Rare, 9, 30, 3, 3));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Plate].Add(new Armor(ArmorType.Leg, ArmorName.Plate, BuffType.None, ItemRarity.Rare, 12, 40, 4, 4));
 
-    ArmorDictionary[ArmorType.Legs][ArmorName.Cloth].Add(new Armor(ArmorType.Legs, ArmorName.Cloth, BuffType.None, ItemRarity.Epic, 4, 10, 1, 1));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Leather].Add(new Armor(ArmorType.Legs, ArmorName.Leather, BuffType.None, ItemRarity.Epic, 8, 20, 2, 2));
-    ArmorDictionary[ArmorType.Legs][ArmorName.ChainMail].Add(new Armor(ArmorType.Legs, ArmorName.ChainMail, BuffType.None, ItemRarity.Epic, 12, 30, 3, 3));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Plate].Add(new Armor(ArmorType.Legs, ArmorName.Plate, BuffType.None, ItemRarity.Epic, 16, 40, 4, 4));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Cloth].Add(new Armor(ArmorType.Leg, ArmorName.Cloth, BuffType.None, ItemRarity.Epic, 4, 10, 1, 1));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Leather].Add(new Armor(ArmorType.Leg, ArmorName.Leather, BuffType.None, ItemRarity.Epic, 8, 20, 2, 2));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Mail].Add(new Armor(ArmorType.Leg, ArmorName.Mail, BuffType.None, ItemRarity.Epic, 12, 30, 3, 3));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Plate].Add(new Armor(ArmorType.Leg, ArmorName.Plate, BuffType.None, ItemRarity.Epic, 16, 40, 4, 4));
 
-    ArmorDictionary[ArmorType.Legs][ArmorName.Cloth].Add(new Armor(ArmorType.Legs, ArmorName.Cloth, BuffType.None, ItemRarity.Legendary, 5, 10, 1, 1));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Leather].Add(new Armor(ArmorType.Legs, ArmorName.Leather, BuffType.None, ItemRarity.Legendary, 10, 20, 2, 2));
-    ArmorDictionary[ArmorType.Legs][ArmorName.ChainMail].Add(new Armor(ArmorType.Legs, ArmorName.ChainMail, BuffType.None, ItemRarity.Legendary, 15, 30, 3, 3));
-    ArmorDictionary[ArmorType.Legs][ArmorName.Plate].Add(new Armor(ArmorType.Legs, ArmorName.Plate, BuffType.None, ItemRarity.Legendary, 20, 40, 4, 4));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Cloth].Add(new Armor(ArmorType.Leg, ArmorName.Cloth, BuffType.None, ItemRarity.Legendary, 5, 10, 1, 1));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Leather].Add(new Armor(ArmorType.Leg, ArmorName.Leather, BuffType.None, ItemRarity.Legendary, 10, 20, 2, 2));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Mail].Add(new Armor(ArmorType.Leg, ArmorName.Mail, BuffType.None, ItemRarity.Legendary, 15, 30, 3, 3));
+    ArmorDictionary[ArmorType.Leg][ArmorName.Plate].Add(new Armor(ArmorType.Leg, ArmorName.Plate, BuffType.None, ItemRarity.Legendary, 20, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Feet][ArmorName.None].Add(new Armor(ArmorType.Feet, ArmorName.None, BuffType.None, ItemRarity.Poor, 0, 0, 0, 0));
     ArmorDictionary[ArmorType.Feet][ArmorName.Cloth].Add(new Armor(ArmorType.Feet, ArmorName.Cloth, BuffType.None, ItemRarity.Poor, 1, 10, 1, 1));
     ArmorDictionary[ArmorType.Feet][ArmorName.Leather].Add(new Armor(ArmorType.Feet, ArmorName.Leather, BuffType.None, ItemRarity.Poor, 2, 20, 2, 2));
-    ArmorDictionary[ArmorType.Feet][ArmorName.ChainMail].Add(new Armor(ArmorType.Feet, ArmorName.ChainMail, BuffType.None, ItemRarity.Poor, 3, 30, 3, 3));
+    ArmorDictionary[ArmorType.Feet][ArmorName.Mail].Add(new Armor(ArmorType.Feet, ArmorName.Mail, BuffType.None, ItemRarity.Poor, 3, 30, 3, 3));
     ArmorDictionary[ArmorType.Feet][ArmorName.Plate].Add(new Armor(ArmorType.Feet, ArmorName.Plate, BuffType.None, ItemRarity.Poor, 4, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Feet][ArmorName.Cloth].Add(new Armor(ArmorType.Feet, ArmorName.Cloth, BuffType.None, ItemRarity.Common, 1, 10, 1, 1));
     ArmorDictionary[ArmorType.Feet][ArmorName.Leather].Add(new Armor(ArmorType.Feet, ArmorName.Leather, BuffType.None, ItemRarity.Common, 2, 20, 2, 2));
-    ArmorDictionary[ArmorType.Feet][ArmorName.ChainMail].Add(new Armor(ArmorType.Feet, ArmorName.ChainMail, BuffType.None, ItemRarity.Common, 3, 30, 3, 3));
+    ArmorDictionary[ArmorType.Feet][ArmorName.Mail].Add(new Armor(ArmorType.Feet, ArmorName.Mail, BuffType.None, ItemRarity.Common, 3, 30, 3, 3));
     ArmorDictionary[ArmorType.Feet][ArmorName.Plate].Add(new Armor(ArmorType.Feet, ArmorName.Plate, BuffType.None, ItemRarity.Common, 4, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Feet][ArmorName.Cloth].Add(new Armor(ArmorType.Feet, ArmorName.Cloth, BuffType.None, ItemRarity.Uncommon, 2, 10, 1, 1));
     ArmorDictionary[ArmorType.Feet][ArmorName.Leather].Add(new Armor(ArmorType.Feet, ArmorName.Leather, BuffType.None, ItemRarity.Uncommon, 4, 20, 2, 2));
-    ArmorDictionary[ArmorType.Feet][ArmorName.ChainMail].Add(new Armor(ArmorType.Feet, ArmorName.ChainMail, BuffType.None, ItemRarity.Uncommon, 6, 30, 3, 3));
+    ArmorDictionary[ArmorType.Feet][ArmorName.Mail].Add(new Armor(ArmorType.Feet, ArmorName.Mail, BuffType.None, ItemRarity.Uncommon, 6, 30, 3, 3));
     ArmorDictionary[ArmorType.Feet][ArmorName.Plate].Add(new Armor(ArmorType.Feet, ArmorName.Plate, BuffType.None, ItemRarity.Uncommon, 8, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Feet][ArmorName.Cloth].Add(new Armor(ArmorType.Feet, ArmorName.Cloth, BuffType.None, ItemRarity.Rare, 3, 10, 1, 1));
     ArmorDictionary[ArmorType.Feet][ArmorName.Leather].Add(new Armor(ArmorType.Feet, ArmorName.Leather, BuffType.None, ItemRarity.Rare, 6, 20, 2, 2));
-    ArmorDictionary[ArmorType.Feet][ArmorName.ChainMail].Add(new Armor(ArmorType.Feet, ArmorName.ChainMail, BuffType.None, ItemRarity.Rare, 9, 30, 3, 3));
+    ArmorDictionary[ArmorType.Feet][ArmorName.Mail].Add(new Armor(ArmorType.Feet, ArmorName.Mail, BuffType.None, ItemRarity.Rare, 9, 30, 3, 3));
     ArmorDictionary[ArmorType.Feet][ArmorName.Plate].Add(new Armor(ArmorType.Feet, ArmorName.Plate, BuffType.None, ItemRarity.Rare, 12, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Feet][ArmorName.Cloth].Add(new Armor(ArmorType.Feet, ArmorName.Cloth, BuffType.None, ItemRarity.Epic, 4, 10, 1, 1));
     ArmorDictionary[ArmorType.Feet][ArmorName.Leather].Add(new Armor(ArmorType.Feet, ArmorName.Leather, BuffType.None, ItemRarity.Epic, 8, 20, 2, 2));
-    ArmorDictionary[ArmorType.Feet][ArmorName.ChainMail].Add(new Armor(ArmorType.Feet, ArmorName.ChainMail, BuffType.None, ItemRarity.Epic, 12, 30, 3, 3));
+    ArmorDictionary[ArmorType.Feet][ArmorName.Mail].Add(new Armor(ArmorType.Feet, ArmorName.Mail, BuffType.None, ItemRarity.Epic, 12, 30, 3, 3));
     ArmorDictionary[ArmorType.Feet][ArmorName.Plate].Add(new Armor(ArmorType.Feet, ArmorName.Plate, BuffType.None, ItemRarity.Epic, 16, 40, 4, 4));
 
     ArmorDictionary[ArmorType.Feet][ArmorName.Cloth].Add(new Armor(ArmorType.Feet, ArmorName.Cloth, BuffType.None, ItemRarity.Legendary, 5, 10, 1, 1));
     ArmorDictionary[ArmorType.Feet][ArmorName.Leather].Add(new Armor(ArmorType.Feet, ArmorName.Leather, BuffType.None, ItemRarity.Legendary, 10, 20, 2, 2));
-    ArmorDictionary[ArmorType.Feet][ArmorName.ChainMail].Add(new Armor(ArmorType.Feet, ArmorName.ChainMail, BuffType.None, ItemRarity.Legendary, 15, 30, 3, 3));
+    ArmorDictionary[ArmorType.Feet][ArmorName.Mail].Add(new Armor(ArmorType.Feet, ArmorName.Mail, BuffType.None, ItemRarity.Legendary, 15, 30, 3, 3));
     ArmorDictionary[ArmorType.Feet][ArmorName.Plate].Add(new Armor(ArmorType.Feet, ArmorName.Plate, BuffType.None, ItemRarity.Legendary, 20, 40, 4, 4));
 
-    ArmorDictionary[ArmorType.Hands][ArmorName.None].Add(new Armor(ArmorType.Hands, ArmorName.None, BuffType.None, ItemRarity.Poor, 0, 0, 0, 0));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Cloth].Add(new Armor(ArmorType.Hands, ArmorName.Cloth, BuffType.None, ItemRarity.Poor, 1, 10, 1, 1));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Leather].Add(new Armor(ArmorType.Hands, ArmorName.Leather, BuffType.None, ItemRarity.Poor, 2, 20, 2, 2));
-    ArmorDictionary[ArmorType.Hands][ArmorName.ChainMail].Add(new Armor(ArmorType.Hands, ArmorName.ChainMail, BuffType.None, ItemRarity.Poor, 3, 30, 3, 3));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Plate].Add(new Armor(ArmorType.Hands, ArmorName.Plate, BuffType.None, ItemRarity.Poor, 4, 40, 4, 4));
+    ArmorDictionary[ArmorType.Hand][ArmorName.None].Add(new Armor(ArmorType.Hand, ArmorName.None, BuffType.None, ItemRarity.Poor, 0, 0, 0, 0));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Cloth].Add(new Armor(ArmorType.Hand, ArmorName.Cloth, BuffType.None, ItemRarity.Poor, 1, 10, 1, 1));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Leather].Add(new Armor(ArmorType.Hand, ArmorName.Leather, BuffType.None, ItemRarity.Poor, 2, 20, 2, 2));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Mail].Add(new Armor(ArmorType.Hand, ArmorName.Mail, BuffType.None, ItemRarity.Poor, 3, 30, 3, 3));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Plate].Add(new Armor(ArmorType.Hand, ArmorName.Plate, BuffType.None, ItemRarity.Poor, 4, 40, 4, 4));
 
-    ArmorDictionary[ArmorType.Hands][ArmorName.Cloth].Add(new Armor(ArmorType.Hands, ArmorName.Cloth, BuffType.None, ItemRarity.Common, 1, 10, 1, 1));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Leather].Add(new Armor(ArmorType.Hands, ArmorName.Leather, BuffType.None, ItemRarity.Common, 2, 20, 2, 2));
-    ArmorDictionary[ArmorType.Hands][ArmorName.ChainMail].Add(new Armor(ArmorType.Hands, ArmorName.ChainMail, BuffType.None, ItemRarity.Common, 3, 30, 3, 3));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Plate].Add(new Armor(ArmorType.Hands, ArmorName.Plate, BuffType.None, ItemRarity.Common, 4, 40, 4, 4));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Cloth].Add(new Armor(ArmorType.Hand, ArmorName.Cloth, BuffType.None, ItemRarity.Common, 1, 10, 1, 1));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Leather].Add(new Armor(ArmorType.Hand, ArmorName.Leather, BuffType.None, ItemRarity.Common, 2, 20, 2, 2));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Mail].Add(new Armor(ArmorType.Hand, ArmorName.Mail, BuffType.None, ItemRarity.Common, 3, 30, 3, 3));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Plate].Add(new Armor(ArmorType.Hand, ArmorName.Plate, BuffType.None, ItemRarity.Common, 4, 40, 4, 4));
 
-    ArmorDictionary[ArmorType.Hands][ArmorName.Cloth].Add(new Armor(ArmorType.Hands, ArmorName.Cloth, BuffType.None, ItemRarity.Uncommon, 2, 10, 1, 1));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Leather].Add(new Armor(ArmorType.Hands, ArmorName.Leather, BuffType.None, ItemRarity.Uncommon, 4, 20, 2, 2));
-    ArmorDictionary[ArmorType.Hands][ArmorName.ChainMail].Add(new Armor(ArmorType.Hands, ArmorName.ChainMail, BuffType.None, ItemRarity.Uncommon, 6, 30, 3, 3));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Plate].Add(new Armor(ArmorType.Hands, ArmorName.Plate, BuffType.None, ItemRarity.Uncommon, 8, 40, 4, 4));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Cloth].Add(new Armor(ArmorType.Hand, ArmorName.Cloth, BuffType.None, ItemRarity.Uncommon, 2, 10, 1, 1));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Leather].Add(new Armor(ArmorType.Hand, ArmorName.Leather, BuffType.None, ItemRarity.Uncommon, 4, 20, 2, 2));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Mail].Add(new Armor(ArmorType.Hand, ArmorName.Mail, BuffType.None, ItemRarity.Uncommon, 6, 30, 3, 3));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Plate].Add(new Armor(ArmorType.Hand, ArmorName.Plate, BuffType.None, ItemRarity.Uncommon, 8, 40, 4, 4));
 
-    ArmorDictionary[ArmorType.Hands][ArmorName.Cloth].Add(new Armor(ArmorType.Hands, ArmorName.Cloth, BuffType.None, ItemRarity.Rare, 3, 10, 1, 1));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Leather].Add(new Armor(ArmorType.Hands, ArmorName.Leather, BuffType.None, ItemRarity.Rare, 6, 20, 2, 2));
-    ArmorDictionary[ArmorType.Hands][ArmorName.ChainMail].Add(new Armor(ArmorType.Hands, ArmorName.ChainMail, BuffType.None, ItemRarity.Rare, 9, 30, 3, 3));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Plate].Add(new Armor(ArmorType.Hands, ArmorName.Plate, BuffType.None, ItemRarity.Rare, 12, 40, 4, 4));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Cloth].Add(new Armor(ArmorType.Hand, ArmorName.Cloth, BuffType.None, ItemRarity.Rare, 3, 10, 1, 1));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Leather].Add(new Armor(ArmorType.Hand, ArmorName.Leather, BuffType.None, ItemRarity.Rare, 6, 20, 2, 2));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Mail].Add(new Armor(ArmorType.Hand, ArmorName.Mail, BuffType.None, ItemRarity.Rare, 9, 30, 3, 3));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Plate].Add(new Armor(ArmorType.Hand, ArmorName.Plate, BuffType.None, ItemRarity.Rare, 12, 40, 4, 4));
 
-    ArmorDictionary[ArmorType.Hands][ArmorName.Cloth].Add(new Armor(ArmorType.Hands, ArmorName.Cloth, BuffType.None, ItemRarity.Epic, 4, 10, 1, 1));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Leather].Add(new Armor(ArmorType.Hands, ArmorName.Leather, BuffType.None, ItemRarity.Epic, 8, 20, 2, 2));
-    ArmorDictionary[ArmorType.Hands][ArmorName.ChainMail].Add(new Armor(ArmorType.Hands, ArmorName.ChainMail, BuffType.None, ItemRarity.Epic, 12, 30, 3, 3));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Plate].Add(new Armor(ArmorType.Hands, ArmorName.Plate, BuffType.None, ItemRarity.Epic, 16, 40, 4, 4));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Cloth].Add(new Armor(ArmorType.Hand, ArmorName.Cloth, BuffType.None, ItemRarity.Epic, 4, 10, 1, 1));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Leather].Add(new Armor(ArmorType.Hand, ArmorName.Leather, BuffType.None, ItemRarity.Epic, 8, 20, 2, 2));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Mail].Add(new Armor(ArmorType.Hand, ArmorName.Mail, BuffType.None, ItemRarity.Epic, 12, 30, 3, 3));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Plate].Add(new Armor(ArmorType.Hand, ArmorName.Plate, BuffType.None, ItemRarity.Epic, 16, 40, 4, 4));
 
-    ArmorDictionary[ArmorType.Hands][ArmorName.Cloth].Add(new Armor(ArmorType.Hands, ArmorName.Cloth, BuffType.None, ItemRarity.Legendary, 5, 10, 1, 1));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Leather].Add(new Armor(ArmorType.Hands, ArmorName.Leather, BuffType.None, ItemRarity.Legendary, 10, 20, 2, 2));
-    ArmorDictionary[ArmorType.Hands][ArmorName.ChainMail].Add(new Armor(ArmorType.Hands, ArmorName.ChainMail, BuffType.None, ItemRarity.Legendary, 15, 30, 3, 3));
-    ArmorDictionary[ArmorType.Hands][ArmorName.Plate].Add(new Armor(ArmorType.Hands, ArmorName.Plate, BuffType.None, ItemRarity.Legendary, 20, 40, 4, 4));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Cloth].Add(new Armor(ArmorType.Hand, ArmorName.Cloth, BuffType.None, ItemRarity.Legendary, 5, 10, 1, 1));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Leather].Add(new Armor(ArmorType.Hand, ArmorName.Leather, BuffType.None, ItemRarity.Legendary, 10, 20, 2, 2));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Mail].Add(new Armor(ArmorType.Hand, ArmorName.Mail, BuffType.None, ItemRarity.Legendary, 15, 30, 3, 3));
+    ArmorDictionary[ArmorType.Hand][ArmorName.Plate].Add(new Armor(ArmorType.Hand, ArmorName.Plate, BuffType.None, ItemRarity.Legendary, 20, 40, 4, 4));
   }
 
   private static void InitBandages()

@@ -14,11 +14,12 @@ internal static class Actions
   /// </summary>
   internal static void ProcessOverlayItem()
   {
-    // search Tile location from the top down for items to process
-    for (int i = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y].Count - 1; i >= 0; i--)
+    // search Tile layers from the top down for items to process
+    var oGrid = Map.CurrentOverlay;
+    for (int i = oGrid[Map.Player.X][Map.Player.Y].Count - 1; i >= 0; i--)
     {
-      if (Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i].Type.Symbol == ' ') continue;
-      Tile obj = Map.LevelOverlayGrids[Game.CurrentLevel][Map.Player.X][Map.Player.Y][i];
+      if (oGrid[Map.Player.X][Map.Player.Y][i].Type.Symbol == ' ') continue;
+      Tile obj = oGrid[Map.Player.X][Map.Player.Y][i];
       Item item = new();
       switch (obj.Type.Symbol)
       {
@@ -81,7 +82,7 @@ internal static class Actions
   {
     if (Map.Player.IsNextToMapGrid('+', out Tile doorC))
       OpenDoor(doorC);
-    if (Map.Player.IsNextToMapGrid('-', out Tile doorO))
+    else if (Map.Player.IsNextToMapGrid('-', out Tile doorO))
       CloseDoor(doorO);
   }
 
@@ -123,7 +124,7 @@ internal static class Actions
 
   private static void UpStairs()
   {
-    if (Game.CurrentLevel == 2)
+    if (Game.CurrentLevel > Map.MaxMapLevel)
     {
       GamePlay.Messages.Add(new Message("You can't go up any further!", Color.Red, Color.Black));
       return;
@@ -135,7 +136,7 @@ internal static class Actions
 
   private static void DownStairs()
   {
-    if (Game.CurrentLevel == -2)
+    if (Game.CurrentLevel < Map.MinMapLevel)
     {
       GamePlay.Messages.Add(new Message("You can't go down any further!", Color.Red, Color.Black));
       return;

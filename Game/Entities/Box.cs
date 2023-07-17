@@ -10,10 +10,12 @@ namespace ConsoleDungeonCrawler.Game.Entities;
 /// </summary>
 internal class Box
 {
-  internal readonly int Height;
-  internal readonly int Width;
   internal readonly int Left;
   internal readonly int Top;
+  internal readonly int Right;
+  internal readonly int Bottom;
+  internal readonly int Height;
+  internal readonly int Width;
   internal readonly Point Center;
 
   internal static readonly Box ScreenBox = new(Dialog.ScreenCenter, 100, 25);
@@ -26,15 +28,19 @@ internal class Box
     Height = height;
     Width = width;
     Center = new Point(Left + width/2, Top + height/2);
+    Right = left + width - 1;
+    Bottom = top + Height - 1;
   }
 
   internal Box(Point center, int width, int height)
   {
     this.Center = center;
-    Left = center.X - width/2;
-    Top = center.Y - height/2;
     Width = width;
     Height = height;
+    Left = center.X - width/2;
+    Top = center.Y - height/2;
+    Right = Left + width - 1;
+    Bottom = Top + Height - 1;
   }
 
 
@@ -45,6 +51,8 @@ internal class Box
     Width = box.Width;
     Height = box.Height;
     Center = box.Center;
+    Right = box.Right;
+    Bottom = box.Bottom;
   }
 
   // WriteBorder Methods

@@ -28,8 +28,8 @@ internal enum ArmorType
   None,
   Head,
   Body,
-  Hands,
-  Legs,
+  Hand,
+  Leg,
   Feet
 }
 
@@ -38,7 +38,7 @@ internal enum ArmorName
   None,
   Cloth,
   Leather,
-  ChainMail,
+  Mail,
   Plate
 }
 

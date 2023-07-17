@@ -157,7 +157,7 @@ internal static class ConsoleEx
   {
     // create a formatted line containing the symbol and the type of the map object
 
-    WriteAt($"({item.Quantity})", col, row, ColorEx.RarityColor(item.Rarity));
+    WriteAt($"({item.Quantity})  ", col, row, ColorEx.RarityColor(item.Rarity));
     WriteAt(item.Name.PadRight(col + colWidth), col + 5, row, ColorEx.RarityColor(item.Rarity));
   }
 

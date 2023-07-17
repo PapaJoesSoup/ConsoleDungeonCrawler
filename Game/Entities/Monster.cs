@@ -109,8 +109,8 @@ internal class Monster : Tile
     X = newPos.X;
     Y = newPos.Y;
 
-    List<Tile> newList = Map.LevelOverlayGrids[Game.CurrentLevel][newPos.X][newPos.Y];
-    List<Tile> oldList = Map.LevelOverlayGrids[Game.CurrentLevel][oldPos.X][oldPos.Y];
+    List<Tile> newList = Map.CurrentOverlay[newPos.X][newPos.Y];
+    List<Tile> oldList = Map.CurrentOverlay[oldPos.X][oldPos.Y];
 
     // there is always at least one item in the list, the Map overlay object
     // add monster to the new cell
@@ -126,7 +126,7 @@ internal class Monster : Tile
     if (oldList.Count == 1)
     {
       oldList[0] = new Tile(oldPos.X, oldPos.Y, new TileType(true));
-      Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+      Map.CurrentMap[oldPos.X][oldPos.Y].Draw();
     }
     else
     {
@@ -137,7 +137,7 @@ internal class Monster : Tile
         break;
       }
     }
-    Map.LevelMapGrids[Game.CurrentLevel][oldPos.X][oldPos.Y].Draw();
+    Map.CurrentMap[oldPos.X][oldPos.Y].Draw();
     Draw();
   }
 
@@ -177,9 +177,9 @@ internal class Monster : Tile
   internal static bool CanMoveTo(Position pos)
   {
     // check to see if there is an object that is not passable or some other immovable object
-    foreach (Tile obj in Map.LevelOverlayGrids[Game.CurrentLevel][pos.X][pos.Y])
+    foreach (Tile obj in Map.CurrentOverlay[pos.X][pos.Y])
       if (!obj.IsPassable) return false;
-    return Map.LevelMapGrids[Game.CurrentLevel][pos.X][pos.Y].IsPassable;
+    return Map.CurrentMap[pos.X][pos.Y].IsPassable;
   }
 
   private static int SetOdds(char type)

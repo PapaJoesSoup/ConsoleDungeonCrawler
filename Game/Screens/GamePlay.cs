@@ -12,12 +12,18 @@ namespace ConsoleDungeonCrawler.Game.Screens;
 internal static class GamePlay
 {
   #region Properties
-
   private static readonly Box StatusBox = new(1, 0, 208, 8);
-  internal static readonly Box MapBox = new(1, 7, 178, 35);
-  private static readonly Box MessageBox = new(1, 41, 178, 12);
-  private static readonly Box OverlayBox = new(178, 7, 31, 29);
-  private static readonly Box LegendBox = new(178, 35, 31, 18);
+  private static readonly Box ArmorBox = new(1, 0, 30, 8);
+  private static readonly Box InventoryBox = new(ArmorBox.Right, 0, 110, 8);
+  private static readonly Box SpellBox = new(InventoryBox.Right, 0, 40, 8);
+  private static readonly Box PlayerBox = new(SpellBox.Right, 0, 31, 8);
+  internal static readonly Box MapBox = new(1, StatusBox.Bottom, 178, 35);
+  internal static readonly Box MessageBox = new(1, MapBox.Bottom, MapBox.Right - 30, 12);
+  internal static readonly Box MessageLegendBox = new(MessageBox.Right, MessageBox.Top, 31, MessageBox.Height);
+  private static readonly Box OverlayBox = new(MapBox.Right, MapBox.Top, 31, 29);
+  private static readonly Box LegendBox = new(MapBox.Right, 35, OverlayBox.Width, 18);
+
+
   private static readonly Colors Colors = new()
   {
     Color = Color.Gold,
@@ -27,7 +33,7 @@ internal static class GamePlay
   };
 
   internal static List<Message> Messages = new();
-  internal static readonly int MessageWidth = MessageBox.Width - 33;
+  internal static readonly int MessageWidth = MessageBox.Width - 3;
   private static readonly int MessageHeight = MessageBox.Height - 2;
 
   // MessageOffset is a negative number that decrements the index of the first message to display in the message Section
@@ -44,7 +50,7 @@ internal static class GamePlay
 
   internal static void Draw()
   {
-    BordersEx();
+    GameBorders();
     MapSection();
     LegendSection();
     MessageLegend();
@@ -65,27 +71,40 @@ internal static class GamePlay
     MessageSection();
   }
 
-  private static void BordersEx()
+  private static void GameBorders()
   {
-    StatusBox.WriteBorder(BoxChars.Default, Colors.Color);
+    //StatusBox.WriteBorder(BoxChars.Default, Colors.Color);
+    ArmorBox.WriteBorder(BoxChars.Default, Colors.Color);
+    InventoryBox.WriteBorder(BoxChars.Default, Colors.Color);
+    SpellBox.WriteBorder(BoxChars.Default, Colors.Color);
+    PlayerBox.WriteBorder(BoxChars.Default, Colors.Color);
     $"[ {Game.Title} - The {Game.CurrentDungeon} ]".WriteAlignedAt(HAlign.Center, VAlign.Top, Colors.TextColor);
     MapBox.WriteBorder(BoxChars.Default, Colors.Color);
     OverlayBox.WriteBorder(BoxChars.Default, Colors.Color);
     MessageBox.WriteBorder(BoxChars.Default, Colors.Color);
+    MessageLegendBox.WriteBorder(BoxChars.Default,Colors.Color);
     LegendBox.WriteBorder(BoxChars.Default, Colors.Color);
 
     // now to clean up the corners
-    BoxChars.Default.MidLeft.WriteAt(MapBox.Left, MapBox.Top, Colors.Color);
-    BoxChars.Default.TopCtr.WriteAt(OverlayBox.Left, MapBox.Top, Colors.Color);
-    BoxChars.Default.MidRight.WriteAt(OverlayBox.Left + OverlayBox.Width - 1, MapBox.Top, Colors.Color);
+    // Top section
+    BoxChars.Default.TopCtr.WriteAt(ArmorBox.Right, ArmorBox.Top, Colors.Color);
+    BoxChars.Default.TopCtr.WriteAt(InventoryBox.Right, InventoryBox.Top, Colors.Color);
+    BoxChars.Default.TopCtr.WriteAt(SpellBox.Right, SpellBox.Top, Colors.Color);
+    BoxChars.Default.MidLeft.WriteAt(ArmorBox.Left, ArmorBox.Bottom, Colors.Color);
+    BoxChars.Default.BotCtr.WriteAt(ArmorBox.Right, ArmorBox.Bottom, Colors.Color);
+    BoxChars.Default.BotCtr.WriteAt(InventoryBox.Right, InventoryBox.Bottom, Colors.Color);
+    BoxChars.Default.MidCtr.WriteAt(SpellBox.Right, SpellBox.Bottom, Colors.Color);
+    BoxChars.Default.MidRight.WriteAt(PlayerBox.Right, PlayerBox.Bottom, Colors.Color);
 
     BoxChars.Default.MidLeft.WriteAt(LegendBox.Left, LegendBox.Top, Colors.Color);
-    BoxChars.Default.MidRight.WriteAt(LegendBox.Left + LegendBox.Width - 1, LegendBox.Top, Colors.Color);
+    BoxChars.Default.MidRight.WriteAt(LegendBox.Right, LegendBox.Top, Colors.Color);
 
     BoxChars.Default.MidLeft.WriteAt(MessageBox.Left, MessageBox.Top, Colors.Color);
-    BoxChars.Default.MidRight.WriteAt(MessageBox.Left + MessageBox.Width - 1, MessageBox.Top, Colors.Color);
 
-    BoxChars.Default.BotCtr.WriteAt(LegendBox.Left, LegendBox.Top + LegendBox.Height - 1, Colors.Color);
+    BoxChars.Default.TopCtr.WriteAt(MessageLegendBox.Left, MessageLegendBox.Top, Colors.Color);
+    BoxChars.Default.MidRight.WriteAt(MessageLegendBox.Right, MessageLegendBox.Top, Colors.Color);
+    BoxChars.Default.BotCtr.WriteAt(MessageLegendBox.Left, MessageLegendBox.Bottom, Colors.Color);
+    BoxChars.Default.BotCtr.WriteAt(LegendBox.Left, LegendBox.Bottom, Colors.Color);
 
   }
 
@@ -97,30 +116,52 @@ internal static class GamePlay
     PlayerStats();
   }
 
-  private static void PlayerStats()
+  private static void ArmorStats()
   {
-    //Player Stats
-    int col = StatusBox.Left + 179;
     int row = StatusBox.Top + 1;
-    BoxChars.Default.TopCtr.WriteAt(col - 2, row - 1, Colors.Color);
-    BoxChars.Default.MidCtr.WriteAt(col - 2, StatusBox.Height - 1, Colors.Color);
-    for (int index = row; index < row + 6; index++)
-    {
-      BoxChars.Default.Ver.WriteAt(col - 2, index, Colors.Color);
-    }
+    int col = StatusBox.Left + 2;
 
-    $"Player - Level: {Player.Level}".WriteAt(col, row, Colors.HeaderColor);
+    //Armor
+    "Armor".WriteAt(col, row, Colors.HeaderColor);
     row++;
-    $"Class: {Player.Class}".WriteAt(col, row, Colors.TextColor);
+    foreach (Armor? armor in Player.ArmorSet)
+    {
+      string armorText = $"{armor.ArmorType}: ";
+      armorText.WriteAt(col, row, Colors.TextColor);
+      armor.Name.PadRight(ArmorBox.Width - armorText.Length - 3)
+        .WriteAt(col + armorText.Length, row, ColorEx.RarityColor(armor.Rarity));
+      row++;
+    }
+  }
+
+  private static void InventoryStats()
+  {
+    //Inventory
+    int col = StatusBox.Left + 31;
+    int row = StatusBox.Top + 1;
+    int colWidth = 25;
+    int count = 0;
+    int totalBags = Inventory.Bags.Count;
+    Bag bag = Inventory.Bags[currentBag];
+    $"Inventory - Bag: {currentBag + 1} of {totalBags}  (\u2190 or \u2192 to switch bags)".WriteAt(col, row, Colors.HeaderColor);
     row++;
-    "Weapon: ".WriteAt(col, row, Colors.TextColor);
-    $"{Player.Weapon.Name}".WriteAt(col + 8, row, ColorEx.RarityColor(Player.Weapon.Rarity));
-    row++;
-    $"Health: {Player.Health}/{Player.MaxHealth}".WriteAt(col, row, Colors.TextColor);
-    row++;
-    $"Mana: {Player.Mana}/{Player.MaxMana}".WriteAt(col, row, Colors.TextColor);
-    row++;
-    $"Gold: {Player.Gold:C}g".WriteAt(col, row, Colors.TextColor);
+    for (int index = 0; index < bag.Capacity; index++)
+    {
+      if (index >= bag.Items.Count) 
+        "Empty".PadRight(colWidth).WriteAt(col, row, Colors.FillColor);
+      else
+      {
+        Item item = bag.Items[index];
+        item.WriteInventoryItem(col, row, colWidth);
+      }
+
+      row++;
+      count++;
+      if (count < 5) continue;
+      count = 0;
+      row = StatusBox.Top + 2;
+      col += colWidth + 2;
+    }
   }
 
   private static void SpellStats()
@@ -130,13 +171,6 @@ internal static class GamePlay
     int col = StatusBox.Left + 140;
     int row = StatusBox.Top + 1;
     int colWidth = 18;
-    BoxChars.Default.TopCtr.WriteAt(col - 2, row - 1, Colors.Color);
-    BoxChars.Default.BotCtr.WriteAt(col - 2, StatusBox.Height - 1, Colors.Color);
-    for (int index = row; index < row + 6; index++)
-    {
-      BoxChars.Default.Ver.WriteAt(col - 2, index, Colors.Color);
-    }
-
     "Spells".WriteAt(col, row, Colors.Color);
     row++;
     for (int index = 0; index < 10; index++) // 10 spells max
@@ -158,58 +192,23 @@ internal static class GamePlay
     }
   }
 
-  private static void InventoryStats()
+  private static void PlayerStats()
   {
-    //Inventory
-    int col = StatusBox.Left + 31;
-    int row = StatusBox.Top + 1;
-    int colWidth = 25;
-    int count = 0;
-    int totalBags = Inventory.Bags.Count;
-    BoxChars.Default.TopCtr.WriteAt(col - 2, row - 1, Colors.Color);
-    BoxChars.Default.BotCtr.WriteAt(col - 2, StatusBox.Height - 1, Colors.Color);
-    for (int index = row; index < row + 6; index++)
-    {
-      BoxChars.Default.Ver.WriteAt(col - 2, index, Colors.Color);
-    }
-
-    Bag bag = Inventory.Bags[currentBag];
-    $"Inventory - Bag: {currentBag + 1} of {totalBags}  (\u2190 or \u2192 to switch bags)".WriteAt(col, row, Colors.HeaderColor);
+    //Player Stats
+    int col = PlayerBox.Left + 2;
+    int row = PlayerBox.Top + 1;
+    $"Player - Level: {Player.Level}".WriteAt(col, row, Colors.HeaderColor);
     row++;
-    for (int index = 0; index < bag.Capacity; index++)
-    {
-      if (index >= bag.Items.Count) "Empty".PadRight(colWidth).WriteAt(col, row, Colors.FillColor);
-      else
-      {
-        Item item = bag.Items[index];
-        item.WriteInventoryItem(col, row, colWidth);
-      }
-
-      row++;
-      count++;
-      if (count < 5) continue;
-      count = 0;
-      row = StatusBox.Top + 2;
-      col += colWidth + 2;
-    }
-  }
-
-  private static void ArmorStats()
-  {
-    int row = StatusBox.Top + 1;
-    int col = StatusBox.Left + 2;
-
-    //Armor
-    "Armor".WriteAt(col, row, Colors.HeaderColor);
+    $"Class: {Player.Class}".WriteAt(col, row, Colors.TextColor);
     row++;
-    foreach (Armor? armor in Player.ArmorSet)
-    {
-      string armorText = $"{armor.ArmorType}: ";
-      armorText.WriteAt(col, row, Colors.TextColor);
-      armor.Name.PadRight(50 - armorText.Length)
-        .WriteAt(col + armorText.Length, row, ColorEx.RarityColor(armor.Rarity));
-      row++;
-    }
+    "Weapon: ".WriteAt(col, row, Colors.TextColor);
+    $"{Player.Weapon.Name}".WriteAt(col + 8, row, ColorEx.RarityColor(Player.Weapon.Rarity));
+    row++;
+    $"Health: {Player.Health}/{Player.MaxHealth}".WriteAt(col, row, Colors.TextColor);
+    row++;
+    $"Mana: {Player.Mana}/{Player.MaxMana}".WriteAt(col, row, Colors.TextColor);
+    row++;
+    $"Gold: {Player.Gold:C}g".WriteAt(col, row, Colors.TextColor);
   }
 
   private static void MapSection()
@@ -264,7 +263,7 @@ internal static class GamePlay
     row++;
     "[G] - Use Bandage".WriteAt(col, row, Colors.TextColor);
     row++;
-    "[Enter] - Open/Close Door".WriteAt(col, row, Colors.TextColor);
+    "[F] - Open/Close Door".WriteAt(col, row, Colors.TextColor);
     row++;
     "[\u2190][\u2192] - Switch Bag".WriteAt(col, row, Colors.TextColor);
     row++;
@@ -305,13 +304,8 @@ internal static class GamePlay
 
   private static void MessageLegend()
   {
-    int col = MessageBox.Width - 30;
-    int row = MessageBox.Top + 1;
-    // draw the message Legend left border
-    BoxChars.Default.TopCtr.WriteAt(col, row - 1, Colors.Color);
-    BoxChars.Default.BotCtr.WriteAt(col, MessageBox.Top + MessageBox.Height - 1, Colors.Color);
-    for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
-      BoxChars.Default.Ver.WriteAt(col, index, Colors.Color);
+    int col = MessageLegendBox.Left;
+    int row = MessageLegendBox.Top + 1;
     col += 2;
     "Messages Legend: ".WriteAt(col, row, Colors.HeaderColor);
     row += 2;
@@ -398,10 +392,10 @@ internal static class GamePlay
           Game.IsPaused = true;
           break;
         case ConsoleKey.PageUp:
-          messageOffset -= 8;
+          messageOffset -= Message.PageSize;
           break;
         case ConsoleKey.PageDown:
-          messageOffset += 8;
+          messageOffset += Message.PageSize;
           break;
         case ConsoleKey.UpArrow:
           messageOffset--;
@@ -423,7 +417,7 @@ internal static class GamePlay
           currentBag++;
           if (currentBag > Inventory.Bags.Count - 1) currentBag = 0;
           break;
-        case ConsoleKey.Enter:
+        case ConsoleKey.F:
           Actions.OpenCloseDoor();
           Map.SetVisibleArea(10);
           Map.WhatIsVisible();
