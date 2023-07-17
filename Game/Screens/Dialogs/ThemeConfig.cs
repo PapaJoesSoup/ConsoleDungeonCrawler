@@ -239,7 +239,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       sampleChars.MidLeft.WriteAt(left, middle, sampleColors.Color, sampleColors.BackgroundColor);
       sampleChars.MidRight.WriteAt(right, middle, sampleColors.Color, sampleColors.BackgroundColor);
       sampleChars.BotCtr.WriteAt(center, bottom, sampleColors.Color, sampleColors.BackgroundColor);
-      sampleChars.Hor.WriteAt(left + 1, middle, sampleColors.Color, sampleColors.FillColor, SampleBox.Width - 2, 0);
+      sampleChars.Hor.WriteAt(left + 1, middle, sampleColors.Color, sampleColors.FillColor, SampleBox.Width - 2);
       for (int y = top + 1; y < bottom; y++)
         sampleChars.Ver.WriteAt(center, y, sampleColors.Color, sampleColors.FillColor);
 

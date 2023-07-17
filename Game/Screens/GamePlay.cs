@@ -12,14 +12,13 @@ namespace ConsoleDungeonCrawler.Game.Screens;
 internal static class GamePlay
 {
   #region Properties
-  private static readonly Box StatusBox = new(1, 0, 208, 8);
   private static readonly Box ArmorBox = new(1, 0, 30, 8);
   private static readonly Box InventoryBox = new(ArmorBox.Right, 0, 110, 8);
   private static readonly Box SpellBox = new(InventoryBox.Right, 0, 40, 8);
   private static readonly Box PlayerBox = new(SpellBox.Right, 0, 31, 8);
-  internal static readonly Box MapBox = new(1, StatusBox.Bottom, 178, 35);
+  internal static readonly Box MapBox = new(1, ArmorBox.Bottom, 178, 35);
   internal static readonly Box MessageBox = new(1, MapBox.Bottom, MapBox.Right - 30, 12);
-  internal static readonly Box MessageLegendBox = new(MessageBox.Right, MessageBox.Top, 31, MessageBox.Height);
+  private static readonly Box MessageLegendBox = new(MessageBox.Right, MessageBox.Top, 31, MessageBox.Height);
   private static readonly Box OverlayBox = new(MapBox.Right, MapBox.Top, 31, 29);
   private static readonly Box LegendBox = new(MapBox.Right, 35, OverlayBox.Width, 18);
 
@@ -118,8 +117,8 @@ internal static class GamePlay
 
   private static void ArmorStats()
   {
-    int row = StatusBox.Top + 1;
-    int col = StatusBox.Left + 2;
+    int row = ArmorBox.Top + 1;
+    int col = ArmorBox.Left + 2;
 
     //Armor
     "Armor".WriteAt(col, row, Colors.HeaderColor);
@@ -137,8 +136,8 @@ internal static class GamePlay
   private static void InventoryStats()
   {
     //Inventory
-    int col = StatusBox.Left + 31;
-    int row = StatusBox.Top + 1;
+    int col = InventoryBox.Left + 2;
+    int row = InventoryBox.Top + 1;
     int colWidth = 25;
     int count = 0;
     int totalBags = Inventory.Bags.Count;
@@ -159,7 +158,7 @@ internal static class GamePlay
       count++;
       if (count < 5) continue;
       count = 0;
-      row = StatusBox.Top + 2;
+      row = InventoryBox.Top + 2;
       col += colWidth + 2;
     }
   }
@@ -168,8 +167,8 @@ internal static class GamePlay
   {
     int count = 0;
     //Spells
-    int col = StatusBox.Left + 140;
-    int row = StatusBox.Top + 1;
+    int col = SpellBox.Left + 2;
+    int row = SpellBox.Top + 1;
     int colWidth = 18;
     "Spells".WriteAt(col, row, Colors.Color);
     row++;
@@ -187,7 +186,7 @@ internal static class GamePlay
 
       if (count < 5) continue;
       count = 0;
-      row = StatusBox.Top + 2;
+      row = SpellBox.Top + 2;
       col += colWidth + 2;
     }
   }
@@ -236,11 +235,10 @@ internal static class GamePlay
         row++;
       }
     }
-
-    // clear the rest of the legend box
-    if (row >= OverlayBox.Top + OverlayBox.Height - 1) return;
-    for (int index = row; index < OverlayBox.Top + OverlayBox.Height - 1; index++)
-      " ".WriteAt(col, index, Colors.BackgroundColor, Colors.BackgroundColor, 0, OverlayBox.Width - 3);
+    // clear the rest of the overlay box
+    if (row >= OverlayBox.Bottom) return;
+    for (int index = row; index < OverlayBox.Bottom - 1; index++)
+      " ".WriteAt(col, index, Colors.BackgroundColor, Colors.BackgroundColor, OverlayBox.Width - 3);
   }
 
   private static void LegendSection()
@@ -299,7 +297,7 @@ internal static class GamePlay
     // clear the rest of the message box
     if (row >= MessageBox.Top + MessageBox.Height - 1) return;
     for (int index = row; index < MessageBox.Top + MessageBox.Height - 1; index++)
-      " ".WriteAt(col, index, Colors.BackgroundColor, Colors.BackgroundColor, MessageWidth, 0);
+      " ".WriteAt(col, index, Colors.BackgroundColor, Colors.BackgroundColor, MessageWidth);
   }
 
   private static void MessageLegend()

@@ -713,17 +713,19 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor bgColor, int delay)
+  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor bgColor, int repeat)
   {
     try
     {
       Console.SetCursorPosition(x, y);
       Console.ForegroundColor = color;
       Console.BackgroundColor = bgColor;
-      foreach (char c in s)
+      for (int i = 0; i < repeat; i++)
       {
-        Console.Write(c);
-        if (delay > 0) Thread.Sleep(delay);
+        foreach (char c in s)
+        {
+          Console.Write(c);
+        }
       }
 
       Console.ResetColor();
@@ -735,16 +737,18 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, int delay)
+  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, int repeat)
   {
     try
     {
       Console.SetCursorPosition(x, y);
       Console.ForegroundColor = color;
-      foreach (char c in s)
+      for (int i = 0; i < repeat; i++)
       {
-        Console.Write(c);
-        if (delay > 0) Thread.Sleep(delay);
+        foreach (char c in s)
+        {
+          Console.Write(c);
+        }
       }
 
       Console.ResetColor();
@@ -756,15 +760,17 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, int delay)
+  internal static void WriteAt(this string s, int x, int y, int repeat)
   {
     try
     {
       Console.SetCursorPosition(x, y);
-      foreach (char c in s)
+      for (int i = 0; i < repeat; i++)
       {
-        Console.Write(c);
-        Thread.Sleep(delay);
+        foreach (char c in s)
+        {
+          Console.Write(c);
+        }
       }
     }
     catch (ArgumentOutOfRangeException e)
@@ -774,8 +780,8 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor bgColor, int delay,
-    int repeat)
+  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor bgColor, int repeat,
+    int delay)
   {
     try
     {
@@ -821,8 +827,8 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor bgColor, int delay,
-    int repeat, int repeatDelay)
+  internal static void WriteAt(this string s, int x, int y, ConsoleColor color, ConsoleColor bgColor, int repeat,
+    int delay, int repeatDelay)
   {
     try
     {
@@ -974,15 +980,14 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor bgColor, int delay)
+  internal static void WriteAt(this char c, int x, int y, ConsoleColor color, ConsoleColor bgColor, int repeat)
   {
     try
     {
       Console.SetCursorPosition(x, y);
       Console.ForegroundColor = color;
       Console.BackgroundColor = bgColor;
-      Console.Write(c);
-      Thread.Sleep(delay);
+      Console.Write(new string(c, repeat));
       Console.ResetColor();
     }
     catch (ArgumentOutOfRangeException e)
@@ -992,13 +997,12 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this char c, int x, int y, int delay)
+  internal static void WriteAt(this char c, int x, int y, int repeat)
   {
     try
     {
       Console.SetCursorPosition(x, y);
-      Console.Write(c);
-      Thread.Sleep(delay);
+      Console.Write(new string(c, repeat));
     }
     catch (ArgumentOutOfRangeException e)
     {
@@ -1223,17 +1227,16 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, Color color, Color bgColor, int delay)
+  internal static void WriteAt(this string s, int x, int y, Color color, Color bgColor, int repeat)
   {
     try
     {
       Console.SetCursorPosition(x, y);
       ForegroundColor = color;
       BackgroundColor = bgColor;
-      foreach (char c in s)
+      for (int i = 0; i < repeat; i++)
       {
-        Console.Write(c);
-        Thread.Sleep(delay);
+          Console.Write(s);
       }
 
       ResetColor();
@@ -1245,16 +1248,15 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, Color color, int delay)
+  internal static void WriteAt(this string s, int x, int y, Color color, int repeat)
   {
     try
     {
       Console.SetCursorPosition(x, y);
       ForegroundColor = color;
-      foreach (char c in s)
+      for (int i = 0; i < repeat; i++)
       {
-        Console.Write(c);
-        Thread.Sleep(delay);
+          Console.Write(s);
       }
 
       ResetColor();
@@ -1266,8 +1268,7 @@ internal static class ConsoleEx
     }
   }
 
-  internal static void WriteAt(this string s, int x, int y, Color color, Color bgColor, int repeat,
-    int delay)
+  internal static void WriteAt(this string s, int x, int y, Color color, Color bgColor, int repeat, int delay)
   {
     try
     {
@@ -1339,13 +1340,13 @@ internal static class ConsoleEx
         {
           StringInfo.GetNextTextElement(bChars.TopLeft).WriteAt(box.Left, box.Top + i, color);
           StringInfo.GetNextTextElement(bChars.TopRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
-          StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top, color, Color.Black, box.Width - 2, 0);
+          StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top, color, Color.Black, box.Width - 2);
         }
         else if (i == box.Height - 1)
         {
           StringInfo.GetNextTextElement(bChars.BotLeft).WriteAt(box.Left, box.Top + i, color);
           StringInfo.GetNextTextElement(bChars.BotRight).WriteAt(box.Left + box.Width - 1, box.Top + i, color);
-          StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top + i, color, Color.Black, box.Width - 2, 0);
+          StringInfo.GetNextTextElement(bChars.Hor).WriteAt(box.Left + 1, box.Top + i, color, Color.Black, box.Width - 2);
         }
         else
         {
