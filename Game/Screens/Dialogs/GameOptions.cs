@@ -8,7 +8,7 @@ internal static class GameOptions
 {
   #region Properties
   private static bool dialogOpen;
-  private static readonly Box Box = new(Dialog.ScreenCenter, 82, 17);
+  private static readonly Box Box = new(Dialog.ScreenCenter, 82, 19);
 
   private static readonly Colors Colors = new()
   {
@@ -26,7 +26,7 @@ internal static class GameOptions
     BuildOptionList();
   }
 
-  internal static void Draw()
+  internal static void Draw(string parent)
   {
     dialogOpen = true;
     while (dialogOpen)
@@ -75,8 +75,8 @@ internal static class GameOptions
       }
 
       "Press [S] to Save Changes".WriteAt(x, y, Colors.TextColor, Colors.FillColor); y++;
-      "Press [Esc] to Exit Without Waving".WriteAt(x, y, Colors.TextColor, Colors.FillColor);
-      KeyHandler();
+      "Press [Esc] to Exit Without Saving".WriteAt(x, y, Colors.TextColor, Colors.FillColor);
+      KeyHandler(parent);
     }
   }
 
@@ -171,7 +171,7 @@ internal static class GameOptions
     optionCount += Options["Display"].Count;
   }
 
-  private static void KeyHandler()
+  private static void KeyHandler(string parent)
   {
     ConsoleKeyInfo keyInfo = Console.ReadKey(true);
     object? option = GetOption(activeOption);
@@ -183,13 +183,13 @@ internal static class GameOptions
       case ConsoleKey.Q:
         ConsoleEx.Clear();
         dialogOpen = false;
-        Dialog.Close("GamePlay");
+        Dialog.Close(parent);
         break;
       case ConsoleKey.S:
         SaveOptions();
         ConsoleEx.Clear();
         dialogOpen = false;
-        Dialog.Close("GamePlay");
+        Dialog.Close(parent);
         break;
       case ConsoleKey.UpArrow:
         activeOption--;

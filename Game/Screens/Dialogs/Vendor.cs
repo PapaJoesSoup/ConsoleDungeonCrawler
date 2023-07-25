@@ -69,12 +69,12 @@ internal static class Vendor
     List<Item> generalItems = new ();
     foreach (KeyValuePair<BuffType, List<Potion>> potions in Inventory.Potions)
       foreach (Potion potion in potions.Value)
-      generalItems.Add(potion);
+        generalItems.Add(potion);
 
     // Food and Drink
     foreach (KeyValuePair<BuffType, List<Food>> foodType in Inventory.Foods)
       foreach (Food f in foodType.Value) 
-      generalItems.Add(f);
+        generalItems.Add(f);
 
     // Bandages
     foreach (Bandage bandage in Inventory.Bandages)
@@ -193,13 +193,7 @@ internal static class Vendor
 
   private static void BuyItem(Item item)
   {
-    if (Player.Gold < item.BuyCost)
-    {
-      Dialog.Notify(DialogBox.Center, "Buy Item", "You don't have enough gold to buy this item.");
-      Draw();
-      return;
-    }
-    Player.Gold -= item.BuyCost;
+    if (!Player.RemoveGold(item.BuyCost)) return;
     Inventory.Bags[activeBag].AddItem(item);
   }
 

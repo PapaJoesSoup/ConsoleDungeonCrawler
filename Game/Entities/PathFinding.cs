@@ -14,15 +14,15 @@ internal static class PathFinding
   internal static List<Position> FindPath(Position start, Position destination)
   {
     List<Position> path = new(); // path is the list of positions that lead from the destination to the start
-    List<Position> openList = new(); // open list is a list of positions that have not been checked yet
+    List<Position> uncheckedList = new(); // open list is a list of positions that have not been checked yet
     List<Position> checkedList = new(); // closed list is a list of positions that have been checked
 
     start.SetDistance(destination);
-    openList.Add(start);
+    uncheckedList.Add(start);
 
-    while (openList.Any())
+    while (uncheckedList.Any())
     {
-      Position currentPos = openList.OrderByDescending(x => x.CostDistance).Last();
+      Position currentPos = uncheckedList.OrderByDescending(x => x.CostDistance).Last();
       if (currentPos.X == destination.X && currentPos.Y == destination.Y)
       {
         Position? pathPosition = currentPos;
@@ -34,7 +34,7 @@ internal static class PathFinding
         }
       }
       checkedList.Add(currentPos);
-      openList.Remove(currentPos);
+      uncheckedList.Remove(currentPos);
 
       List<Position>? positions = GetPassableArea(currentPos, destination);
       foreach (Position passablePos in positions)
@@ -43,17 +43,17 @@ internal static class PathFinding
         if (checkedList.Any(x => x.X == passablePos.X && x.Y == passablePos.Y)) continue;
 
         //It's already in the open list, but that's OK, maybe this new tile has a better value (e.g. We might zigzag earlier but this is now straighter). 
-        if (openList.Any(x => x.X == passablePos.X && x.Y == passablePos.Y))
+        if (uncheckedList.Any(x => x.X == passablePos.X && x.Y == passablePos.Y))
         {
-          Position existingPos = openList.First(x => x.X == passablePos.X && x.Y == passablePos.Y);
+          Position existingPos = uncheckedList.First(x => x.X == passablePos.X && x.Y == passablePos.Y);
           if (existingPos.CostDistance <= currentPos.CostDistance) continue;
-          openList.Remove(existingPos);
-          openList.Add(passablePos);
+          uncheckedList.Remove(existingPos);
+          uncheckedList.Add(passablePos);
         }
         else
         {
           //We've never seen this tile before so add it to the list. 
-          openList.Add(passablePos);
+          uncheckedList.Add(passablePos);
         }
       }
 

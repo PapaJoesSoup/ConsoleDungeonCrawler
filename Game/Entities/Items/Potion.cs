@@ -21,10 +21,10 @@ internal class Potion : Item
     BuyCost = buyCost;
     SellCost = sellCost;
 
-    Name = $"{Rarity} {buffType} Potion";
-    Description = $"A {Rarity} {buffType} Potion";
     buffType = potionType;
     buffAmount = (int)rarity * 10;
+    Name = $"{rarity} {potionType} Potion";
+    Description = $"A {rarity} {potionType} Potion";
   }
 
   internal override bool Use()
@@ -42,7 +42,7 @@ internal class Potion : Item
       case BuffType.Mana:
         Player.RestoreMana(buffAmount);
         break;
-      case BuffType.HealthAndMana:
+      case BuffType.ManaHeal:
         Player.Heal(buffAmount);
         Player.RestoreMana(buffAmount);
         break;
@@ -65,7 +65,7 @@ internal class Potion : Item
       case 1:
         return new Potion(BuffType.Mana, ItemRarity.Common, 1, 1, 0.1M);
       case 2:
-        return new Potion(BuffType.HealthAndMana, ItemRarity.Common, 1, 1, 0.1M);
+        return new Potion(BuffType.ManaHeal, ItemRarity.Common, 1, 1, 0.1M);
       default:
         return new Potion(BuffType.Health, ItemRarity.Common, 1, 1, 0.1M);
     }

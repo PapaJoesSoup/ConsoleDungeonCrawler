@@ -42,7 +42,7 @@ internal class Food : Item
       case BuffType.Mana:
         Player.RestoreMana(buffAmount);
         break;
-      case BuffType.HealthAndMana:
+      case BuffType.ManaHeal:
         Player.Heal(buffAmount);
         Player.RestoreMana(buffAmount);
         break;

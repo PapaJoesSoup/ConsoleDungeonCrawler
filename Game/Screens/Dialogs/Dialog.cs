@@ -79,7 +79,7 @@ internal static class Dialog
     Map.Clear(); 
     if (parent is "GameCredits") GameCredits.Draw();
     if (parent is "GameMenu") GameMenu.Draw();
-    if (parent is "GameOptions") GameOptions.Draw();
+    if (parent is "GameOptions") GameOptions.Draw("GamePlay");
     if (parent is "GameOver") GameOver.Draw();
     if (parent is "GamePaused") GamePaused.Draw();
     if (parent is "GamePlay") GamePlay.Draw();

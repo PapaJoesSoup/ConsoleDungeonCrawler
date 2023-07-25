@@ -138,7 +138,7 @@ internal enum BuffType
   None,
   Health,
   Mana,
-  HealthAndMana
+  ManaHeal
 }
 
 internal enum SpellType

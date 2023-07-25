@@ -368,11 +368,11 @@ internal static class Inventory
     Foods[BuffType.Health].Add(new Food(FoodName.DeerSteak, BuffType.Health, 1, 1, 0.1M));
     Foods[BuffType.Health].Add(new Food(FoodName.BoarChop, BuffType.Health, 1, 1, 0.1M));
 
-    Foods.Add(BuffType.HealthAndMana, new List<Food>());
-    Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Salmon, BuffType.HealthAndMana, 1, 1, 0.1M));
-    Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Trout, BuffType.HealthAndMana, 1, 2, 0.1M));
-    Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Snapper, BuffType.HealthAndMana, 1, 4, 0.1M));
-    Foods[BuffType.HealthAndMana].Add(new Food(FoodName.Feast, BuffType.HealthAndMana, 1, 5, 0.5M, ItemRarity.Uncommon));
+    Foods.Add(BuffType.ManaHeal, new List<Food>());
+    Foods[BuffType.ManaHeal].Add(new Food(FoodName.Salmon, BuffType.ManaHeal, 1, 1, 0.1M));
+    Foods[BuffType.ManaHeal].Add(new Food(FoodName.Trout, BuffType.ManaHeal, 1, 2, 0.1M));
+    Foods[BuffType.ManaHeal].Add(new Food(FoodName.Snapper, BuffType.ManaHeal, 1, 4, 0.1M));
+    Foods[BuffType.ManaHeal].Add(new Food(FoodName.Feast, BuffType.ManaHeal, 1, 5, 0.5M, ItemRarity.Uncommon));
       
     Foods.Add(BuffType.Mana, new List<Food>());
     Foods[BuffType.Mana].Add(new Food(FoodName.MelonJuice, BuffType.Mana, 1, 1, 0.1M));
@@ -439,10 +439,10 @@ internal static class Inventory
     Potions[BuffType.Mana].Add(new Potion(BuffType.Mana, ItemRarity.Uncommon, 1, 5M, 0.5M));
     Potions[BuffType.Mana].Add(new Potion(BuffType.Mana, ItemRarity.Rare, 1, 10M, 1M));
 
-    Potions.Add(BuffType.HealthAndMana, new List<Potion>());
-    Potions[BuffType.HealthAndMana].Add(new Potion(BuffType.HealthAndMana, ItemRarity.Common, 1, 1M, 0.1M));
-    Potions[BuffType.HealthAndMana].Add(new Potion(BuffType.HealthAndMana, ItemRarity.Uncommon, 1, 5M, .5M));
-    Potions[BuffType.HealthAndMana].Add(new Potion(BuffType.HealthAndMana, ItemRarity.Rare, 1, 10M, 1M));
+    Potions.Add(BuffType.ManaHeal, new List<Potion>());
+    Potions[BuffType.ManaHeal].Add(new Potion(BuffType.ManaHeal, ItemRarity.Common, 1, 1M, 0.1M));
+    Potions[BuffType.ManaHeal].Add(new Potion(BuffType.ManaHeal, ItemRarity.Uncommon, 1, 5M, .5M));
+    Potions[BuffType.ManaHeal].Add(new Potion(BuffType.ManaHeal, ItemRarity.Rare, 1, 10M, 1M));
   }
 
   internal static void AddItem(Item item)

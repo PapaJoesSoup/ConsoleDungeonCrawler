@@ -12,6 +12,7 @@ namespace ConsoleDungeonCrawler.Game.Screens;
 internal static class GamePlay
 {
   #region Properties
+
   private static readonly Box ArmorBox = new(1, 0, 30, 8);
   private static readonly Box InventoryBox = new(ArmorBox.Right, 0, 110, 8);
   private static readonly Box SpellBox = new(InventoryBox.Right, 0, 40, 8);
@@ -38,7 +39,6 @@ internal static class GamePlay
   // MessageOffset is a negative number that decrements the index of the first message to display in the message Section
   private static int messageOffset;
 
-
   // This is used to manage display of bags in the inventory section
   private static int currentBag;
 
@@ -47,6 +47,7 @@ internal static class GamePlay
 
   #endregion Properties
 
+#region Draw methods
   internal static void Draw()
   {
     GameBorders();
@@ -72,18 +73,20 @@ internal static class GamePlay
 
   private static void GameBorders()
   {
+    // first draw all the boxes
     ArmorBox.WriteBorder(BoxChars.Default, Colors.Color, Colors.BackgroundColor);
     InventoryBox.WriteBorder(BoxChars.Default, Colors.Color, Colors.BackgroundColor);
     SpellBox.WriteBorder(BoxChars.Default, Colors.Color, Colors.BackgroundColor);
     PlayerBox.WriteBorder(BoxChars.Default, Colors.Color, Colors.BackgroundColor);
-    $"[ {Game.Title} - The {Game.CurrentDungeon} ]".WriteAlignedAt(HAlign.Center, VAlign.Top, Colors.TextColor, Colors.BackgroundColor);
+    $"[ {Game.Title} - The {Game.CurrentDungeon} ]".WriteAlignedAt(HAlign.Center, VAlign.Top, Colors.TextColor,
+      Colors.BackgroundColor);
     MapBox.WriteBorder(BoxChars.Default, Colors.Color, Colors.BackgroundColor);
     OverlayBox.WriteBorder(BoxChars.Default, Colors.Color, Colors.BackgroundColor);
     MessageBox.WriteBorder(BoxChars.Default, Colors.Color, Colors.BackgroundColor);
-    MessageLegendBox.WriteBorder(BoxChars.Default,Colors.Color, Colors.BackgroundColor);
+    MessageLegendBox.WriteBorder(BoxChars.Default, Colors.Color, Colors.BackgroundColor);
     LegendBox.WriteBorder(BoxChars.Default, Colors.Color, Colors.BackgroundColor);
 
-    // now to clean up the corners
+    // now apply the proper box characters to corners and intersections
     // Top section
     BoxChars.Default.TopCtr.WriteAt(ArmorBox.Right, ArmorBox.Top, Colors.Color, Colors.BackgroundColor);
     BoxChars.Default.TopCtr.WriteAt(InventoryBox.Right, InventoryBox.Top, Colors.Color, Colors.BackgroundColor);
@@ -94,16 +97,18 @@ internal static class GamePlay
     BoxChars.Default.MidCtr.WriteAt(SpellBox.Right, SpellBox.Bottom, Colors.Color, Colors.BackgroundColor);
     BoxChars.Default.MidRight.WriteAt(PlayerBox.Right, PlayerBox.Bottom, Colors.Color, Colors.BackgroundColor);
 
+    // Middle section
     BoxChars.Default.MidLeft.WriteAt(LegendBox.Left, LegendBox.Top, Colors.Color, Colors.BackgroundColor);
     BoxChars.Default.MidRight.WriteAt(LegendBox.Right, LegendBox.Top, Colors.Color, Colors.BackgroundColor);
-
     BoxChars.Default.MidLeft.WriteAt(MessageBox.Left, MessageBox.Top, Colors.Color, Colors.BackgroundColor);
 
+    // Bottom section
     BoxChars.Default.TopCtr.WriteAt(MessageLegendBox.Left, MessageLegendBox.Top, Colors.Color, Colors.BackgroundColor);
-    BoxChars.Default.MidRight.WriteAt(MessageLegendBox.Right, MessageLegendBox.Top, Colors.Color, Colors.BackgroundColor);
-    BoxChars.Default.BotCtr.WriteAt(MessageLegendBox.Left, MessageLegendBox.Bottom, Colors.Color, Colors.BackgroundColor);
+    BoxChars.Default.MidRight.WriteAt(MessageLegendBox.Right, MessageLegendBox.Top, Colors.Color,
+      Colors.BackgroundColor);
+    BoxChars.Default.BotCtr.WriteAt(MessageLegendBox.Left, MessageLegendBox.Bottom, Colors.Color,
+      Colors.BackgroundColor);
     BoxChars.Default.BotCtr.WriteAt(LegendBox.Left, LegendBox.Bottom, Colors.Color, Colors.BackgroundColor);
-
   }
 
   internal static void StatusSection()
@@ -141,11 +146,12 @@ internal static class GamePlay
     int count = 0;
     int totalBags = Inventory.Bags.Count;
     Bag bag = Inventory.Bags[currentBag];
-    $"Inventory - Bag: {currentBag + 1} of {totalBags}  (\u2190 or \u2192 to switch bags)".WriteAt(col, row, Colors.HeaderColor);
+    $"Inventory - Bag: {currentBag + 1} of {totalBags}  (\u2190 or \u2192 to switch bags)".WriteAt(col, row,
+      Colors.HeaderColor);
     row++;
     for (int index = 0; index < bag.Capacity; index++)
     {
-      if (index >= bag.Items.Count) 
+      if (index >= bag.Items.Count)
         "Empty".PadRight(colWidth).WriteAt(col, row, Colors.FillColor);
       else
       {
@@ -234,6 +240,7 @@ internal static class GamePlay
         row++;
       }
     }
+
     // clear the rest of the overlay box
     if (row >= OverlayBox.Bottom) return;
     for (int index = row; index < OverlayBox.Bottom; index++)
@@ -318,6 +325,7 @@ internal static class GamePlay
     row++;
     "[End] - Last Message".WriteAt(col, row, Colors.TextColor);
   }
+  #endregion Draw Methods
 
   private static bool AcceptableKeys()
   {
@@ -354,7 +362,7 @@ internal static class GamePlay
           SoundSystem.PlayEffect(SoundSystem.MSounds[Sound.GameWon]);
           break;
         case ConsoleKey.G:
-          GameOptions.Draw();
+          GameOptions.Draw("GamePlay");
           break;
         case ConsoleKey.B:
           ThemeConfig.Draw();
@@ -407,8 +415,8 @@ internal static class GamePlay
           messageOffset = 0;
           break;
         case ConsoleKey.LeftArrow:
-            currentBag--;
-          if (currentBag<0) currentBag = Inventory.Bags.Count-1;
+          currentBag--;
+          if (currentBag < 0) currentBag = Inventory.Bags.Count - 1;
           break;
         case ConsoleKey.RightArrow:
           currentBag++;
