@@ -23,7 +23,7 @@ internal class Player : Tile
   internal static readonly Dictionary<int, Spell> Spells = new();
   internal static bool InCombat;
 
-  private static MediaPlayer effectPlayer;
+  private static MediaPlayer? effectPlayer;
   #endregion Properties
 
   internal Player()
@@ -74,7 +74,7 @@ internal class Player : Tile
     Position newPos = new(X + x, Y + y);
 
     if (!CanMoveTo(newPos)) return false;
-    effectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
+    effectPlayer?.Play(SoundSystem.MSounds[Sound.FootSteps]);
     X = newPos.X;
     Y = newPos.Y;
     // Overlay section Check needed for level changes.
@@ -84,13 +84,13 @@ internal class Player : Tile
       Map.LevelOverlayTiles[Game.CurrentLevel][Type.Symbol][0] = this;
 
     // update grids.
-    Map.CurrentMap[oldPos.X][oldPos.Y].Draw();
-    Map.CurrentMap[newPos.X][newPos.Y].Draw();
+    Map.CurrentMap[oldPos.X, oldPos.Y].Draw();
+    Map.CurrentMap[newPos.X, newPos.Y].Draw();
 
-    int oldLayer = Map.CurrentOverlay[oldPos.X][oldPos.Y].Count - 1;
-    int newLayer = Map.CurrentOverlay[newPos.X][newPos.Y].Count - 1;
-    Map.CurrentOverlay[oldPos.X][oldPos.Y][oldLayer].Draw();
-    Map.CurrentOverlay[newPos.X][newPos.Y][newLayer].Draw();
+    int oldLayer = Map.CurrentOverlay[oldPos.X, oldPos.Y].Count - 1;
+    int newLayer = Map.CurrentOverlay[newPos.X, newPos.Y].Count - 1;
+    Map.CurrentOverlay[oldPos.X, oldPos.Y][oldLayer].Draw();
+    Map.CurrentOverlay[newPos.X, newPos.Y][newLayer].Draw();
     Map.Player.Draw();
     return true;
   }
@@ -108,19 +108,19 @@ internal class Player : Tile
     Position newPos = new(X + x, Y + y);
 
     if (!CanJumpTo(oldPos, newPos)) return;
-    effectPlayer.Play(SoundSystem.MSounds[Sound.FootSteps]);
+    effectPlayer?.Play(SoundSystem.MSounds[Sound.FootSteps]);
 
     X = newPos.X;
     Y = newPos.Y;
-    for (int i = 0; i < Map.CurrentOverlay[oldPos.X][oldPos.Y].Count; i++)
+    for (int i = 0; i < Map.CurrentOverlay[oldPos.X, oldPos.Y].Count; i++)
     {
       Map.LevelOverlayTiles[Game.CurrentLevel][Type.Symbol][0] = this;
-      Map.CurrentMap[oldPos.X][oldPos.Y].Draw();
-      Map.CurrentMap[newPos.X][newPos.Y].Draw();
+      Map.CurrentMap[oldPos.X, oldPos.Y].Draw();
+      Map.CurrentMap[newPos.X, newPos.Y].Draw();
 
-      Map.CurrentOverlay[oldPos.X][oldPos.Y][i].Draw();
-      Map.CurrentOverlay[oldPos.X][oldPos.Y][i].Draw();
-      Map.CurrentOverlay[newPos.X][newPos.Y][i].Draw();
+      Map.CurrentOverlay[oldPos.X, oldPos.Y][i].Draw();
+      Map.CurrentOverlay[oldPos.X, oldPos.Y][i].Draw();
+      Map.CurrentOverlay[newPos.X, newPos.Y][i].Draw();
     }
     GamePlay.Messages.Add(new Message($"You jumped {Map.GetDirection(key)}..."));
   }
@@ -139,14 +139,14 @@ internal class Player : Tile
         if (IsNextToOverlayGrid(out Tile objM) == ' ') return;
         if (objM is not Monster melee) return;
         GamePlay.Messages.Add(new Message($"You swing your {Weapon.WeaponType} at the {melee.Type.Name}!"));
-        effectPlayer.Play(SoundSystem.MSounds[Sound.SwordSwing]);
+        effectPlayer?.Play(SoundSystem.MSounds[Sound.SwordSwing]);
         melee.TakeDamage(Weapon.Damage);
         break;
       case WeaponType.Bow:
       case WeaponType.Wand:
         if (IsInRange(Weapon.Range, out Tile objR)) return;
         if (objR is not Monster ranged) return;
-        effectPlayer.Play(SoundSystem.MSounds[Sound.RangedAttack]);
+        effectPlayer?.Play(SoundSystem.MSounds[Sound.RangedAttack]);
         GamePlay.Messages.Add(new Message($"You shoot your {Weapon.WeaponType} at the {ranged.Type.Name}!"));
         ranged.TakeDamage(Weapon.Damage);
         break;
@@ -249,7 +249,7 @@ internal class Player : Tile
     if (MaxMana > 0) MaxMana += 5;
     Health = MaxHealth;
     Mana = MaxMana;
-    effectPlayer.Play(SoundSystem.MSounds[Sound.LevelUp]);
+    effectPlayer?.Play(SoundSystem.MSounds[Sound.LevelUp]);
     GamePlay.Messages.Add(new Message($"You are now level {Level}!", Color.Green, Color.Black));
   }
 
@@ -284,6 +284,6 @@ internal class Player : Tile
   internal static void SetEffectVolume(object? sender, EventArgs e)
   {
     if (sender is not GameOption<int> option) return;
-    effectPlayer.Volume = option.Value;
+    if (effectPlayer != null) effectPlayer.Volume = option.Value;
   }
 }

@@ -19,7 +19,7 @@ internal class Message
     backgroundColor = bgColor;
   }
 
-  internal Message(string text, Item item, Color fgColor, Color bgColor)
+  internal Message(string text, Item? item, Color fgColor, Color bgColor)
   {
     this.text = $"{DateTime.Now:MM/dd/y HH:mm:ss} - {text}";
     foregroundColor = fgColor;

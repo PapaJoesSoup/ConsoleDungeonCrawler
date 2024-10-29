@@ -23,6 +23,7 @@ internal static class GameTitle
     LoadTitleArt();
     LoadBannerText();
     GameMenu.Draw();
+    if(Game.IsQuit) return;
     SoundSystem.PlayEnter();
     LoadTitleArt();
     LoadBannerText();

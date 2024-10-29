@@ -43,14 +43,27 @@ internal static class ConsoleEx
   {
     Clear();
     Console.OutputEncoding = System.Text.Encoding.Unicode;
-    // Maximize console window  Use if you have a console window set to a specific size and is not maximized (fullscreen focused
 
+    // It is possible to set the console window using the settings for the console window.  If in Focus mode the Title Bar 
+    // is hidden and the window is maximized.  This is a windows only feature.  to access settings when in focus mode press (Ctrl + Shift + P) 
+    // The maximize method below will work in both focus and non-focus mode.  The maximize method will not work if the window is set to a specific size.
+    // Settings for the console window can be accessed by right-clicking the title bar and selecting properties.  The settings are saved per console window.
+    // the default settings are stored in settings.json and are loaded when the console window is created.  The settings are stored in the registry.
+
+    // Maximize console window  Use if you have a standard console window that is not maximized (not in fullscreen focus mode)
     MaximizeConsoleWindow();
     // Enable extended colors
     EnableExtendedColors();
 
     Console.CursorVisible = false;
     Console.Title = Game.Game.Title;
+  }
+
+  internal static void ResetConsole()
+  {
+    RestoreConsoleWindow();
+    ResetColor();
+    Console.CursorVisible = true;
   }
 
   /// <summary>
@@ -88,6 +101,43 @@ internal static class ConsoleEx
     MoveWindow(consoleWindowHandle, screenRect.Left, screenRect.Top, width, height, true);
     ShowWindow(consoleWindowHandle, swMaximize);
     SetScreenSizes(width, height);
+  }
+
+  /// <summary>
+  /// This is a windows only feature...
+  /// </summary>
+  private static void RestoreConsoleWindow()
+  {
+    // Only restore if the window is maximized
+    if (Console.WindowWidth < Program.MinWindowWidth || Console.WindowHeight < Program.MinWindowHeight) return;
+
+    // Setup console to allow window to be maximized
+    // We cannot do this inside CSharp normally, so we need to attach to the windows API
+    // Import the necessary functions from user32.dll
+    [DllImport("user32.dll")]
+    static extern IntPtr GetForegroundWindow();
+
+    [DllImport("user32.dll")]
+    static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    [DllImport("user32.dll")]
+    static extern bool GetWindowRect(IntPtr hWnd, out Rect lpRect);
+
+    [DllImport("user32.dll")]
+    static extern bool MoveWindow(IntPtr hWnd, int x, int y, int nWidth, int nHeight, bool bRepaint);
+
+    // Constants for the ShowWindow function
+    const int swRestore = 9;
+    IntPtr consoleWindowHandle = GetForegroundWindow();
+
+    // Get the screen size
+    GetWindowRect(consoleWindowHandle, out Rect screenRect);
+    // Resize and reposition the console window to fit inside the screen
+    int width = screenRect.Right - screenRect.Left;
+    int height = screenRect.Bottom - screenRect.Top;
+    MoveWindow(consoleWindowHandle, screenRect.Left, screenRect.Top, width / 2, height / 2, true);
+    ShowWindow(consoleWindowHandle, swRestore);
+    SetScreenSizes(width / 2, height / 2);
   }
 
   /// <summary>

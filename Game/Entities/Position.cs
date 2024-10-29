@@ -114,9 +114,9 @@ internal class Position
   internal static bool CanMoveTo(Position pos)
   {
     // check to see if there is an object there that is not passable
-    for (int layer = Map.CurrentOverlay[pos.X][pos.Y].Count - 1; layer >= 0; layer--)
-      if (!Map.CurrentOverlay[pos.X][pos.Y][layer].IsPassable) return false;
-    return Map.CurrentMap[pos.X][pos.Y].IsPassable;
+    for (int layer = Map.CurrentOverlay[pos.X, pos.Y].Count - 1; layer >= 0; layer--)
+      if (!Map.CurrentOverlay[pos.X, pos.Y][layer].IsPassable) return false;
+    return Map.CurrentMap[pos.X, pos.Y].IsPassable;
   }
 
   internal static bool CanJumpTo(Position oldPos, Position newPos)
@@ -130,11 +130,11 @@ internal class Position
     if (dir == Direction.South) curPos = oldPos.AdjPos[Direction.South];
     if (curPos == oldPos) return false;
 
-    List<Tile> layers = Map.CurrentOverlay[curPos.X][curPos.Y];
+    List<Tile> layers = Map.CurrentOverlay[curPos.X, curPos.Y];
     for (int i = layers.Count - 1; i >= 0; i--)
       if (!layers[i].IsPassable) return false;
 
-    Tile mapObj = Map.CurrentMap[curPos.X][curPos.Y];
+    Tile mapObj = Map.CurrentMap[curPos.X, curPos.Y];
     return mapObj is not { IsPassable: false, Type.IsTransparent: false } && CanMoveTo(newPos);
   }
 
@@ -143,15 +143,15 @@ internal class Position
     obj = new Tile();
     if (pos is not { X: > 0, Y: > 0 } || pos.X > GamePlay.MapBox.Width || pos.Y > GamePlay.MapBox.Height) return false;
     // if we have any live monsters, we want to get them first, so we work our way down from the top layer.
-    for (int layer = Map.CurrentOverlay[pos.X][pos.Y].Count - 1; layer >= 0; layer--)
+    for (int layer = Map.CurrentOverlay[pos.X, pos.Y].Count - 1; layer >= 0; layer--)
     {
       if (symbol != char.MinValue)
       {
-        if (Map.CurrentOverlay[pos.X][pos.Y][layer].Type.Symbol != symbol) continue;
+        if (Map.CurrentOverlay[pos.X, pos.Y][layer].Type.Symbol != symbol) continue;
       }
-      else if (Map.CurrentOverlay[pos.X][pos.Y][layer].Type.Symbol == ' ') continue;
+      else if (Map.CurrentOverlay[pos.X, pos.Y][layer].Type.Symbol == ' ') continue;
 
-      obj = Map.CurrentOverlay[pos.X][pos.Y][layer];
+      obj = Map.CurrentOverlay[pos.X, pos.Y][layer];
       if (obj is Monster { IsAlive: false }) continue;
       return true;
     }
@@ -164,9 +164,9 @@ internal class Position
   {
     if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
     {
-      if (Map.CurrentMap[pos.X][pos.Y].Type.Symbol == symbol)
+      if (Map.CurrentMap[pos.X, pos.Y].Type.Symbol == symbol)
       {
-        obj = Map.CurrentMap[pos.X][pos.Y];
+        obj = Map.CurrentMap[pos.X, pos.Y];
         return true;
       }
     }
@@ -179,9 +179,9 @@ internal class Position
   {
     if (pos is { X: > 0, Y: > 0 } && pos.X <= GamePlay.MapBox.Width && pos.Y <= GamePlay.MapBox.Height)
     {
-      if (Map.CurrentMap[pos.X][pos.Y].Type.Symbol != ' ')
+      if (Map.CurrentMap[pos.X, pos.Y].Type.Symbol != ' ')
       {
-        obj = Map.CurrentMap[pos.X][pos.Y];
+        obj = Map.CurrentMap[pos.X, pos.Y];
         return true;
       }
     }

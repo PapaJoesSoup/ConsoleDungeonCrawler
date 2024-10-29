@@ -55,28 +55,4 @@ internal static class ColorEx
         return Color.White;
     }
   }
-
-  private static void Test256Colors()
-  {
-    // Print all 256 colors
-    for (int i = 0; i < 255; i++)
-    {
-      Console.Write($"{BgColor}{i}m*");
-    }
-  }
-
-  private static void Test24BitColors()
-  {
-    //Print all 24 bit rgb colors
-    for (int r = 0; r < 255; r++)
-    {
-      for (int g = 0; g < 255; g++)
-      {
-        for (int b = 0; b < 255; b++)
-        {
-          Console.Write($"{BgHiColor}{r};{g};{b}m*");
-        }
-      }
-    }
-  }
 }

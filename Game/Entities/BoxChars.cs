@@ -39,4 +39,19 @@ internal class BoxChars
         Hor = hor;
         Ver = ver;
     }
+
+    internal BoxChars()
+    {
+        TopLeft = Default.TopLeft;
+        TopCtr = Default.TopCtr;
+        TopRight = Default.TopRight;
+        MidLeft = Default.MidLeft;
+        MidCtr = Default.MidCtr;
+        MidRight = Default.MidRight;
+        BotLeft = Default.BotLeft;
+        BotCtr = Default.BotCtr;
+        BotRight = Default.BotRight;
+        Hor = Default.Hor;
+        Ver = Default.Ver;
+    }
 }

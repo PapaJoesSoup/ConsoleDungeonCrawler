@@ -91,6 +91,7 @@ internal static class Game
         IsMainMenu = false;
         SoundSystem.PlayTitle();
         GameTitle.Draw();
+        if (IsQuit) continue;
         PlayGame();
       }
       if (IsRestart)
@@ -107,7 +108,6 @@ internal static class Game
         GameOver.Draw();
         continue;
       }
-
       if (IsWon)
       {
         IsWon = false;
@@ -119,6 +119,7 @@ internal static class Game
       GamePlay.KeyHandler();
       GamePlay.Update();
     }
+    ConsoleEx.ResetConsole();
     Environment.Exit(0);
   }
 

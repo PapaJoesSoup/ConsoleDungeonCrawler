@@ -70,8 +70,8 @@ internal static class PathFinding
   /// <returns>adjacent coords that are passable</returns>
   private static List<Position> GetPassableArea(Position currentPos, Position targetPos)
   {
-    Dictionary<int, Dictionary<int, Tile>> map = Map.CurrentMap;
-    Dictionary<int, Dictionary<int, List<Tile>>> overlay = Map.CurrentOverlay;
+    Tile[,] map = Map.CurrentMap;
+    List<Tile>[,] overlay = Map.CurrentOverlay;
 
     // get the 4 adjacent positions (non subClassed to treat them like value types)
     // this ensures the parent position values of each position are not overwritten
@@ -85,13 +85,13 @@ internal static class PathFinding
 
     possiblePositions.ForEach(pos => pos.SetDistance(targetPos));
 
-    int maxX = map.Count - 1;
-    int maxY = map[0].Count - 1;
+    int maxX = map.GetLength(0) - 1;
+    int maxY = map.GetLength(1) - 1;
 
     return possiblePositions
       .Where(pos => pos.X >= 0 && pos.X <= maxX)
       .Where(pos => pos.Y >= 0 && pos.Y <= maxY)
-      .Where(pos => Monster.CanMoveTo(pos) || map[pos.X][pos.Y] == targetPos)
+      .Where(pos => Monster.CanMoveTo(pos) || map[pos.X, pos.Y] == targetPos)
       .ToList();
   }
 }

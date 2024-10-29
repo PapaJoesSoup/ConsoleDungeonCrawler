@@ -9,18 +9,18 @@ namespace ConsoleDungeonCrawler.Game;
 internal static class Actions
 {
   /// <summary>
-  /// Process any overlay items that the are under the player.  Dead monsters are lootable till looted.
+  /// Process any overlay items that the are under the player.  Dead monsters can be looted.
   /// Overlay items can be stacked in layers, so we may need to process more than one layer
   /// </summary>
   internal static void ProcessOverlayItem()
   {
     // search Tile layers from the top down for items to process
-    var oGrid = Map.CurrentOverlay;
-    for (int i = oGrid[Map.Player.X][Map.Player.Y].Count - 1; i >= 0; i--)
+    List<Tile>[,] oGrid = Map.CurrentOverlay;
+    for (int i = oGrid[Map.Player.X, Map.Player.Y].Count - 1; i >= 0; i--)
     {
-      if (oGrid[Map.Player.X][Map.Player.Y][i].Type.Symbol == ' ') continue;
-      Tile obj = oGrid[Map.Player.X][Map.Player.Y][i];
+      if (oGrid[Map.Player.X, Map.Player.Y][i].Type.Symbol == ' ') continue;
       Item item = new();
+      Tile obj = oGrid[Map.Player.X, Map.Player.Y][i];
       switch (obj.Type.Symbol)
       {
         case '\u25b2':

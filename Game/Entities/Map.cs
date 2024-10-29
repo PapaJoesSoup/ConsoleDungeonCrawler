@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
-using System.Runtime.InteropServices.JavaScript;
 using System.Text;
+using CommunityToolkit.HighPerformance;
 using ConsoleDungeonCrawler.Extensions;
 using ConsoleDungeonCrawler.Game.Screens;
 
@@ -20,14 +20,21 @@ internal class Map
 
   // Dictionary storage and retrieval is faster than a DataSet/DataTables and not as heavy.
   // expressed as:  LevelMapTileGrids[level][x][y];
-  private static Dictionary<int, Dictionary<int, Dictionary<int, Tile>>> levelMapTileGrids = new();
-  internal static Dictionary<int,Dictionary<int, Tile>> CurrentMap = new();
+  //private static Dictionary<int, Dictionary<int, Dictionary<int, Tile>>> levelMapTileGrids = new();
+  //internal static Dictionary<int,Dictionary<int, Tile>> CurrentMap = new();
   internal static int MinMapLevel;
   internal static int MaxMapLevel;
 
-  // This allows for multiple overlay objects on a single tile.
-  private static Dictionary<int, Dictionary<int, Dictionary<int, List<Tile>>>> levelOverlayTileGrids = new();
-  internal static Dictionary<int, Dictionary<int, List<Tile>>> CurrentOverlay = new();
+  // Array is even faster, as there is no hashing involved, but it is not as flexible.
+  // expressed as:  levelMapTileArray[level,x,y];
+  private static Dictionary<int,Tile[,]> levelMapTileGrids = new ();
+  internal static Tile[,] CurrentMap = new Tile[Width, Height];
+  private static Dictionary<int, List<Tile>[,]> levelOverlayTileGrids = new ();
+  internal static List<Tile>[,] CurrentOverlay = new List<Tile>[Width, Height];
+  
+  // This allows for multiple overlay objects on a single tile location.
+  //private static Dictionary<int, Dictionary<int, Dictionary<int, List<Tile>>>> levelOverlayTileGrids = new();
+  //internal static Dictionary<int, Dictionary<int, List<Tile>>> CurrentOverlay = new();
 
   private static Dictionary<int, Dictionary<char, List<Tile>>> levelMapTiles = new();
   internal static Dictionary<int, Dictionary<char, List<Tile>>> LevelOverlayTiles = new();
@@ -121,7 +128,6 @@ internal class Map
 
     levelMapTileGrids = new();
     levelOverlayTileGrids = new();
-    levelMapTileGrids = new();
     LevelOverlayTiles = new();
     levelMapTiles = new();
 
@@ -133,32 +139,25 @@ internal class Map
       if (level.Contains("LevelMap_"))
       {
         // create empty map grid
-        Dictionary<int, Dictionary<int, Tile>> mapGrid = new();
-        for (int x = 0; x <= Width; x++)
-        {
-          mapGrid.Add(x, new Dictionary<int, Tile>());
-          for (int y = 0; y <= Width; y++)
-          {
-            mapGrid[x].Add(y, new Tile(x, y));
-          }
-        }
+        Tile[,] mapGrid = new Tile[Width,Height];
+
+        for (int x = 0; x < Width; x++)
+          for (int y = 0; y < Height; y++)
+            mapGrid[x, y] = new Tile(x, y);
+
         // Add MapGrid to LevelMapTileGrids
         levelMapTileGrids.Add(lvlNumber, mapGrid);
       }
 
       if (!level.Contains("LevelOverlay_")) continue;
       // create empty overlay grid
-      Dictionary<int, Dictionary<int, List<Tile>>> overlayGrid = new();
       TileType empty = new(true, false);
-      for (int x = 0; x <= Width; x++)
-      {
-        overlayGrid.Add(x, new Dictionary<int, List<Tile>>());
-        for (int y = 0; y <= Width; y++)
-        {
-          overlayGrid[x].Add(y, new List<Tile>());
-          overlayGrid[x][y].Add(new Tile(x, y, empty));
-        }
-      }
+      List<Tile>[,] overlayGrid = new List<Tile>[Width,Height];
+
+      for (int x = 0; x < Width; x++)
+        for (int y = 0; y < Height; y++)
+          overlayGrid[x, y] = new List<Tile> { new(x, y, empty) };
+
       // Add OverlayGrid to LevelOverlayTileGrids
       levelOverlayTileGrids.Add(lvlNumber, overlayGrid);
     }
@@ -240,7 +239,7 @@ internal class Map
         TileType? type = MapTypes.Find(t => t.Symbol == c);
         if (type == null) continue;
         Tile obj = new(x - 1, y - 1, type, false);
-        levelMapTileGrids[level][x - 1][y - 1] = obj;
+        levelMapTileGrids[level][x - 1, y - 1] = obj;
       }
     }
   }
@@ -273,12 +272,12 @@ internal class Map
         else if (obj.IsAttackable)
         {
           Monster monster = new(obj, 1);
-          levelOverlayTileGrids[level][x - 1][y - 1][0] = monster;
+          levelOverlayTileGrids[level][x - 1, y - 1][0] = monster;
           LevelOverlayTiles[level][type.Symbol].Add(monster);
         }
         else
         {
-          levelOverlayTileGrids[level][x - 1][y - 1][0] = obj;
+          levelOverlayTileGrids[level][x - 1, y - 1][0] = obj;
           LevelOverlayTiles[level][type.Symbol].Add(obj);
         }
       }
@@ -287,13 +286,14 @@ internal class Map
   #endregion Initialization
 
   #region Drawing
+
   internal static void DrawMap()
   {
-    foreach (int x in CurrentMap.Keys)
+    for (int x = 0; x < Width; x++)
     {
-      foreach (int y in CurrentMap[x].Keys)
+      for (int y = 0; y < Height; y++)
       {
-        Tile obj = CurrentMap[x][y];
+        Tile obj = CurrentMap[x, y];
         if (!obj.IsVisible || obj.Type.Symbol == ' ') continue;
         obj.Draw();
       }
@@ -302,25 +302,27 @@ internal class Map
 
   internal static void DrawOverlay()
   {
-    foreach (int x in CurrentOverlay.Keys)
+    for (int x = 0; x < Width; x++)
     {
-      foreach (int y in CurrentOverlay[x].Keys)
+      for (int y = 0; y < Height; y++)
       {
-        int layer = CurrentOverlay[x][y].Count - 1;
-        Tile obj = CurrentOverlay[x][y][layer];
+        if (CurrentOverlay[x, y].Count == 0) continue;
+        int layer = CurrentOverlay[x, y].Count - 1;
+        Tile obj = CurrentOverlay[x, y][layer];
         if (!obj.IsVisible || obj.Type.Symbol == ' ') continue;
         obj.Draw();
       }
     }
   }
 
+
   internal static void ShowAllMapTiles()
   {
-    foreach (int x in CurrentMap.Keys)
+    for (int x = 0; x < Width; x++)
     {
-      foreach (int y in CurrentMap[x].Keys)
+      for (int y = 0; y < Height; y++)
       {
-        Tile obj = CurrentMap[x][y];
+          Tile obj = CurrentMap[x, y];
         if (obj.Type.Symbol == ' ') continue;
         obj.Draw(true);
       }
@@ -333,12 +335,12 @@ internal class Map
 
   internal static void ShowAllOverlayTiles()
   {
-    foreach (int x in CurrentOverlay.Keys)
+    for (int x = 0; x < Width; x++)
     {
-      foreach (int y in CurrentOverlay[x].Keys)
+      for (int y = 0; y < Height; y++)
       {
-        int layer = CurrentOverlay[x][y].Count - 1;
-        Tile obj = CurrentOverlay[x][y][layer];
+        int layer = CurrentOverlay[x, y].Count - 1;
+        Tile obj = CurrentOverlay[x, y][layer];
         if (obj.Type.Symbol == ' ') continue;
         obj.Draw(true);
       }
@@ -408,14 +410,14 @@ internal class Map
 
   private static Tile UpdateVisibleTiles(int x, int y)
   {
-    Tile obj = CurrentMap[x][y];
+    Tile obj = CurrentMap[x, y];
     obj.IsVisible = true;
     AddToMapTiles(obj);
     obj.Draw();
     AddToMapTiles(obj);
 
-    int layer = CurrentOverlay[x][y].Count - 1;
-    Tile overlay = CurrentOverlay[x][y][layer];
+    int layer = CurrentOverlay[x, y].Count - 1;
+    Tile overlay = CurrentOverlay[x, y][layer];
     if (overlay.Type.Symbol == ' ') return obj;
     overlay.IsVisible = true;
     overlay.Draw();
@@ -526,10 +528,10 @@ internal class Map
   {
     if (obj is Monster) return;
     Tile newObj = new(obj.X, obj.Y, new TileType(true));
-    if (!CurrentOverlay[obj.X][obj.Y].Contains(obj)) return;
-    CurrentOverlay[obj.X][obj.Y].Remove(obj);
-    if (CurrentOverlay[obj.X][obj.Y].Count < 1)
-      CurrentOverlay[obj.X][obj.Y].Add(newObj);
+    if (!CurrentOverlay[obj.X, obj.Y].Contains(obj)) return;
+    CurrentOverlay[obj.X, obj.Y].Remove(obj);
+    if (CurrentOverlay[obj.X, obj.Y].Count < 1)
+      CurrentOverlay[obj.X, obj.Y].Add(newObj);
   }
 
   internal static Direction GetDirection(ConsoleKey key)

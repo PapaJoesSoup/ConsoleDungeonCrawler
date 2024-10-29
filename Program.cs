@@ -10,7 +10,6 @@ public static class Program
 {
   internal static readonly int MinWindowWidth = 209;
   internal static readonly int MinWindowHeight = 53;
-
   /// <summary>
   /// This is the main entry point of the application
   /// </summary>

@@ -24,7 +24,7 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
 
       while (dialogOpen)
       {
-        int rowCount = 4 + Game.Dungeons.Keys.Count;
+        int rowCount = 5 + Game.Dungeons.Keys.Count;
         int row = -(rowCount / 2) + 1;
         "Please select a Game Map (Up or Down Arrow):".WriteAlignedAt(HAlign.Center, VAlign.Middle, Color.Bisque, Color.Black, 0, row);
         row += 2;
@@ -37,8 +37,8 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
             dungeon.PadCenter(40).WriteAlignedAt(HAlign.Center, VAlign.Middle, Colors.TextColor, Colors.FillColor, 0, row);
           row++;
         }
-
-        "Press Enter to continue".WriteAlignedAt(HAlign.Center, VAlign.Middle, Colors.TextColor, Colors.FillColor, 0, row + 1);
+        "Press [Q] to Quit".WriteAlignedAt(HAlign.Center, VAlign.Middle, Colors.TextColor, Colors.FillColor, 0, row + 1);
+        "Press Enter to continue".WriteAlignedAt(HAlign.Center, VAlign.Middle, Colors.TextColor, Colors.FillColor, 0, row + 2);
         KeyHandler();
       }
     }
@@ -48,6 +48,11 @@ namespace ConsoleDungeonCrawler.Game.Screens.Dialogs
       ConsoleKeyInfo keyInfo = Console.ReadKey(true);
       switch (keyInfo.Key)
       {
+        case ConsoleKey.Q:
+          ConsoleEx.Clear();
+          dialogOpen = false;
+          Game.IsQuit = true;
+          break;
         case ConsoleKey.Enter:
           Game.CurrentDungeon = Game.Dungeons.Keys.ElementAt(activeItem);
           dialogOpen = false;

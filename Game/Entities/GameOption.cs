@@ -8,7 +8,7 @@
     internal readonly int ActionCount;
     internal int ActionIdx;
 
-    internal event EventHandler OnValueChanged;
+    internal event EventHandler? OnValueChanged;
 
     internal GameOption()
     {
@@ -43,9 +43,8 @@
 
     internal void RaiseEvent()
     {
-      EventHandler raiseEvent = OnValueChanged;
-      if (raiseEvent == null) return;
-      raiseEvent(this, EventArgs.Empty);
+      EventHandler? raiseEvent = OnValueChanged;
+      raiseEvent?.Invoke(this, EventArgs.Empty);
     }
   }
 }
